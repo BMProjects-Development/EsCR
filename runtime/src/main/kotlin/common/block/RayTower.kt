@@ -155,6 +155,6 @@ class RayTower(properties: Properties): Block(properties), EntityBlock, Assemble
 
     companion object {
         @JvmField
-        val ASSEMBLED: BooleanProperty = BooleanProperty.create("multiblock/assembled")
+        val ASSEMBLED: BooleanProperty = BooleanProperty.create("assembled")
     }
 }
