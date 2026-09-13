@@ -33,6 +33,10 @@ data class MagicDefenseEntry(
     fun matches(type: EntityType<*>): Boolean = id == BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()
 
     init {
+        require(!id.contains("enderman") && !id.contains("endermite")) {
+            "I understand that you might not want to add shields to Enderman/Endermite, " +
+                    "but it is not possible. Please respect the mod's lore. That is my only request as a developer :)."
+        }
         require(functions.isNotEmpty()) { "Functions cannot be empty." }
     }
 }

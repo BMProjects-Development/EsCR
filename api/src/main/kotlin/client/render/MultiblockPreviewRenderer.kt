@@ -1,11 +1,11 @@
 package com.algorithmlx.ecr.api.client.render
 
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDefinition
 import com.algorithmlx.ecr.api.block.Multipart
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoRenderData
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoRenderEngine
 import com.algorithmlx.ecr.api.molang.runtime.MolangContext
 import com.algorithmlx.ecr.api.multiblock.Multiblock
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDefinition
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.SubmitNodeCollector
@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.util.LightCoordsUtil
 import net.minecraft.util.Mth
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
 import org.joml.Quaternionf
 import org.joml.Vector3f
@@ -141,7 +142,7 @@ class MultiblockPreviewRenderer(
         var maxY = Float.NEGATIVE_INFINITY
         var maxZ = Float.NEGATIVE_INFINITY
 
-        val visibleBlocks = blocks.ifEmpty { listOf(PreviewBlock(BlockPos.ZERO, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState())) }
+        val visibleBlocks = blocks.ifEmpty { listOf(PreviewBlock(BlockPos.ZERO, Blocks.AIR.defaultBlockState())) }
 
         visibleBlocks.forEach { block ->
             for (x in floatArrayOf(block.pos.x.toFloat(), block.pos.x + 1f)) {

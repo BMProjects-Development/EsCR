@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.VoxelShape
 
 open class ClusterBlock(
     properties: Properties,
-) : Block(properties.noOcclusion().strength(1.5F).requiresCorrectToolForDrops()) {
+) : Block(properties) {
     override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.clusterBlock
 
     override fun getShape(

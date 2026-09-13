@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(RenderType.class)
 public interface RenderTypeAccessor {
     @Invoker("create")
-    static RenderType ecrApiCreate(String name, RenderSetup setup) {
+    static RenderType create(String name, RenderSetup setup) {
         throw new AssertionError();
     }
 }

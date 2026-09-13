@@ -4,12 +4,12 @@ import com.mojang.blaze3d.platform.Lighting
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer
-import net.minecraft.client.renderer.feature.FeatureRenderDispatcher
 import net.minecraft.client.renderer.SubmitNodeCollector
+import net.minecraft.client.renderer.feature.FeatureRenderDispatcher
 import net.minecraft.client.renderer.state.gui.GuiRenderState
 
-class MultiblockPreviewPictureRenderer : PictureInPictureRenderer<MultiblockPreviewRenderState>() {
-    private val renderers = object : LinkedHashMap<Any, SinglePreviewRenderer>(16, 0.75f, true) {
+class MultiblockPreviewPictureRenderer: PictureInPictureRenderer<MultiblockPreviewRenderState>() {
+    private val renderers = object : LinkedHashMap<Any, SinglePreviewRenderer>(16, 0.75F, true) {
         override fun removeEldestEntry(eldest: MutableMap.MutableEntry<Any, SinglePreviewRenderer>): Boolean {
             if (size <= MAX_RENDERERS) return false
             eldest.value.close()
@@ -33,9 +33,7 @@ class MultiblockPreviewPictureRenderer : PictureInPictureRenderer<MultiblockPrev
         state: MultiblockPreviewRenderState,
         poseStack: PoseStack,
         submitter: SubmitNodeCollector
-    ) {
-        throw AssertionError("Multiblock previews are rendered by keyed child renderers")
-    }
+    ) = throw AssertionError("Multiblock previews are rendered by keyed child renderers")
 
     override fun getTextureLabel(): String = "multiblock_preview"
 
@@ -47,7 +45,7 @@ class MultiblockPreviewPictureRenderer : PictureInPictureRenderer<MultiblockPrev
 
     private class SinglePreviewRenderer(
         private val previewRenderer: MultiblockPreviewRenderer = MultiblockPreviewRenderer()
-    ) : PictureInPictureRenderer<MultiblockPreviewRenderState>() {
+    ): PictureInPictureRenderer<MultiblockPreviewRenderState>() {
         override fun getRenderStateClass(): Class<MultiblockPreviewRenderState> =
             MultiblockPreviewRenderState::class.java
 
@@ -68,10 +66,12 @@ class MultiblockPreviewPictureRenderer : PictureInPictureRenderer<MultiblockPrev
             )
 
             when (val model = state.model) {
-                is MultiblockPreviewModel.Pattern ->
-                    previewRenderer.submit(model.multiblock, poseStack, submitter, bounds, state.transform)
-                is MultiblockPreviewModel.Assembled ->
-                    previewRenderer.submit(model.definition, model.assembled, poseStack, submitter, bounds, state.transform)
+                is MultiblockPreviewModel.Pattern -> previewRenderer.submit(
+                    model.multiblock, poseStack, submitter, bounds, state.transform
+                )
+                is MultiblockPreviewModel.Assembled -> previewRenderer.submit(
+                    model.definition, model.assembled, poseStack, submitter, bounds, state.transform
+                )
             }
         }
 

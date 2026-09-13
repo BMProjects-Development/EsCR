@@ -34,7 +34,7 @@ object BedrockGeoGpuPipelines {
     private val solid =
         register(
             RenderPipeline
-                .builder(RenderPipelinesAccessor.ecrApiEntitySnippet())
+                .builder(RenderPipelinesAccessor.entitySnippet())
                 .withLocation("pipeline/bedrock_geo_solid".ecRL)
                 .withVertexShader("core/bedrock_geo".ecRL)
                 .withBindGroupLayout(geoBindings)
@@ -47,7 +47,7 @@ object BedrockGeoGpuPipelines {
     private val cutout =
         register(
             RenderPipeline
-                .builder(RenderPipelinesAccessor.ecrApiEntitySnippet())
+                .builder(RenderPipelinesAccessor.entitySnippet())
                 .withLocation("pipeline/bedrock_geo_cutout".ecRL)
                 .withVertexShader("core/bedrock_geo".ecRL)
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
@@ -61,7 +61,7 @@ object BedrockGeoGpuPipelines {
     private val translucent =
         register(
             RenderPipeline
-                .builder(RenderPipelinesAccessor.ecrApiEntitySnippet())
+                .builder(RenderPipelinesAccessor.entitySnippet())
                 .withLocation("pipeline/bedrock_geo_translucent".ecRL)
                 .withVertexShader("core/bedrock_geo".ecRL)
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
@@ -78,7 +78,7 @@ object BedrockGeoGpuPipelines {
     private val additive =
         register(
             RenderPipeline
-                .builder(RenderPipelinesAccessor.ecrApiEntityEmissiveSnippet())
+                .builder(RenderPipelinesAccessor.entityEmissiveSnippet())
                 .withLocation("pipeline/bedrock_geo_additive".ecRL)
                 .withVertexShader("core/bedrock_geo".ecRL)
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
@@ -105,5 +105,5 @@ object BedrockGeoGpuPipelines {
             GeoRenderType.ADDITIVE -> additive
         }
 
-    private fun register(pipeline: RenderPipeline): RenderPipeline = RenderPipelinesAccessor.ecrApiRegister(pipeline)
+    private fun register(pipeline: RenderPipeline): RenderPipeline = RenderPipelinesAccessor.register(pipeline)
 }

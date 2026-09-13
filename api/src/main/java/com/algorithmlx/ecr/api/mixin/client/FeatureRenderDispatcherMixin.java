@@ -18,7 +18,7 @@ public abstract class FeatureRenderDispatcherMixin {
     private FeatureRendererMap featureRenderers;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void ecrApi$registerBedrockGeoRenderer(CallbackInfo callbackInfo) {
+    private void onInit(CallbackInfo callbackInfo) {
         BedrockGeoGpuPipelines.ensureInitialized();
         this.featureRenderers.put(BedrockGeoGpuFeatureRenderer.TYPE, new BedrockGeoGpuFeatureRenderer());
     }

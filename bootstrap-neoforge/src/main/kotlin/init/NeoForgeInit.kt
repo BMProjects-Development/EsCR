@@ -1,6 +1,7 @@
 package com.algorithmlx.ecr.neoforge.init
 
 import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.block.JSONBlockProperties
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingPlatform
 import com.algorithmlx.ecr.api.geo.*
 import com.algorithmlx.ecr.api.init.MultiblockMatcherTypes
@@ -62,6 +63,7 @@ import java.io.File
 
 object NeoForgeInit {
     fun init(bus: IEventBus) {
+        JSONBlockProperties.allowNamespace(ModId)
         ECConfig.instance = ConfigManager.saveOrLoad(File("config/$ModId.json"), ECConfig())
 
         val forgeBus = NeoForge.EVENT_BUS

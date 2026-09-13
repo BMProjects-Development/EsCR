@@ -5,8 +5,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.state.BlockState
-import java.util.Collections
-import java.util.EnumSet
+import java.util.*
 
 enum class ConnectedTextureRotation {
     NONE,
@@ -48,7 +47,7 @@ fun interface ConnectedTextureConnection {
     companion object {
         @JvmField
         val SAME_BLOCK = ConnectedTextureConnection { _, _, origin, _, neighbour, _ ->
-            origin.block === neighbour.block
+            origin.`is`(neighbour.block)
         }
 
         @JvmField
@@ -116,18 +115,16 @@ class ConnectedTexture private constructor(
                 val diagonalState = level.getBlockState(diagonalPos)
                 connection.connects(level, pos, state, diagonalPos, diagonalState, face)
             }
-        } else {
-            ConnectedTextureMask.straightThroughThreeWay(rawMask)
-        }
+        } else ConnectedTextureMask.straightThroughThreeWay(rawMask)
+
         if (preferredMask == ConnectedTextureMask.VARIANT_COUNT - 1) return preferredMask
 
         return ConnectedTextureMask.withoutRejectedConnections(preferredMask) { side ->
             val neighbourPos = pos.relative(ConnectedTextureMask.direction(face, side))
             val neighbourState = level.getBlockState(neighbourPos)
             val neighbourMask = rawMask(level, neighbourPos, neighbourState, face)
-            if (Integer.bitCount(neighbourMask) != 3) {
-                true
-            } else {
+            if (Integer.bitCount(neighbourMask) != 3) true
+            else {
                 val oppositeBit = 1 shl ((side + 2) % 4)
                 ConnectedTextureMask.straightThroughThreeWay(neighbourMask) and oppositeBit != 0
             }
@@ -235,8 +232,8 @@ class ConnectedTexture private constructor(
                 ?: ConnectedTextureVariant(angle, ConnectedTextureRotation.CLOCKWISE_270)
 
             return sparse(
-                source = source,
-                variants = mapOf(
+                source,
+                mapOf(
                     ConnectedTextureMask.RIGHT to ConnectedTextureVariant(startLine),
                     ConnectedTextureMask.BOTTOM to ConnectedTextureVariant(
                         startLine,
@@ -256,9 +253,9 @@ class ConnectedTexture private constructor(
                     ConnectedTextureMask.LEFT or ConnectedTextureMask.TOP to downRightCorner,
                     ConnectedTextureMask.TOP or ConnectedTextureMask.RIGHT to downCorner,
                 ),
-                connection = connection,
-                faces = faces,
-                outlineComponentBounds = outlineComponentBounds,
+                connection,
+                faces,
+                outlineComponentBounds,
             )
         }
 

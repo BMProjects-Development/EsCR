@@ -1,0 +1,5 @@
+{
+  "destroy_time": 5,
+  "explosion_resistance": 1200,
+  "requires_correct_tool_for_drops": true
+}

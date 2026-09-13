@@ -12,6 +12,7 @@
     "client.SubmitNodeStorageMixin"
   ],
   "mixins": [
+    "ConsumableMixin",
     "ItemStackMixin",
     "RecipeManagerMixin"
   ],

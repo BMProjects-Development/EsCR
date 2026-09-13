@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.feature.phase.SimpleFeatureRenderPhase;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(SubmitNodeCollection.class)
 public abstract class SubmitNodeCollectionMixin implements BedrockGeoGpuSubmitCollector {
@@ -18,12 +19,11 @@ public abstract class SubmitNodeCollectionMixin implements BedrockGeoGpuSubmitCo
     @Final
     public SimpleFeatureRenderPhase translucentCustomGeometry;
 
+    @SuppressWarnings("AddedMixinMembersNamePattern")
+    @Unique
     @Override
     public void submitBedrockGeoGpu(BedrockGeoGpuSubmit submit) {
-        if (submit.getRenderType().hasBlending()) {
-            this.translucentCustomGeometry.submit(submit);
-        } else {
-            this.solid.submit(submit);
-        }
+        if (submit.getRenderType().hasBlending()) this.translucentCustomGeometry.submit(submit);
+        else this.solid.submit(submit);
     }
 }

@@ -27,7 +27,7 @@ internal object BedrockGeoGpuRenderTypes {
         if (key.type != GeoRenderType.ADDITIVE) {
             setup.useLightmap().useOverlay()
         }
-        return RenderTypeAccessor.ecrApiCreate(
+        return RenderTypeAccessor.create(
             "bedrock_geo_${key.type.name.lowercase()}",
             setup.createRenderSetup(),
         )

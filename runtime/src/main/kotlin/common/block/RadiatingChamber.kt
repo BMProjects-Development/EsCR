@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
-class RadiatingChamber(properties: Properties): Block(properties.noOcclusion()), EntityBlock, FullBlockParticles {
+class RadiatingChamber(properties: Properties): Block(properties), EntityBlock, FullBlockParticles {
     override fun newBlockEntity(
         worldPosition: BlockPos,
         blockState: BlockState

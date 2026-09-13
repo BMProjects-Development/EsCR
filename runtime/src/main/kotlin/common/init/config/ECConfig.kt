@@ -28,7 +28,30 @@ data class ECConfig(
     @SerialName("magical_teleporter") val magicalTeleporter: MagicalTeleporterConfig = MagicalTeleporterConfig(),
     @SerialName("enrichment_chamber") val enrichmentChamber: EnrichmentChamberConfig = EnrichmentChamberConfig(),
     @SerialName("heat_generator") val heatGenerator: HeatGeneratorConfig = HeatGeneratorConfig(),
-    @SerialName("magic_defense") val magicDefense: List<MagicDefenseEntry> = listOf()
+    @SerialName("magic_defense") val magicDefense: List<MagicDefenseEntry> = listOf(
+        MagicDefenseEntry("minecraft:allay", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:blaze", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:breeze", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:breeze_wind_charge", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:dragon_fireball", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:elder_guardian", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:ender_dragon", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:evoker", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:guardian", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:illusioner", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:iron_golem", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:magma_cube", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:shulker", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:shulker_bullet", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:snow_golem", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:stray", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:vex", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:warden", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:wind_charge", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:witch", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:wither", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:wither_skull", listOf(MagicDefenseIgnoreFunction)),
+    )
 ) {
     fun magicDefense(type: EntityType<*>): MagicDefenseEntry? = magicDefense.firstOrNull { it.matches(type) }
 

@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap
 
 object BedrockParticleRenderTypes {
     private val additivePipeline =
-        RenderPipelinesAccessor.ecrApiRegister(
+        RenderPipelinesAccessor.register(
             RenderPipeline
-                .builder(RenderPipelinesAccessor.ecrApiParticleSnippet())
+                .builder(RenderPipelinesAccessor.particleSnippet())
                 .withLocation("pipeline/bedrock_particle_additive".ecRL)
                 .withColorTargetState(ColorTargetState(BlendFunction.ADDITIVE))
                 .build(),
@@ -44,7 +44,7 @@ object BedrockParticleRenderTypes {
                 .withTexture("Sampler0", key.texture)
                 .useLightmap()
         if (key.material.needsSorting) setup.sortOnUpload()
-        return RenderTypeAccessor.ecrApiCreate(
+        return RenderTypeAccessor.create(
             "bedrock_particle_${key.material.name.lowercase()}",
             setup.createRenderSetup(),
         )

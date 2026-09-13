@@ -3,7 +3,7 @@ package com.algorithmlx.ecr.api.chunk
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.ChunkPos
-import java.util.WeakHashMap
+import java.util.*
 
 object ChunkLoadingManager {
     private val levels = WeakHashMap<ServerLevel, MutableMap<BlockPos, Set<Long>>>()
@@ -20,9 +20,8 @@ object ChunkLoadingManager {
         if (current == desired) return
 
         for (packed in current) {
-            if (packed !in desired) {
+            if (packed !in desired)
                 ChunkLoadingPlatform.instance.remove(level, owner, ChunkPos.unpack(packed))
-            }
         }
 
         levelOwners[ownerKey] = desired

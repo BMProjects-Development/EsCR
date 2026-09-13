@@ -12,8 +12,8 @@ import com.algorithmlx.ecr.api.molang.runtime.MolangContext
 import org.joml.Matrix3f
 import org.joml.Matrix4f
 import org.joml.Vector3f
-import kotlin.math.abs
 import kotlin.math.PI
+import kotlin.math.abs
 
 data class BedrockGeoPose(
     val transforms: Array<Matrix4f>,
@@ -56,14 +56,10 @@ object BedrockGeoAnimator {
             animation.bones.forEach { (boneName, channels) ->
                 val boneIndex = model.boneIndices[boneName] ?: return@forEach
                 val state = states[boneIndex]
-                val blendMode = if (animation.overridePreviousAnimation) {
-                    GeoBlendMode.OVERRIDE
-                } else {
-                    playback.blend
-                }
-                if (blendMode == GeoBlendMode.OVERRIDE) {
-                    state.reset()
-                }
+
+                val blendMode = if (animation.overridePreviousAnimation) GeoBlendMode.OVERRIDE else playback.blend
+                if (blendMode == GeoBlendMode.OVERRIDE) state.reset()
+
                 channels.position?.let { channel ->
                     val value = sample(channel, time, context)
                     state.position.add(value.mul(weight))
@@ -112,8 +108,7 @@ object BedrockGeoAnimator {
         context: MolangContext,
         nowSeconds: Double
     ): Float? {
-        val elapsed = ((nowSeconds - playback.startTimeSeconds) * abs(playback.speed)).toFloat() -
-            animation.startDelay.eval(context)
+        val elapsed = ((nowSeconds - playback.startTimeSeconds) * abs(playback.speed)).toFloat() - animation.startDelay.eval(context)
         if (elapsed < 0F) return null
         val length = animation.lengthSeconds
         if (length <= 0F) return 0F
@@ -150,8 +145,7 @@ object BedrockGeoAnimator {
         }
         if (loop != BedrockAnimationLoop.ONCE) return false
 
-        val elapsed = ((nowSeconds - playback.startTimeSeconds) * abs(playback.speed)).toFloat() -
-            animation.startDelay.eval(context)
+        val elapsed = ((nowSeconds - playback.startTimeSeconds) * abs(playback.speed)).toFloat() - animation.startDelay.eval(context)
         return elapsed > animation.lengthSeconds.coerceAtLeast(0F)
     }
 
@@ -182,8 +176,7 @@ object BedrockGeoAnimator {
         val t2 = t * t
         val t3 = t2 * t
         fun component(a: Float, b: Float, c: Float, d: Float): Float =
-            0.5F * ((2F * b) + (-a + c) * t + (2F * a - 5F * b + 4F * c - d) * t2 +
-                (-a + 3F * b - 3F * c + d) * t3)
+            0.5F * ((2F * b) + (-a + c) * t + (2F * a - 5F * b + 4F * c - d) * t2 + (-a + 3F * b - 3F * c + d) * t3)
         return Vector3f(
             component(p0.x, p1.x, p2.x, p3.x),
             component(p0.y, p1.y, p2.y, p3.y),

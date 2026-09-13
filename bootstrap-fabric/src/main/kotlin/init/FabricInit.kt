@@ -1,6 +1,7 @@
 package com.algorithmlx.ecr.fabric.init
 
 import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.block.JSONBlockProperties
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingPlatform
 import com.algorithmlx.ecr.api.geo.GeoAnimationNetwork
 import com.algorithmlx.ecr.api.geo.GeoBlockAnimationPayload
@@ -99,6 +100,7 @@ import java.io.File
 object FabricInit {
     @JvmStatic
     fun init() {
+        JSONBlockProperties.allowNamespace(ModId)
         ECConfig.instance = ConfigManager.saveOrLoad(File("config/$ModId.json"), ECConfig())
 
         initBuiltinRegistries()
