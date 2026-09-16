@@ -12,6 +12,8 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 
 object BoundGemLinkRenderer {
+    private const val BOUND_GEM_OUTLINE_COLOR = 0xD9FFCA85.toInt()
+
     fun submit(
         poseStack: PoseStack,
         collector: SubmitNodeCollector,
@@ -62,6 +64,4 @@ object BoundGemLinkRenderer {
         }
         return null
     }
-
-    private const val BOUND_GEM_OUTLINE_COLOR = 0xD9FFCA85.toInt()
 }

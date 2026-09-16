@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "com.algorithmlx.ecr.mixin",
   "client": [
+    "client.BlockEntityClientMixin",
     "client.ClientLevelMixin",
     "client.RenderPipelinesAccessor",
     "client.RenderTypeAccessor"

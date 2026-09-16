@@ -1,4 +1,10 @@
 #$json_flat
+tag.item.escr:
+  enchantable:
+    magic_break: Breaks Magic Shield
+  ice: Лёд
+  link_viewer: MRU Link Viewer
+
 itemGroup.escr:
   items: "Essential Craft: Предметы"
   blocks: "Essential Craft: Блоки"
@@ -49,6 +55,7 @@ item.escr:
   fading_crystal: Увядающий кристалл
   eye_of_absorption: Глаз поглащения
   heat_core: Тепловое ядро
+  monocle: Монокль
 
 block.escr:
   radiating_chamber: Радиационная камера
@@ -101,7 +108,6 @@ tooltip.escr:
   bound_gem:
     linked:
       .: Кристалл привязки был привязан к позиции
-      revoked: Кристал привязки отвязан
       pos: Привязан к позиции
       not_mru: Кристал привязки настроен к позиции, где отсутствует устройство MRU
       outside_radius: Привязанный блок находится вне радиуса передачи кристалла
@@ -121,6 +127,11 @@ book_type.escr:
   hoana: Хоаны
   shade: Тени
 
+mru_type.escr:
+  mru: MRU
+  espe: ESPE
+  ubmru: UBMRU
+
 matrix.escr:
   neutral: Нейтральная
 
@@ -137,7 +148,6 @@ screen.escr:
     fuel: "Топливо: %s с"
   research_book:
     .: Книга исследований
-    complete_task: Завершить задание
     complete_research: Завершить исследование
     experience:
       .: Опыт
@@ -195,3 +205,38 @@ book.escr:
         3: Именно это Вам и придется выяснить. Вам придется понять устройство данного мира, что с ним не так, 
           обуздать технологии той, иной цивилизации и понять, что именно произошло с той самой цивилизацией. 
           И почему некоторые вещи и технологии проникли и/или проникают к нам в измерение до сих пор.
+
+command.escr:
+  research:
+    reset:
+      failure: Сброс прогресса исследования без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "Сброс прогресса исследования для %s успешно."
+        sized: "Сброс програсса исслодлвания для %s игрока(ов) успешно."
+    unlock:
+      all:
+        failure: Разблокировка исследований без указания игрока доступно только в игре. Не из консоли.
+        success:
+          .: "Разблокированы все исследования для %s."
+          sized: "Разблокированы все исследования для %s игрока(ов)."
+      failure: Изменение прогресса исследований без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "Обновлен прогресс исследования для %s."
+        sized: "Обновлен прогресс исследования для %s игрока(ов)."
+  ubmru:
+    query:
+      failure: Получение количества UBMRU без указания игрока доступно только в игре. Не из консоли.
+      # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+      success: "%s имеет %s %s."
+    add:
+      failure: Добавление UBMRU без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "%s %s добавлен(о) к %s."
+        # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+        sized: "%s %s добавлен(о) к %s игрока(ов)."
+    set:
+      failure: Назначение UBMRU без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "%s %s назначен(о) для %s."
+        # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+        sized: "%s %s назначен(о) для %s игрока(ов)."

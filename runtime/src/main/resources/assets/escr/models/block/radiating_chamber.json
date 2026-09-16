@@ -1,6 +1,7 @@
 {
   "format_version": "1.21.11",
   "credit": "Made by AlgorithmLX",
+  "parent": "minecraft:block/block",
   "texture_size": [64, 64],
   "textures": {
     "0": "escr:block/radiating_chamber",

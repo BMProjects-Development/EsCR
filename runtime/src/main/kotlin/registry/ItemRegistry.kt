@@ -1,6 +1,9 @@
 package com.algorithmlx.ecr.registry
 
-import com.algorithmlx.ecr.common.item.*
+import com.algorithmlx.ecr.common.item.BoundGemItem
+import com.algorithmlx.ecr.common.item.Hammer
+import com.algorithmlx.ecr.common.item.ResearchBookItem
+import com.algorithmlx.ecr.common.item.SoulStone
 import com.algorithmlx.ecr.common.item.tool.*
 import net.minecraft.world.item.Item
 
@@ -53,6 +56,7 @@ interface ItemRegistry {
     val fadingCrystal: Item
     val eyeOfAbsorption: Item
     val heatCore: Item
+    val monocle: Item
 
     companion object {
         @JvmStatic

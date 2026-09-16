@@ -1,5 +1,6 @@
 {
   "format_version": "1.21.11",
+  "parent": "minecraft:block/block",
   "textures": {
     "0": "escr:item/mru_matrix",
     "particle": "escr:item/mru_matrix"

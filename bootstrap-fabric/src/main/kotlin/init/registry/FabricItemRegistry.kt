@@ -69,6 +69,7 @@ object FabricItemRegistry: ItemRegistry {
     override val fadingCrystal: Item = basicItem(ECRModIDs.FADING_CRYSTAL)
     override val eyeOfAbsorption: Item = basicItem(ECRModIDs.EYE_OF_ABSORPTION)
     override val heatCore: Item = basicItem(ECRModIDs.HEAT_CORE)
+    override val monocle: Item = basicItem(ECRModIDs.MONOCLE)
 
     private fun basicItem(id: String, properties: Item.Properties = Item.Properties()) = register(id, ::Item, properties)
 

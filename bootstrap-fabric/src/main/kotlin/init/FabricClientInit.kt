@@ -1,55 +1,24 @@
 package com.algorithmlx.ecr.fabric.init
 
-import com.algorithmlx.ecr.api.geo.GeoAnimationNetwork
 import com.algorithmlx.ecr.api.client.render.MultiblockWorldPreview
-import com.algorithmlx.ecr.api.geo.GeoBlockAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoBlockAnimationStopPayload
-import com.algorithmlx.ecr.api.geo.GeoEntityAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoEntityAnimationStopPayload
-import com.algorithmlx.ecr.api.geo.GeoItemAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoItemAnimationStopPayload
+import com.algorithmlx.ecr.api.geo.*
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoAssets
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoItemRenderer
 import com.algorithmlx.ecr.api.geo.client.ClientGeoAnimations
 import com.algorithmlx.ecr.api.particle.BedrockParticleRenderTypes
 import com.algorithmlx.ecr.api.particle.BedrockParticles
 import com.algorithmlx.ecr.api.particle.ClientParticleSystems
-import com.algorithmlx.ecr.api.research.ClientResearchState
-import com.algorithmlx.ecr.api.research.CompleteResearchPayload
-import com.algorithmlx.ecr.api.research.FavoriteResearchPayload
-import com.algorithmlx.ecr.api.research.ResearchNetwork
-import com.algorithmlx.ecr.api.research.ResearchProgressPayload
-import com.algorithmlx.ecr.api.research.ResearchSyncPayload
-import com.algorithmlx.ecr.api.research.UpdateBookViewPayload
+import com.algorithmlx.ecr.api.research.*
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.client.ECRConnectedTextures
 import com.algorithmlx.ecr.client.book.ResearchBookClient
-import com.algorithmlx.ecr.client.renderer.AssembledMultiblockRenderer
-import com.algorithmlx.ecr.client.renderer.BoundGemLinkRenderer
-import com.algorithmlx.ecr.client.renderer.EnrichmentChamberControllerRenderer
-import com.algorithmlx.ecr.client.renderer.MagicShieldRenderer
-import com.algorithmlx.ecr.client.renderer.MatrixDestructorRenderer
-import com.algorithmlx.ecr.client.renderer.MithrilineFurnaceRenderer
-import com.algorithmlx.ecr.client.screen.EnrichmentChamberControllerScreen
-import com.algorithmlx.ecr.client.screen.EnrichmentChamberReceiverScreen
-import com.algorithmlx.ecr.client.screen.HeatGeneratorScreen
-import com.algorithmlx.ecr.client.screen.MagicTableMenuScreen
-import com.algorithmlx.ecr.client.screen.MagicalTeleporterScreen
-import com.algorithmlx.ecr.client.screen.MatrixDestructorScreen
-import com.algorithmlx.ecr.client.screen.MithrilineFurnaceScreen
-import com.algorithmlx.ecr.client.screen.RadiatingChamberScreen
-import com.algorithmlx.ecr.client.screen.RayTowerScreen
+import com.algorithmlx.ecr.client.renderer.*
+import com.algorithmlx.ecr.client.screen.*
 import com.algorithmlx.ecr.common.init.events.ECEvents
 import com.algorithmlx.ecr.fabric.client.FabricConnectedTextures
 import com.algorithmlx.ecr.fabric.client.FabricIrisCompatibility
 import com.algorithmlx.ecr.fabric.client.MultiblockPreviewGuiBridgeInit
-import com.algorithmlx.ecr.network.BoundGemTooltipNetwork
-import com.algorithmlx.ecr.network.BoundGemTooltipRequestPayload
-import com.algorithmlx.ecr.network.BoundGemTooltipResponsePayload
-import com.algorithmlx.ecr.network.MagicShieldPayload
-import com.algorithmlx.ecr.network.SoulStoneTooltipNetwork
-import com.algorithmlx.ecr.network.SoulStoneTooltipRequestPayload
-import com.algorithmlx.ecr.network.SoulStoneTooltipResponsePayload
+import com.algorithmlx.ecr.network.*
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MenuTypeRegistry
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -63,9 +32,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.MenuScreens
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
 import net.minecraft.client.renderer.special.SpecialModelRenderers
-import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.server.packs.PackType
-import kotlin.random.Random
 
 object FabricClientInit {
     @JvmStatic
@@ -143,6 +110,7 @@ object FabricClientInit {
             BoundGemLinkRenderer.submit(poseStack, context.submitNodeCollector(), context.levelState())
             MultiblockWorldPreview.submit(poseStack, context.submitNodeCollector(), context.levelState())
             MagicShieldRenderer.submit(poseStack, context.submitNodeCollector(), context.levelState())
+            MRULinkRenderer.submit(poseStack, context.submitNodeCollector(), context.levelState())
         }
     }
 

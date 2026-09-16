@@ -1,6 +1,9 @@
 #$json_flat
 tag.item.escr:
+  enchantable:
+    magic_break: Ломает магический щит
   ice: Ice
+  link_viewer: MRU Link Viewer
 
 itemGroup.escr:
   items: "Essential Craft: Items"
@@ -52,6 +55,7 @@ item.escr:
   fading_crystal: Fading Crystal
   eye_of_absorption: Eye Of Absorption
   heat_core: Heat Core
+  monocle: Monocle
 
 block.escr:
   radiating_chamber: Radiating Chamber
@@ -237,4 +241,3 @@ command.escr:
         .: "%s %s sets for %s."
         # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
         sized: "%s %s was sets for %s player(s)."
-

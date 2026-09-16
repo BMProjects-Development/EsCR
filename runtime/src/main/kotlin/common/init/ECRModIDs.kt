@@ -104,6 +104,7 @@ object ECRModIDs {
     const val FADING_CRYSTAL = "fading_crystal"
     const val EYE_OF_ABSORPTION = "eye_of_absorption"
     const val HEAT_CORE = "heat_core"
+    const val MONOCLE = "monocle"
 
     // MRU Types
     const val UBMRU = "ubmru"

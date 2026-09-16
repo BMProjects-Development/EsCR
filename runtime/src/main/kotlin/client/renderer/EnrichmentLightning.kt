@@ -1,20 +1,64 @@
 package com.algorithmlx.ecr.client.renderer
 
 import org.joml.Vector3f
-import java.util.Random
-import kotlin.math.PI
-import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.cos
-import kotlin.math.pow
-import kotlin.math.floor
-import kotlin.math.sin
+import java.util.*
+import kotlin.math.*
 
-internal data class EnrichmentLightningPoint(val position: Vector3f, val phase: Float, val motionScale: Float)
-internal data class EnrichmentLightningPath(val points: List<EnrichmentLightningPoint>, val birth: Float = 0F, val thicknessScale: Float = 1F)
-internal data class EnrichmentLightningBolt(val paths: List<EnrichmentLightningPath>, val mainLength: Float)
+data class EnrichmentLightningPoint(val position: Vector3f, val phase: Float, val motionScale: Float)
+data class EnrichmentLightningPath(val points: List<EnrichmentLightningPoint>, val birth: Float = 0F, val thicknessScale: Float = 1F)
+data class EnrichmentLightningBolt(val paths: List<EnrichmentLightningPath>, val mainLength: Float)
 
-internal object EnrichmentLightning {
+object EnrichmentLightning {
+    private const val BOUNDS_SCALE = 0.94F
+    private const val SPAWN_SCALE = 0.5F
+    private const val END_INSET = 0.96F
+    private const val MINIMUM_LENGTH = 0.35F
+    private const val MIN_LENGTH_SCALE = 0.12F
+    private const val LENGTH_DISTRIBUTION = 0.72
+    private const val SEGMENT_LENGTH = 0.32F
+    private const val MIN_SEGMENTS = 3
+    private const val MAX_SEGMENTS = 64
+    private const val BRANCH_SEGMENTS = 7
+    private const val MAX_BRANCHES = 3
+    private const val MAX_OVERFLOW_BRANCHES = 4
+    private const val BRANCH_FORWARD_WEIGHT = 0.35F
+    private const val BRANCH_RANDOM_WEIGHT = 0.9F
+    private const val MIN_BRANCH_LENGTH_SCALE = 0.15F
+    private const val MAX_BRANCH_LENGTH_SCALE = 0.42F
+    private const val MIN_BRANCH_LENGTH = 0.12F
+    private const val BRANCH_SEGMENT_LENGTH = 0.28F
+    private const val MIN_BRANCH_SEGMENTS = 2
+    private const val MAX_BRANCH_SEGMENTS = 20
+    private const val MIN_BRANCH_THICKNESS = 0.42F
+    private const val MAX_BRANCH_THICKNESS = 0.72F
+    private const val NORMAL_JITTER = 0.075F
+    private const val OVERFLOW_JITTER = 0.12F
+    private const val NORMAL_BRANCH_JITTER = 0.1F
+    private const val OVERFLOW_BRANCH_JITTER = 0.16F
+    private const val MIN_JITTER = 0.025F
+    private const val MAX_JITTER = 0.7F
+    private const val END_MOTION = 0.32F
+    private const val MIN_MIDDLE_MOTION = 0.7F
+    private const val MAX_MIDDLE_MOTION = 1.15F
+    private const val GROWTH_END = 0.7
+    private const val FADE_IN_END = 0.12
+    private const val FADE_OUT_START = 0.3
+    private const val MIN_FLICKER = 0.72
+    private const val FLICKER_SPEED = 13.0
+    private const val NORMAL_MOTION = 0.028F
+    private const val OVERFLOW_MOTION = 0.045F
+    private const val MIN_MOTION = 0.004F
+    private const val MAX_MOTION = 0.18F
+    private const val MAX_OVERFLOW_MOTION = 0.28F
+    private const val MOTION_X_SPEED = 0.31F
+    private const val MOTION_Y_SPEED = 0.23F
+    private const val MOTION_Z_SPEED = 0.27F
+    private const val MOTION_Y_PHASE = 1.37F
+    private const val MOTION_Z_PHASE = 0.73F
+    private const val MIN_DIRECTION_LENGTH = 0.000001F
+    private const val MIN_DIRECTION_COMPONENT = 0.00001F
+    private const val MIN_PROGRESS_RANGE = 0.0001F
+
     fun create(seed: Long, halfX: Float, halfY: Float, halfZ: Float, overflowing: Boolean): EnrichmentLightningBolt {
         val random = Random(seed)
         val limitX = halfX * BOUNDS_SCALE
@@ -123,54 +167,4 @@ internal object EnrichmentLightning {
     private fun randomCoordinate(random: Random, extent: Float, scale: Float = 1F): Float = (random.nextFloat() * 2F - 1F) * extent * scale
 
     private fun smooth(value: Double): Double = value * value * (3.0 - 2.0 * value)
-
-    private const val BOUNDS_SCALE = 0.94F
-    private const val SPAWN_SCALE = 0.5F
-    private const val END_INSET = 0.96F
-    private const val MINIMUM_LENGTH = 0.35F
-    private const val MIN_LENGTH_SCALE = 0.12F
-    private const val LENGTH_DISTRIBUTION = 0.72
-    private const val SEGMENT_LENGTH = 0.32F
-    private const val MIN_SEGMENTS = 3
-    private const val MAX_SEGMENTS = 64
-    private const val BRANCH_SEGMENTS = 7
-    private const val MAX_BRANCHES = 3
-    private const val MAX_OVERFLOW_BRANCHES = 4
-    private const val BRANCH_FORWARD_WEIGHT = 0.35F
-    private const val BRANCH_RANDOM_WEIGHT = 0.9F
-    private const val MIN_BRANCH_LENGTH_SCALE = 0.15F
-    private const val MAX_BRANCH_LENGTH_SCALE = 0.42F
-    private const val MIN_BRANCH_LENGTH = 0.12F
-    private const val BRANCH_SEGMENT_LENGTH = 0.28F
-    private const val MIN_BRANCH_SEGMENTS = 2
-    private const val MAX_BRANCH_SEGMENTS = 20
-    private const val MIN_BRANCH_THICKNESS = 0.42F
-    private const val MAX_BRANCH_THICKNESS = 0.72F
-    private const val NORMAL_JITTER = 0.075F
-    private const val OVERFLOW_JITTER = 0.12F
-    private const val NORMAL_BRANCH_JITTER = 0.1F
-    private const val OVERFLOW_BRANCH_JITTER = 0.16F
-    private const val MIN_JITTER = 0.025F
-    private const val MAX_JITTER = 0.7F
-    private const val END_MOTION = 0.32F
-    private const val MIN_MIDDLE_MOTION = 0.7F
-    private const val MAX_MIDDLE_MOTION = 1.15F
-    private const val GROWTH_END = 0.7
-    private const val FADE_IN_END = 0.12
-    private const val FADE_OUT_START = 0.3
-    private const val MIN_FLICKER = 0.72
-    private const val FLICKER_SPEED = 13.0
-    private const val NORMAL_MOTION = 0.028F
-    private const val OVERFLOW_MOTION = 0.045F
-    private const val MIN_MOTION = 0.004F
-    private const val MAX_MOTION = 0.18F
-    private const val MAX_OVERFLOW_MOTION = 0.28F
-    private const val MOTION_X_SPEED = 0.31F
-    private const val MOTION_Y_SPEED = 0.23F
-    private const val MOTION_Z_SPEED = 0.27F
-    private const val MOTION_Y_PHASE = 1.37F
-    private const val MOTION_Z_PHASE = 0.73F
-    private const val MIN_DIRECTION_LENGTH = 0.000001F
-    private const val MIN_DIRECTION_COMPONENT = 0.00001F
-    private const val MIN_PROGRESS_RANGE = 0.0001F
 }

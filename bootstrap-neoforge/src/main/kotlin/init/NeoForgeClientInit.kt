@@ -4,13 +4,7 @@ import com.algorithmlx.ecr.api.client.render.MultiblockPreviewGuiBridge
 import com.algorithmlx.ecr.api.client.render.MultiblockPreviewPictureRenderer
 import com.algorithmlx.ecr.api.client.render.MultiblockPreviewRenderState
 import com.algorithmlx.ecr.api.client.render.MultiblockWorldPreview
-import com.algorithmlx.ecr.api.geo.GeoAnimationNetwork
-import com.algorithmlx.ecr.api.geo.GeoBlockAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoBlockAnimationStopPayload
-import com.algorithmlx.ecr.api.geo.GeoEntityAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoEntityAnimationStopPayload
-import com.algorithmlx.ecr.api.geo.GeoItemAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoItemAnimationStopPayload
+import com.algorithmlx.ecr.api.geo.*
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoAssets
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoItemRenderer
 import com.algorithmlx.ecr.api.geo.client.ClientGeoAnimations
@@ -21,48 +15,22 @@ import com.algorithmlx.ecr.api.research.*
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.client.ECRConnectedTextures
 import com.algorithmlx.ecr.client.book.ResearchBookClient
-import com.algorithmlx.ecr.client.renderer.AssembledMultiblockRenderer
-import com.algorithmlx.ecr.client.renderer.BoundGemLinkRenderer
-import com.algorithmlx.ecr.client.renderer.EnrichmentChamberControllerRenderer
-import com.algorithmlx.ecr.client.renderer.MagicShieldRenderer
-import com.algorithmlx.ecr.client.renderer.MatrixDestructorRenderer
-import com.algorithmlx.ecr.client.renderer.MithrilineFurnaceRenderer
-import com.algorithmlx.ecr.client.screen.EnrichmentChamberControllerScreen
-import com.algorithmlx.ecr.client.screen.EnrichmentChamberReceiverScreen
-import com.algorithmlx.ecr.client.screen.HeatGeneratorScreen
-import com.algorithmlx.ecr.client.screen.MagicTableMenuScreen
-import com.algorithmlx.ecr.client.screen.MagicalTeleporterScreen
-import com.algorithmlx.ecr.client.screen.MatrixDestructorScreen
-import com.algorithmlx.ecr.client.screen.MithrilineFurnaceScreen
-import com.algorithmlx.ecr.client.screen.RadiatingChamberScreen
-import com.algorithmlx.ecr.client.screen.RayTowerScreen
+import com.algorithmlx.ecr.client.renderer.*
+import com.algorithmlx.ecr.client.screen.*
 import com.algorithmlx.ecr.neoforge.client.NeoForgeConnectedTextures
 import com.algorithmlx.ecr.neoforge.client.NeoForgeIrisCompatibility
-import com.algorithmlx.ecr.network.BoundGemTooltipNetwork
-import com.algorithmlx.ecr.network.BoundGemTooltipResponsePayload
-import com.algorithmlx.ecr.network.MagicShieldPayload
-import com.algorithmlx.ecr.network.SoulStoneTooltipNetwork
-import com.algorithmlx.ecr.network.SoulStoneTooltipResponsePayload
+import com.algorithmlx.ecr.network.*
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MenuTypeRegistry
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
-import net.minecraft.core.particles.ParticleTypes
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent
-import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent
-import net.neoforged.neoforge.client.event.ClientTickEvent
-import net.neoforged.neoforge.client.event.EntityRenderersEvent
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent
-import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent
-import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent
-import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent
+import net.neoforged.neoforge.client.event.*
 import net.neoforged.neoforge.client.network.ClientPacketDistributor
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent
 import net.neoforged.neoforge.common.NeoForge
-import kotlin.random.Random
 
 object NeoForgeClientInit {
     fun init(bus: IEventBus) {
@@ -119,6 +87,7 @@ object NeoForgeClientInit {
         BoundGemLinkRenderer.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
         MultiblockWorldPreview.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
         MagicShieldRenderer.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
+        MRULinkRenderer.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
     }
 
     private fun onRegisterSpecialModelRenderer(event: RegisterSpecialModelRendererEvent) {

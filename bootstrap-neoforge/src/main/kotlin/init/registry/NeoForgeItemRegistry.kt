@@ -80,6 +80,7 @@ class NeoForgeItemRegistry(bus: IEventBus): ItemRegistry {
     override val fadingCrystal: Item by register(ECRModIDs.FADING_CRYSTAL)
     override val eyeOfAbsorption: Item by register(ECRModIDs.EYE_OF_ABSORPTION)
     override val heatCore: Item by register(ECRModIDs.HEAT_CORE)
+    override val monocle: Item by register(ECRModIDs.MONOCLE)
 
     private fun register(id: String, properties: () -> Item.Properties = Item::Properties) = register(id, ::Item, properties)
 
