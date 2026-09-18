@@ -43,7 +43,7 @@ object FabricBlockRegistry : BlockRegistry {
             ::AssembledMultiblockPartBlock,
             BlockBehaviour.Properties
                 .of()
-                .pushReaction(PushReaction.BLOCK)
+                .pushReaction(PushReaction.IMMOVEABLE)
                 .json(),
             shouldRegisterItem = false,
         )

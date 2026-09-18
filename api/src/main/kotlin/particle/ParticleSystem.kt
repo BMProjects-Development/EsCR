@@ -13,8 +13,7 @@ import net.minecraft.client.renderer.state.level.LevelRenderState
 import net.minecraft.world.level.Level
 import org.joml.Quaternionf
 import org.joml.Vector3f
-import java.util.Random
-import java.util.UUID
+import java.util.*
 
 class ParticleSystem(
     val level: Level,
@@ -26,8 +25,7 @@ class ParticleSystem(
     private val pendingEmitters = mutableListOf<ParticleEmitter>()
     private var updating = false
 
-    internal val billboardRenderPasses =
-        linkedMapOf<ParticleEffect.RenderPass, MutableSet<BedrockParticle>>()
+    internal val billboardRenderPasses = linkedMapOf<ParticleEffect.RenderPass, MutableSet<BedrockParticle>>()
 
     companion object {
         fun create(level: Level) = ParticleSystem(

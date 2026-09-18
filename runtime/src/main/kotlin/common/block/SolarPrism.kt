@@ -1,8 +1,6 @@
 package com.algorithmlx.ecr.common.block
 
 import com.algorithmlx.ecr.common.api.block.SideBlock
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.level.BlockGetter
@@ -19,8 +17,6 @@ class SolarPrism(properties: Properties): SideBlock(properties), BeaconBeamBlock
     private val southShape = Shapes.box(0.0, 0.4375, 0.875, 1.0, 0.5625, 1.0)
     private val westShape = Shapes.box(0.0, 0.4375, 0.0, 0.125, 0.5625, 1.0)
     private val sideShape = Shapes.box(0.0, 0.484375, 0.0, 1.0, 0.515625, 1.0)
-
-    override fun codec(): MapCodec<out CrossCollisionBlock> = BlockCodecRegistry.instance.solarPrism
 
     override fun getColor(): DyeColor = DyeColor.YELLOW
 

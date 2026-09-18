@@ -21,9 +21,11 @@ import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.NonNullList
+import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.ContainerHelper
 import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.effect.MobEffects
@@ -142,9 +144,11 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
 
     override fun canPlaceItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction?): Boolean = canPlaceItem(slot, itemStack)
 
-    override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean = slot == OUTPUT_SLOT || slot == FUEL_SLOT && this.level?.fuelValues()?.isFuel(itemStack) != true
+    override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean =
+        slot == OUTPUT_SLOT || slot == FUEL_SLOT && !itemStack.has(DataComponents.COOKING_FUEL)
 
-    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = slot == FUEL_SLOT && this.level?.fuelValues()?.isFuel(itemStack) == true
+    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean =
+        slot == FUEL_SLOT && itemStack.has(DataComponents.COOKING_FUEL)
 
     override val mruStorage: IOMRUStorage
         get() = this.mutableMRUStorage
@@ -172,9 +176,10 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         if (state != this.blockState) level.setBlock(this.blockPos, state, Block.UPDATE_ALL)
     }
 
-    private fun tryConsumeFuel(level: Level): Boolean {
+    private fun tryConsumeFuel(level: ServerLevel): Boolean {
         val fuel = this.items[FUEL_SLOT]
-        val burnDuration = level.fuelValues().burnDuration(fuel)
+        val cookingFuel = fuel.get(DataComponents.COOKING_FUEL) ?: return false
+        val burnDuration = cookingFuel.burnTime().get(getLootContext(level), 0)
         if (burnDuration <= 0 || !canAcceptSlag()) return false
 
         val fuelItem = fuel.item
@@ -405,7 +410,7 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
 
         @JvmStatic
         fun onTick(level: Level, pos: BlockPos, be: HeatGeneratorEntity) {
-            if (level.isClientSide) return
+            val serverLevel = level as? ServerLevel ?: return
             be.initializeBalance(level)
             be.synchronizeUpgradeBlockState(level)
             be.resizeMRUStorage()
@@ -426,7 +431,7 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
                 return
             }
 
-            if (be.burnTimeRemaining <= 0.0 && be.canAcceptSlag()) be.tryConsumeFuel(level)
+            if (be.burnTimeRemaining <= 0.0 && be.canAcceptSlag()) be.tryConsumeFuel(serverLevel)
             if (be.burnTimeRemaining <= 0.0) {
                 be.stopGenerating(level)
                 return

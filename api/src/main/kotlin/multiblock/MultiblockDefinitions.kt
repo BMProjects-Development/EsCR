@@ -5,13 +5,6 @@ import com.algorithmlx.ecr.api.registries.ECRegistries
 import net.minecraft.resources.Identifier
 import java.util.Collections
 
-/**
- * Resolves the effective multiblock definitions used at runtime.
- *
- * Minecraft registry entries are the source of valid IDs and the code fallback.
- * Definitions loaded from data JSON are installed here and always take priority.
- * Registry placeholders marked as JSON-only are never exposed as definitions.
- */
 object MultiblockDefinitions {
     @Volatile
     private var jsonMultiblocks: Map<Identifier, Multiblock> = emptyMap()

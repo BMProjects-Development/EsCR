@@ -585,9 +585,8 @@ object MultiblockBookPreviewController {
     }
 
     private fun shiftDown(): Boolean {
-        val window = Minecraft.getInstance().window
-        return InputConstants.isKeyDown(window, InputConstants.KEY_LSHIFT) ||
-            InputConstants.isKeyDown(window, InputConstants.KEY_RSHIFT)
+        return InputConstants.isKeyDown(InputConstants.KEY_LSHIFT) ||
+            InputConstants.isKeyDown(InputConstants.KEY_RSHIFT)
     }
 
     private fun currentScissor(context: BookElementRenderContext): ScreenRectangle =
@@ -717,8 +716,8 @@ object MultiblockBookPreviewController {
     private const val DISABLED_ARROW_TINT = 0x66FFFFFF
     private const val ASSEMBLED_BUTTON_COLOR = 0x663A7442
     private const val HOVERED_BUTTON_COLOR = 0x33404040
-    private const val LEFT_MOUSE_BUTTON = 0
-    private const val RIGHT_MOUSE_BUTTON = 1
+    private const val LEFT_MOUSE_BUTTON = InputConstants.MOUSE_BUTTON_LEFT
+    private const val RIGHT_MOUSE_BUTTON = InputConstants.MOUSE_BUTTON_RIGHT
     private const val ROTATION_SPEED = 0.75f
     private const val ZOOM_STEP = 0.12f
     private const val MIN_SCALE = 0.25f

@@ -4,30 +4,10 @@ import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.client.research.BookElementRenderContext
 import com.algorithmlx.ecr.api.client.research.BookElementRenderers
 import com.algorithmlx.ecr.api.registries.ECRegistries
-import com.algorithmlx.ecr.api.research.BookType
-import com.algorithmlx.ecr.api.research.BookViewState
-import com.algorithmlx.ecr.api.research.ClientResearchState
-import com.algorithmlx.ecr.api.research.CraftingResearchTask
-import com.algorithmlx.ecr.api.research.ExperienceResearchTask
-import com.algorithmlx.ecr.api.research.OpenResearchTask
-import com.algorithmlx.ecr.api.research.ResearchCatalog
-import com.algorithmlx.ecr.api.research.ResearchNetwork
-import com.algorithmlx.ecr.api.research.ResearchProgress
-import com.algorithmlx.ecr.api.research.ResearchTaskProgress
-import com.algorithmlx.ecr.api.research.content.BookCategory
-import com.algorithmlx.ecr.api.research.content.BookEntry
-import com.algorithmlx.ecr.api.research.content.BookEntryLink
-import com.algorithmlx.ecr.api.research.content.BookIcon
-import com.algorithmlx.ecr.api.research.content.BookResearchLink
-import com.algorithmlx.ecr.api.research.content.BookText
-import com.algorithmlx.ecr.api.research.content.ResearchTaskDefinition
-import com.algorithmlx.ecr.api.research.content.ResolvedBookEntry
+import com.algorithmlx.ecr.api.research.*
+import com.algorithmlx.ecr.api.research.content.*
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.client.book.BookPageLayout
-import com.algorithmlx.ecr.client.book.BookRenderPipelines
-import com.algorithmlx.ecr.client.book.BookResearchLinkController
-import com.algorithmlx.ecr.client.book.BookSpread
-import com.algorithmlx.ecr.client.book.ResearchBookConfigValues
+import com.algorithmlx.ecr.client.book.*
 import com.algorithmlx.ecr.client.book.controller.BookBookmarkController
 import com.algorithmlx.ecr.client.book.controller.MultiblockBookPreviewController
 import com.algorithmlx.ecr.client.book.renderer.BookRecipeElementRenderer
@@ -50,13 +30,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.util.FormattedCharSequence
 import net.minecraft.world.item.ItemStack
-import kotlin.collections.forEach
-import kotlin.collections.plusAssign
-import kotlin.math.abs
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.roundToInt
-import kotlin.math.sin
+import kotlin.math.*
 
 class ResearchBookScreen(
     private val bookType: BookType? = null,
@@ -105,14 +79,12 @@ class ResearchBookScreen(
             targetPanX = saved.panX
             targetPanY = saved.panY
             targetZoom = saved.zoom.coerceIn(0.5f, 2f)
-            saved.entry
-                ?.let { ResearchCatalog.snapshot().entries[it] }
+            saved.entry?.let { ResearchCatalog.snapshot().entries[it] }
                 ?.takeIf(::isAvailable)
                 ?.takeIf { ResearchCatalog.snapshot().layout[it.id]?.category == selectedCategory }
                 ?.let { openEntry(it, saved.spread) }
-        } else {
-            centerCategory()
-        }
+        } else centerCategory()
+
         constrainPan()
         panX = targetPanX
         panY = targetPanY
@@ -130,12 +102,7 @@ class ResearchBookScreen(
         }
     }
 
-    override fun extractRenderState(
-        graphics: GuiGraphicsExtractor,
-        mouseX: Int,
-        mouseY: Int,
-        partialTick: Float,
-    ) {
+    override fun extractRenderState(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTick: Float) {
         this.partialTick = partialTick
         this.frameDt = frameDelta()
 
@@ -156,23 +123,26 @@ class ResearchBookScreen(
         bookmarks.renderPicker(graphics, mouseX, mouseY)
     }
 
-    override fun mouseClicked(
-        event: MouseButtonEvent,
-        doubleClick: Boolean,
-    ): Boolean {
-        if (event.button() != 0 && event.button() != 1 && event.button() != 2) {
+    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+        if (
+            event.button() != InputConstants.MOUSE_BUTTON_LEFT && event.button() != InputConstants.MOUSE_BUTTON_RIGHT &&
+            event.button() != InputConstants.MOUSE_BUTTON_MIDDLE
+        ) {
             return super.mouseClicked(event, doubleClick)
         }
         val mouseX = event.x().toInt()
         val mouseY = event.y().toInt()
 
-        if (event.button() == 0 && bookmarks.click(mouseX, mouseY)) return true
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT && bookmarks.click(mouseX, mouseY)) return true
         if (selectedEntry != null) {
             return MultiblockBookPreviewController.mouseClicked(mouseX, mouseY, event.button(), isShiftDown(), ::onClose) ||
                 handleBookClick(mouseX, mouseY, event.button())
         }
-        if (event.button() == 0 && bookmarks.clickGlobalSlider(mouseX, mouseY, width, height)) return true
-        if (event.button() != 0) return super.mouseClicked(event, doubleClick)
+        if (
+            event.button() == InputConstants.MOUSE_BUTTON_LEFT &&
+            bookmarks.clickGlobalSlider(mouseX, mouseY, width, height)
+        ) return true
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT) return super.mouseClicked(event, doubleClick)
         bookmarks.selectGlobal(mouseX, mouseY, width, height)?.let { bookmark ->
             ResearchCatalog.snapshot().entries[bookmark.research]?.let { openEntry(it, bookmark.spread) }
             return true
@@ -197,15 +167,12 @@ class ResearchBookScreen(
         return super.mouseClicked(event, doubleClick)
     }
 
-    override fun mouseDragged(
-        event: MouseButtonEvent,
-        dragX: Double,
-        dragY: Double,
-    ): Boolean {
-        if (event.button() != 0 && event.button() != 1) return super.mouseDragged(event, dragX, dragY)
+    override fun mouseDragged(event: MouseButtonEvent, dragX: Double, dragY: Double): Boolean {
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT && event.button() != InputConstants.MOUSE_BUTTON_RIGHT)
+            return super.mouseDragged(event, dragX, dragY)
 
         if (selectedEntry != null && MultiblockBookPreviewController.mouseDragged(dragX, dragY, isShiftDown())) return true
-        if (event.button() != 0) return super.mouseDragged(event, dragX, dragY)
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT) return super.mouseDragged(event, dragX, dragY)
         if (bookmarks.drag(event.x().toInt(), event.y().toInt(), width, height)) return true
 
         if (draggingCategorySlider) {
@@ -230,12 +197,7 @@ class ResearchBookScreen(
         return previewReleased || super.mouseReleased(event)
     }
 
-    override fun mouseScrolled(
-        mouseX: Double,
-        mouseY: Double,
-        scrollX: Double,
-        scrollY: Double,
-    ): Boolean {
+    override fun mouseScrolled(mouseX: Double, mouseY: Double, scrollX: Double, scrollY: Double): Boolean {
         if (selectedEntry != null) {
             return MultiblockBookPreviewController.mouseScrolled(mouseX.toInt(), mouseY.toInt(), scrollY)
         }
@@ -283,11 +245,9 @@ class ResearchBookScreen(
         super.removed()
     }
 
-    private fun isShiftDown(): Boolean {
-        val window = Minecraft.getInstance().window
-        return InputConstants.isKeyDown(window, InputConstants.KEY_LSHIFT) ||
-            InputConstants.isKeyDown(window, InputConstants.KEY_RSHIFT)
-    }
+    private fun isShiftDown(): Boolean = InputConstants.isKeyDown(
+        InputConstants.KEY_LSHIFT
+    ) || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT)
 
     private fun frameDelta(): Float {
         val now = System.nanoTime()
@@ -296,12 +256,7 @@ class ResearchBookScreen(
         return delta
     }
 
-    private fun approach(
-        current: Float,
-        target: Float,
-        dt: Float,
-        halfLife: Float,
-    ): Float {
+    private fun approach(current: Float, target: Float, dt: Float, halfLife: Float): Float {
         if (halfLife <= 0f || dt <= 0f) return target
         val decay = 0.5f.pow(dt / halfLife)
         val result = target + (current - target) * decay
@@ -319,11 +274,7 @@ class ResearchBookScreen(
         )
     }
 
-    private fun renderGraph(
-        graphics: GuiGraphicsExtractor,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
+    private fun renderGraph(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         renderCategories(graphics, mouseX, mouseY)
         graphics.enableScissor(0, GRAPH_TOP, width, height)
         val nodes = visibleNodes()
@@ -343,11 +294,7 @@ class ResearchBookScreen(
         bookmarks.renderGlobal(graphics, width, mouseX, mouseY)
     }
 
-    private fun renderCategories(
-        graphics: GuiGraphicsExtractor,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
+    private fun renderCategories(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         categories().forEachIndexed { index, category ->
             val x = (index * TAB_WIDTH - categoryScroll).toInt()
             if (x + TAB_WIDTH < 0 || x > width) return@forEachIndexed
@@ -386,19 +333,12 @@ class ResearchBookScreen(
         }
     }
 
-    private fun renderThread(
-        graphics: GuiGraphicsExtractor,
-        from: ResolvedBookEntry,
-        to: ResolvedBookEntry,
-    ) {
+    private fun renderThread(graphics: GuiGraphicsExtractor, from: ResolvedBookEntry, to: ResolvedBookEntry) {
         val color = ResearchCatalog.snapshot().categories[to.category]?.threadColor
         BookThreadRenderer.render(graphics, nodeCenter(from), nodeCenter(to), ClientResearchState.has(to.entry.id), color)
     }
 
-    private fun renderNode(
-        graphics: GuiGraphicsExtractor,
-        node: ResolvedBookEntry,
-    ) {
+    private fun renderNode(graphics: GuiGraphicsExtractor, node: ResolvedBookEntry) {
         val available = isAvailable(node.entry)
 
         val point = nodePoint(node)
@@ -417,16 +357,13 @@ class ResearchBookScreen(
         renderIcon(graphics, node.entry.icon, iconX, iconY, frame?.itemSize ?: 16)
         if (available && !ClientResearchState.has(node.entry.id)) renderAvailablePulse(graphics, node.entry)
 
-        if (!available || !ClientResearchState.has(node.entry.id)) {
+        if (!available || !ClientResearchState.has(node.entry.id))
             graphics.fill(0, 0, nodeWidth(node.entry), nodeHeight(node.entry), 0x78000000)
-        }
+
         graphics.pose().popMatrix()
     }
 
-    private fun renderAvailablePulse(
-        graphics: GuiGraphicsExtractor,
-        entry: BookEntry,
-    ) {
+    private fun renderAvailablePulse(graphics: GuiGraphicsExtractor, entry: BookEntry) {
         val blinkSeconds = ResearchBookConfigValues.availableBlinkSeconds()
         val cycle = ((System.nanoTime() / 1000000000.0) % blinkSeconds) / blinkSeconds
         val alpha = (36 + (sin(cycle * Math.PI * 2.0 - Math.PI / 2.0) * 0.5 + 0.5) * 112).roundToInt()
@@ -435,12 +372,7 @@ class ResearchBookScreen(
         graphics.outline(-1, -1, nodeWidth(entry) + 2, nodeHeight(entry) + 2, color)
     }
 
-    private fun renderNodeTooltip(
-        graphics: GuiGraphicsExtractor,
-        entry: BookEntry,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
+    private fun renderNodeTooltip(graphics: GuiGraphicsExtractor, entry: BookEntry, mouseX: Int, mouseY: Int) {
         val font = Minecraft.getInstance().font
         val description =
             entry.description
@@ -462,13 +394,10 @@ class ResearchBookScreen(
             components += ClientTooltipComponent.create(line.visualOrderText)
         }
 
-        graphics.tooltip(font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null)
+        graphics.tooltip(font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null, false)
     }
 
-    private fun nodeTooltip(
-        entry: BookEntry,
-        includeTitle: Boolean = true,
-    ): List<Component> =
+    private fun nodeTooltip(entry: BookEntry, includeTitle: Boolean = true): List<Component> =
         buildList {
             if (includeTitle) add(entry.title.component(entry.titleShadow))
             val missing = missingRequirements(entry)
@@ -482,9 +411,7 @@ class ResearchBookScreen(
             }
         }
 
-    private class SmallTextTooltipComponent(
-        private val line: FormattedCharSequence,
-    ) : ClientTooltipComponent {
+    private class SmallTextTooltipComponent(private val line: FormattedCharSequence) : ClientTooltipComponent {
         override fun getHeight(font: Font): Int = (font.lineHeight * NODE_TOOLTIP_DESCRIPTION_SCALE).roundToInt().coerceAtLeast(1)
 
         override fun getWidth(font: Font): Int = (font.width(line) * NODE_TOOLTIP_DESCRIPTION_SCALE).roundToInt().coerceAtLeast(1)
@@ -521,11 +448,8 @@ class ResearchBookScreen(
         entry.requirements.forEach { requirement ->
             if (ClientResearchState.requirementMet(entry.id, requirement)) return@forEach
             val target = snapshot.entries[requirement.researchId(entry.id)]
-            if (target != null && !isVisible(target)) {
-                hidden++
-            } else {
-                visible += researchRequirementComponent(requirement.researchId(entry.id), requirement.task)
-            }
+            if (target != null && !isVisible(target)) hidden++
+            else visible += researchRequirementComponent(requirement.researchId(entry.id), requirement.task)
         }
 
         return MissingRequirements(visible, hidden)
@@ -542,16 +466,9 @@ class ResearchBookScreen(
         } else {
             val taskTitle =
                 entry?.taskDefinitions?.firstOrNull { it.id == taskId }?.let(::taskTitle)
-                    ?: if (taskId.startsWith(
-                            "task_",
-                        )
-                    ) {
-                        Component.translatable("screen.$ModId.research_book.task")
-                    } else {
-                        Component.literal(taskId)
-                    }
-            Component
-                .translatable("screen.$ModId.research_book.task")
+                    ?: if (taskId.startsWith("task_")) Component.translatable("screen.$ModId.research_book.task")
+                    else Component.literal(taskId)
+            Component.translatable("screen.$ModId.research_book.task")
                 .append(String.format(": %s / %s", title, taskTitle))
         }
     }
@@ -575,12 +492,7 @@ class ResearchBookScreen(
             }
         }
 
-    private fun renderBook(
-        graphics: GuiGraphicsExtractor,
-        mouseX: Int,
-        mouseY: Int,
-        partialTick: Float,
-    ) {
+    private fun renderBook(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTick: Float) {
         val entry = selectedEntry ?: return
         val transform = bookTransform()
         val localMouseX = ((mouseX - transform.x) / transform.scale).toInt()
@@ -664,7 +576,7 @@ class ResearchBookScreen(
         spread: Int,
         spreadCount: Int,
         mouseX: Int,
-        mouseY: Int,
+        mouseY: Int
     ) {
         val font = Minecraft.getInstance().font
         val title = entry.title.component(entry.titleShadow)
@@ -685,10 +597,7 @@ class ResearchBookScreen(
         )
     }
 
-    private fun pageScissor(
-        transform: BookTransform,
-        elementX: Int,
-    ): ScreenRectangle {
+    private fun pageScissor(transform: BookTransform, elementX: Int): ScreenRectangle {
         val pageX = if (elementX < BOOK_WIDTH / 2) FIRST_PAGE_X else SECOND_PAGE_X
 
         val scale = transform.scale
@@ -707,11 +616,7 @@ class ResearchBookScreen(
         )
     }
 
-    private fun renderPageArrows(
-        graphics: GuiGraphicsExtractor,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
+    private fun renderPageArrows(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         if (spreadIndex > 0) {
             val leftHovered = mouseX in LEFT_ARROW_X until LEFT_ARROW_X + 27 && mouseY in ARROW_Y until ARROW_Y + 23
             if (leftHovered) graphics.requestCursor(CursorTypes.POINTING_HAND)
@@ -746,19 +651,15 @@ class ResearchBookScreen(
         }
     }
 
-    private fun handleBookClick(
-        mouseX: Int,
-        mouseY: Int,
-        button: Int,
-    ): Boolean {
+    private fun handleBookClick(mouseX: Int, mouseY: Int, button: Int): Boolean {
         val entry = selectedEntry ?: return false
         val transform = bookTransform()
         val x = ((mouseX - transform.x) / transform.scale).toInt()
         val y = ((mouseY - transform.y) / transform.scale).toInt()
 
-        if (button == 0 && openHoveredLink()) return true
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && openHoveredLink()) return true
 
-        if (button == 0 && shouldShowCompleteButton(entry) && x in COMPLETE_BUTTON_X until COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH &&
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && shouldShowCompleteButton(entry) && x in COMPLETE_BUTTON_X until COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH &&
             y in COMPLETE_BUTTON_Y until COMPLETE_BUTTON_Y + COMPLETE_BUTTON_HEIGHT
         ) {
             if (tasksComplete(entry)) ResearchNetwork.completeResearch(entry.id)
@@ -766,16 +667,16 @@ class ResearchBookScreen(
         }
 
         if (x in 496..<550 && y in BOOKMARK_Y until BOOKMARK_Y + 16) {
-            bookmarks.activate(entry, spreadIndex, button == 2)
+            bookmarks.activate(entry, spreadIndex, button == InputConstants.MOUSE_BUTTON_MIDDLE)
             return true
         }
 
-        if (button == 0 && spreadIndex > 0 && x in LEFT_ARROW_X until LEFT_ARROW_X + 27 && y in ARROW_Y until ARROW_Y + 23) {
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && spreadIndex > 0 && x in LEFT_ARROW_X until LEFT_ARROW_X + 27 && y in ARROW_Y until ARROW_Y + 23) {
             spreadIndex--
             return true
         }
 
-        if (button == 0 && spreadIndex < spreads.lastIndex && x in RIGHT_ARROW_X until RIGHT_ARROW_X + 27 &&
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && spreadIndex < spreads.lastIndex && x in RIGHT_ARROW_X until RIGHT_ARROW_X + 27 &&
             y in ARROW_Y until ARROW_Y + 23
         ) {
             spreadIndex++
@@ -793,12 +694,7 @@ class ResearchBookScreen(
         return openEntry(entry, link.spread)
     }
 
-    private fun renderCompleteButton(
-        graphics: GuiGraphicsExtractor,
-        entry: BookEntry,
-        mouseX: Int,
-        mouseY: Int,
-    ) {
+    private fun renderCompleteButton(graphics: GuiGraphicsExtractor, entry: BookEntry, mouseX: Int, mouseY: Int) {
         if (!shouldShowCompleteButton(entry)) return
         val enabled = tasksComplete(entry)
         val hovered =
@@ -868,32 +764,22 @@ class ResearchBookScreen(
         entry: BookEntry,
     ) {
         if (entry.taskLevels.size <= 1) return
-        val completed =
-            if (ClientResearchState.has(entry.id)) {
-                entry.taskLevels.size
-            } else {
-                ClientResearchState.completedTaskLevels(entry.id)
-            }
+        val completed = if (ClientResearchState.has(entry.id)) entry.taskLevels.size
+        else ClientResearchState.completedTaskLevels(entry.id)
+
         entry.taskLevels.indices.forEach { index ->
             val x = width - 8 - (entry.taskLevels.size - index) * TASK_LEVEL_STEP
-            val color =
-                when {
-                    index < completed -> 0xFF344252.toInt()
-                    index == completed -> 0xFFFFFFFF.toInt()
-                    else -> 0xFF87909B.toInt()
-                }
+            val color = when {
+                index < completed -> 0xFF344252.toInt()
+                index == completed -> 0xFFFFFFFF.toInt()
+                else -> 0xFF87909B.toInt()
+            }
             graphics.fill(x, 8, x + TASK_LEVEL_SIZE, 8 + TASK_LEVEL_SIZE, color)
             graphics.outline(x, 8, TASK_LEVEL_SIZE, TASK_LEVEL_SIZE, 0xFF202832.toInt())
         }
     }
 
-    private fun renderIcon(
-        graphics: GuiGraphicsExtractor,
-        icon: BookIcon,
-        x: Int,
-        y: Int,
-        size: Int = 16,
-    ) {
+    private fun renderIcon(graphics: GuiGraphicsExtractor, icon: BookIcon, x: Int, y: Int, size: Int = 16) {
         icon.item?.let { id ->
             BuiltInRegistries.ITEM.getOptional(id).ifPresent {
                 graphics.pose().pushMatrix()
@@ -907,10 +793,7 @@ class ResearchBookScreen(
         icon.texture?.let { graphics.blit(RenderPipelines.GUI_TEXTURED, it, x, y, 0f, 0f, size, size, 16, 16) }
     }
 
-    private fun selectCategoryAt(
-        mouseX: Int,
-        mouseY: Int,
-    ): Boolean {
+    private fun selectCategoryAt(mouseX: Int, mouseY: Int): Boolean {
         if (mouseY !in 0..16) return false
         categories().forEachIndexed { index, category ->
             val x = (index * TAB_WIDTH - categoryScroll).toInt()
@@ -926,16 +809,9 @@ class ResearchBookScreen(
         return false
     }
 
-    private fun nodeAt(
-        mouseX: Int,
-        mouseY: Int,
-    ): ResolvedBookEntry? = visibleNodes().lastOrNull { isInsideNode(it, mouseX, mouseY) }
+    private fun nodeAt(mouseX: Int, mouseY: Int): ResolvedBookEntry? = visibleNodes().lastOrNull { isInsideNode(it, mouseX, mouseY) }
 
-    private fun isInsideNode(
-        node: ResolvedBookEntry,
-        mouseX: Int,
-        mouseY: Int,
-    ): Boolean {
+    private fun isInsideNode(node: ResolvedBookEntry, mouseX: Int, mouseY: Int): Boolean {
         val point = nodePoint(node)
         val w = nodeWidth(node.entry) * zoom
         val h = nodeHeight(node.entry) * zoom
@@ -959,10 +835,7 @@ class ResearchBookScreen(
 
     private fun isAvailable(entry: BookEntry): Boolean = isAvailable(entry, LinkedHashSet())
 
-    private fun isAvailable(
-        entry: BookEntry,
-        visited: MutableSet<Identifier>,
-    ): Boolean {
+    private fun isAvailable(entry: BookEntry, visited: MutableSet<Identifier>): Boolean {
         if (!visited.add(entry.id)) return false
         val snapshot = ResearchCatalog.snapshot()
         val category =
@@ -999,11 +872,7 @@ class ResearchBookScreen(
 
     private fun isVisible(entry: BookEntry): Boolean = !entry.hiddenUntilAvailable || isAvailable(entry)
 
-    private fun openEntry(
-        entry: BookEntry,
-        page: Int = 0,
-        visited: MutableSet<Identifier> = LinkedHashSet(),
-    ): Boolean {
+    private fun openEntry(entry: BookEntry, page: Int = 0, visited: MutableSet<Identifier> = LinkedHashSet()): Boolean {
         if (!visited.add(entry.id)) return false
         when (val link = entry.link) {
             is BookEntryLink.Category -> return openCategory(link.category)
@@ -1057,19 +926,15 @@ class ResearchBookScreen(
         constrainPan()
     }
 
-    private fun categories(): List<BookCategory> =
-        ResearchCatalog
-            .snapshot()
-            .categories.values
-            .sortedWith(compareBy<BookCategory> { it.order }.thenBy { it.id.toString() })
+    private fun categories(): List<BookCategory> = ResearchCatalog.snapshot()
+        .categories.values
+        .sortedWith(compareBy<BookCategory> { it.order }.thenBy { it.id.toString() })
 
     private fun categoryProgress(category: BookCategory): Component {
-        val entries =
-            ResearchCatalog
-                .snapshot()
-                .entriesIn(category.id)
-                .map(ResolvedBookEntry::entry)
-                .filter { it.link == null }
+        val entries = ResearchCatalog.snapshot()
+            .entriesIn(category.id)
+            .map(ResolvedBookEntry::entry)
+            .filter { it.link == null }
         val researched = entries.count { ClientResearchState.has(it.id) }
         val percent = if (entries.isEmpty()) 0 else (researched * 100.0 / entries.size).roundToInt()
         return Component

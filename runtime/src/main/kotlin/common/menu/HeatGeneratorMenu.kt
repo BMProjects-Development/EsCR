@@ -8,6 +8,7 @@ import com.algorithmlx.ecr.common.block.entity.HeatGeneratorLogic
 import com.algorithmlx.ecr.common.temperature.TemperatureUnit
 import com.algorithmlx.ecr.registry.BlockRegistry
 import com.algorithmlx.ecr.registry.MenuTypeRegistry
+import net.minecraft.core.component.DataComponents
 import net.minecraft.world.Container
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Inventory
@@ -32,7 +33,7 @@ class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, cont
         checkContainerDataCount(data, HeatGeneratorEntity.DATA_COUNT)
         container.startOpen(inventory.player)
 
-        addSlot(VanillaSpecialSlot(container, HeatGeneratorEntity.FUEL_SLOT, FUEL_X, MACHINE_SLOT_Y, { stack -> inventory.player.level().fuelValues().isFuel(stack) }))
+        addSlot(VanillaSpecialSlot(container, HeatGeneratorEntity.FUEL_SLOT, FUEL_X, MACHINE_SLOT_Y, { stack -> stack.has(DataComponents.COOKING_FUEL) }))
         addSlot(VanillaSpecialSlot(container, HeatGeneratorEntity.OUTPUT_SLOT, OUTPUT_X, MACHINE_SLOT_Y, { false }))
         inventory.make()
         addDataSlots(data)
@@ -65,7 +66,7 @@ class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, cont
             HeatGeneratorEntity.FUEL_SLOT, HeatGeneratorEntity.OUTPUT_SLOT -> moveItemStackTo(stack, PLAYER_START, PLAYER_END, true)
 
             in PLAYER_START ..< PLAYER_END -> {
-                if (inventory.player.level().fuelValues().isFuel(stack)) moveItemStackTo(
+                if (stack.has(DataComponents.COOKING_FUEL)) moveItemStackTo(
                     stack,
                     HeatGeneratorEntity.FUEL_SLOT,
                     HeatGeneratorEntity.FUEL_SLOT + 1,

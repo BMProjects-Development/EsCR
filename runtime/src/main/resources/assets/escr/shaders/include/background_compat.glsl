@@ -7,17 +7,9 @@
 #define ECR_STAR_SIZE 1.0
 #endif
 
-layout(std140) uniform Globals {
-    ivec3 CameraBlockPos;
-    vec3 CameraOffset;
-    vec2 ScreenSize;
-    float GlintAlpha;
-    float GameTime;
-    int MenuBlurRadius;
-    int UseRgss;
-};
+#include <minecraft:globals.glsl>
 
-in vec4 vertexColor;
+layout(location = 1) in vec4 vertexColor;
 
 vec2 ecrLocalSize() {
     float width = abs(dFdx(texCoord0.x)) > 0.000001 ? 1.0 / abs(dFdx(texCoord0.x)) : ScreenSize.x;

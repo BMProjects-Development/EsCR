@@ -2,28 +2,15 @@ package com.algorithmlx.ecr.common.item.tool
 
 import com.algorithmlx.ecr.api.mru.MRUMultiplierWeapon
 import com.algorithmlx.ecr.common.item.material.ECToolMaterials
-import net.minecraft.world.item.AxeItem
-import net.minecraft.world.item.HoeItem
 import net.minecraft.world.item.Item
-import net.minecraft.world.item.ShovelItem
 
 class WeakAxe(
     properties: Properties,
-) : AxeItem(
-        ECToolMaterials.WEAK.material,
-        5F,
-        -3.2F,
-        properties,
-    )
+) : Item(properties.axe(ECToolMaterials.WEAK.material, 5F, -3.2F))
 
 class WeakHoe(
     properties: Properties,
-) : HoeItem(
-        ECToolMaterials.WEAK.material,
-        -6F,
-        2F,
-        properties,
-    )
+) : Item(properties.hoe(ECToolMaterials.WEAK.material, -6F, 2F))
 
 class WeakPickaxe(
     properties: Properties,
@@ -33,12 +20,7 @@ class WeakPickaxe(
 
 class WeakShovel(
     properties: Properties,
-) : ShovelItem(
-        ECToolMaterials.WEAK.material,
-        -2.5F,
-        -3f,
-        properties,
-    )
+) : Item(properties.shovel(ECToolMaterials.WEAK.material, -2.5F, -3F))
 
 class WeakSword(
     properties: Properties,

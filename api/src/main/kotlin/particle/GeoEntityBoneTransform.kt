@@ -11,7 +11,6 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.PI
 
-/** A particle transform that follows an animated Bedrock GEO bone on an entity. */
 class GeoEntityBoneTransform private constructor(
     private val entity: Entity,
     private val animatable: GeoAnimatable,

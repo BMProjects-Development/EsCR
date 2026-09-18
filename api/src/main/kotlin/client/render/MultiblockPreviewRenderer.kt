@@ -192,9 +192,7 @@ class MultiblockPreviewRenderer(
     ) {
         val rotation = rotation(transform)
 
-        poseStack.translate(pivot.x, pivot.y, pivot.z)
-        poseStack.mulPose(rotation)
-        poseStack.translate(-pivot.x, -pivot.y, -pivot.z)
+        poseStack.rotateAround(rotation, pivot.x, pivot.y, pivot.z)
     }
 
     private fun rotation(transform: MultiblockPreviewTransform): Quaternionf = Quaternionf()

@@ -1,10 +1,9 @@
 package com.algorithmlx.ecr.api.molang.runtime
 
+import com.algorithmlx.ecr.api.molang.runtime.Math.abs
 import net.minecraft.client.Minecraft
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.level.block.entity.BlockEntity
-import org.lwjgl.glfw.GLFW
-import com.algorithmlx.ecr.api.molang.runtime.Math.abs
 import kotlin.math.sqrt
 
 interface Query {
@@ -17,7 +16,6 @@ interface Query {
     val velocity_x: Float get() = 0f
     val velocity_z: Float get() = 0f
 
-    /** Vertical speed in blocks per second (same unit convention as [ground_speed]). */
     val vertical_speed: Float get() = 0f
     val health: Float get() = 0f
     val max_health: Float get() = 0f
@@ -43,7 +41,7 @@ interface Query {
         val EMPTY = object : Query {}
         val GLFW_TIME = object : Query {
             override val anim_time: Float
-                get() = GLFW.glfwGetTime().toFloat()
+                get() = System.nanoTime() / 1000000000F
         }
     }
 }
@@ -77,7 +75,7 @@ class LivingEntityQuery(val entity: LivingEntity) : Query {
     override val is_sitting: Boolean get() = entity.isPassenger
     override val is_sleeping: Boolean get() = entity.isSleeping
     override val is_hurt: Boolean get() = entity.hurtTime > 0
-    override val is_swinging: Boolean get() = entity.swinging
+    override val is_swinging: Boolean get() = entity.isSwinging
     override val is_alive: Boolean get() = entity.isAlive
     override val is_on_ground: Boolean get() = entity.onGround()
     override val head_x_rotation: Float get() = entity.xRot

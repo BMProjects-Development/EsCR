@@ -28,7 +28,6 @@ import net.minecraft.util.profiling.ProfilerFiller
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.phys.shapes.Shapes
 
-/** Loads regular and assembled multiblock definitions from server data resources. */
 class MultiblockDataReloadListener : SimplePreparableReloadListener<MultiblockDataReloadListener.Prepared>() {
     override fun prepare(resourceManager: ResourceManager, profiler: ProfilerFiller): Prepared {
         val allowed = ECRegistries.MULTIBLOCK.keySet()
@@ -415,7 +414,6 @@ class MultiblockDataReloadListener : SimplePreparableReloadListener<MultiblockDa
     }
 }
 
-/** Applies server-synchronized JSON definitions on the logical client. */
 object MultiblockJsonSync {
     @JvmStatic
     fun apply(resources: MultiblockJsonResources) {

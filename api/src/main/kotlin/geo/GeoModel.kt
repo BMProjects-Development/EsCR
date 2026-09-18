@@ -34,14 +34,6 @@ data class GeoModel(
     }
 }
 
-/**
- * Controls automatic horizontal rotation for GEO block-entity models.
- *
- * When [enabled] is true, [com.algorithmlx.ecr.api.geo.client.GeoBlockEntityRenderer]
- * reads [net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING] from the
- * rendered block state. [opposite] turns the resolved direction around before it is
- * applied to the model.
- */
 data class GeoBlockRotation(
     val enabled: Boolean = true,
     val opposite: Boolean = false

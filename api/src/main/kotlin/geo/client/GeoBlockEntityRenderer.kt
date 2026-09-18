@@ -62,7 +62,7 @@ open class GeoBlockEntityRenderer<T>(
         poseStack.pushPose()
         poseStack.translate(0.5, 0.0, 0.5)
         if (state.modelYRotation != 0F) {
-            poseStack.mulPose(Axis.YP.rotationDegrees(state.modelYRotation))
+            poseStack.rotateDegrees(Axis.YP, state.modelYRotation)
         }
         BedrockGeoRenderEngine.submit(geo, poseStack, collector, state.lightCoords)
         poseStack.popPose()

@@ -83,7 +83,6 @@ object NeoForgeInit {
         forgeBus.addListener(::onRightClickBlockInteract)
         forgeBus.addListener(::onLeftClickBlock)
         forgeBus.addListener(::onEntityInteract)
-        forgeBus.addListener(::onEntityInteractSpecific)
         forgeBus.addListener(::onAttackEntityEvent)
         forgeBus.addListener(::onPlayerTick)
         forgeBus.addListener(::onRegisterCommands)
@@ -101,7 +100,6 @@ object NeoForgeInit {
         ChunkLoadingPlatform.instance = NeoForgeChunkLoadingPlatform(bus)
         RecipeSerializerRegistry.instance = NeoForgeRecipeSerializerRegistry(bus)
         RecipeTypeRegistry.instance = NeoForgeRecipeTypeRegistry(bus)
-        BlockCodecRegistry.instance = NeoForgeBlockCodecRegistry(bus)
         BlockEntityTypeRegistry.instance = NeoForgeBlockEntityTypeRegistry(bus)
         BookTypeRegistry.instance = NeoForgeBookTypeRegistry(bus)
         NeoForgeResearchSerializerRegistry(bus)
@@ -306,13 +304,6 @@ object NeoForgeInit {
         }
     }
 
-    private fun onEntityInteractSpecific(event: PlayerInteractEvent.EntityInteractSpecific) {
-        if (!allowEntityInteraction(event)) {
-            event.isCanceled = true
-            event.cancellationResult = InteractionResult.FAIL
-        }
-    }
-
     private fun onAttackEntityEvent(event: AttackEntityEvent) {
         val entityAllowed = ResearchAccess.canAccess(event.entity, event.target, ResearchAction.ATTACK)
         val itemAllowed = ResearchAccess.canAccess(event.entity, event.entity.mainHandItem, ResearchAction.ATTACK)
@@ -324,12 +315,7 @@ object NeoForgeInit {
     }
 
     private fun allowEntityInteraction(event: PlayerInteractEvent): Boolean {
-        val target =
-            when (event) {
-                is PlayerInteractEvent.EntityInteract -> event.target
-                is PlayerInteractEvent.EntityInteractSpecific -> event.target
-                else -> return true
-            }
+        val target = (event as? PlayerInteractEvent.EntityInteract)?.target ?: return true
         return ResearchAccess.canAccess(event.entity, target, ResearchAction.INTERACT) &&
             ResearchAccess.canAccess(event.entity, event.itemStack, ResearchAction.USE)
     }

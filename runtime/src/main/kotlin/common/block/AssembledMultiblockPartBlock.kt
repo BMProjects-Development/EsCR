@@ -4,11 +4,10 @@ import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntit
 import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblocks
 import com.algorithmlx.ecr.api.block.FullBlockParticles
 import com.algorithmlx.ecr.common.block.entity.AssembledMultiblockPartBlockEntity
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
@@ -43,8 +42,6 @@ class AssembledMultiblockPartBlock(
                 .setValue(CONTROLLER, false),
         )
     }
-
-    override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.assembledMultiblockPart
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING, CONTROLLER)
@@ -122,8 +119,8 @@ class AssembledMultiblockPartBlock(
     }
 
     override fun playerDestroy(
-        level: Level,
-        player: Player,
+        level: ServerLevel,
+        player: ServerPlayer,
         pos: BlockPos,
         state: BlockState,
         blockEntity: BlockEntity?,

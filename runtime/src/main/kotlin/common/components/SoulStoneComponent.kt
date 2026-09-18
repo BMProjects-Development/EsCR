@@ -12,7 +12,6 @@ import java.util.UUID
 data class SoulStoneComponent(
     val owner: UUID,
     val ownerName: String,
-    /** Legacy item balance, consumed by SoulStone inventory migration. */
     val legacyCapacity: Int? = null,
 ) {
     companion object {

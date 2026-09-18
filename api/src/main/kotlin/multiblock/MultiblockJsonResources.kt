@@ -5,7 +5,6 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.Identifier
 import java.util.Collections
 
-/** The normalized JSON sources synchronized from a server to its clients. */
 data class MultiblockJsonResources(
     val multiblocks: Map<Identifier, String> = emptyMap(),
     val assembledMultiblocks: Map<Identifier, String> = emptyMap()

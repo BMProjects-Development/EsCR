@@ -60,7 +60,7 @@ class MatrixDestructorRenderer(
 
         val animationTicks = state.animationTicks
         poseStack.translate(0.0, sin(animationTicks * BOB_RADIANS_PER_TICK) * BOB_AMPLITUDE, 0.0)
-        poseStack.mulPose(Axis.YP.rotationDegrees(((animationTicks * ROTATION_DEGREES_PER_TICK) % 360.0).toFloat()))
+        poseStack.rotateDegrees(Axis.YP, ((animationTicks * ROTATION_DEGREES_PER_TICK) % 360.0).toFloat())
 
         state.renderState.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0)
 

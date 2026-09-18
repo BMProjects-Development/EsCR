@@ -1,30 +1,28 @@
 package com.algorithmlx.ecr.api.geo.client
 
 import com.algorithmlx.ecr.api.LOGGER
-import com.mojang.blaze3d.PrimitiveTopology
-import com.mojang.blaze3d.buffers.GpuBuffer
-import com.mojang.blaze3d.buffers.GpuBufferSlice
-import com.mojang.blaze3d.pipeline.RenderTarget
-import com.mojang.blaze3d.systems.RenderPass
 import com.mojang.blaze3d.systems.RenderSystem
-import net.minecraft.client.renderer.DynamicUniformStorage
+import com.mojang.renderpearl.api.buffers.GpuBuffer
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice
+import com.mojang.renderpearl.api.commands.RenderPass
+import com.mojang.renderpearl.api.pipeline.IndexType
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology
 import net.minecraft.client.renderer.MappableRingBuffer
 import net.minecraft.client.renderer.feature.FeatureFrameContext
 import net.minecraft.client.renderer.feature.FeatureRenderer
 import net.minecraft.client.renderer.feature.FeatureRendererType
+import net.minecraft.client.renderer.oit.OitStage
 import net.minecraft.client.renderer.rendertype.PreparedRenderType
 import net.minecraft.util.Mth
 import org.joml.Matrix3f
 import org.joml.Matrix4f
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.util.Optional
-import java.util.OptionalDouble
 
 class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
     private val groups = arrayListOf<List<PreparedBatch>>()
     private val palettes = PaletteStorage()
-    private val info = DynamicUniformStorage<GeoInfo>("Bedrock GEO Info", GEO_INFO_BYTES, 64)
+    private val info = InfoStorage()
 
     init {
         BedrockGeoGpuMeshCache.acquireRenderer()
@@ -58,13 +56,15 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
 
     override fun executeGroup(
         context: FeatureFrameContext,
+        stage: OitStage?,
+        renderPass: RenderPass,
         groupIndex: Int,
         submits: List<BedrockGeoGpuSubmit>,
         strictlyOrdered: Boolean
     ) {
         if (BedrockGeoGpuRuntime.failed) return
         try {
-            groups[groupIndex].forEach(::draw)
+            groups[groupIndex].forEach { draw(renderPass, stage, it) }
         } catch (error: Throwable) {
             BedrockGeoGpuRuntime.disable()
             LOGGER.error("Disabling Bedrock GEO GPU rendering after a draw failure", error)
@@ -92,45 +92,39 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
             mesh,
             first.renderType.prepare(),
             paletteSlice,
-            info.writeUniform(GeoInfo(first.data.model.bones.size, stride)),
+            info.write(GeoInfo(first.data.model.bones.size, stride)),
             submits.size
         )
     }
 
-    private fun draw(batch: PreparedBatch) {
+    private fun draw(pass: RenderPass, stage: OitStage?, batch: PreparedBatch) {
         val prepared = batch.renderType
-        val target: RenderTarget = prepared.outputTarget().renderTarget
-        val colorTexture = RenderSystem.outputColorTextureOverride ?: requireNotNull(target.colorTextureView)
-        val depthTexture = if (target.useDepth) {
-            RenderSystem.outputDepthTextureOverride ?: target.depthTextureView
-        } else {
-            null
-        }
         val sequentialIndices = RenderSystem.getSequentialBuffer(PrimitiveTopology.QUADS)
         val indexBuffer = sequentialIndices.getBuffer(batch.mesh.indexCount)
-
-        RenderSystem.getDevice().createCommandEncoder().createRenderPass(
-            { "Bedrock GEO draw" },
-            colorTexture,
-            Optional.empty(),
-            depthTexture,
-            OptionalDouble.empty()
-        ).use { pass ->
-            bind(pass, prepared, batch, indexBuffer, sequentialIndices.type())
-        }
+        bind(pass, stage, prepared, batch, indexBuffer, sequentialIndices.type())
     }
 
     private fun bind(
         pass: RenderPass,
+        stage: OitStage?,
         prepared: PreparedRenderType,
         batch: PreparedBatch,
         indexBuffer: GpuBuffer,
-        indexType: com.mojang.blaze3d.IndexType
+        indexType: IndexType
     ) {
-        pass.setPipeline(prepared.pipeline())
+        val pipeline = if (stage == null) {
+            prepared.pipeline()
+        } else {
+            requireNotNull(prepared.oitPipelineSet()) {
+                "OIT pipeline set is missing for ${prepared.name()}"
+            }.getPipeline(stage)
+        }
+        pass.setPipeline(RenderSystem.getCompiledPipeline(pipeline))
         if (prepared.scissorState().enabled()) {
             val scissor = prepared.scissorState()
             pass.enableScissor(scissor.x(), scissor.y(), scissor.width(), scissor.height())
+        } else {
+            pass.disableScissor()
         }
         RenderSystem.bindDefaultUniforms(pass)
         pass.setUniform("DynamicTransforms", prepared.dynamicTransforms())
@@ -138,7 +132,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         pass.setUniform("GeoMatrices", batch.palette)
         pass.setVertexBuffer(0, batch.mesh.vertexBuffer.slice())
         prepared.textures().forEach { texture ->
-            pass.bindTexture(texture.name(), texture.textureView(), texture.sampler())
+            pass.setUniform(texture.name(), texture.textureView(), texture.sampler())
         }
         pass.setIndexBuffer(indexBuffer, indexType)
         pass.drawIndexed(batch.mesh.indexCount, batch.instanceCount, 0, 0, 0)
@@ -152,13 +146,57 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         val instanceCount: Int
     )
 
-    private data class GeoInfo(val boneCount: Int, val paletteStride: Int) : DynamicUniformStorage.DynamicUniform {
-        override fun write(byteBuffer: ByteBuffer) {
+    private data class GeoInfo(val boneCount: Int, val paletteStride: Int) {
+        fun write(byteBuffer: ByteBuffer) {
             byteBuffer.order(ByteOrder.nativeOrder())
             byteBuffer.putInt(boneCount)
             byteBuffer.putInt(paletteStride)
             byteBuffer.putInt(0)
             byteBuffer.putInt(0)
+        }
+    }
+
+    private class InfoStorage : AutoCloseable {
+        private val retired = arrayListOf<MappableRingBuffer>()
+        private var buffer: MappableRingBuffer? = null
+        private var writeOffset = 0
+
+        fun write(info: GeoInfo): GpuBufferSlice {
+            val alignment = RenderSystem.getDevice().deviceInfo.limits.minUniformOffsetAlignment
+            var alignedOffset = Mth.roundToward(writeOffset, alignment)
+            var current = buffer
+            if (current == null || alignedOffset + GEO_INFO_BYTES > current.size()) {
+                current?.let(retired::add)
+                val capacity = Mth.smallestEncompassingPowerOfTwo(maxOf(INITIAL_INFO_BYTES, GEO_INFO_BYTES))
+                current = MappableRingBuffer(
+                    { "Bedrock GEO Info" },
+                    GpuBuffer.USAGE_MAP_WRITE or GpuBuffer.USAGE_UNIFORM,
+                    capacity
+                )
+                buffer = current
+                alignedOffset = 0
+            }
+
+            val slice = current.currentBuffer().slice(alignedOffset.toLong(), GEO_INFO_BYTES.toLong())
+            slice.map(false, true).use { view ->
+                info.write(view.data().order(ByteOrder.nativeOrder()))
+            }
+            writeOffset = alignedOffset + GEO_INFO_BYTES
+            return slice
+        }
+
+        fun endFrame() {
+            buffer?.rotate()
+            writeOffset = 0
+            retired.forEach(MappableRingBuffer::close)
+            retired.clear()
+        }
+
+        override fun close() {
+            buffer?.close()
+            buffer = null
+            retired.forEach(MappableRingBuffer::close)
+            retired.clear()
         }
     }
 
@@ -254,6 +292,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         val TYPE: FeatureRendererType<BedrockGeoGpuSubmit> = FeatureRendererType.create("Bedrock GEO")
 
         private const val INITIAL_PALETTE_BYTES = 64 * 1024
+        private const val INITIAL_INFO_BYTES = 4 * 1024
         private const val GEO_INFO_BYTES = 16
     }
 }

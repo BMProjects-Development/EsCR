@@ -196,13 +196,8 @@ data class TravelToStructureResearchTask(
         val isInStructure =
             when {
                 structure != null -> {
-                    level
-                        .registryAccess()
-                        .lookupOrThrow(Registries.STRUCTURE)
-                        .getOptional(structure)
-                        .map { structure ->
-                            manager.getStructureWithPieceAt(pos, structure).isValid
-                        }.orElse(false)
+                    val structureKey = ResourceKey.create(Registries.STRUCTURE, structure)
+                    manager.getStructureWithPieceAt(pos) { it.`is`(structureKey) }.isValid
                 }
 
                 tag != null -> {
@@ -210,9 +205,7 @@ data class TravelToStructureResearchTask(
                     manager.getStructureWithPieceAt(pos, tagKey).isValid
                 }
 
-                else -> {
-                    false
-                }
+                else -> false
             }
 
         return ResearchTaskProgress(if (isInStructure) 1 else 0, 1)

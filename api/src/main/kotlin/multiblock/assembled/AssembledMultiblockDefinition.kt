@@ -69,7 +69,6 @@ class AssembledMultiblockDefinition(
     formedModelAnchor: BlockPos = BlockPos.ZERO,
     val formedStructureShape: VoxelShape? = null,
     formedShapeOrigin: BlockPos = formedModelAnchor,
-    /** True for a registry placeholder that requires a matching data JSON. */
     val requiresJsonDefinition: Boolean = false
 ) {
     val parts: List<AssembledMultiblockPart> = parts.map { part ->
@@ -200,10 +199,6 @@ class AssembledMultiblockDefinition(
     )
 
     companion object {
-        /**
-         * Creates a registry placeholder for an assembled multiblock whose
-         * structure must be supplied by a data JSON definition.
-         */
         @JvmStatic
         fun jsonOnly(id: Identifier): AssembledMultiblockDefinition =
             AssembledMultiblockDefinition(

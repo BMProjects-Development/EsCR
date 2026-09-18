@@ -88,7 +88,7 @@ class AssembledMultiblockRenderer<T : BlockEntity>(
             state.anchorZ.toDouble() + 0.5
         )
         if (state.modelYRotation != 0F) {
-            poseStack.mulPose(Axis.YP.rotationDegrees(state.modelYRotation))
+            poseStack.rotateDegrees(Axis.YP, state.modelYRotation)
         }
         BedrockGeoRenderEngine.submit(model, poseStack, collector, state.modelLight)
         poseStack.popPose()

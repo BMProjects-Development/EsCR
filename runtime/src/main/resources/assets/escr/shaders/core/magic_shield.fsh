@@ -1,13 +1,14 @@
 #version 330
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:globals.glsl>
+#extension GL_ARB_separate_shader_objects : require
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:globals.glsl>
 
-in vec3 viewPosition;
-in float waveDistance;
-in float waveProgress;
-in float waveStrength;
+layout(location = 0) in vec3 viewPosition;
+layout(location = 1) in float waveDistance;
+layout(location = 2) in float waveProgress;
+layout(location = 3) in float waveStrength;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
     float front = waveProgress * 1.08;

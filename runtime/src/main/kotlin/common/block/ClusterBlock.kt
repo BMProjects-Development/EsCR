@@ -1,7 +1,5 @@
 package com.algorithmlx.ecr.common.block
 
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.level.BlockGetter
@@ -14,8 +12,6 @@ import net.minecraft.world.phys.shapes.VoxelShape
 open class ClusterBlock(
     properties: Properties,
 ) : Block(properties) {
-    override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.clusterBlock
-
     override fun getShape(
         s: BlockState,
         l: BlockGetter,

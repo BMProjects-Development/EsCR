@@ -12,7 +12,6 @@ interface DataComponentRegistry {
     val bookType: DataComponentType<ResourceKey<BookType>>
     val boundGem: DataComponentType<BoundGemComponent>
 
-    /** Legacy ItemStack storage kept only to migrate old Soul Stones. */
     val playerMatrix: DataComponentType<PlayerMatrixComponent>
 
     companion object {

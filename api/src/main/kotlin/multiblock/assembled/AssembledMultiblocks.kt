@@ -264,13 +264,6 @@ object AssembledMultiblocks {
         return level.getBlockEntity(data.controllerPos)
     }
 
-    /**
-     * Returns the controller state captured before this multiblock was assembled.
-     *
-     * The controller may be represented by either the generic formed-part block or
-     * a retained controller block entity. Prefer its live part data and fall back to
-     * the replicated full snapshot when the controller's chunk is not available.
-     */
     @JvmStatic
     fun controllerOriginalState(level: BlockGetter, partPos: BlockPos): BlockState? {
         val source = partData(level, partPos) ?: return null

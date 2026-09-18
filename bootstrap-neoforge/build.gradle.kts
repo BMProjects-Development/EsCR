@@ -46,7 +46,8 @@ loom {
 
 dependencies {
     val kotlinVersion = providers.gradleProperty("libs.kotlin").get()
-    val irisVersion = rootProject.providers.gradleProperty("libs.iris").get()
+    val irisVersion = rootProject.providers.gradleProperty("libs.iris.neoforge").get()
+    val irisMcVersion = rootProject.providers.gradleProperty("libs.iris.neoforge.mc").get()
 
     minecraft("com.mojang:minecraft:$minecraftVersion")
     neoForge(libs.neoforge)
@@ -58,7 +59,7 @@ dependencies {
     compileOnly(libs.bundles.kotlinx.coroutines)
 
     implementation("org.spongepowered:mixin:0.8.7")
-    compileOnly("maven.modrinth:iris:$irisVersion+$minecraftVersion-neoforge")
+    compileOnly("maven.modrinth:iris:$irisVersion+$irisMcVersion-neoforge")
 
 
     project.property("mod.depend.klf_loader_version").toString()

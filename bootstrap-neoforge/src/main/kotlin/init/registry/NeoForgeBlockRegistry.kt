@@ -36,7 +36,7 @@ class NeoForgeBlockRegistry(
         ECRModIDs.ASSEMBLED_MULTIBLOCK_PART,
         ::AssembledMultiblockPartBlock,
         BlockBehaviour.Properties.of()
-            .pushReaction(PushReaction.BLOCK)
+            .pushReaction(PushReaction.IMMOVEABLE)
             .json(),
         shouldRegisterItem = false
     )

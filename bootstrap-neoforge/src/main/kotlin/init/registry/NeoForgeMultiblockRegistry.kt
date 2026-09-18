@@ -20,16 +20,16 @@ class NeoForgeMultiblockRegistry(bus: IEventBus): MultiblockRegistry {
     private val multiblocks = DeferredRegister.create(ECRegistries.MULTIBLOCK, ModId)
     private val assembled = DeferredRegister.create(ECRegistries.ASSEMBLED_MULTIBLOCK, ModId)
 
-    override val mithrilineFurnace: Multiblock by register(ECRModIDs.MITHRILINE_FURNACE, MithrilineFurnaceMultiblock)
-    override val soulStone: Multiblock by register(ECRModIDs.SOUL_STONE, SoulStoneMultiblock)
-    override val flameCrystal: Multiblock by register(ECRModIDs.FLAME_CRYSTAL, FlameCrystal)
-    override val waterCrystal: Multiblock by register(ECRModIDs.WATER_CRYSTAL, WaterCrystal)
-    override val earthCrystal: Multiblock by register(ECRModIDs.EARTH_CRYSTAL, EarthCrystal)
-    override val airCrystal: Multiblock by register(ECRModIDs.AIR_CRYSTAL, AirCrystal)
-    override val lightningCollector: Multiblock by register(ECRModIDs.LIGHTNING_COLLECTOR, LightningCollector)
-    override val enrichmentChamber: Multiblock by register(ECRModIDs.ENRICHMENT_CHAMBER, EnrichmentChamber)
-    override val rayTower: AssembledMultiblockDefinition by register(ECRModIDs.RAY_TOWER, RayTowerMultiblock)
-    override val magicalTeleporter: Multiblock by register(ECRModIDs.MAGICAL_TELEPORTER, MagicalTeleporter)
+    override val mithrilineFurnace: Multiblock by registerMultiblock(ECRModIDs.MITHRILINE_FURNACE) { MithrilineFurnaceMultiblock }
+    override val soulStone: Multiblock by registerMultiblock(ECRModIDs.SOUL_STONE) { SoulStoneMultiblock }
+    override val flameCrystal: Multiblock by registerMultiblock(ECRModIDs.FLAME_CRYSTAL) { FlameCrystal }
+    override val waterCrystal: Multiblock by registerMultiblock(ECRModIDs.WATER_CRYSTAL) { WaterCrystal }
+    override val earthCrystal: Multiblock by registerMultiblock(ECRModIDs.EARTH_CRYSTAL) { EarthCrystal }
+    override val airCrystal: Multiblock by registerMultiblock(ECRModIDs.AIR_CRYSTAL) { AirCrystal }
+    override val lightningCollector: Multiblock by registerMultiblock(ECRModIDs.LIGHTNING_COLLECTOR) { LightningCollector }
+    override val enrichmentChamber: Multiblock by registerMultiblock(ECRModIDs.ENRICHMENT_CHAMBER) { EnrichmentChamber }
+    override val rayTower: AssembledMultiblockDefinition by registerAssembled(ECRModIDs.RAY_TOWER) { RayTowerMultiblock }
+    override val magicalTeleporter: Multiblock by registerMultiblock(ECRModIDs.MAGICAL_TELEPORTER) { MagicalTeleporter }
 
     private val configuredMultiblocks = createConfiguredRegistries(
         ECRegistries.MULTIBLOCK,
@@ -54,13 +54,16 @@ class NeoForgeMultiblockRegistry(bus: IEventBus): MultiblockRegistry {
         configuredAssembledMultiblocks.forEach { registry -> registry.register(bus) }
     }
 
-    private fun register(id: String, fallback: Multiblock): ReadOnlyProperty<Any?, Multiblock> {
-        val registered = multiblocks.register(id) { _ -> fallback }
+    private fun registerMultiblock(id: String, fallback: () -> Multiblock): ReadOnlyProperty<Any?, Multiblock> {
+        val registered = multiblocks.register(id) { _ -> fallback() }
         return ReadOnlyProperty { _, _ -> MultiblockDefinitions[id.ecRL] ?: registered.get() }
     }
 
-    private fun register(id: String, fallback: AssembledMultiblockDefinition): ReadOnlyProperty<Any?, AssembledMultiblockDefinition> {
-        val registered = assembled.register(id) { _ -> fallback }
+    private fun registerAssembled(
+        id: String,
+        fallback: () -> AssembledMultiblockDefinition
+    ): ReadOnlyProperty<Any?, AssembledMultiblockDefinition> {
+        val registered = assembled.register(id) { _ -> fallback() }
         return ReadOnlyProperty { _, _ -> MultiblockDefinitions.assembled(id.ecRL) ?: registered.get() }
     }
 

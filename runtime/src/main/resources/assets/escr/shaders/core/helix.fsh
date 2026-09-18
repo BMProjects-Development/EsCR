@@ -1,13 +1,14 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:globals.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:globals.glsl>
 
-in vec2 ballUv;
-in float ballSeed;
-in float ballAlpha;
+layout(location = 0) in vec2 ballUv;
+layout(location = 1) in float ballSeed;
+layout(location = 2) in float ballAlpha;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 void main() {
     vec2 p = ballUv * 2.0 - 1.0;

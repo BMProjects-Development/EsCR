@@ -32,11 +32,6 @@ interface Transform {
             override val velocity: Vector3f get() = Vector3f()
         }
 
-        /**
-         * Creates a live transform attached to [bone] of a Bedrock GEO entity.
-         * The entity must implement [GeoAnimatable]. The optional [offset] is in
-         * model-space blocks and follows the bone's animated rotation.
-         */
         @JvmStatic
         @JvmOverloads
         fun bone(

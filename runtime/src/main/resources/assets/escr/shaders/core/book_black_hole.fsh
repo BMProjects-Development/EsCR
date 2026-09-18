@@ -1,10 +1,11 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 #define ECR_RENDER_PIPELINE
 
-in vec2 texCoord0;
-out vec4 fragColor;
+layout(location = 0) in vec2 texCoord0;
+layout(location = 0) out vec4 fragColor;
 
-#moj_import <escr:background_compat.glsl>
+#include <escr:background_compat.glsl>
 
 const float TAU = 6.28318530718;
 

@@ -66,7 +66,7 @@ class MithrilineFurnaceRenderer(
         poseStack.pushPose()
         poseStack.translate(0.5, 0.5, 0.5)
 
-        poseStack.mulPose(Axis.YP.rotationDegrees(state.coreRotation))
+        poseStack.rotateDegrees(Axis.YP, state.coreRotation)
 
         submitNodeCollector.submitModelPart(
             body, poseStack, RenderTypes.entityCutout(MF_MATERIAL.atlasLocation()),

@@ -1,14 +1,15 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:globals.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:globals.glsl>
 
-in vec3 effectPosition;
-in vec3 viewPosition;
-in vec4 vertexColor;
-flat in float overflowState;
+layout(location = 0) in vec3 effectPosition;
+layout(location = 1) in vec3 viewPosition;
+layout(location = 2) in vec4 vertexColor;
+layout(location = 3) flat in float overflowState;
 
-out vec4 fragColor;
+layout(location = 0) out vec4 fragColor;
 
 float hash31(vec3 point) {
     point = fract(point * 0.1031);

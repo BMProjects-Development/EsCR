@@ -36,7 +36,11 @@ public class ClientLevelMixin {
         return shape;
     }
 
-    @ModifyVariable(method = "addBreakingBlockEffect", at = @At("STORE"), name = "blockState")
+    @ModifyVariable(
+        method = "addBreakingBlockEffects(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Z)V",
+        at = @At("STORE"),
+        name = "blockState"
+    )
     private BlockState ecr$useControllerBreakingParticle(
         BlockState state,
         BlockPos pos,
@@ -45,7 +49,11 @@ public class ClientLevelMixin {
         return ecr$controllerParticleState(pos, state);
     }
 
-    @ModifyVariable(method = "addBreakingBlockEffect", at = @At("STORE"), name = "shape")
+    @ModifyVariable(
+        method = "addBreakingParticles(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;)V",
+        at = @At("STORE"),
+        name = "shape"
+    )
     private AABB ecr$useFullBreakingParticleShape(AABB shape, BlockPos pos, Direction direction) {
         ClientLevel level = (ClientLevel) (Object) this;
         BlockState worldState = level.getBlockState(pos);

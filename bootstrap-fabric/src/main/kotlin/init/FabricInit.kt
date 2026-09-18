@@ -33,7 +33,6 @@ import com.algorithmlx.ecr.common.item.NamedBlockItem
 import com.algorithmlx.ecr.common.research.ResearchConfigDisabler
 import com.algorithmlx.ecr.fabric.api.CountIngredient
 import com.algorithmlx.ecr.fabric.chunk.FabricChunkLoadingPlatform
-import com.algorithmlx.ecr.fabric.init.registry.FabricBlockCodecRegistry
 import com.algorithmlx.ecr.fabric.init.registry.FabricBlockEntityTypeRegistry
 import com.algorithmlx.ecr.fabric.init.registry.FabricBlockRegistry
 import com.algorithmlx.ecr.fabric.init.registry.FabricBookTypeRegistry
@@ -127,7 +126,6 @@ object FabricInit {
         ChunkLoadingPlatform.instance = FabricChunkLoadingPlatform
         FabricAttachmentRegistry.init()
         DataComponentRegistry.instance = FabricDataComponentRegistry
-        BlockCodecRegistry.instance = FabricBlockCodecRegistry
         BookTypeRegistry.instance = FabricBookTypeRegistry
         FabricResearchSerializerRegistry.register()
         BlockRegistry.instance = FabricBlockRegistry

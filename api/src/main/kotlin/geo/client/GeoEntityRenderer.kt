@@ -41,7 +41,7 @@ open class GeoEntityRenderer<T>(
     ) {
         state.geo?.let { geo ->
             poseStack.pushPose()
-            poseStack.mulPose(Axis.YP.rotationDegrees(180F - state.bodyYaw))
+            poseStack.rotateDegrees(Axis.YP, 180F - state.bodyYaw)
             BedrockGeoRenderEngine.submit(geo, poseStack, collector, state.lightCoords)
             poseStack.popPose()
         }

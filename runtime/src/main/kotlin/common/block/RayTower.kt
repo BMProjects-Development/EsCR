@@ -9,8 +9,6 @@ import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.RayTowerEntity
 import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel
@@ -40,8 +38,6 @@ class RayTower(properties: Properties): Block(properties), EntityBlock, Assemble
     init {
         registerDefaultState(stateDefinition.any().setValue(ASSEMBLED, false))
     }
-
-    override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.rayTower
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(ASSEMBLED)

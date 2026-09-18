@@ -4,8 +4,6 @@ import com.algorithmlx.ecr.api.block.FullBlockParticles
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.RadiatingChamberEntity
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
@@ -40,5 +38,4 @@ class RadiatingChamber(properties: Properties): Block(properties), EntityBlock, 
         hitResult: BlockHitResult
     ): InteractionResult = checkAndOpenMenu<RadiatingChamberEntity>(player, level, pos)
 
-    override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.radiatingChamber
 }

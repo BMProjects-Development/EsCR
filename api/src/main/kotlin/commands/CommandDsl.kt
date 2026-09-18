@@ -25,17 +25,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Predicate
 import kotlin.reflect.KProperty
 
-/** Marks receivers that belong to the command tree DSL. */
 @DslMarker
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE)
 annotation class BrigadierCommandDsl
 
-/** Anything that can be used as a Brigadier redirect or fork target. */
 interface CommandTarget<S> {
     val node: CommandNode<S>
 }
 
-/** A registered literal together with the redirect nodes created for its aliases. */
 class LiteralReference<S> internal constructor(
     override val node: LiteralCommandNode<S>,
     val aliases: Map<String, LiteralCommandNode<S>>,
@@ -44,12 +41,6 @@ class LiteralReference<S> internal constructor(
         get() = node.name
 }
 
-/**
- * A typed reference to an argument in the command tree.
- *
- * The exposed type can differ from the type produced by [parser]. This is useful for Minecraft
- * argument types whose public getter resolves an intermediate Brigadier value to a domain object.
- */
 class CommandArgument<S, T> internal constructor(
     val name: String,
     val parser: ArgumentType<*>,
@@ -70,17 +61,13 @@ class CommandArgument<S, T> internal constructor(
     }
 }
 
-/** Reads an argument through its typed reference. */
 operator fun <S, T> CommandContext<S>.get(argument: CommandArgument<S, T>): T = argument.read(this)
 
-/** Reads a Brigadier argument without having to pass its Java class explicitly. */
 inline fun <S, reified T : Any> CommandContext<S>.argument(name: String): T = getArgument(name, T::class.java)
 
-/** Returns a Brigadier argument when it exists on the executed branch. */
 inline fun <S, reified T : Any> CommandContext<S>.argumentOrNull(name: String): T? =
     runCatching { argument<S, T>(name) }.getOrNull()
 
-/** Property-delegate access to arguments by their Kotlin property names. */
 class CommandArguments<S> internal constructor(private val context: CommandContext<S>) {
     @Suppress("UNCHECKED_CAST")
     operator fun <T> get(name: String): T = context.getArgument(name, Any::class.java) as T
@@ -94,7 +81,6 @@ class CommandArguments<S> internal constructor(private val context: CommandConte
     operator fun <T> getValue(thisRef: Any?, property: KProperty<*>): T = get(property.name)
 }
 
-/** Kotlin-friendly view of the Brigadier context passed to commands and modifiers. */
 open class CommandCall<S> internal constructor(val context: CommandContext<S>) {
     val source: S
         get() = context.source
@@ -113,7 +99,6 @@ open class CommandCall<S> internal constructor(val context: CommandContext<S>) {
 
     val arguments: CommandArguments<S> = CommandArguments(context)
 
-    /** A shorter alias for [arguments]. */
     val args: CommandArguments<S>
         get() = arguments
 
@@ -127,7 +112,6 @@ open class CommandCall<S> internal constructor(val context: CommandContext<S>) {
     operator fun <T> CommandArgument<S, T>.getValue(thisRef: Any?, property: KProperty<*>): T = read(context)
 }
 
-/** Receiver used by synchronous and asynchronous suggestion providers. */
 class CommandSuggestions<S> internal constructor(
     context: CommandContext<S>,
     val builder: SuggestionsBuilder,
@@ -157,7 +141,6 @@ class CommandSuggestions<S> internal constructor(
         values.forEach(::suggest)
     }
 
-    /** Adds only values that start with the text currently being completed. */
     fun suggestMatching(values: Iterable<String>, ignoreCase: Boolean = true) {
         val prefix = if (ignoreCase) remainingLowerCase else remaining
         values.asSequence()
@@ -168,7 +151,6 @@ class CommandSuggestions<S> internal constructor(
             .forEach(::suggest)
     }
 
-    /** Adds suggestions with a different replacement start and merges them into this builder. */
     fun atOffset(offset: Int, block: CommandSuggestions<S>.() -> Unit) {
         val offsetBuilder = builder.createOffset(offset)
         CommandSuggestions(context, offsetBuilder).block()
@@ -184,7 +166,6 @@ class CommandSuggestions<S> internal constructor(
     fun buildFuture(): CompletableFuture<Suggestions> = builder.buildFuture()
 }
 
-/** Information passed to the dispatcher's global result consumer. */
 data class CommandResult<S>(
     val context: CommandContext<S>,
     val success: Boolean,
@@ -198,10 +179,8 @@ data class CommandResult<S>(
 abstract class CommandContainer<S> internal constructor() {
     protected abstract fun attach(node: CommandNode<S>): CommandNode<S>
 
-    /** Adds a pre-built Brigadier node. */
     fun then(node: CommandNode<S>): CommandNode<S> = attach(node)
 
-    /** Builds and adds an arbitrary native Brigadier builder. */
     fun then(builder: ArgumentBuilder<S, *>): CommandNode<S> = attach(builder.build())
 
     fun literal(
@@ -247,7 +226,6 @@ abstract class CommandContainer<S> internal constructor() {
         return LiteralReference(attached, aliasNodes)
     }
 
-    /** Literal syntax: `"root" { "subcommand" { ... } }`. */
     operator fun String.invoke(block: LiteralCommandScope<S>.() -> Unit): LiteralReference<S> =
         literal(this, block = block)
 
@@ -257,12 +235,6 @@ abstract class CommandContainer<S> internal constructor() {
         block: ArgumentCommandScope<S, T>.(CommandArgument<S, T>) -> Unit = {},
     ): CommandArgument<S, T> = argument(name, type, ::readParsedArgument, block)
 
-    /**
-     * Adds an argument whose exposed Kotlin value is produced by [read].
-     *
-     * This retains Brigadier's parser type while allowing domain-specific getters, for example
-     * `EntityArgument.getPlayers(context, name)`.
-     */
     fun <Parsed, T> argument(
         name: String,
         type: ArgumentType<Parsed>,
@@ -297,27 +269,22 @@ abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal construct
         return brigadier.arguments.first { it.name == node.name }
     }
 
-    /** Replaces this node's source requirement. */
     fun requires(requirement: Predicate<S>) {
         brigadier.requires(requirement)
     }
 
-    /** Replaces this node's source requirement with a Kotlin receiver predicate. */
     fun requires(requirement: S.() -> Boolean) {
         brigadier.requires { source -> source.requirement() }
     }
 
-    /** Executes a command and preserves its meaningful Brigadier integer result. */
     fun executes(command: CommandCall<S>.() -> Int) {
         brigadier.executes { context -> CommandCall(context).command() }
     }
 
-    /** Attaches an existing native Brigadier command. */
     fun executesRaw(command: Command<S>) {
         brigadier.executes(command)
     }
 
-    /** Executes a side-effecting block and returns [result] (one by default). */
     fun runs(result: Int = Command.SINGLE_SUCCESS, command: CommandCall<S>.() -> Unit) {
         brigadier.executes { context ->
             CommandCall(context).command()
@@ -349,7 +316,6 @@ abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal construct
         fork(target.node, modifier)
     }
 
-    /** The fully general Brigadier forwarding primitive used by both redirects and forks. */
     fun forward(
         target: CommandNode<S>,
         forks: Boolean,
@@ -369,7 +335,6 @@ abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal construct
         forward(target.node, forks, modifier)
     }
 
-    /** Escape hatch for native Brigadier options added in future versions. */
     fun brigadier(block: B.() -> Unit) {
         brigadier.block()
     }
@@ -398,7 +363,6 @@ class ArgumentCommandScope<S, T> internal constructor(
         brigadier.suggests(provider)
     }
 
-    /** Installs a synchronous Kotlin suggestion builder. */
     fun suggests(block: CommandSuggestions<S>.() -> Unit) {
         brigadier.suggests { context, builder ->
             CommandSuggestions(context, builder).block()
@@ -406,7 +370,6 @@ class ArgumentCommandScope<S, T> internal constructor(
         }
     }
 
-    /** Installs a suggestion provider that owns its [CompletableFuture]. */
     fun suggestsAsync(block: CommandSuggestions<S>.() -> CompletableFuture<Suggestions>) {
         brigadier.suggests { context, builder -> CommandSuggestions(context, builder).block() }
     }
@@ -445,16 +408,13 @@ class CommandTreeScope<S> internal constructor(
     fun find(vararg path: String): CommandNode<S>? = dispatcher.findNode(path.asList())
 }
 
-/** Adds a Kotlin command tree to this dispatcher and returns the same dispatcher for chaining. */
 fun <S> CommandDispatcher<S>.commands(block: CommandTreeScope<S>.() -> Unit): CommandDispatcher<S> = apply {
     CommandTreeScope(this).block()
 }
 
-/** Creates a standalone dispatcher, which is especially useful in tests and non-Minecraft applications. */
 fun <S> commandDispatcher(block: CommandTreeScope<S>.() -> Unit): CommandDispatcher<S> =
     CommandDispatcher<S>().commands(block)
 
-/** Parses [input] and asks Brigadier for completions at [cursor]. */
 fun <S> CommandDispatcher<S>.completionSuggestions(
     input: String,
     source: S,

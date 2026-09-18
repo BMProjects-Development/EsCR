@@ -5,7 +5,7 @@ import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.mixin.client.RenderPipelinesAccessor
 import com.algorithmlx.ecr.mixin.client.RenderTypeAccessor
 import com.algorithmlx.ecr.network.MagicShieldPayload
-import com.mojang.blaze3d.pipeline.RenderPipeline
+import com.mojang.renderpearl.api.pipeline.RenderPipeline
 import com.mojang.blaze3d.vertex.PoseStack
 import com.mojang.blaze3d.vertex.VertexConsumer
 import net.minecraft.client.Minecraft

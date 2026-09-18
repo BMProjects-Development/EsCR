@@ -5,10 +5,8 @@ import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.enrichment.EnrichmentChamberControllerEntity
 import com.algorithmlx.ecr.common.init.ECRTags
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
 import com.algorithmlx.ecr.registry.BlockRegistry
 import com.algorithmlx.ecr.registry.MultiblockRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.world.InteractionResult
@@ -35,8 +33,6 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
                 .setValue(ACTIVE, false)
         )
     }
-
-    override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.enrichmentChamberController
 
     override fun newBlockEntity(
         worldPosition: BlockPos,

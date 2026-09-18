@@ -1,14 +1,15 @@
 #version 330
-#moj_import <minecraft:dynamictransforms.glsl>
-#moj_import <minecraft:projection.glsl>
+#extension GL_ARB_separate_shader_objects : require
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:projection.glsl>
 
-in vec3 Position;
-in vec4 Color;
+layout(location = 0) in vec3 Position;
+layout(location = 1) in vec4 Color;
 
-out vec3 viewPosition;
-out float waveDistance;
-out float waveProgress;
-out float waveStrength;
+layout(location = 0) out vec3 viewPosition;
+layout(location = 1) out float waveDistance;
+layout(location = 2) out float waveProgress;
+layout(location = 3) out float waveStrength;
 
 void main() {
     vec4 viewSpace = ModelViewMat * vec4(Position, 1.0);

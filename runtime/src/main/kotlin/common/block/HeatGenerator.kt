@@ -5,10 +5,8 @@ import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.HeatGeneratorEntity
 import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.registry.BlockCodecRegistry
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.ItemRegistry
-import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
@@ -33,8 +31,6 @@ import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.phys.BlockHitResult
 
 class HeatGenerator(properties: Properties): Block(properties), EntityBlock {
-    override fun codec(): MapCodec<out Block> = BlockCodecRegistry.instance.heatGenerator
-
     init {
         this.registerDefaultState(this.stateDefinition.any().setValue(IS_UPGRADED, false))
     }

@@ -1,6 +1,10 @@
 package com.algorithmlx.ecr.api.recipe.dsl
 
+import com.mojang.serialization.Lifecycle
 import net.minecraft.core.HolderLookup
+import net.minecraft.core.MappedRegistry
+import net.minecraft.core.RegistrationInfo
+import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier
 import net.minecraft.resources.ResourceKey
 import net.minecraft.world.item.crafting.Recipe
@@ -50,9 +54,11 @@ object RecipeCompiler {
         baked(registries).forEach { merged[it.id()] = it }
         vanilla.values().forEach { merged[it.id()] = it }
 
-        return RecipeMap.create(
-            merged.values
-        )
+        val recipeRegistry = MappedRegistry(Registries.RECIPE, Lifecycle.stable())
+        merged.forEach { (key, holder) ->
+            recipeRegistry.register(key, holder.value(), RegistrationInfo.BUILT_IN)
+        }
+        return RecipeMap.create(recipeRegistry.freeze())
     }
 
     @JvmStatic
