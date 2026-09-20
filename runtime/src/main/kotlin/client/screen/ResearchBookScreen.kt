@@ -397,31 +397,25 @@ class ResearchBookScreen(
         graphics.tooltip(font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null, false)
     }
 
-    private fun nodeTooltip(entry: BookEntry, includeTitle: Boolean = true): List<Component> =
-        buildList {
-            if (includeTitle) add(entry.title.component(entry.titleShadow))
-            val missing = missingRequirements(entry)
-            if (missing.visible.isNotEmpty() || missing.hidden > 0) {
-                add(Component.translatable("screen.$ModId.research_book.task.requires"))
-                missing.visible.forEach { add(Component.literal(" - ").append(it)) }
-                if (missing.hidden > 0) add(Component.translatable("screen.$ModId.research_book.task.more", missing.hidden))
-            }
-            activeTaskProgress(entry).filter { !it.first.hidden }.forEach { (definition, progress) ->
-                add(Component.empty().append(taskTitle(definition)).append(Component.literal(": ${progress.current}/${progress.required}")))
-            }
+    private fun nodeTooltip(entry: BookEntry, includeTitle: Boolean = true): List<Component> = buildList {
+        if (includeTitle) add(entry.title.component(entry.titleShadow))
+        val missing = missingRequirements(entry)
+        if (missing.visible.isNotEmpty() || missing.hidden > 0) {
+            add(Component.translatable("screen.$ModId.research_book.task.requires"))
+            missing.visible.forEach { add(Component.literal(" - ").append(it)) }
+            if (missing.hidden > 0) add(Component.translatable("screen.$ModId.research_book.task.more", missing.hidden))
         }
+        activeTaskProgress(entry).filter { !it.first.hidden }.forEach { (definition, progress) ->
+            add(Component.empty().append(taskTitle(definition)).append(Component.literal(": ${progress.current}/${progress.required}")))
+        }
+    }
 
     private class SmallTextTooltipComponent(private val line: FormattedCharSequence) : ClientTooltipComponent {
         override fun getHeight(font: Font): Int = (font.lineHeight * NODE_TOOLTIP_DESCRIPTION_SCALE).roundToInt().coerceAtLeast(1)
 
         override fun getWidth(font: Font): Int = (font.width(line) * NODE_TOOLTIP_DESCRIPTION_SCALE).roundToInt().coerceAtLeast(1)
 
-        override fun extractText(
-            graphics: GuiGraphicsExtractor,
-            font: Font,
-            x: Int,
-            y: Int,
-        ) {
+        override fun extractText(graphics: GuiGraphicsExtractor, font: Font, x: Int, y: Int) {
             graphics.pose().pushMatrix()
             graphics.pose().translate(x.toFloat(), y.toFloat())
             graphics.pose().scale(NODE_TOOLTIP_DESCRIPTION_SCALE, NODE_TOOLTIP_DESCRIPTION_SCALE)
@@ -438,11 +432,8 @@ class ResearchBookScreen(
         entry.dependencies.forEach { dependencyId ->
             if (ClientResearchState.has(dependencyId)) return@forEach
             val dependency = snapshot.entries[dependencyId]
-            if (dependency != null && !isVisible(dependency)) {
-                hidden++
-            } else {
-                visible += researchRequirementComponent(dependencyId, null)
-            }
+            if (dependency != null && !isVisible(dependency)) hidden++
+            else visible += researchRequirementComponent(dependencyId, null)
         }
 
         entry.requirements.forEach { requirement ->
@@ -461,15 +452,12 @@ class ResearchBookScreen(
     ): Component {
         val entry = ResearchCatalog.snapshot().entries[research]
         val title = entry?.title?.component(entry.titleShadow) ?: Component.literal(research.toString())
-        return if (taskId == null) {
-            Component.translatable("screen.$ModId.research_book.research", title)
-        } else {
-            val taskTitle =
-                entry?.taskDefinitions?.firstOrNull { it.id == taskId }?.let(::taskTitle)
-                    ?: if (taskId.startsWith("task_")) Component.translatable("screen.$ModId.research_book.task")
-                    else Component.literal(taskId)
-            Component.translatable("screen.$ModId.research_book.task")
-                .append(String.format(": %s / %s", title, taskTitle))
+        return if (taskId == null) Component.translatable("screen.$ModId.research_book.research", title)
+        else {
+            val taskTitle = entry?.taskDefinitions?.firstOrNull { it.id == taskId }?.let(::taskTitle)
+                ?: if (taskId.startsWith("task_")) Component.translatable("screen.$ModId.research_book.task")
+                else Component.literal(taskId)
+            Component.translatable("screen.$ModId.research_book.task").append(String.format(": %s / %s", title, taskTitle))
         }
     }
 
@@ -504,9 +492,8 @@ class ResearchBookScreen(
 
         val bookmarkHovered = localMouseX in 496..<550 && localMouseY in BOOKMARK_Y until BOOKMARK_Y + 16
         bookmarks.renderPage(graphics, entry, spreadIndex, bookmarkHovered, frameDt)
-        if (bookmarkHovered && ClientResearchState.has(entry.id)) {
-            graphics.requestCursor(CursorTypes.POINTING_HAND)
-        }
+        if (bookmarkHovered && ClientResearchState.has(entry.id)) graphics.requestCursor(CursorTypes.POINTING_HAND)
+
         graphics.blit(RenderPipelines.GUI_TEXTURED, bookTexture, 0, 0, 0f, 0f, BOOK_WIDTH, BOOK_HEIGHT, BOOK_WIDTH, BOOK_HEIGHT)
 
         renderPageArrows(graphics, localMouseX, localMouseY)
@@ -565,9 +552,8 @@ class ResearchBookScreen(
 
         graphics.pose().popMatrix()
         renderTaskLevels(graphics, entry)
-        if (bookmarkHovered && ClientResearchState.has(entry.id)) {
+        if (bookmarkHovered && ClientResearchState.has(entry.id))
             renderBookmarkTooltip(graphics, entry, spreadIndex, spreads.size, mouseX, mouseY)
-        }
     }
 
     private fun renderBookmarkTooltip(
@@ -581,10 +567,8 @@ class ResearchBookScreen(
         val font = Minecraft.getInstance().font
         val title = entry.title.component(entry.titleShadow)
 
-        val page =
-            Component
-                .translatable("screen.$ModId.research_book.page", spread + 1, spreadCount.coerceAtLeast(1))
-                .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)
+        val page = Component.translatable("screen.$ModId.research_book.page", spread + 1, spreadCount.coerceAtLeast(1))
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)
         graphics.setComponentTooltipForNextFrame(font, listOf(title, page), mouseX, mouseY)
     }
 
@@ -690,22 +674,19 @@ class ResearchBookScreen(
 
     private fun openLink(link: BookResearchLink): Boolean {
         val entry = ResearchCatalog.snapshot().entries[link.research] ?: return false
-        if (!isVisible(entry) || !isAvailable(entry)) return false
-        return openEntry(entry, link.spread)
+        return !(!isVisible(entry) || !isAvailable(entry)) && openEntry(entry, link.spread)
     }
 
     private fun renderCompleteButton(graphics: GuiGraphicsExtractor, entry: BookEntry, mouseX: Int, mouseY: Int) {
         if (!shouldShowCompleteButton(entry)) return
         val enabled = tasksComplete(entry)
-        val hovered =
-            enabled && mouseX in COMPLETE_BUTTON_X until COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH &&
-                mouseY in COMPLETE_BUTTON_Y until COMPLETE_BUTTON_Y + COMPLETE_BUTTON_HEIGHT
-        val background =
-            when {
-                !enabled -> 0xFF343840.toInt()
-                hovered -> 0xFF55789A.toInt()
-                else -> 0xFF3F607E.toInt()
-            }
+        val hovered = enabled && mouseX in COMPLETE_BUTTON_X until COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH
+                && mouseY in COMPLETE_BUTTON_Y until COMPLETE_BUTTON_Y + COMPLETE_BUTTON_HEIGHT
+        val background = when {
+            !enabled -> 0xFF343840.toInt()
+            hovered -> 0xFF55789A.toInt()
+            else -> 0xFF3F607E.toInt()
+        }
         if (hovered) graphics.requestCursor(CursorTypes.POINTING_HAND)
         val border = if (enabled) 0xFFB7D3EA.toInt() else 0xFF686D76.toInt()
         val textColor = if (enabled) 0xFFFFFFFF.toInt() else 0xFF9A9DA3.toInt()
@@ -759,10 +740,7 @@ class ResearchBookScreen(
         }
     }
 
-    private fun renderTaskLevels(
-        graphics: GuiGraphicsExtractor,
-        entry: BookEntry,
-    ) {
+    private fun renderTaskLevels(graphics: GuiGraphicsExtractor, entry: BookEntry) {
         if (entry.taskLevels.size <= 1) return
         val completed = if (ClientResearchState.has(entry.id)) entry.taskLevels.size
         else ClientResearchState.completedTaskLevels(entry.id)
@@ -823,38 +801,29 @@ class ResearchBookScreen(
 
     private fun nodeCenter(node: ResolvedBookEntry): Pair<Int, Int> {
         val point = nodePoint(node)
-        return (point.first + nodeWidth(node.entry) * zoom / 2f).toInt() to
-            (point.second + nodeHeight(node.entry) * zoom / 2f).toInt()
+        return (point.first + nodeWidth(node.entry) * zoom / 2f).toInt() to (point.second + nodeHeight(node.entry) * zoom / 2f).toInt()
     }
 
-    private fun visibleNodes(): List<ResolvedBookEntry> =
-        selectedCategory
-            ?.let(ResearchCatalog.snapshot()::entriesIn)
-            .orEmpty()
-            .filter { isVisible(it.entry) }
+    private fun visibleNodes(): List<ResolvedBookEntry> = selectedCategory
+        ?.let(ResearchCatalog.snapshot()::entriesIn)
+        .orEmpty()
+        .filter { isVisible(it.entry) }
 
     private fun isAvailable(entry: BookEntry): Boolean = isAvailable(entry, LinkedHashSet())
 
     private fun isAvailable(entry: BookEntry, visited: MutableSet<Identifier>): Boolean {
         if (!visited.add(entry.id)) return false
         val snapshot = ResearchCatalog.snapshot()
-        val category =
-            snapshot
-                .layout[entry.id]
-                ?.category
-                ?.let(snapshot.categories::get)
-                ?: return false
-        if (!isCategoryAvailable(category) || !entry.dependencies.all(ClientResearchState::has) ||
-            !entry.requirements.all { ClientResearchState.requirementMet(entry.id, it) }
-        ) {
-            return false
-        }
-        return when (val link = entry.link) {
+        val category = snapshot.layout[entry.id]?.category?.let(snapshot.categories::get) ?: return false
+        val linkAvailable = when (val link = entry.link) {
             is BookEntryLink.Category -> snapshot.categories[link.category]?.let(::isCategoryAvailable) == true
             is BookEntryLink.Research -> snapshot.entries[link.research]?.let { isAvailable(it, visited) } == true
             is BookEntryLink.Page -> snapshot.entries[link.research]?.let { isAvailable(it, visited) } == true
             null -> true
         }
+
+        val requirementsAvailable = entry.requirements.all { ClientResearchState.requirementMet(entry.id, it) }
+        return (isCategoryAvailable(category) || entry.dependencies.all(ClientResearchState::has) || requirementsAvailable) && linkAvailable
     }
 
     private fun isCategoryAvailable(category: BookCategory): Boolean =
@@ -878,13 +847,11 @@ class ResearchBookScreen(
             is BookEntryLink.Category -> return openCategory(link.category)
             is BookEntryLink.Research -> {
                 val target = ResearchCatalog.snapshot().entries[link.research] ?: return false
-                if (!isVisible(target) || !isAvailable(target)) return false
-                return openEntry(target, 0, visited)
+                return !(!isVisible(target) || !isAvailable(target)) && openEntry(target, 0, visited)
             }
             is BookEntryLink.Page -> {
                 val target = ResearchCatalog.snapshot().entries[link.research] ?: return false
-                if (!isVisible(target) || !isAvailable(target)) return false
-                return openEntry(target, link.spread, visited)
+                return !(!isVisible(target) || !isAvailable(target)) && openEntry(target, link.spread, visited)
             }
             null -> Unit
         }

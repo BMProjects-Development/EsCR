@@ -16,7 +16,7 @@ import java.util.Optional
 data class TagMultiblockMatcher(
     val tag: TagKey<Block>
 ): MultiblockMatcher {
-    override val type: MultiblockMatcherType<*> get() = MultiblockMatcherTypes.instance.tag
+    override val type: MultiblockMatcherType<*> get() = MultiblockMatcherTypes.tag
 
     override fun matches(block: BlockState): Boolean = block.`is`(tag)
 
@@ -48,7 +48,7 @@ data class ListMultiblockMatcher(
         require(defaultState == null || matches(defaultState)) { "Default state must match at least one list matcher" }
     }
 
-    override val type: MultiblockMatcherType<*> get() = MultiblockMatcherTypes.instance.list
+    override val type: MultiblockMatcherType<*> get() = MultiblockMatcherTypes.list
 
     override fun matches(block: BlockState): Boolean =
         matchers.any { matcher -> matcher.matches(block) }
@@ -75,7 +75,7 @@ data class BlockMultiblockMatcher(
     val ignoreTag: Boolean = false,
     override val required: Boolean = true
 ): MultiblockMatcher {
-    override val type: MultiblockMatcherType<*> get() = MultiblockMatcherTypes.instance.block
+    override val type: MultiblockMatcherType<*> get() = MultiblockMatcherTypes.block
 
     override fun matches(block: BlockState): Boolean =
         if (ignoreTag) block.`is`(state.block)

@@ -45,7 +45,7 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.instance.heatGenerator, worldPosition, blockState), MRUDevice, WorldlyContainer {
+class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.heatGenerator.get(), worldPosition, blockState), MRUDevice, WorldlyContainer {
     private var upgraded = blockState.getValue(HeatGenerator.IS_UPGRADED)
     private var mutableMRUStorage = createMRUStorage(capacityFor(upgraded))
     private var items: NonNullList<ItemStack> = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY)
@@ -169,7 +169,7 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         this.mutableMRUStorage.set(amount)
     }
 
-    private fun createMRUStorage(capacity: Int): MRUStorageContainer = MRUStorageContainer(capacity, MRUTypeRegistry.instance.radiationUnit) { this.setChanged() }
+    private fun createMRUStorage(capacity: Int): MRUStorageContainer = MRUStorageContainer(capacity, MRUTypeRegistry.radiationUnit) { this.setChanged() }
 
     private fun synchronizeUpgradeBlockState(level: Level) {
         val state = this.blockState.setValue(HeatGenerator.IS_UPGRADED, this.upgraded)
@@ -194,14 +194,13 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
 
     private fun canAcceptSlag(): Boolean {
         val output = this.items[OUTPUT_SLOT]
-        if (output.isEmpty) return true
-        return output.`is`(ItemRegistry.instance.magicalSlag) && output.count < output.maxStackSize
+        return output.isEmpty || output.`is`(ItemRegistry.magicalSlag.get()) && output.count < output.maxStackSize
     }
 
     private fun outputSlag(): Boolean {
         if (!canAcceptSlag()) return false
         val output = this.items[OUTPUT_SLOT]
-        if (output.isEmpty) this.items[OUTPUT_SLOT] = ItemStack(ItemRegistry.instance.magicalSlag)
+        if (output.isEmpty) this.items[OUTPUT_SLOT] = ItemStack(ItemRegistry.magicalSlag.get())
         else output.grow(1)
         this.slagPending = false
         this.setChanged()

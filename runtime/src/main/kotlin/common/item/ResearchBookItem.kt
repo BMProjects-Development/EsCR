@@ -24,11 +24,11 @@ class ResearchBookItem(
         hand: InteractionHand,
     ): InteractionResult {
         val stack = player.getItemInHand(hand)
-        val basic = BookTypeRegistry.instance.basic
+        val basic = BookTypeRegistry.basic.get()
         val basicKey = ECRegistries.BOOK_TYPES.getResourceKey(basic).get()
         var bookTypeKey =
             stack.getOrDefault(
-                DataComponentRegistry.instance.bookType,
+                DataComponentRegistry.bookType.get(),
                 basicKey,
             )
 
@@ -38,7 +38,7 @@ class ResearchBookItem(
                 bookTypeOptional.get().value()
             } else {
                 bookTypeKey = basicKey
-                stack.set(DataComponentRegistry.instance.bookType, basicKey)
+                stack.set(DataComponentRegistry.bookType.get(), basicKey)
                 basic
             }
 
@@ -54,7 +54,7 @@ class ResearchBookItem(
     override fun addSubItems(original: ItemStack): List<ItemStack> {
         val items = mutableListOf<ItemStack>()
         ECRegistries.BOOK_TYPES.listElements().forEach {
-            items += original.copy().apply { this.set(DataComponentRegistry.instance.bookType, it.key()) }
+            items += original.copy().apply { this.set(DataComponentRegistry.bookType.get(), it.key()) }
         }
 
         return items

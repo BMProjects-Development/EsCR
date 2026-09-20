@@ -27,7 +27,6 @@ import net.minecraft.world.ContainerHelper
 import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
-import net.minecraft.world.inventory.ContainerData
 import net.minecraft.world.inventory.ContainerLevelAccess
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -38,16 +37,16 @@ import net.minecraft.world.level.storage.ValueOutput
 class RadiatingChamberEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.instance.radiatingChamber, worldPosition, blockState), MRUDevice, WorldlyContainer {
+): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.radiatingChamber.get(), worldPosition, blockState), MRUDevice, WorldlyContainer {
     @all:JvmName("items")
     private var items = NonNullList.withSize(4, ItemStack.EMPTY)
 
-    val recipe = CachedRecipe(RecipeTypeRegistry.instance.radiatingChamber)
+    val recipe = CachedRecipe(RecipeTypeRegistry.radiatingChamber.get())
     var craftProgress = 0
     var maxCraftProgress = 0
     private var activeRecipe: Identifier? = null
 
-    override val mruStorage = MRUStorageContainer(5000, MRUTypeRegistry.instance.radiationUnit) { setChanged() }
+    override val mruStorage = MRUStorageContainer(5000, MRUTypeRegistry.radiationUnit) { setChanged() }
     override val balance = MRUBalanceContainer { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.RECEIVER
     override val locator = MRUDevice.LocatorData(this, BOUND_GEM_SLOT)
@@ -72,7 +71,7 @@ class RadiatingChamberEntity(
         super.loadAdditional(input)
     }
 
-    override fun getDefaultName(): Component = BlockRegistry.instance.radiatingChamber.name
+    override fun getDefaultName(): Component = BlockRegistry.radiatingChamber.get().name
 
     override fun getItems(): NonNullList<ItemStack> = this.items
 

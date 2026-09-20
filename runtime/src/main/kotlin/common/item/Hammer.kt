@@ -40,7 +40,7 @@ class Hammer(
 
             is AssemblyResult.Failure -> {
                 if (!::cachedRecipe.isInitialized) {
-                    this.cachedRecipe = CachedRecipe(RecipeTypeRegistry.instance.structure)
+                    this.cachedRecipe = CachedRecipe(RecipeTypeRegistry.structure.get())
                 }
 
                 val craftingInput = SingleRecipeInput(context.itemInHand)

@@ -4,14 +4,8 @@ import com.algorithmlx.ecr.api.client.research.BookElementRenderContext
 import com.algorithmlx.ecr.api.client.research.BookElementRenderers
 import com.algorithmlx.ecr.api.client.research.BookRecipeRenderers
 import com.algorithmlx.ecr.api.multiblock.MultiblockDefinitions
-import com.algorithmlx.ecr.api.research.*
-import com.algorithmlx.ecr.api.research.content.AssembledMultiblockBookElement
-import com.algorithmlx.ecr.api.research.content.BlockBookElement
-import com.algorithmlx.ecr.api.research.content.BookMultiblockElement
-import com.algorithmlx.ecr.api.research.content.GroupBookElement
-import com.algorithmlx.ecr.api.research.content.ItemBookElement
-import com.algorithmlx.ecr.api.research.content.MultiblockBookElement
-import com.algorithmlx.ecr.api.research.content.TextBookElement
+import com.algorithmlx.ecr.api.research.ResearchIds
+import com.algorithmlx.ecr.api.research.content.*
 import com.algorithmlx.ecr.client.book.BookLinkedTextLayout
 import com.algorithmlx.ecr.client.book.controller.MultiblockBookPreviewController
 import com.algorithmlx.ecr.client.book.recipe.mod.MagicTableRenderer
@@ -24,8 +18,8 @@ import com.algorithmlx.ecr.client.book.recipe.vanilla.StonecutterRecipeRenderer
 import com.algorithmlx.ecr.registry.RecipeTypeRegistry
 import net.minecraft.client.Minecraft
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import net.minecraft.world.item.crafting.RecipeType
 
@@ -48,10 +42,10 @@ object BookDefaultRenderers {
         BookRecipeRenderers.register(RecipeType.CAMPFIRE_COOKING, CookingRecipeRenderer.CampfireCooking)
         BookRecipeRenderers.register(RecipeType.STONECUTTING, StonecutterRecipeRenderer)
 
-        BookRecipeRenderers.register(RecipeTypeRegistry.instance.mithrilineFurnace, MithrilineFurnaceRenderer)
-        BookRecipeRenderers.register(RecipeTypeRegistry.instance.structure, StructureRecipeRenderer)
-        BookRecipeRenderers.register(RecipeTypeRegistry.instance.magicTable, MagicTableRenderer)
-        BookRecipeRenderers.register(RecipeTypeRegistry.instance.radiatingChamber, RadiatingChamberRenderer)
+        BookRecipeRenderers.register(RecipeTypeRegistry.mithrilineFurnace.get(), MithrilineFurnaceRenderer)
+        BookRecipeRenderers.register(RecipeTypeRegistry.structure.get(), StructureRecipeRenderer)
+        BookRecipeRenderers.register(RecipeTypeRegistry.magicTable.get(), MagicTableRenderer)
+        BookRecipeRenderers.register(RecipeTypeRegistry.radiatingChamber.get(), RadiatingChamberRenderer)
     }
 
     private fun renderText(

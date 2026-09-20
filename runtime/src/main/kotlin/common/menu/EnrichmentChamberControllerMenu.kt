@@ -15,7 +15,7 @@ class EnrichmentChamberControllerMenu(
     inv: Inventory,
     access: ContainerLevelAccess,
     val blockEntity: BlockEntity?
-): AbstractMenu(MenuTypeRegistry.instance.enrichmentChamberController, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.enrichmentChamberController, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData): this(
         containerId, inventory, ContainerLevelAccess.NULL,
         inventory.player.level().getBlockEntity(typeData.pos)
@@ -49,5 +49,5 @@ class EnrichmentChamberControllerMenu(
     }
 
     override fun stillValid(player: Player): Boolean =
-        stillValid(access, player, BlockRegistry.instance.enrichmentChamberController)
+        stillValid(access, player, BlockRegistry.enrichmentChamberController.get())
 }

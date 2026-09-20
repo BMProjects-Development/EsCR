@@ -1,9 +1,5 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDataIO
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartData
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntity
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblocks
 import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingManager
 import com.algorithmlx.ecr.api.geo.GeoAnimatable
@@ -19,10 +15,14 @@ import com.algorithmlx.ecr.api.mru.processReceive
 import com.algorithmlx.ecr.api.mru.saveMRUData
 import com.algorithmlx.ecr.api.mru.storage.IOMRUStorage
 import com.algorithmlx.ecr.api.mru.storage.MRUStorageContainer
+import com.algorithmlx.ecr.api.multiblock.MultiblockDefinitions
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDataIO
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartData
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntity
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblocks
 import com.algorithmlx.ecr.common.api.BoundGemHelper
 import com.algorithmlx.ecr.common.menu.RayTowerMenu
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
-import com.algorithmlx.ecr.api.multiblock.MultiblockDefinitions
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.core.BlockPos
 import net.minecraft.core.NonNullList
@@ -43,7 +43,7 @@ class RayTowerEntity(
     worldPosition: BlockPos,
     blockState: BlockState
 ): SynchronizedContainerBlockEntity(
-    BlockEntityTypeRegistry.instance.rayTower, worldPosition, blockState
+    BlockEntityTypeRegistry.rayTower.get(), worldPosition, blockState
 ), MRUDevice, AssembledMultiblockPartEntity, GeoAnimatable {
     override var assembledMultiblockData: AssembledMultiblockPartData? = null
         private set
@@ -110,7 +110,7 @@ class RayTowerEntity(
         setChanged()
     }
 
-    override val mruStorage: IOMRUStorage = MRUStorageContainer(5000, MRUTypeRegistry.instance.radiationUnit) {
+    override val mruStorage: IOMRUStorage = MRUStorageContainer(5000, MRUTypeRegistry.radiationUnit) {
         this.setChanged()
     }
     override val balance = MRUBalanceContainer { setChanged() }

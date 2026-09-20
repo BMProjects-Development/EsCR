@@ -1,10 +1,10 @@
 package com.algorithmlx.ecr.common.menu
 
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntity
 import com.algorithmlx.ecr.api.container.AbstractMenu
 import com.algorithmlx.ecr.api.container.slot.VanillaSpecialSlot
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.menu.MenuTypeData
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntity
 import com.algorithmlx.ecr.common.api.BoundGemHelper
 import com.algorithmlx.ecr.registry.BlockRegistry
 import com.algorithmlx.ecr.registry.MenuTypeRegistry
@@ -22,7 +22,7 @@ class RayTowerMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess,
-) : AbstractMenu(MenuTypeRegistry.instance.rayTower, containerId, access) {
+) : AbstractMenu(MenuTypeRegistry.rayTower, containerId, access) {
     constructor(containerId: Int, inv: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inv,
@@ -70,7 +70,7 @@ class RayTowerMenu(
         return if (stack.count == copy.count) ItemStack.EMPTY else copy
     }
 
-    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.instance.rayTower) && isAssembled()
+    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.rayTower.get()) && isAssembled()
 
     private fun isAssembled(): Boolean = (blockEntity as? AssembledMultiblockPartEntity)?.isAssembledMultiblock == true
 }

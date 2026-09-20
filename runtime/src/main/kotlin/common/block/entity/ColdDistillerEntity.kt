@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
 class ColdDistillerEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(
-    BlockEntityTypeRegistry.instance.coldDistiller, worldPosition, blockState
+    BlockEntityTypeRegistry.coldDistiller.get(), worldPosition, blockState
 ), MRUDevice {
     var mruGenerationRemainder = 0F
     var destroyTime = 0
@@ -39,7 +39,7 @@ class ColdDistillerEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         super.loadAdditional(input)
     }
 
-    override val mruStorage: IOMRUStorage = MRUStorageContainer(100000, MRUTypeRegistry.instance.radiationUnit) { setChanged() }
+    override val mruStorage: IOMRUStorage = MRUStorageContainer(100000, MRUTypeRegistry.radiationUnit) { setChanged() }
     override val balance = MRUBalanceContainer(initialUpperBalance = config.balanceProduced, initialLowerBalance = config.balanceProduced) { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.TRANSLATOR
 

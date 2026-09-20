@@ -13,7 +13,7 @@ class PlayerMatrixComponent(mru: Int): ModifiableMRUStorage {
     private var mutableMRU: Int = mru.coerceAtLeast(0)
     override val mru: Int get() = mutableMRU
     override val mruCapacity: Int = Int.MAX_VALUE
-    override val mruType: MRUType = MRUTypeRegistry.instance.ubmru
+    override val mruType: MRUType = MRUTypeRegistry.ubmru
 
     override val isFilled: Boolean = this.mutableMRU == Int.MAX_VALUE
 

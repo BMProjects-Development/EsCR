@@ -72,9 +72,9 @@ class MagicTableRecipe(
 
     override fun group(): String = "$ModId:${ECRModIDs.MAGIC_TABLE}"
 
-    override fun getSerializer(): RecipeSerializer<out Recipe<Input>> = RecipeSerializerRegistry.instance.magicTable
+    override fun getSerializer(): RecipeSerializer<out Recipe<Input>> = RecipeSerializerRegistry.magicTable
 
-    override fun getType(): RecipeType<out Recipe<Input>> = RecipeTypeRegistry.instance.magicTable
+    override fun getType(): RecipeType<out Recipe<Input>> = RecipeTypeRegistry.magicTable.get()
 
     override fun placementInfo(): PlacementInfo = PlacementInfo.NOT_PLACEABLE
 
@@ -95,7 +95,7 @@ class MagicTableRecipe(
                 ),
                 Optional.ofNullable(catalyst.getOrNull()?.display()),
                 SlotDisplay.ItemStackSlotDisplay(result),
-                SlotDisplay.ItemSlotDisplay(BlockRegistry.instance.magicTable.asItem()),
+                SlotDisplay.ItemSlotDisplay(BlockRegistry.magicTable.get().asItem()),
             ),
         )
 
@@ -132,7 +132,7 @@ class MagicTableRecipe(
 
         override fun craftingStation(): SlotDisplay = this.station
 
-        override fun type(): RecipeDisplay.Type<out RecipeDisplay> = RecipeDisplayTypeRegistry.instance.magicTable
+        override fun type(): RecipeDisplay.Type<out RecipeDisplay> = RecipeDisplayTypeRegistry.magicTable
 
         companion object {
             @JvmField

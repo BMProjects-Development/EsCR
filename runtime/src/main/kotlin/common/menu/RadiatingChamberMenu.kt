@@ -12,9 +12,7 @@ import net.minecraft.world.Container
 import net.minecraft.world.SimpleContainer
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
-import net.minecraft.world.inventory.ContainerData
 import net.minecraft.world.inventory.ContainerLevelAccess
-import net.minecraft.world.inventory.SimpleContainerData
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.entity.BlockEntity
 
@@ -24,7 +22,7 @@ class RadiatingChamberMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess
-) : AbstractMenu(MenuTypeRegistry.instance.radiatingChamber, containerId, access) {
+) : AbstractMenu(MenuTypeRegistry.radiatingChamber, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inventory,
@@ -77,7 +75,7 @@ class RadiatingChamberMenu(
         return copy
     }
 
-    override fun stillValid(player: Player): Boolean = stillValid(this.access, player, BlockRegistry.instance.radiatingChamber)
+    override fun stillValid(player: Player): Boolean = stillValid(this.access, player, BlockRegistry.radiatingChamber.get())
 
     companion object {
         const val MACHINE_SLOTS = 4

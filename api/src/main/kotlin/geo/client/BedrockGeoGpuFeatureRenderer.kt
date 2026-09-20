@@ -34,11 +34,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         palettes.beginFrame()
     }
 
-    override fun prepareGroup(
-        context: FeatureFrameContext,
-        submits: List<BedrockGeoGpuSubmit>,
-        strictlyOrdered: Boolean
-    ) {
+    override fun prepareGroup(context: FeatureFrameContext, submits: List<BedrockGeoGpuSubmit>, strictlyOrdered: Boolean) {
         if (BedrockGeoGpuRuntime.failed) {
             groups.add(emptyList())
             return
@@ -112,20 +108,17 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         indexBuffer: GpuBuffer,
         indexType: IndexType
     ) {
-        val pipeline = if (stage == null) {
-            prepared.pipeline()
-        } else {
-            requireNotNull(prepared.oitPipelineSet()) {
-                "OIT pipeline set is missing for ${prepared.name()}"
-            }.getPipeline(stage)
-        }
+        val pipeline = if (stage == null) prepared.pipeline()
+        else requireNotNull(prepared.oitPipelineSet()) {
+            "OIT pipeline set is missing for ${prepared.name()}"
+        }.getPipeline(stage)
+
         pass.setPipeline(RenderSystem.getCompiledPipeline(pipeline))
         if (prepared.scissorState().enabled()) {
             val scissor = prepared.scissorState()
             pass.enableScissor(scissor.x(), scissor.y(), scissor.width(), scissor.height())
-        } else {
-            pass.disableScissor()
-        }
+        } else pass.disableScissor()
+
         RenderSystem.bindDefaultUniforms(pass)
         pass.setUniform("DynamicTransforms", prepared.dynamicTransforms())
         pass.setUniform("GeoInfo", batch.info)
@@ -247,11 +240,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
             retired.clear()
         }
 
-        private fun writePalette(
-            model: BakedGeoModel,
-            submits: List<BedrockGeoGpuSubmit>,
-            target: ByteBuffer
-        ) {
+        private fun writePalette(model: BakedGeoModel, submits: List<BedrockGeoGpuSubmit>, target: ByteBuffer) {
             val transform = Matrix4f()
             val normal = Matrix3f()
             submits.forEach { submit ->

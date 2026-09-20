@@ -53,32 +53,32 @@ object FabricClientInit {
         MultiblockPreviewGuiBridgeInit.init()
         ResearchBookClient.init()
 
-        BlockEntityRenderers.register(BlockEntityTypeRegistry.instance.mithrilineFurnace, ::MithrilineFurnaceRenderer)
+        BlockEntityRenderers.register(BlockEntityTypeRegistry.mithrilineFurnace.get(), ::MithrilineFurnaceRenderer)
         BlockEntityRenderers.register(
-            BlockEntityTypeRegistry.instance.assembledMultiblockPart,
+            BlockEntityTypeRegistry.assembledMultiblockPart.get(),
             ::AssembledMultiblockRenderer,
         )
         BlockEntityRenderers.register(
-            BlockEntityTypeRegistry.instance.rayTower,
+            BlockEntityTypeRegistry.rayTower.get(),
             ::AssembledMultiblockRenderer,
         )
-        BlockEntityRenderers.register(BlockEntityTypeRegistry.instance.matrixDestructor, ::MatrixDestructorRenderer)
+        BlockEntityRenderers.register(BlockEntityTypeRegistry.matrixDestructor.get(), ::MatrixDestructorRenderer)
         BlockEntityRenderers.register(
-            BlockEntityTypeRegistry.instance.enrichmentChamberController,
+            BlockEntityTypeRegistry.enrichmentChamberController.get(),
             ::EnrichmentChamberControllerRenderer,
         )
 
         ModelLayerRegistry.registerModelLayer(MithrilineFurnaceRenderer.MF_LAYER, MithrilineFurnaceRenderer::createBodyLayer)
 
-        MenuScreens.register(MenuTypeRegistry.instance.mithrilineFurnace, ::MithrilineFurnaceScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.radiatingChamber, ::RadiatingChamberScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.heatGenerator, ::HeatGeneratorScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.magicTable, ::MagicTableMenuScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.matrixDestructor, ::MatrixDestructorScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.enrichmentChamberController, ::EnrichmentChamberControllerScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.enrichmentChamberReceiver, ::EnrichmentChamberReceiverScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.rayTower, ::RayTowerScreen)
-        MenuScreens.register(MenuTypeRegistry.instance.magicalTeleporter, ::MagicalTeleporterScreen)
+        MenuScreens.register(MenuTypeRegistry.mithrilineFurnace, ::MithrilineFurnaceScreen)
+        MenuScreens.register(MenuTypeRegistry.radiatingChamber, ::RadiatingChamberScreen)
+        MenuScreens.register(MenuTypeRegistry.heatGenerator, ::HeatGeneratorScreen)
+        MenuScreens.register(MenuTypeRegistry.magicTable, ::MagicTableMenuScreen)
+        MenuScreens.register(MenuTypeRegistry.matrixDestructor, ::MatrixDestructorScreen)
+        MenuScreens.register(MenuTypeRegistry.enrichmentChamberController, ::EnrichmentChamberControllerScreen)
+        MenuScreens.register(MenuTypeRegistry.enrichmentChamberReceiver, ::EnrichmentChamberReceiverScreen)
+        MenuScreens.register(MenuTypeRegistry.rayTower, ::RayTowerScreen)
+        MenuScreens.register(MenuTypeRegistry.magicalTeleporter, ::MagicalTeleporterScreen)
     }
 
     private fun registerTooltipEvent() {

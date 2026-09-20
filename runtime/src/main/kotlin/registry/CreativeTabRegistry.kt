@@ -1,13 +1,32 @@
 package com.algorithmlx.ecr.registry
 
-import net.minecraft.world.item.CreativeModeTab
+import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.registries.CreativeTabBuilder
+import com.algorithmlx.ecr.api.registries.RegistrationHandler
+import com.algorithmlx.ecr.api.utils.ecRL
+import com.algorithmlx.ecr.common.init.ECRModIDs
+import net.minecraft.core.registries.Registries
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.ResourceKey
+import net.minecraft.world.item.ItemStack
 
-interface CreativeTabRegistry {
-    val items: CreativeModeTab
-    val blocks: CreativeModeTab
+object CreativeTabRegistry : RegistrationHandler(ModId) {
+    private val itemsKey = ResourceKey.create(
+        Registries.CREATIVE_MODE_TAB,
+        ECRModIDs.TAB_ITEMS.ecRL,
+    )
+    val items = registerCreativeTab(ECRModIDs.TAB_ITEMS) {
+        CreativeTabBuilder()
+            .icon { ItemStack(ItemRegistry.elementalGem.get()) }
+            .title(Component.translatable("itemGroup.$ModId.items"))
+            .build()
+    }
 
-    companion object {
-        @JvmStatic
-        lateinit var instance: CreativeTabRegistry
+    val blocks = registerCreativeTab(ECRModIDs.TAB_BLOCKS) {
+        CreativeTabBuilder()
+            .icon { ItemStack(BlockRegistry.mithrilineFurnace.get()) }
+            .title(Component.translatable("itemGroup.$ModId.blocks"))
+            .withTabsBefore(itemsKey)
+            .build()
     }
 }

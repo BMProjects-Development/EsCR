@@ -28,7 +28,7 @@ class EnrichmentChamberReceiverEntity(
     worldPosition: BlockPos,
     blockState: BlockState
 ): SynchronizedContainerBlockEntity(
-    BlockEntityTypeRegistry.instance.enrichmentChamberReceiver,
+    BlockEntityTypeRegistry.enrichmentChamberReceiver.get(),
     worldPosition,
     blockState
 ), MRUDevice, EnrichmentChamber {
@@ -87,7 +87,7 @@ class EnrichmentChamberReceiverEntity(
             ?.let { level?.getBlockEntity(it) as? EnrichmentChamberControllerEntity }
 
     override val mruStorage: IOMRUStorage field = SynchronizedMRUStorageContainer(
-        MRUTypeRegistry.instance.radiationUnit
+        MRUTypeRegistry.radiationUnit
     ) {
         controllerEntity?.mruStorage
     }

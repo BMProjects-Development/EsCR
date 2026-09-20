@@ -41,7 +41,7 @@ import org.joml.Vector3f
 class MagicalTeleporterEntity(
     worldPosition: BlockPos,
     blockState: BlockState,
-) : SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.instance.magicalTeleporter, worldPosition, blockState),
+) : SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.magicalTeleporter.get(), worldPosition, blockState),
     MRUDevice {
     private var items: NonNullList<ItemStack> = NonNullList.withSize(2, ItemStack.EMPTY)
     private var progressTime = 0
@@ -104,7 +104,7 @@ class MagicalTeleporterEntity(
 
     override fun getContainerSize(): Int = this.items.size
 
-    override val mruStorage: IOMRUStorage = MRUStorageContainer(50000, MRUTypeRegistry.instance.radiationUnit) { this.setChanged() }
+    override val mruStorage: IOMRUStorage = MRUStorageContainer(50000, MRUTypeRegistry.radiationUnit) { this.setChanged() }
     override val balance = MRUBalanceContainer { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.CONNECTABLE_RECEIVER
     override val locator: MRUDevice.LocatorData = MRUDevice.LocatorData(this, 0)
@@ -130,7 +130,7 @@ class MagicalTeleporterEntity(
         fun hasValidStructure(
             level: Level,
             pos: BlockPos,
-        ): Boolean = MultiblockRegistry.instance.magicalTeleporter.findPlacement(level, pos, BlockPos(2, 0, 2)) != null
+        ): Boolean = MultiblockRegistry.magicalTeleporter.findPlacement(level, pos, BlockPos(2, 0, 2)) != null
 
         @JvmStatic
         fun onTick(
@@ -210,7 +210,7 @@ class MagicalTeleporterEntity(
                 return
             }
 
-            val destOpt = dimensionalLevel.getBlockEntity(destPos, BlockEntityTypeRegistry.instance.magicalTeleporter)
+            val destOpt = dimensionalLevel.getBlockEntity(destPos, BlockEntityTypeRegistry.magicalTeleporter.get())
             if (!destOpt.isPresent) {
                 blockEntity.resetProgress()
                 return

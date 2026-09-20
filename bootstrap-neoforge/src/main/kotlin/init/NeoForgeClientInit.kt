@@ -112,33 +112,33 @@ object NeoForgeClientInit {
             GeoAnimationNetwork.stopClientEntityAnimation = ClientGeoAnimations::handle
             GeoAnimationNetwork.stopClientItemAnimation = ClientGeoAnimations::handle
 
-            BlockEntityRenderers.register(BlockEntityTypeRegistry.instance.mithrilineFurnace, ::MithrilineFurnaceRenderer)
+            BlockEntityRenderers.register(BlockEntityTypeRegistry.mithrilineFurnace.get(), ::MithrilineFurnaceRenderer)
             BlockEntityRenderers.register(
-                BlockEntityTypeRegistry.instance.assembledMultiblockPart,
+                BlockEntityTypeRegistry.assembledMultiblockPart.get(),
                 ::AssembledMultiblockRenderer,
             )
             BlockEntityRenderers.register(
-                BlockEntityTypeRegistry.instance.rayTower,
+                BlockEntityTypeRegistry.rayTower.get(),
                 ::AssembledMultiblockRenderer,
             )
-            BlockEntityRenderers.register(BlockEntityTypeRegistry.instance.matrixDestructor, ::MatrixDestructorRenderer)
+            BlockEntityRenderers.register(BlockEntityTypeRegistry.matrixDestructor.get(), ::MatrixDestructorRenderer)
             BlockEntityRenderers.register(
-                BlockEntityTypeRegistry.instance.enrichmentChamberController,
+                BlockEntityTypeRegistry.enrichmentChamberController.get(),
                 ::EnrichmentChamberControllerRenderer,
             )
         }
     }
 
     private fun onMenuScreen(event: RegisterMenuScreensEvent) {
-        event.register(MenuTypeRegistry.instance.mithrilineFurnace, ::MithrilineFurnaceScreen)
-        event.register(MenuTypeRegistry.instance.radiatingChamber, ::RadiatingChamberScreen)
-        event.register(MenuTypeRegistry.instance.heatGenerator, ::HeatGeneratorScreen)
-        event.register(MenuTypeRegistry.instance.magicTable, ::MagicTableMenuScreen)
-        event.register(MenuTypeRegistry.instance.matrixDestructor, ::MatrixDestructorScreen)
-        event.register(MenuTypeRegistry.instance.enrichmentChamberController, ::EnrichmentChamberControllerScreen)
-        event.register(MenuTypeRegistry.instance.enrichmentChamberReceiver, ::EnrichmentChamberReceiverScreen)
-        event.register(MenuTypeRegistry.instance.rayTower, ::RayTowerScreen)
-        event.register(MenuTypeRegistry.instance.magicalTeleporter, ::MagicalTeleporterScreen)
+        event.register(MenuTypeRegistry.mithrilineFurnace, ::MithrilineFurnaceScreen)
+        event.register(MenuTypeRegistry.radiatingChamber, ::RadiatingChamberScreen)
+        event.register(MenuTypeRegistry.heatGenerator, ::HeatGeneratorScreen)
+        event.register(MenuTypeRegistry.magicTable, ::MagicTableMenuScreen)
+        event.register(MenuTypeRegistry.matrixDestructor, ::MatrixDestructorScreen)
+        event.register(MenuTypeRegistry.enrichmentChamberController, ::EnrichmentChamberControllerScreen)
+        event.register(MenuTypeRegistry.enrichmentChamberReceiver, ::EnrichmentChamberReceiverScreen)
+        event.register(MenuTypeRegistry.rayTower, ::RayTowerScreen)
+        event.register(MenuTypeRegistry.magicalTeleporter, ::MagicalTeleporterScreen)
     }
 
     private fun onRegisterClientPayloads(event: RegisterClientPayloadHandlersEvent) {
@@ -160,7 +160,7 @@ object NeoForgeClientInit {
     }
 
     private fun onRegisterEntityRenderers(event: EntityRenderersEvent.RegisterRenderers) {
-        event.registerBlockEntityRenderer(BlockEntityTypeRegistry.instance.mithrilineFurnace, ::MithrilineFurnaceRenderer)
+        event.registerBlockEntityRenderer(BlockEntityTypeRegistry.mithrilineFurnace.get(), ::MithrilineFurnaceRenderer)
     }
 
     private fun onRegisterEntityModelLayer(event: EntityRenderersEvent.RegisterLayerDefinitions) {

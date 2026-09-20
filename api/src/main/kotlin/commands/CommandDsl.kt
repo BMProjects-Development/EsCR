@@ -20,7 +20,7 @@ import com.mojang.brigadier.tree.ArgumentCommandNode
 import com.mojang.brigadier.tree.CommandNode
 import com.mojang.brigadier.tree.LiteralCommandNode
 import com.mojang.brigadier.tree.RootCommandNode
-import java.util.Locale
+import java.util.*
 import java.util.concurrent.CompletableFuture
 import java.util.function.Predicate
 import kotlin.reflect.KProperty
@@ -37,8 +37,7 @@ class LiteralReference<S> internal constructor(
     override val node: LiteralCommandNode<S>,
     val aliases: Map<String, LiteralCommandNode<S>>,
 ) : CommandTarget<S> {
-    val name: String
-        get() = node.name
+    val name: String get() = node.name
 }
 
 class CommandArgument<S, T> internal constructor(
@@ -48,10 +47,9 @@ class CommandArgument<S, T> internal constructor(
 ) : CommandTarget<S> {
     private var attachedNode: ArgumentCommandNode<S, *>? = null
 
-    override val node: ArgumentCommandNode<S, *>
-        get() = checkNotNull(attachedNode) {
-            "Argument '$name' has not been attached to the command tree yet"
-        }
+    override val node: ArgumentCommandNode<S, *> get() = checkNotNull(attachedNode) {
+        "Argument '$name' has not been attached to the command tree yet"
+    }
 
     fun read(context: CommandContext<S>): T = reader(context, name)
 
@@ -65,8 +63,7 @@ operator fun <S, T> CommandContext<S>.get(argument: CommandArgument<S, T>): T = 
 
 inline fun <S, reified T : Any> CommandContext<S>.argument(name: String): T = getArgument(name, T::class.java)
 
-inline fun <S, reified T : Any> CommandContext<S>.argumentOrNull(name: String): T? =
-    runCatching { argument<S, T>(name) }.getOrNull()
+inline fun <S, reified T : Any> CommandContext<S>.argumentOrNull(name: String): T? = runCatching { argument<S, T>(name) }.getOrNull()
 
 class CommandArguments<S> internal constructor(private val context: CommandContext<S>) {
     @Suppress("UNCHECKED_CAST")
@@ -82,30 +79,17 @@ class CommandArguments<S> internal constructor(private val context: CommandConte
 }
 
 open class CommandCall<S> internal constructor(val context: CommandContext<S>) {
-    val source: S
-        get() = context.source
-
-    val input: String
-        get() = context.input
-
-    val range: StringRange
-        get() = context.range
-
-    val nodes: List<ParsedCommandNode<S>>
-        get() = context.nodes
-
-    val rootNode: CommandNode<S>
-        get() = context.rootNode
-
+    val source: S get() = context.source
+    val input: String get() = context.input
+    val range: StringRange get() = context.range
+    val nodes: List<ParsedCommandNode<S>> get() = context.nodes
+    val rootNode: CommandNode<S> get() = context.rootNode
     val arguments: CommandArguments<S> = CommandArguments(context)
-
-    val args: CommandArguments<S>
-        get() = arguments
+    val args: CommandArguments<S> get() = arguments
 
     inline fun <reified T : Any> argument(name: String): T = context.getArgument(name, T::class.java)
 
-    inline fun <reified T : Any> argumentOrNull(name: String): T? =
-        runCatching { argument<T>(name) }.getOrNull()
+    inline fun <reified T : Any> argumentOrNull(name: String): T? = runCatching { argument<T>(name) }.getOrNull()
 
     operator fun <T> CommandArgument<S, T>.invoke(): T = read(context)
 
@@ -114,16 +98,13 @@ open class CommandCall<S> internal constructor(val context: CommandContext<S>) {
 
 class CommandSuggestions<S> internal constructor(
     context: CommandContext<S>,
-    val builder: SuggestionsBuilder,
+    val builder: SuggestionsBuilder
 ) : CommandCall<S>(context) {
-    val remaining: String
-        get() = builder.remaining
+    val remaining: String get() = builder.remaining
 
-    val remainingLowerCase: String
-        get() = builder.remainingLowerCase
+    val remainingLowerCase: String get() = builder.remainingLowerCase
 
-    val start: Int
-        get() = builder.start
+    val start: Int get() = builder.start
 
     fun suggest(value: String, tooltip: com.mojang.brigadier.Message? = null) {
         if (tooltip == null) builder.suggest(value) else builder.suggest(value, tooltip)
@@ -143,12 +124,10 @@ class CommandSuggestions<S> internal constructor(
 
     fun suggestMatching(values: Iterable<String>, ignoreCase: Boolean = true) {
         val prefix = if (ignoreCase) remainingLowerCase else remaining
-        values.asSequence()
-            .filter { value ->
-                val candidate = if (ignoreCase) value.lowercase(Locale.ROOT) else value
-                candidate.startsWith(prefix)
-            }
-            .forEach(::suggest)
+        values.asSequence().filter { value ->
+            val candidate = if (ignoreCase) value.lowercase(Locale.ROOT) else value
+            candidate.startsWith(prefix)
+        }.forEach(::suggest)
     }
 
     fun atOffset(offset: Int, block: CommandSuggestions<S>.() -> Unit) {
@@ -169,10 +148,9 @@ class CommandSuggestions<S> internal constructor(
 data class CommandResult<S>(
     val context: CommandContext<S>,
     val success: Boolean,
-    val result: Int,
+    val result: Int
 ) {
-    val source: S
-        get() = context.source
+    val source: S get() = context.source
 }
 
 @BrigadierCommandDsl
@@ -186,13 +164,13 @@ abstract class CommandContainer<S> internal constructor() {
     fun literal(
         name: String,
         vararg aliases: String,
-        block: LiteralCommandScope<S>.() -> Unit = {},
+        block: LiteralCommandScope<S>.() -> Unit = {}
     ): LiteralReference<S> = literal(name, aliases.asIterable(), block)
 
     fun literal(
         name: String,
         aliases: Iterable<String>,
-        block: LiteralCommandScope<S>.() -> Unit = {},
+        block: LiteralCommandScope<S>.() -> Unit = {}
     ): LiteralReference<S> {
         require(name.isNotBlank()) { "A command literal cannot be blank" }
 
@@ -232,14 +210,14 @@ abstract class CommandContainer<S> internal constructor() {
     fun <T> argument(
         name: String,
         type: ArgumentType<T>,
-        block: ArgumentCommandScope<S, T>.(CommandArgument<S, T>) -> Unit = {},
+        block: ArgumentCommandScope<S, T>.(CommandArgument<S, T>) -> Unit = {}
     ): CommandArgument<S, T> = argument(name, type, ::readParsedArgument, block)
 
     fun <Parsed, T> argument(
         name: String,
         type: ArgumentType<Parsed>,
         read: (CommandContext<S>, String) -> T,
-        block: ArgumentCommandScope<S, Parsed>.(CommandArgument<S, T>) -> Unit,
+        block: ArgumentCommandScope<S, Parsed>.(CommandArgument<S, T>) -> Unit
     ): CommandArgument<S, T> {
         require(name.isNotBlank()) { "An argument name cannot be blank" }
 
@@ -262,7 +240,7 @@ abstract class CommandContainer<S> internal constructor() {
 
 @BrigadierCommandDsl
 abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal constructor(
-    val brigadier: B,
+    val brigadier: B
 ) : CommandContainer<S>() {
     override fun attach(node: CommandNode<S>): CommandNode<S> {
         brigadier.then(node)
@@ -319,7 +297,7 @@ abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal construct
     fun forward(
         target: CommandNode<S>,
         forks: Boolean,
-        modifier: (CommandCall<S>.() -> Collection<S>)? = null,
+        modifier: (CommandCall<S>.() -> Collection<S>)? = null
     ) {
         val nativeModifier = modifier?.let { operation ->
             RedirectModifier<S> { context -> CommandCall(context).operation() }
@@ -342,7 +320,7 @@ abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal construct
 
 @BrigadierCommandDsl
 class LiteralCommandScope<S> internal constructor(
-    brigadier: LiteralArgumentBuilder<S>,
+    brigadier: LiteralArgumentBuilder<S>
 ) : CommandNodeScope<S, LiteralArgumentBuilder<S>>(brigadier) {
     internal val declaredAliases = linkedSetOf<String>()
 
@@ -357,7 +335,7 @@ class LiteralCommandScope<S> internal constructor(
 
 @BrigadierCommandDsl
 class ArgumentCommandScope<S, T> internal constructor(
-    brigadier: RequiredArgumentBuilder<S, T>,
+    brigadier: RequiredArgumentBuilder<S, T>
 ) : CommandNodeScope<S, RequiredArgumentBuilder<S, T>>(brigadier) {
     fun suggests(provider: SuggestionProvider<S>) {
         brigadier.suggests(provider)
@@ -385,7 +363,7 @@ class ArgumentCommandScope<S, T> internal constructor(
 
 @BrigadierCommandDsl
 class CommandTreeScope<S> internal constructor(
-    val dispatcher: CommandDispatcher<S>,
+    val dispatcher: CommandDispatcher<S>
 ) : CommandContainer<S>() {
     val root: RootCommandNode<S>
         get() = dispatcher.root

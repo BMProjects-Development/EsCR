@@ -21,7 +21,7 @@ class MagicalTeleporterMenu(
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess
 ): AbstractMenu(
-    MenuTypeRegistry.instance.magicalTeleporter, containerId,
+    MenuTypeRegistry.magicalTeleporter, containerId,
     access
 ) {
     constructor(containerId: Int, inv: Inventory, data: MenuTypeData): this(
@@ -40,5 +40,5 @@ class MagicalTeleporterMenu(
         slotIndex: Int
     ): ItemStack = ItemStack.EMPTY // later
 
-    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.instance.magicalTeleporter)
+    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.magicalTeleporter.get())
 }

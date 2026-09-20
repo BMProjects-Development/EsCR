@@ -60,9 +60,9 @@ class RadiatingChamberRecipe(
 
     override fun group(): String = "$ModId:${ECRModIDs.RADIATING_CHAMBER}"
 
-    override fun getSerializer(): RecipeSerializer<out Recipe<Input>> = RecipeSerializerRegistry.instance.radiatingChamber
+    override fun getSerializer(): RecipeSerializer<out Recipe<Input>> = RecipeSerializerRegistry.radiatingChamber
 
-    override fun getType(): RecipeType<out Recipe<Input>> = RecipeTypeRegistry.instance.radiatingChamber
+    override fun getType(): RecipeType<out Recipe<Input>> = RecipeTypeRegistry.radiatingChamber.get()
 
     override fun placementInfo(): PlacementInfo = PlacementInfo.NOT_PLACEABLE
 
@@ -73,7 +73,7 @@ class RadiatingChamberRecipe(
             input.display(),
             secondary.map(Ingredient::display).orElse(SlotDisplay.Empty.INSTANCE),
             SlotDisplay.ItemStackSlotDisplay(result),
-            SlotDisplay.ItemSlotDisplay(BlockRegistry.instance.radiatingChamber.asItem()),
+            SlotDisplay.ItemSlotDisplay(BlockRegistry.radiatingChamber.get().asItem()),
         ),
     )
 
@@ -128,7 +128,7 @@ class RadiatingChamberRecipe(
 
         override fun craftingStation(): SlotDisplay = station
 
-        override fun type(): RecipeDisplay.Type<out RecipeDisplay> = RecipeDisplayTypeRegistry.instance.radiatingChamber
+        override fun type(): RecipeDisplay.Type<out RecipeDisplay> = RecipeDisplayTypeRegistry.radiatingChamber
 
         companion object {
             @JvmField

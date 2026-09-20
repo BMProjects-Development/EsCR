@@ -17,7 +17,7 @@ class EnrichmentChamberReceiverMenu(
     inv: Inventory,
     container: Container,
     access: ContainerLevelAccess,
-): AbstractMenu(MenuTypeRegistry.instance.enrichmentChamberReceiver, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.enrichmentChamberReceiver, containerId, access) {
     constructor(containerId: Int, inventory: Inventory): this(
         containerId, inventory, SimpleContainer(1),
         ContainerLevelAccess.NULL
@@ -54,5 +54,5 @@ class EnrichmentChamberReceiverMenu(
         return if (stack.count == copy.count) ItemStack.EMPTY else copy
     }
 
-    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.instance.enrichmentChamberReceiver)
+    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.enrichmentChamberReceiver.get())
 }

@@ -1,12 +1,8 @@
 package com.algorithmlx.ecr.common.assembled
 
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDefinition
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockControllerBlock
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblocks
-import com.algorithmlx.ecr.api.multiblock.assembled.AssemblyFailureReason
-import com.algorithmlx.ecr.api.multiblock.assembled.AssemblyResult
 import com.algorithmlx.ecr.api.geo.AnimationType
 import com.algorithmlx.ecr.api.multiblock.MultiblockDefinitions
+import com.algorithmlx.ecr.api.multiblock.assembled.*
 import com.algorithmlx.ecr.common.block.AssembledMultiblockPartBlock
 import com.algorithmlx.ecr.registry.BlockRegistry
 import net.minecraft.core.BlockPos
@@ -31,7 +27,7 @@ object AssembledMultiblockRuntime {
         if (controller && controllerBlock != null) {
             controllerBlock.assembledState(originalState, partFacing)
         } else {
-            BlockRegistry.instance.assembledMultiblockPart.defaultBlockState()
+            BlockRegistry.assembledMultiblockPart.get().defaultBlockState()
                 .setValue(AssembledMultiblockPartBlock.CONTROLLER, controller)
                 .setValue(AssembledMultiblockPartBlock.FACING, partFacing)
         }

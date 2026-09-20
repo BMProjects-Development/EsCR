@@ -18,7 +18,7 @@ object RadiatingChamberRenderer: BookRecipeRenderer<RadiatingChamberRecipe> {
         val contentWidth = SLOT_SIZE * 2 + ITEM_SIZE + ELEMENT_GAP * 2
         val startX = (builder.width - contentWidth) / 2
         val resultY = (SLOT_SIZE + TEXT_GAP) / 2
-        val chamber = ItemStack(BlockRegistry.instance.radiatingChamber)
+        val chamber = ItemStack(BlockRegistry.radiatingChamber.get())
         val chamberX = startX + SLOT_SIZE + ELEMENT_GAP
         val chamberY = resultY + (SLOT_SIZE - ITEM_SIZE) / 2
 

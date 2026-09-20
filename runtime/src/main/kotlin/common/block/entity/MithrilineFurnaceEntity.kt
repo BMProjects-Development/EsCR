@@ -1,26 +1,22 @@
 package com.algorithmlx.ecr.common.block.entity
 
+import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
 import com.algorithmlx.ecr.api.mru.loadMRUData
 import com.algorithmlx.ecr.api.mru.saveMRUData
-import com.algorithmlx.ecr.api.recipe.CachedRecipe
-import com.algorithmlx.ecr.api.utils.StackHelper
 import com.algorithmlx.ecr.api.mru.storage.MRUStorageContainer
 import com.algorithmlx.ecr.api.particle.BedrockParticles
 import com.algorithmlx.ecr.api.particle.ClientParticleSystems
 import com.algorithmlx.ecr.api.particle.ParticleEmitter
 import com.algorithmlx.ecr.api.particle.Transform
+import com.algorithmlx.ecr.api.recipe.CachedRecipe
+import com.algorithmlx.ecr.api.utils.StackHelper
 import com.algorithmlx.ecr.api.utils.count
 import com.algorithmlx.ecr.api.utils.ecPrefix
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
 import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
-import com.algorithmlx.ecr.registry.BlockRegistry
-import com.algorithmlx.ecr.registry.MRUTypeRegistry
-import com.algorithmlx.ecr.registry.MultiblockRegistry
-import com.algorithmlx.ecr.registry.RecipeTypeRegistry
 import com.algorithmlx.ecr.common.menu.MithrilineFurnaceMenu
+import com.algorithmlx.ecr.registry.*
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.core.NonNullList
@@ -44,7 +40,7 @@ import kotlin.math.floor
 class MithrilineFurnaceEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.instance.mithrilineFurnace, worldPosition, blockState), MRUDevice, WorldlyContainer {
+): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.mithrilineFurnace.get(), worldPosition, blockState), MRUDevice, WorldlyContainer {
     @all:JvmName("items")
     private var items = NonNullList.withSize(2, ItemStack.EMPTY)
     private val containerData: ContainerData = object : ContainerData {
@@ -64,7 +60,7 @@ class MithrilineFurnaceEntity(
         override fun getCount(): Int = 2
     }
 
-    val recipe = CachedRecipe(RecipeTypeRegistry.instance.mithrilineFurnace)
+    val recipe = CachedRecipe(RecipeTypeRegistry.mithrilineFurnace.get())
 
     var structureIsValid = false
     var craftProgress = 0
@@ -121,7 +117,7 @@ class MithrilineFurnaceEntity(
 
     override fun getContainerSize(): Int = this.items.size
 
-    override val mruStorage: MRUStorageContainer = MRUStorageContainer(10000, MRUTypeRegistry.instance.espe)
+    override val mruStorage: MRUStorageContainer = MRUStorageContainer(10000, MRUTypeRegistry.espe)
     override val balance = MRUBalanceContainer { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.UNCONNECTABLE
 
@@ -144,7 +140,7 @@ class MithrilineFurnaceEntity(
     companion object {
         @JvmStatic
         fun hasValidStructure(level: Level, pos: BlockPos): Boolean =
-            MultiblockRegistry.instance.mithrilineFurnace.findPlacementAtCenter(level, pos) != null
+            MultiblockRegistry.mithrilineFurnace.findPlacementAtCenter(level, pos) != null
 
         @JvmStatic
         fun onTick(level: Level, pos: BlockPos, be: MithrilineFurnaceEntity) {
@@ -194,13 +190,13 @@ class MithrilineFurnaceEntity(
                     val bpDown = BlockPos(xo, pos.y + 1, zo)
                     val bsDown = level.getBlockState(bpDown)
 
-                    if (bsDown.`is`(BlockRegistry.instance.mithrilineCrystal) && downCrystalCount + 1 <= 12)
+                    if (bsDown.`is`(BlockRegistry.mithrilineCrystal.get()) && downCrystalCount + 1 <= 12)
                         downCrystalCount++
 
                     val bpUp = BlockPos(xo, pos.y + 3, zo)
                     val bsUp = level.getBlockState(bpUp)
 
-                    if (bsUp.`is`(BlockRegistry.instance.mithrilineCrystal) && upCrystalCount + 1 <= 5)
+                    if (bsUp.`is`(BlockRegistry.mithrilineCrystal.get()) && upCrystalCount + 1 <= 5)
                         upCrystalCount++
                 }
             }

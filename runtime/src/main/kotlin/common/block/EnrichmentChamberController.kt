@@ -13,11 +13,7 @@ import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.EntityBlock
-import net.minecraft.world.level.block.HorizontalDirectionalBlock
-import net.minecraft.world.level.block.Mirror
-import net.minecraft.world.level.block.Rotation
+import net.minecraft.world.level.block.*
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
@@ -80,7 +76,7 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
 
         @JvmStatic
         fun findPlacement(level: Level, pos: BlockPos, state: BlockState): MultiblockPlacement? {
-            val multiblock = MultiblockRegistry.instance.enrichmentChamber
+            val multiblock = MultiblockRegistry.enrichmentChamber
             val facing = state.getValue(FACING)
 
             return listOf(facing.opposite, facing).firstNotNullOfOrNull { direction ->
@@ -136,8 +132,8 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
 
         private fun isFrameBlock(state: BlockState): Boolean =
             state.`is`(ECRTags.Blocks.ENRICHMENT_CHAMBER) ||
-                state.`is`(BlockRegistry.instance.magicPlating) ||
-                state.`is`(BlockRegistry.instance.enrichmentChamberController)
+                state.`is`(BlockRegistry.magicPlating.get()) ||
+                state.`is`(BlockRegistry.enrichmentChamberController.get())
 
         private data class ControllerSurface(
             val size: Int,

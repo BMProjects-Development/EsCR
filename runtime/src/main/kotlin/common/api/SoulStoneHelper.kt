@@ -11,12 +11,12 @@ object SoulStoneHelper {
     @JvmStatic
     fun setActualName(player: Player, stack: ItemStack) {
         if (stack.item !is SoulStoneLike) return
-        val component = stack[DataComponentRegistry.instance.soulStone] ?: return
+        val component = stack[DataComponentRegistry.soulStone.get()] ?: return
 
         if (component == SoulStoneComponent.EMPTY) return
         if (player.stringUUID != component.owner.toString() || player.name.string == component.ownerName) return
 
-        stack[DataComponentRegistry.instance.soulStone] = component.copy(
+        stack[DataComponentRegistry.soulStone.get()] = component.copy(
             ownerName = player.name.string
         )
     }
@@ -25,7 +25,7 @@ object SoulStoneHelper {
     fun isOwner(player: Player, stack: ItemStack): Boolean {
         if (stack.item !is SoulStoneLike) return false
 
-        val component = stack[DataComponentRegistry.instance.soulStone] ?: return false
+        val component = stack[DataComponentRegistry.soulStone.get()] ?: return false
 
         return component.owner.toString() == player.stringUUID
     }
@@ -34,7 +34,7 @@ object SoulStoneHelper {
     fun isOwnerOnline(level: ServerLevel, stack: ItemStack): Boolean {
         if (stack.item !is SoulStoneLike) return false
 
-        val component = stack[DataComponentRegistry.instance.soulStone] ?: return false
+        val component = stack[DataComponentRegistry.soulStone.get()] ?: return false
         return component == SoulStoneComponent.EMPTY || level.server.playerList.getPlayer(component.owner) != null
     }
 

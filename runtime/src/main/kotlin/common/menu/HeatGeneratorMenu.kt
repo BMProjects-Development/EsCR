@@ -19,7 +19,7 @@ import net.minecraft.world.inventory.SimpleContainerData
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.entity.BlockEntity
 
-class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, container: Container, val blockEntity: BlockEntity?, access: ContainerLevelAccess, val data: ContainerData): AbstractMenu(MenuTypeRegistry.instance.heatGenerator, containerId, access) {
+class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, container: Container, val blockEntity: BlockEntity?, access: ContainerLevelAccess, val data: ContainerData): AbstractMenu(MenuTypeRegistry.heatGenerator, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData): this(
         containerId, inventory,
         SimpleContainer(2),
@@ -88,7 +88,7 @@ class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, cont
         return copy
     }
 
-    override fun stillValid(player: Player): Boolean = stillValid(this.access, player, BlockRegistry.instance.heatGenerator)
+    override fun stillValid(player: Player): Boolean = stillValid(this.access, player, BlockRegistry.heatGenerator.get())
 
     override fun removed(player: Player) {
         super.removed(player)

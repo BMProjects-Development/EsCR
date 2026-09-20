@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity
 
+import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
 import com.algorithmlx.ecr.api.item.SoulStoneLike
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -7,14 +8,13 @@ import com.algorithmlx.ecr.api.mru.loadMRUData
 import com.algorithmlx.ecr.api.mru.saveMRUData
 import com.algorithmlx.ecr.api.mru.storage.IOMRUStorage
 import com.algorithmlx.ecr.api.mru.storage.MRUStorageContainer
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
-import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
-import com.algorithmlx.ecr.registry.DataComponentRegistry
-import com.algorithmlx.ecr.registry.MRUTypeRegistry
-import com.algorithmlx.ecr.common.menu.MatrixDestructorMenu
 import com.algorithmlx.ecr.common.components.playerMatrix
 import com.algorithmlx.ecr.common.components.updatePlayerMatrix
 import com.algorithmlx.ecr.common.init.config.ECConfig
+import com.algorithmlx.ecr.common.menu.MatrixDestructorMenu
+import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
+import com.algorithmlx.ecr.registry.DataComponentRegistry
+import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.core.BlockPos
@@ -34,7 +34,7 @@ import kotlin.jvm.optionals.getOrElse
 
 class MatrixDestructorEntity(
     worldPosition: BlockPos, blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.instance.matrixDestructor, worldPosition, blockState), MRUDevice {
+): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.matrixDestructor.get(), worldPosition, blockState), MRUDevice {
     private var items: NonNullList<ItemStack> = NonNullList.withSize(1, ItemStack.EMPTY)
 
     var progress = 0
@@ -76,7 +76,7 @@ class MatrixDestructorEntity(
 
     override fun getContainerSize(): Int = this.items.size
 
-    override val mruStorage: IOMRUStorage = MRUStorageContainer(10000, MRUTypeRegistry.instance.radiationUnit) { setChanged() }
+    override val mruStorage: IOMRUStorage = MRUStorageContainer(10000, MRUTypeRegistry.radiationUnit) { setChanged() }
     override val balance = MRUBalanceContainer(initialUpperBalance = config.balanceProduced, initialLowerBalance = config.balanceProduced) { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.TRANSLATOR
 
@@ -119,7 +119,7 @@ class MatrixDestructorEntity(
                 return
             }
 
-            val soulStoneComponent = stack.get(DataComponentRegistry.instance.soulStone)
+            val soulStoneComponent = stack.get(DataComponentRegistry.soulStone.get())
             if (soulStoneComponent == null) {
                 be.progress = 0
                 be.setStatusUpdated(MatrixDestructorStatus.STOPPED)

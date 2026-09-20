@@ -1,30 +1,30 @@
 package com.algorithmlx.ecr.fabric.init
 
 import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.attachments.AttachmentPlatform
 import com.algorithmlx.ecr.api.block.JSONBlockProperties
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingPlatform
-import com.algorithmlx.ecr.api.geo.GeoAnimationNetwork
-import com.algorithmlx.ecr.api.geo.GeoBlockAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoBlockAnimationStopPayload
-import com.algorithmlx.ecr.api.geo.GeoEntityAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoEntityAnimationStopPayload
-import com.algorithmlx.ecr.api.geo.GeoItemAnimationPayload
-import com.algorithmlx.ecr.api.geo.GeoItemAnimationStopPayload
-import com.algorithmlx.ecr.api.init.MultiblockMatcherTypes
-import com.algorithmlx.ecr.api.item.*
+import com.algorithmlx.ecr.api.config.ConfigManager
+import com.algorithmlx.ecr.api.geo.*
+import com.algorithmlx.ecr.api.item.BoundGem
+import com.algorithmlx.ecr.api.item.HasSubItem
+import com.algorithmlx.ecr.api.item.NoTab
 import com.algorithmlx.ecr.api.menu.MenuTypeData
-import com.algorithmlx.ecr.api.mru.*
+import com.algorithmlx.ecr.api.menu.MenuTypePlatform
+import com.algorithmlx.ecr.api.mru.resolveMRUDevice
 import com.algorithmlx.ecr.api.multiblock.MultiblockDataReloadListener
-import com.algorithmlx.ecr.api.registries.*
+import com.algorithmlx.ecr.api.registries.CreativeTabPlatform
+import com.algorithmlx.ecr.api.registries.ECRegistries
+import com.algorithmlx.ecr.api.registries.ECRegistryKeys
+import com.algorithmlx.ecr.api.registries.RegistrationPlatform
 import com.algorithmlx.ecr.api.research.*
 import com.algorithmlx.ecr.api.research.content.ResearchAction
 import com.algorithmlx.ecr.api.utils.countByIngredient
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.api.utils.openMenuScreenInternal
-import com.algorithmlx.ecr.common.components.PlayerMatrixStorage
 import com.algorithmlx.ecr.common.init.ECRCommands
+import com.algorithmlx.ecr.common.init.ECRInit
 import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.api.config.ConfigManager
 import com.algorithmlx.ecr.common.init.config.ECConfig
 import com.algorithmlx.ecr.common.init.events.ECEvents
 import com.algorithmlx.ecr.common.init.reload.ResearchReloadListener
@@ -33,33 +33,13 @@ import com.algorithmlx.ecr.common.item.NamedBlockItem
 import com.algorithmlx.ecr.common.research.ResearchConfigDisabler
 import com.algorithmlx.ecr.fabric.api.CountIngredient
 import com.algorithmlx.ecr.fabric.chunk.FabricChunkLoadingPlatform
-import com.algorithmlx.ecr.fabric.init.registry.FabricBlockEntityTypeRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricBlockRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricBookTypeRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricCreativeTabRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricDataComponentRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricItemRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricMRUTypeRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricMenuTypeRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricMobEffectRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricMultiblockMatcherTypes
-import com.algorithmlx.ecr.fabric.init.registry.FabricMultiblockRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricAttachmentRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricRecipeDisplayTypeRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricRecipeSerializerRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricRecipeTypeRegistry
-import com.algorithmlx.ecr.fabric.init.registry.FabricResearchSerializerRegistry
-import com.algorithmlx.ecr.fabric.init.registry.attachments.FabricPlayerMatrixStorage
+import com.algorithmlx.ecr.fabric.init.registry.FabricAttachmentPlatform
+import com.algorithmlx.ecr.fabric.init.registry.FabricCreativeTabPlatform
+import com.algorithmlx.ecr.fabric.init.registry.FabricMenuTypePlatform
+import com.algorithmlx.ecr.fabric.init.registry.FabricRegistrationPlatform
 import com.algorithmlx.ecr.fabric.utils.FabricPlatformUtils
-import com.algorithmlx.ecr.network.BoundGemTooltipNetwork
-import com.algorithmlx.ecr.network.BoundGemTooltipRequestPayload
-import com.algorithmlx.ecr.network.BoundGemTooltipResponsePayload
-import com.algorithmlx.ecr.network.MagicShieldNetwork
-import com.algorithmlx.ecr.network.MagicShieldPayload
-import com.algorithmlx.ecr.network.SoulStoneTooltipNetwork
-import com.algorithmlx.ecr.network.SoulStoneTooltipRequestPayload
-import com.algorithmlx.ecr.network.SoulStoneTooltipResponsePayload
-import com.algorithmlx.ecr.registry.*
+import com.algorithmlx.ecr.network.*
+import com.algorithmlx.ecr.registry.CreativeTabRegistry
 import com.algorithmlx.ecr.utils.PlatformUtils
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors
@@ -68,11 +48,7 @@ import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
-import net.fabricmc.fabric.api.event.player.AttackBlockCallback
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback
-import net.fabricmc.fabric.api.event.player.UseBlockCallback
-import net.fabricmc.fabric.api.event.player.UseEntityCallback
-import net.fabricmc.fabric.api.event.player.UseItemCallback
+import net.fabricmc.fabric.api.event.player.*
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
@@ -99,6 +75,10 @@ import java.io.File
 object FabricInit {
     @JvmStatic
     fun init() {
+        RegistrationPlatform.instance = FabricRegistrationPlatform
+        CreativeTabPlatform.instance = FabricCreativeTabPlatform
+        AttachmentPlatform.instance = FabricAttachmentPlatform
+        MenuTypePlatform.instance = FabricMenuTypePlatform
         JSONBlockProperties.allowNamespace(ModId)
         ECConfig.instance = ConfigManager.saveOrLoad(File("config/$ModId.json"), ECConfig())
 
@@ -124,22 +104,7 @@ object FabricInit {
     private fun initRegistries() {
         PlatformUtils.instance = FabricPlatformUtils
         ChunkLoadingPlatform.instance = FabricChunkLoadingPlatform
-        FabricAttachmentRegistry.init()
-        DataComponentRegistry.instance = FabricDataComponentRegistry
-        BookTypeRegistry.instance = FabricBookTypeRegistry
-        FabricResearchSerializerRegistry.register()
-        BlockRegistry.instance = FabricBlockRegistry
-        BlockEntityTypeRegistry.instance = FabricBlockEntityTypeRegistry
-        ItemRegistry.instance = FabricItemRegistry
-        MenuTypeRegistry.instance = FabricMenuTypeRegistry
-        MobEffectRegistry.instance = FabricMobEffectRegistry
-        MRUTypeRegistry.instance = FabricMRUTypeRegistry
-        MultiblockMatcherTypes.instance = FabricMultiblockMatcherTypes
-        MultiblockRegistry.instance = FabricMultiblockRegistry
-        RecipeDisplayTypeRegistry.instance = FabricRecipeDisplayTypeRegistry
-        RecipeSerializerRegistry.instance = FabricRecipeSerializerRegistry
-        RecipeTypeRegistry.instance = FabricRecipeTypeRegistry
-        CreativeTabRegistry.instance = FabricCreativeTabRegistry
+        ECRInit.initRegistries()
 
         CustomIngredientSerializer.register(CountIngredient.SERIALIZER)
     }
@@ -276,7 +241,7 @@ object FabricInit {
         CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register { tab, output ->
             BuiltInRegistries.ITEM.keySet().filter { it.namespace == ModId }.forEach {
                 val item = BuiltInRegistries.ITEM.getOptional(it).get()
-                if (tab == CreativeTabRegistry.instance.blocks) {
+                if (tab == CreativeTabRegistry.blocks.get()) {
                     if ((item is BlockItem || item is NamedBlockItem) && item.block !is NoTab) {
                         output.accept(item)
                     }
@@ -285,7 +250,7 @@ object FabricInit {
 
                 if (BuiltInRegistries.BLOCK.getOptional(it).isPresent) return@forEach
 
-                if (item is NoTab || tab != CreativeTabRegistry.instance.items) return@forEach
+                if (item is NoTab || tab != CreativeTabRegistry.items.get()) return@forEach
 
                 if (item is HasSubItem) {
                     item.addSubItems(ItemStack(item)).forEach { stack ->
@@ -376,8 +341,6 @@ object FabricInit {
         GeoAnimationNetwork.sendEntityStopToPlayer = ServerPlayNetworking::send
         GeoAnimationNetwork.sendItemStopToPlayer = ServerPlayNetworking::send
         MagicShieldNetwork.sendToPlayer = ServerPlayNetworking::send
-
-        PlayerMatrixStorage.instance = FabricPlayerMatrixStorage
 
         countByIngredient = { ((it as FabricIngredient).customIngredient as? CountIngredient)?.count ?: 1 }
 

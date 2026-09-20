@@ -1,14 +1,14 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartData
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDataIO
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntity
 import com.algorithmlx.ecr.api.geo.GeoAnimatable
 import com.algorithmlx.ecr.api.geo.GeoAnimationState
 import com.algorithmlx.ecr.api.geo.GeoModel
 import com.algorithmlx.ecr.api.molang.runtime.BlockEntityQuery
 import com.algorithmlx.ecr.api.molang.runtime.MolangContext
 import com.algorithmlx.ecr.api.multiblock.MultiblockDefinitions
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDataIO
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartData
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockPartEntity
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
@@ -25,7 +25,7 @@ class AssembledMultiblockPartBlockEntity(
     worldPosition: BlockPos,
     blockState: BlockState
 ): BlockEntity(
-    BlockEntityTypeRegistry.instance.assembledMultiblockPart,
+    BlockEntityTypeRegistry.assembledMultiblockPart.get(),
     worldPosition,
     blockState
 ), AssembledMultiblockPartEntity, GeoAnimatable {

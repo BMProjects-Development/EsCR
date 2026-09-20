@@ -1,13 +1,10 @@
 package com.algorithmlx.ecr.registry
 
-import net.minecraft.core.Holder
-import net.minecraft.world.effect.MobEffect
+import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.registries.RegistrationHandler
+import com.algorithmlx.ecr.common.effects.MRUCorruption
+import com.algorithmlx.ecr.common.init.ECRModIDs
 
-interface MobEffectRegistry {
-    val mruCorruption: Holder<MobEffect>
-
-    companion object {
-        @JvmStatic
-        lateinit var instance: MobEffectRegistry
-    }
+object MobEffectRegistry : RegistrationHandler(ModId) {
+    val mruCorruption by registerMobEffect(ECRModIDs.MRU_CORRUPTION, ::MRUCorruption)
 }

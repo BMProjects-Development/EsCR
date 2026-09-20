@@ -23,7 +23,7 @@ class MagicTableMenu(
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess,
     val data: ContainerData,
-) : AbstractMenu(MenuTypeRegistry.instance.magicTable, containerId, access) {
+) : AbstractMenu(MenuTypeRegistry.magicTable, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inventory,
@@ -99,5 +99,5 @@ class MagicTableMenu(
         return if (stack.count == copy.count) ItemStack.EMPTY else copy
     }
 
-    override fun stillValid(player: Player): Boolean = stillValid(this.access, player, BlockRegistry.instance.magicTable)
+    override fun stillValid(player: Player): Boolean = stillValid(this.access, player, BlockRegistry.magicTable.get())
 }

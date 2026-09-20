@@ -16,7 +16,7 @@ object MagicTableRenderer : BookRecipeRenderer<MagicTableRecipe> {
     ) {
         val display = recipe.display().filterIsInstance<MagicTableRecipe.Display>().firstOrNull() ?: return
 
-        val table = ItemStack(BlockRegistry.instance.magicTable)
+        val table = ItemStack(BlockRegistry.magicTable.get())
         val centerX = builder.width / 2
         val centerY = CONTENT_HEIGHT / 2
 

@@ -5,7 +5,10 @@
   "client": [
     "GuiRendererAccessor"
   ],
-  "mixins": [],
+  "mixins": [
+    "CreativeModeTabAccessor",
+    "CreativeModeTabsMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

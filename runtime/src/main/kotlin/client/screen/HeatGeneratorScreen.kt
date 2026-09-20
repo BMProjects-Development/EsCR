@@ -22,7 +22,7 @@ class HeatGeneratorScreen(menu: HeatGeneratorMenu, inventory: Inventory, title: 
     private val displayedStorage = object : MRUStorage {
         override val mru: Int get() = menu.mru
         override val mruCapacity: Int get() = menu.mruCapacity
-        override val mruType: MRUType get() = MRUTypeRegistry.instance.radiationUnit
+        override val mruType: MRUType get() = MRUTypeRegistry.radiationUnit
     }
     private lateinit var unitButton: Button
 

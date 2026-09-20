@@ -31,9 +31,9 @@ import net.minecraft.world.level.storage.ValueOutput
 import net.minecraft.world.phys.AABB
 
 class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(
-    BlockEntityTypeRegistry.instance.enrichmentChamberController, worldPosition, blockState
+    BlockEntityTypeRegistry.enrichmentChamberController.get(), worldPosition, blockState
 ), MRUDevice, MenuProvider {
-    private var mutableMRUStorage = ExtremeMRUStorageContainer(0, MRUTypeRegistry.instance.radiationUnit) {
+    private var mutableMRUStorage = ExtremeMRUStorageContainer(0, MRUTypeRegistry.radiationUnit) {
         this.setChanged()
     }
     private var placement: MultiblockPlacement? = null
@@ -167,7 +167,7 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
     companion object {
         private val config = ECConfig.instance.enrichmentChamber
         private val multiblock
-            get() = MultiblockRegistry.instance.enrichmentChamber
+            get() = MultiblockRegistry.enrichmentChamber
         private const val MRU_CAPACITY_TAG = "mru_capacity"
         private const val HAS_PLACEMENT_TAG = "has_multiblock_placement"
         private const val PLACEMENT_DIRECTION_TAG = "multiblock_direction"
@@ -206,18 +206,18 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
 
             var placement = EnrichmentChamberController.findPlacement(level, be.blockPos, state)
 
-            if (placement != null && MultiblockRegistry.instance.enrichmentChamber.countMatchesIn(level, placement, BlockRegistry.instance.enrichmentChamberController) > 1)
+            if (placement != null && MultiblockRegistry.enrichmentChamber.countMatchesIn(level, placement, BlockRegistry.enrichmentChamberController.get()) > 1)
                 placement = null
 
             be.synchronizeElements<EnrichmentChamberExtractorEntity>(
                 level,
                 placement,
-                BlockRegistry.instance.enrichmentChamberExtractor
+                BlockRegistry.enrichmentChamberExtractor.get()
             )
             be.synchronizeElements<EnrichmentChamberReceiverEntity>(
                 level,
                 placement,
-                BlockRegistry.instance.enrichmentChamberReceiver
+                BlockRegistry.enrichmentChamberReceiver.get()
             )
             be.setPlacement(placement)
 
@@ -234,7 +234,7 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
             val holderCount = multiblock.countMatchesIn(
                 level,
                 placement,
-                BlockRegistry.instance.enrichmentChamberHolder
+                BlockRegistry.enrichmentChamberHolder.get()
             )
             val capacity = (
                 config.controllerCapacity.toLong() +

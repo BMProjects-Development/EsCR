@@ -10,11 +10,11 @@ import com.algorithmlx.ecr.common.components.SoulStoneComponent
 import com.algorithmlx.ecr.common.components.updatePlayerMatrix
 import com.algorithmlx.ecr.common.data.SoulStoneData
 import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.registry.DataComponentRegistry
 import com.algorithmlx.ecr.common.recipe.StructureRecipe
 import com.algorithmlx.ecr.network.BoundGemTargetStatus
 import com.algorithmlx.ecr.network.BoundGemTooltipNetwork
 import com.algorithmlx.ecr.network.SoulStoneTooltipNetwork
+import com.algorithmlx.ecr.registry.DataComponentRegistry
 import com.algorithmlx.ecr.registry.ItemRegistry
 import net.minecraft.ChatFormatting
 import net.minecraft.core.BlockPos
@@ -22,8 +22,8 @@ import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.damagesource.DamageSource
-import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.monster.Enemy
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.SingleRecipeInput
@@ -38,7 +38,7 @@ object ECEvents {
     fun itemTooltip(stack: ItemStack, tooltips: MutableList<Component>) {
         when (val item = stack.item) {
             is SoulStoneLike -> {
-                val component = stack.getOrDefault(DataComponentRegistry.instance.soulStone, SoulStoneComponent.EMPTY)
+                val component = stack.getOrDefault(DataComponentRegistry.soulStone.get(), SoulStoneComponent.EMPTY)
 
                 if (component == SoulStoneComponent.EMPTY) return
 
@@ -69,7 +69,7 @@ object ECEvents {
         val player = source.entity as? ServerPlayer ?: return
         val hasOwnedSoulStone = player.inventory.contains { stack ->
             stack.item is SoulStoneLike &&
-                    stack.get(DataComponentRegistry.instance.soulStone)?.owner == player.uuid
+                    stack.get(DataComponentRegistry.soulStone.get())?.owner == player.uuid
         }
         if (!hasOwnedSoulStone) return
 
@@ -124,7 +124,7 @@ object ECEvents {
         stack: ItemStack, cached: CachedRecipe<SingleRecipeInput, StructureRecipe>, pos: Vec3,
         level: Level, timer: IntArray
     ) {
-        if (stack.`is`(ItemRegistry.instance.hammer)) return
+        if (stack.`is`(ItemRegistry.hammer.get())) return
 
         val center = BlockPos.containing(pos).below()
 

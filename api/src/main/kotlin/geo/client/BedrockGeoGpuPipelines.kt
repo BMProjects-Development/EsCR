@@ -39,6 +39,7 @@ object BedrockGeoGpuPipelines {
                 .withVertexShader("core/bedrock_geo".ecRL)
                 .withBindGroupLayout(geoBindings)
                 .withBindGroupLayout(net.minecraft.client.renderer.BindGroupLayouts.SAMPLER1)
+                .withColorTargetState(ColorTargetState.DEFAULT)
                 .withVertexBinding(0, VERTEX_FORMAT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
                 .build(),
@@ -53,6 +54,7 @@ object BedrockGeoGpuPipelines {
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                 .withBindGroupLayout(geoBindings)
                 .withBindGroupLayout(net.minecraft.client.renderer.BindGroupLayouts.SAMPLER1)
+                .withColorTargetState(ColorTargetState.DEFAULT)
                 .withVertexBinding(0, VERTEX_FORMAT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
                 .build(),

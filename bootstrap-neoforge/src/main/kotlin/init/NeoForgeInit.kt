@@ -1,23 +1,28 @@
 package com.algorithmlx.ecr.neoforge.init
 
 import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.attachments.AttachmentPlatform
 import com.algorithmlx.ecr.api.block.JSONBlockProperties
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingPlatform
+import com.algorithmlx.ecr.api.config.ConfigManager
 import com.algorithmlx.ecr.api.geo.*
-import com.algorithmlx.ecr.api.init.MultiblockMatcherTypes
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.item.HasSubItem
 import com.algorithmlx.ecr.api.item.NoTab
 import com.algorithmlx.ecr.api.mru.resolveMRUDevice
+import com.algorithmlx.ecr.api.menu.MenuTypePlatform
 import com.algorithmlx.ecr.api.multiblock.MultiblockDataReloadListener
+import com.algorithmlx.ecr.api.registries.CreativeTabPlatform
 import com.algorithmlx.ecr.api.registries.ECRegistries
+import com.algorithmlx.ecr.api.registries.RegistrationPlatform
 import com.algorithmlx.ecr.api.research.*
 import com.algorithmlx.ecr.api.research.content.ResearchAction
-import com.algorithmlx.ecr.api.utils.*
-import com.algorithmlx.ecr.common.components.PlayerMatrixStorage
+import com.algorithmlx.ecr.api.utils.countByIngredient
+import com.algorithmlx.ecr.api.utils.ecRL
+import com.algorithmlx.ecr.api.utils.openMenuScreenInternal
 import com.algorithmlx.ecr.common.init.ECRCommands
+import com.algorithmlx.ecr.common.init.ECRInit
 import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.api.config.ConfigManager
 import com.algorithmlx.ecr.common.init.config.ECConfig
 import com.algorithmlx.ecr.common.init.events.ECEvents
 import com.algorithmlx.ecr.common.init.reload.ResearchReloadListener
@@ -27,10 +32,9 @@ import com.algorithmlx.ecr.common.research.ResearchConfigDisabler
 import com.algorithmlx.ecr.neoforge.api.CountIngredient
 import com.algorithmlx.ecr.neoforge.chunk.NeoForgeChunkLoadingPlatform
 import com.algorithmlx.ecr.neoforge.init.registry.*
-import com.algorithmlx.ecr.neoforge.init.registry.attachments.NeoForgePlayerMatrixStorage
 import com.algorithmlx.ecr.neoforge.utils.NeoForgePlatformUtils
 import com.algorithmlx.ecr.network.*
-import com.algorithmlx.ecr.registry.*
+import com.algorithmlx.ecr.registry.CreativeTabRegistry
 import com.algorithmlx.ecr.utils.PlatformUtils
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.BuiltInRegistries
@@ -63,6 +67,10 @@ import java.io.File
 
 object NeoForgeInit {
     fun init(bus: IEventBus) {
+        RegistrationPlatform.instance = NeoForgeRegistrationPlatform(bus)
+        CreativeTabPlatform.instance = NeoForgeCreativeTabPlatform
+        AttachmentPlatform.instance = NeoForgeAttachmentPlatform
+        MenuTypePlatform.instance = NeoForgeMenuTypePlatform
         JSONBlockProperties.allowNamespace(ModId)
         ECConfig.instance = ConfigManager.saveOrLoad(File("config/$ModId.json"), ECConfig())
 
@@ -98,23 +106,8 @@ object NeoForgeInit {
     private fun initRegistries(bus: IEventBus) {
         PlatformUtils.instance = NeoForgePlatformUtils
         ChunkLoadingPlatform.instance = NeoForgeChunkLoadingPlatform(bus)
-        RecipeSerializerRegistry.instance = NeoForgeRecipeSerializerRegistry(bus)
-        RecipeTypeRegistry.instance = NeoForgeRecipeTypeRegistry(bus)
-        BlockEntityTypeRegistry.instance = NeoForgeBlockEntityTypeRegistry(bus)
-        BookTypeRegistry.instance = NeoForgeBookTypeRegistry(bus)
-        NeoForgeResearchSerializerRegistry(bus)
-        BlockRegistry.instance = NeoForgeBlockRegistry(bus)
-        DataComponentRegistry.instance = NeoForgeDataComponentRegistry(bus)
-        ItemRegistry.instance = NeoForgeItemRegistry(bus)
-        CreativeTabRegistry.instance = NeoForgeCreativeTabRegistry(bus)
-        MenuTypeRegistry.instance = NeoForgeMenuTypeRegistry(bus)
-        MobEffectRegistry.instance = NeoForgeMobEffectRegistry(bus)
-        MRUTypeRegistry.instance = NeoForgeMRUTypeRegistry(bus)
-        MultiblockMatcherTypes.instance = NeoForgeMultiblockMatcherTypes(bus)
-        MultiblockRegistry.instance = NeoForgeMultiblockRegistry(bus)
-        RecipeDisplayTypeRegistry.instance = NeoForgeRecipeDisplayTypeRegistry(bus)
+        ECRInit.initRegistries()
         IngredientRegistry.init(bus)
-        NeoForgeAttachmentRegistry.init(bus)
     }
 
     private fun onNewRegistry(event: NewRegistryEvent) {
@@ -134,7 +127,7 @@ object NeoForgeInit {
     private fun onCreativeTabs(event: BuildCreativeModeTabContentsEvent) {
         BuiltInRegistries.ITEM.keySet().filter { it.namespace == ModId }.forEach {
             val item = BuiltInRegistries.ITEM.getOptional(it).get()
-            if (event.tab == CreativeTabRegistry.instance.blocks) {
+            if (event.tab == CreativeTabRegistry.blocks.get()) {
                 if ((item is BlockItem || item is NamedBlockItem) && item.block !is NoTab) {
                     event.accept(item)
                 }
@@ -143,7 +136,7 @@ object NeoForgeInit {
 
             if (BuiltInRegistries.BLOCK.getOptional(it).isPresent) return@forEach
 
-            if (item is NoTab || event.tab != CreativeTabRegistry.instance.items) return@forEach
+            if (item is NoTab || event.tab != CreativeTabRegistry.items.get()) return@forEach
 
             if (item is HasSubItem) {
                 item.addSubItems(ItemStack(item)).forEach { stack ->
@@ -336,8 +329,6 @@ object NeoForgeInit {
         GeoAnimationNetwork.sendEntityStopToPlayer = PacketDistributor::sendToPlayer
         GeoAnimationNetwork.sendItemStopToPlayer = PacketDistributor::sendToPlayer
         MagicShieldNetwork.sendToPlayer = PacketDistributor::sendToPlayer
-
-        PlayerMatrixStorage.instance = NeoForgePlayerMatrixStorage
 
         countByIngredient = { (it.customIngredient as? CountIngredient)?.count ?: 1 }
 

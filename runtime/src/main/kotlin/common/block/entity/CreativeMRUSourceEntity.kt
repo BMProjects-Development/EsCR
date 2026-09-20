@@ -4,14 +4,11 @@ import com.algorithmlx.ecr.api.block.entity.SynchronizedBlockEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.MRUType
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
-import com.algorithmlx.ecr.api.mru.loadMRUData
-import com.algorithmlx.ecr.api.mru.saveMRUData
 import com.algorithmlx.ecr.api.mru.storage.IOMRUStorage
 import com.algorithmlx.ecr.api.mru.storage.ModifiableMRUStorage
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.core.BlockPos
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
@@ -20,7 +17,7 @@ class CreativeMRUSourceEntity(
     worldPosition: BlockPos,
     blockState: BlockState,
 ) : SynchronizedBlockEntity(
-    BlockEntityTypeRegistry.instance.creativeMRUSource,
+    BlockEntityTypeRegistry.creativeMRUSource.get(),
     worldPosition,
     blockState
 ), MRUDevice {
@@ -40,6 +37,6 @@ class CreativeMRUSourceEntity(
 
         override val mru: Int = 0
         override val mruCapacity: Int = mru
-        override val mruType: MRUType = MRUTypeRegistry.instance.radiationUnit
+        override val mruType: MRUType = MRUTypeRegistry.radiationUnit
     }
 }

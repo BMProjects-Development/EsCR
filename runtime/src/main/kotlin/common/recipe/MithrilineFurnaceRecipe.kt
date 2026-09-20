@@ -13,14 +13,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.ItemStackTemplate
-import net.minecraft.world.item.crafting.Ingredient
-import net.minecraft.world.item.crafting.PlacementInfo
-import net.minecraft.world.item.crafting.Recipe
-import net.minecraft.world.item.crafting.RecipeBookCategories
-import net.minecraft.world.item.crafting.RecipeBookCategory
-import net.minecraft.world.item.crafting.RecipeSerializer
-import net.minecraft.world.item.crafting.RecipeType
-import net.minecraft.world.item.crafting.SingleRecipeInput
+import net.minecraft.world.item.crafting.*
 import net.minecraft.world.item.crafting.display.RecipeDisplay
 import net.minecraft.world.item.crafting.display.SlotDisplay
 import net.minecraft.world.level.Level
@@ -45,9 +38,9 @@ class MithrilineFurnaceRecipe(
 
     override fun group(): String = "$ModId:${ECRModIDs.MITHRILINE_FURNACE}"
 
-    override fun getSerializer(): RecipeSerializer<out Recipe<SingleRecipeInput>> = RecipeSerializerRegistry.instance.mithrilineFurnace
+    override fun getSerializer(): RecipeSerializer<out Recipe<SingleRecipeInput>> = RecipeSerializerRegistry.mithrilineFurnace
 
-    override fun getType(): RecipeType<out Recipe<SingleRecipeInput>> = RecipeTypeRegistry.instance.mithrilineFurnace
+    override fun getType(): RecipeType<out Recipe<SingleRecipeInput>> = RecipeTypeRegistry.mithrilineFurnace.get()
 
     override fun placementInfo(): PlacementInfo = PlacementInfo.NOT_PLACEABLE
 
@@ -58,7 +51,7 @@ class MithrilineFurnaceRecipe(
             Display(
                 input.display(),
                 SlotDisplay.ItemStackSlotDisplay(result),
-                SlotDisplay.ItemSlotDisplay(BlockRegistry.instance.mithrilineFurnace.asItem()),
+                SlotDisplay.ItemSlotDisplay(BlockRegistry.mithrilineFurnace.get().asItem()),
             ),
         )
 
@@ -72,7 +65,7 @@ class MithrilineFurnaceRecipe(
 
         override fun craftingStation(): SlotDisplay = station
 
-        override fun type(): RecipeDisplay.Type<out RecipeDisplay> = RecipeDisplayTypeRegistry.instance.mithrilineFurnace
+        override fun type(): RecipeDisplay.Type<out RecipeDisplay> = RecipeDisplayTypeRegistry.mithrilineFurnace
 
         companion object {
             @JvmField

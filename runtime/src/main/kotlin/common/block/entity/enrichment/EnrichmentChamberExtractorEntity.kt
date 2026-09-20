@@ -16,7 +16,7 @@ import net.minecraft.world.level.storage.ValueOutput
 class EnrichmentChamberExtractorEntity(
     worldPosition: BlockPos, blockState: BlockState
 ): SynchronizedBlockEntity(
-    BlockEntityTypeRegistry.instance.enrichmentChamberExtractor,
+    BlockEntityTypeRegistry.enrichmentChamberExtractor.get(),
     worldPosition,
     blockState
 ), MRUDevice, EnrichmentChamber {
@@ -27,7 +27,7 @@ class EnrichmentChamberExtractorEntity(
             ?.let { level?.getBlockEntity(it) as? EnrichmentChamberControllerEntity }
 
     override val mruStorage: IOMRUStorage field = SynchronizedMRUStorageContainer(
-        MRUTypeRegistry.instance.radiationUnit
+        MRUTypeRegistry.radiationUnit
     ) {
         controllerEntity?.mruStorage
     }

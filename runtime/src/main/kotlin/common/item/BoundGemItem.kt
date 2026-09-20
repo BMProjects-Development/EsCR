@@ -42,7 +42,7 @@ class BoundGemItem(
         itemStack: ItemStack,
         originalSize: Int,
     ): Int {
-        if (itemStack[DataComponentRegistry.instance.boundGem] != null) return 1
+        if (itemStack[DataComponentRegistry.boundGem.get()] != null) return 1
         return originalSize
     }
 }

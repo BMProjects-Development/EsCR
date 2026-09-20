@@ -59,8 +59,8 @@ class HeatGenerator(properties: Properties): Block(properties), EntityBlock {
         hand: InteractionHand,
         hitResult: BlockHitResult
     ): InteractionResult {
-        if (itemStack.`is`(ItemRegistry.instance.heatCore)) {
-            val blockEntityO = level.getBlockEntity(pos, BlockEntityTypeRegistry.instance.heatGenerator)
+        if (itemStack.`is`(ItemRegistry.heatCore.get())) {
+            val blockEntityO = level.getBlockEntity(pos, BlockEntityTypeRegistry.heatGenerator.get())
             if (!blockEntityO.isPresent) return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult)
             val be = blockEntityO.get()
 

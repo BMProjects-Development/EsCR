@@ -1,11 +1,11 @@
 package com.algorithmlx.ecr.common.multiblocks
 
-import com.algorithmlx.ecr.api.multiblock.assembled.AssembledBlockMatcher
-import com.algorithmlx.ecr.api.multiblock.assembled.assembledMultiblock
 import com.algorithmlx.ecr.api.geo.GeoBlockRotation
 import com.algorithmlx.ecr.api.geo.GeoLightMode
 import com.algorithmlx.ecr.api.multiblock.Multiblock
 import com.algorithmlx.ecr.api.multiblock.MultiblockMatcher
+import com.algorithmlx.ecr.api.multiblock.assembled.AssembledBlockMatcher
+import com.algorithmlx.ecr.api.multiblock.assembled.assembledMultiblock
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.common.init.ECRModIDs
 import com.algorithmlx.ecr.common.init.ECRTags
@@ -63,8 +63,8 @@ val RayTowerMultiblock =
             return shape
         }
 
-        controller(AssembledBlockMatcher.block(BlockRegistry.instance.rayTower))
-        part(BlockPos(0, -1, 0), AssembledBlockMatcher.block(BlockRegistry.instance.rayTowerBase))
+        controller(AssembledBlockMatcher.block(BlockRegistry.rayTower.get()))
+        part(BlockPos(0, -1, 0), AssembledBlockMatcher.block(BlockRegistry.rayTowerBase.get()))
         formedModelAnchor(0, -1, 0)
         formedShape(shape())
         formedModel(
@@ -76,8 +76,8 @@ val RayTowerMultiblock =
     }
 
 object MithrilineFurnaceMultiblock : Multiblock(5, 5, 3, {
-    val a = block(BlockRegistry.instance.mithrilinePlating.defaultBlockState())
-    val b = block(BlockRegistry.instance.mithrilineFurnace.defaultBlockState())
+    val a = block(BlockRegistry.mithrilinePlating.get().defaultBlockState())
+    val b = block(BlockRegistry.mithrilineFurnace.get().defaultBlockState())
 
     pattern(
         a,
@@ -198,12 +198,12 @@ object LightningCollector : Multiblock(11, 11, 4, {
     val copperBlockList = Blocks.COPPER_BLOCK.asList().map { this.block(it.defaultBlockState()) }
     val lightningRodList = Blocks.LIGHTNING_ROD.asList().map { this.block(it.defaultBlockState()) }
 
-    val voidStone = this.block(BlockRegistry.instance.voidStone.defaultBlockState())
-    val mithrilinePlating = this.block(BlockRegistry.instance.mithrilinePlating.defaultBlockState())
+    val voidStone = this.block(BlockRegistry.voidStone.get().defaultBlockState())
+    val mithrilinePlating = this.block(BlockRegistry.mithrilinePlating.get().defaultBlockState())
     val copperSlabs = this.list(cutCopperSlabList)
     val copperBlocks = this.list(copperBlockList)
-    val center = this.block(BlockRegistry.instance.mithrilineFurnace.defaultBlockState())
-    val mithrilineCrystal = this.block(BlockRegistry.instance.mithrilineCrystal.defaultBlockState())
+    val center = this.block(BlockRegistry.mithrilineFurnace.get().defaultBlockState())
+    val mithrilineCrystal = this.block(BlockRegistry.mithrilineCrystal.get().defaultBlockState())
     val lightningRod = this.list(lightningRodList)
 
     pattern(
@@ -695,12 +695,12 @@ object LightningCollector : Multiblock(11, 11, 4, {
 })
 
 object EnrichmentChamber : Multiblock(128, 128, 128, {
-    val outerFrame = this.block(BlockRegistry.instance.magicPlating.defaultBlockState())
+    val outerFrame = this.block(BlockRegistry.magicPlating.get().defaultBlockState())
     val innerFrame =
         this.list(
             this.tag(ECRTags.Blocks.ENRICHMENT_CHAMBER),
             this.block(
-                BlockRegistry.instance.enrichmentChamberController.defaultBlockState(),
+                BlockRegistry.enrichmentChamberController.get().defaultBlockState(),
                 ignoreTag = true,
             ),
         )
@@ -716,9 +716,9 @@ object EnrichmentChamber : Multiblock(128, 128, 128, {
 })
 
 object MagicalTeleporter : Multiblock(5, 5, 3, {
-    val a = this.block(BlockRegistry.instance.voidStone.defaultBlockState())
-    val b = this.block(BlockRegistry.instance.magicPlating.defaultBlockState())
-    val c = this.block(BlockRegistry.instance.magicalTeleporter.defaultBlockState(), ignoreTag = true)
+    val a = this.block(BlockRegistry.voidStone.get().defaultBlockState())
+    val b = this.block(BlockRegistry.magicPlating.get().defaultBlockState())
+    val c = this.block(BlockRegistry.magicalTeleporter.get().defaultBlockState(), ignoreTag = true)
 
     pattern(
         a,
@@ -801,10 +801,10 @@ object MagicalTeleporter : Multiblock(5, 5, 3, {
 
 object SunAbsorber : Multiblock(5, 5, 9, {
     val a = this.block(Blocks.AIR.defaultBlockState())
-    val b = this.block(BlockRegistry.instance.fortifiedStone.defaultBlockState())
-    val c = this.block(BlockRegistry.instance.fortifiedGlass.defaultBlockState())
-    val d = this.block(BlockRegistry.instance.voidStone.defaultBlockState())
-    val e = this.block(BlockRegistry.instance.solarPrism.defaultBlockState())
+    val b = this.block(BlockRegistry.fortifiedStone.get().defaultBlockState())
+    val c = this.block(BlockRegistry.fortifiedGlass.get().defaultBlockState())
+    val d = this.block(BlockRegistry.voidStone.get().defaultBlockState())
+    val e = this.block(BlockRegistry.solarPrism.get().defaultBlockState())
     val f = null
 
     pattern(

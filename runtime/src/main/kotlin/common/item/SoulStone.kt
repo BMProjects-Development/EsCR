@@ -15,7 +15,7 @@ class SoulStone(
     properties: Properties,
 ) : Item(
         properties.component(
-            DataComponentRegistry.instance.soulStone,
+            DataComponentRegistry.soulStone.get(),
             SoulStoneComponent.EMPTY,
         ),
     ),
@@ -29,17 +29,17 @@ class SoulStone(
     ) {
         if (itemStack.count > 1 || owner !is ServerPlayer) return
 
-        val component = itemStack.getOrDefault(DataComponentRegistry.instance.soulStone, SoulStoneComponent.EMPTY)
+        val component = itemStack.getOrDefault(DataComponentRegistry.soulStone.get(), SoulStoneComponent.EMPTY)
 
         if (component == SoulStoneComponent.EMPTY) {
             val bound = SoulStoneComponent(owner.uuid, owner.name.string)
-            itemStack.set(DataComponentRegistry.instance.soulStone, bound)
+            itemStack.set(DataComponentRegistry.soulStone.get(), bound)
             return
         }
 
         if (owner.uuid != component.owner || owner.name.string == component.ownerName) return
 
-        itemStack.set(DataComponentRegistry.instance.soulStone, component.copy(ownerName = owner.name.string))
+        itemStack.set(DataComponentRegistry.soulStone.get(), component.copy(ownerName = owner.name.string))
     }
 
     override val receiveCount: Int = 1
@@ -49,8 +49,8 @@ class SoulStone(
         itemStack: ItemStack,
         originalSize: Int,
     ): Int {
-        if (itemStack.has(DataComponentRegistry.instance.soulStone) &&
-            itemStack[DataComponentRegistry.instance.soulStone] != SoulStoneComponent.EMPTY
+        if (itemStack.has(DataComponentRegistry.soulStone.get()) &&
+            itemStack[DataComponentRegistry.soulStone.get()] != SoulStoneComponent.EMPTY
         ) {
             return 1
         }

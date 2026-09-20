@@ -35,7 +35,7 @@ public abstract class ItemEntityMixin extends Entity {
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V"))
     public void tick(CallbackInfo ci) {
-        if (ecr$recipe == null) ecr$recipe = new CachedRecipe<>(RecipeTypeRegistry.getInstance().getStructure());
+        if (ecr$recipe == null) ecr$recipe = new CachedRecipe<>(RecipeTypeRegistry.INSTANCE.getStructure().get());
         ECEvents.itemEntityTickCraft(this.getItem(), this.ecr$recipe, this.position(), this.level(), this.ecr$ticker);
     }
 }
