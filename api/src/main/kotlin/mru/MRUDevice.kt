@@ -48,7 +48,7 @@ interface MRUDevice {
     data class LocatorData(
         val locatorStorage: Container,
         val locatorSlot: Int,
-        val position: BlockPos? = (locatorStorage as? BlockEntity)?.blockPos?.immutable(),
+        val position: BlockPos? = (locatorStorage as? BlockEntity)?.blockPos?.immutable()
     )
 }
 

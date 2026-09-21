@@ -19,7 +19,7 @@ class ParticleSystem(
     val level: Level,
     val random: Random,
     val collisionProvider: CollisionProvider,
-    val lightProvider: LightProvider,
+    val lightProvider: LightProvider
 ) {
     private val emitters = mutableListOf<ParticleEmitter>()
     private val pendingEmitters = mutableListOf<ParticleEmitter>()
@@ -32,7 +32,7 @@ class ParticleSystem(
             level,
             Random(),
             LevelCollisionProvider(level),
-            LevelLightProvider(level),
+            LevelLightProvider(level)
         )
     }
 
@@ -48,13 +48,13 @@ class ParticleSystem(
     fun spawn(
         effect: BedrockParticleFile,
         query: Query = Query.EMPTY,
-        transform: Transform = Transform.Zero,
+        transform: Transform = Transform.Zero
     ) = spawn(ParticleEffect.fromFile(effect), query, transform)
 
     fun spawn(
         effect: ParticleEffect,
         query: Query = Query.EMPTY,
-        transform: Transform = Transform.Zero,
+        transform: Transform = Transform.Zero
     ): ParticleEmitter {
         val emitter = ParticleEmitter(
             this,
@@ -63,7 +63,7 @@ class ParticleSystem(
             transform.position,
             transform.rotation,
             transform.velocity,
-            transform,
+            transform
         )
         addEmitter(emitter)
         emitter.startLoop(0f)
@@ -99,7 +99,7 @@ class ParticleSystem(
         levelRenderState: LevelRenderState,
         partialTick: Float,
         cameraUuid: UUID?,
-        firstPerson: Boolean,
+        firstPerson: Boolean
     ) {
         if (billboardRenderPasses.isEmpty()) return
         val renderProgress = partialTick.coerceIn(0f, 1f)
@@ -123,7 +123,7 @@ class ParticleSystem(
                             if (!camera.cullFrustum.pointInFrustum(
                                     worldPosition.x.toDouble(),
                                     worldPosition.y.toDouble(),
-                                    worldPosition.z.toDouble(),
+                                    worldPosition.z.toDouble()
                                 )
                             ) return@mapNotNull null
 
@@ -134,7 +134,7 @@ class ParticleSystem(
                                 cameraRotation,
                                 cameraFacing,
                                 cameraUuid,
-                                firstPerson,
+                                firstPerson
                             )
                         }
                         .toList()
@@ -155,7 +155,7 @@ class ParticleSystem(
 
     private inline fun removeMatching(
         source: MutableList<ParticleEmitter>,
-        predicate: (ParticleEmitter) -> Boolean,
+        predicate: (ParticleEmitter) -> Boolean
     ) {
         val iterator = source.iterator()
         while (iterator.hasNext()) {

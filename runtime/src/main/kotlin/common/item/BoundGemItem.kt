@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
 class BoundGemItem(
-    properties: Properties,
+    properties: Properties
 ) : Item(properties),
     BoundGem,
     ModifiableSizeItem {
@@ -21,26 +21,26 @@ class BoundGemItem(
 
     override fun setBoundPos(
         stack: ItemStack,
-        blockPos: BlockPos?,
+        blockPos: BlockPos?
     ) = BoundGemHelper.setBoundPos(stack, blockPos)
 
     override fun getWorld(stack: ItemStack): ResourceKey<Level>? = BoundGemHelper.getLevelKey(stack)
 
     override fun setWorld(
         stack: ItemStack,
-        world: ResourceKey<Level>?,
+        world: ResourceKey<Level>?
     ) = BoundGemHelper.setLevelKey(stack, world)
 
     override fun isOutsideBoundRadius(stack: ItemStack): Boolean = BoundGemHelper.isOutsideBoundRadius(stack)
 
     override fun setOutsideBoundRadius(
         stack: ItemStack,
-        outside: Boolean,
+        outside: Boolean
     ): Boolean = BoundGemHelper.setOutsideBoundRadius(stack, outside)
 
     override fun maxStackSize(
         itemStack: ItemStack,
-        originalSize: Int,
+        originalSize: Int
     ): Int {
         if (itemStack[DataComponentRegistry.boundGem.get()] != null) return 1
         return originalSize

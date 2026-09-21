@@ -1,6 +1,8 @@
 package com.algorithmlx.ecr.network
 
 import com.algorithmlx.ecr.api.utils.ecRL
+import com.algorithmlx.ecr.api.network.Network
+import com.algorithmlx.ecr.api.network.sendToServer
 import com.algorithmlx.ecr.common.components.playerMatrix
 import net.minecraft.core.UUIDUtil
 import net.minecraft.network.FriendlyByteBuf
@@ -10,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer
 import java.util.UUID
 
 data class SoulStoneTooltipRequestPayload(
-    val owner: UUID,
+    val owner: UUID
 ) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
@@ -22,14 +24,14 @@ data class SoulStoneTooltipRequestPayload(
         val STREAM_CODEC: StreamCodec<FriendlyByteBuf, SoulStoneTooltipRequestPayload> =
             StreamCodec.of(
                 { buffer, value -> UUIDUtil.STREAM_CODEC.encode(buffer, value.owner) },
-                { buffer -> SoulStoneTooltipRequestPayload(UUIDUtil.STREAM_CODEC.decode(buffer)) },
+                { buffer -> SoulStoneTooltipRequestPayload(UUIDUtil.STREAM_CODEC.decode(buffer)) }
             )
     }
 }
 
 data class SoulStoneTooltipResponsePayload(
     val owner: UUID,
-    val mru: Int?,
+    val mru: Int?
 ) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
@@ -48,20 +50,14 @@ data class SoulStoneTooltipResponsePayload(
                 { buffer ->
                     SoulStoneTooltipResponsePayload(
                         UUIDUtil.STREAM_CODEC.decode(buffer),
-                        if (buffer.readBoolean()) buffer.readVarInt() else null,
+                        if (buffer.readBoolean()) buffer.readVarInt() else null
                     )
-                },
+                }
             )
     }
 }
 
 object SoulStoneTooltipNetwork {
-    @JvmField
-    var sendRequestToServer: (SoulStoneTooltipRequestPayload) -> Unit = {}
-
-    @JvmField
-    var sendResponseToPlayer: (ServerPlayer, SoulStoneTooltipResponsePayload) -> Unit = { _, _ -> }
-
     private const val CACHE_TTL_MS = 1000L
     private const val REQUEST_THROTTLE_MS = 250L
     private const val MAX_CACHE_SIZE = 128
@@ -87,7 +83,7 @@ object SoulStoneTooltipNetwork {
     @JvmStatic
     fun handleRequest(
         requester: ServerPlayer,
-        payload: SoulStoneTooltipRequestPayload,
+        payload: SoulStoneTooltipRequestPayload
     ) {
         val owner =
             requester
@@ -95,7 +91,7 @@ object SoulStoneTooltipNetwork {
                 .server.playerList
                 .getPlayer(payload.owner)
         val mru = owner?.playerMatrix?.mru
-        sendResponseToPlayer(requester, SoulStoneTooltipResponsePayload(payload.owner, mru))
+        Network.sendTo(requester, SoulStoneTooltipResponsePayload(payload.owner, mru))
     }
 
     @JvmStatic
@@ -106,13 +102,13 @@ object SoulStoneTooltipNetwork {
 
     private fun request(
         owner: UUID,
-        now: Long,
+        now: Long
     ) {
         val lastRequestAt = pendingRequests[owner]
         if (lastRequestAt != null && now - lastRequestAt < REQUEST_THROTTLE_MS) return
 
         pendingRequests[owner] = now
-        sendRequestToServer(SoulStoneTooltipRequestPayload(owner))
+        SoulStoneTooltipRequestPayload(owner).sendToServer()
     }
 
     private fun trimCache() {
@@ -126,6 +122,6 @@ object SoulStoneTooltipNetwork {
 
     private data class CachedMatrix(
         val mru: Int?,
-        val updatedAt: Long,
+        val updatedAt: Long
     )
 }

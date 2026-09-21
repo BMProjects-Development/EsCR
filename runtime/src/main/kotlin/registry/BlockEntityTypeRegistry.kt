@@ -39,19 +39,19 @@ object BlockEntityTypeRegistry : RegistrationHandler(ModId) {
     val enrichmentChamberController = register(ECRModIDs.ENRICHMENT_CHAMBER_CONTROLLER) {
         BlockEntityType(
             ::EnrichmentChamberControllerEntity,
-            setOf(BlockRegistry.enrichmentChamberController.get()),
+            setOf(BlockRegistry.enrichmentChamberController.get())
         )
     }
     val enrichmentChamberExtractor = register(ECRModIDs.ENRICHMENT_CHAMBER_EXTRACTOR) {
         BlockEntityType(
             ::EnrichmentChamberExtractorEntity,
-            setOf(BlockRegistry.enrichmentChamberExtractor.get()),
+            setOf(BlockRegistry.enrichmentChamberExtractor.get())
         )
     }
     val enrichmentChamberReceiver = register(ECRModIDs.ENRICHMENT_CHAMBER_RECEIVER) {
         BlockEntityType(
             ::EnrichmentChamberReceiverEntity,
-            setOf(BlockRegistry.enrichmentChamberReceiver.get()),
+            setOf(BlockRegistry.enrichmentChamberReceiver.get())
         )
     }
     val rayTower = register(ECRModIDs.RAY_TOWER) {

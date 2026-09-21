@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.ValueOutput
 
 class CreativeMRUSourceEntity(
     worldPosition: BlockPos,
-    blockState: BlockState,
+    blockState: BlockState
 ) : SynchronizedBlockEntity(
     BlockEntityTypeRegistry.creativeMRUSource.get(),
     worldPosition,

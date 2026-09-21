@@ -13,7 +13,7 @@ object BookThreadRenderer {
         from: Pair<Int, Int>,
         to: Pair<Int, Int>,
         completed: Boolean,
-        baseColor: Int? = null,
+        baseColor: Int? = null
     ) {
         val dx = (to.first - from.first).toFloat()
         val dy = (to.second - from.second).toFloat()
@@ -57,7 +57,7 @@ object BookThreadRenderer {
         baseColor: Int,
         strand: Int,
         progress: Float,
-        completed: Boolean,
+        completed: Boolean
     ): Int {
         val alpha = if (baseColor ushr 24 == 0) 0xFF else baseColor ushr 24
         val red = (baseColor ushr 16) and 0xFF

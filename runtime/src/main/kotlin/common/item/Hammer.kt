@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 
 class Hammer(
-    properties: Properties,
+    properties: Properties
 ) : Item(properties) {
     private lateinit var cachedRecipe: CachedRecipe<SingleRecipeInput, StructureRecipe>
 
@@ -75,7 +75,7 @@ class Hammer(
                     level.setBlock(
                         pos.above(),
                         place.defaultBlockState(),
-                        Block.UPDATE_NEIGHBORS or Block.UPDATE_CLIENTS or Block.UPDATE_SUPPRESS_DROPS,
+                        Block.UPDATE_NEIGHBORS or Block.UPDATE_CLIENTS or Block.UPDATE_SUPPRESS_DROPS
                     )
                 } else {
                     val item =
@@ -84,7 +84,7 @@ class Hammer(
                             pos.x + 0.5,
                             pos.y + 1.0,
                             pos.z + 0.5,
-                            result,
+                            result
                         ).apply { this.setNoPickUpDelay() }
                     level.addFreshEntity(item)
                 }
@@ -97,7 +97,7 @@ class Hammer(
     private fun findMatchingDefinition(
         level: Level,
         selectedPos: BlockPos,
-        facing: Direction,
+        facing: Direction
     ): AssembledMultiblockDefinition? =
         MultiblockDefinitions.allAssembled().values.firstOrNull { definition ->
             definition.controllerCandidates(selectedPos, facing).any { controllerPos ->

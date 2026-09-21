@@ -15,7 +15,7 @@ object NeoForgeMenuTypePlatform : MenuTypePlatform {
 
     override fun <M : AbstractContainerMenu, D : Any> create(
         codec: StreamCodec<RegistryFriendlyByteBuf, D>,
-        factory: (Int, Inventory, D) -> M,
+        factory: (Int, Inventory, D) -> M
     ): MenuType<M> = IMenuTypeExtension.create { containerId, inventory, buffer ->
         factory(containerId, inventory, codec.decode(buffer))
     }

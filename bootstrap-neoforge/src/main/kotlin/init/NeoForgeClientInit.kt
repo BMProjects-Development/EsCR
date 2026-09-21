@@ -3,156 +3,101 @@ package com.algorithmlx.ecr.neoforge.init
 import com.algorithmlx.ecr.api.client.render.MultiblockPreviewGuiBridge
 import com.algorithmlx.ecr.api.client.render.MultiblockPreviewPictureRenderer
 import com.algorithmlx.ecr.api.client.render.MultiblockPreviewRenderState
-import com.algorithmlx.ecr.api.client.render.MultiblockWorldPreview
-import com.algorithmlx.ecr.api.geo.*
-import com.algorithmlx.ecr.api.geo.client.BedrockGeoAssets
+import com.algorithmlx.ecr.api.event.client.AddClientReloadListenersEvent as CrossAddClientReloadListenersEvent
+import com.algorithmlx.ecr.api.event.engine.EventBuses
+import com.algorithmlx.ecr.api.event.client.ClientPlayerNetworkEvent as CrossClientPlayerNetworkEvent
+import com.algorithmlx.ecr.api.event.client.ClientTickEvent as CrossClientTickEvent
+import com.algorithmlx.ecr.api.event.client.EntityRenderersEvent as CrossEntityRenderersEvent
+import com.algorithmlx.ecr.api.event.client.RegisterMenuScreensEvent as CrossRegisterMenuScreensEvent
+import com.algorithmlx.ecr.api.network.ClientNetworkPlatform
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoItemRenderer
-import com.algorithmlx.ecr.api.geo.client.ClientGeoAnimations
-import com.algorithmlx.ecr.api.particle.BedrockParticleRenderTypes
-import com.algorithmlx.ecr.api.particle.BedrockParticles
-import com.algorithmlx.ecr.api.particle.ClientParticleSystems
-import com.algorithmlx.ecr.api.research.*
-import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.client.ECRConnectedTextures
-import com.algorithmlx.ecr.client.book.ResearchBookClient
-import com.algorithmlx.ecr.client.renderer.*
-import com.algorithmlx.ecr.client.screen.*
+import com.algorithmlx.ecr.client.renderer.ECRClientRendering
+import com.algorithmlx.ecr.init.ECRClientInit
 import com.algorithmlx.ecr.neoforge.client.NeoForgeConnectedTextures
 import com.algorithmlx.ecr.neoforge.client.NeoForgeIrisCompatibility
-import com.algorithmlx.ecr.network.*
-import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
-import com.algorithmlx.ecr.registry.MenuTypeRegistry
-import net.minecraft.client.Minecraft
+import com.algorithmlx.ecr.neoforge.network.NeoForgeClientNetworkPlatform
+import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.GuiGraphicsExtractor
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
+import net.minecraft.client.gui.screens.inventory.MenuAccess
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.neoforge.client.event.*
-import net.neoforged.neoforge.client.network.ClientPacketDistributor
-import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent
 import net.neoforged.neoforge.common.NeoForge
 
 object NeoForgeClientInit {
     fun init(bus: IEventBus) {
+        ClientNetworkPlatform.instance = NeoForgeClientNetworkPlatform(bus)
         NeoForgeIrisCompatibility.init()
         NeoForgeConnectedTextures.init(bus)
-        ECRConnectedTextures.init()
-        BedrockParticleRenderTypes.init()
+        ECRClientInit.init()
         MultiblockPreviewGuiBridge.install(GuiGraphicsExtractor::submitPictureInPictureRenderState)
         bus.addListener(::onRegisterPIPRenders)
         bus.addListener(::onRegisterClientReloadListeners)
-
-        bus.addListener(::onRegisterClientPayloads)
         bus.addListener(::onRegisterSpecialModelRenderer)
-        bus.addListener(::onClientInit)
         bus.addListener(::onMenuScreen)
 
         bus.addListener(::onRegisterEntityModelLayer)
         bus.addListener(::onRegisterEntityRenderers)
 
         NeoForge.EVENT_BUS.addListener(::onClientTick)
+        NeoForge.EVENT_BUS.addListener(::onClientTickPre)
+        NeoForge.EVENT_BUS.addListener(::onClientLogin)
         NeoForge.EVENT_BUS.addListener(::onClientLogout)
         NeoForge.EVENT_BUS.addListener(::onSubmitCustomGeometry)
     }
 
-    private fun onRegisterClientReloadListeners(event: AddClientReloadListenersEvent) {
-        event.addListener("bedrock_particles".ecRL, BedrockParticles)
-        event.addListener("bedrock_geo".ecRL, BedrockGeoAssets)
+    private fun onClientTick(event: ClientTickEvent.Post) {
+        EventBuses.GAME(CrossClientTickEvent.Post)
     }
 
-    private fun onClientTick(event: ClientTickEvent.Post) {
-        Minecraft.getInstance().level?.let {
-            ClientParticleSystems.get(it)?.update()
-            MultiblockWorldPreview.tick(it)
-        }
+    private fun onRegisterClientReloadListeners(event: AddClientReloadListenersEvent) {
+        EventBuses.MOD(CrossAddClientReloadListenersEvent(event::addListener))
+    }
+
+    private fun onClientTickPre(event: ClientTickEvent.Pre) {
+        EventBuses.GAME(CrossClientTickEvent.Pre)
+    }
+
+    private fun onClientLogin(event: ClientPlayerNetworkEvent.LoggingIn) {
+        EventBuses.GAME(CrossClientPlayerNetworkEvent.LoggingIn)
     }
 
     private fun onClientLogout(event: ClientPlayerNetworkEvent.LoggingOut) {
-        SoulStoneTooltipNetwork.clear()
-        MultiblockWorldPreview.clear()
-        MagicShieldRenderer.clear()
+        EventBuses.GAME(CrossClientPlayerNetworkEvent.LoggingOut)
     }
 
     private fun onSubmitCustomGeometry(event: SubmitCustomGeometryEvent) {
-        val minecraft = Minecraft.getInstance()
-        val level = minecraft.level ?: return
-        ClientParticleSystems.get(level)?.submit(
+        ECRClientRendering.submit(
             event.poseStack,
             event.submitNodeCollector,
-            event.levelRenderState,
-            minecraft.deltaTracker.getGameTimeDeltaPartialTick(false),
-            minecraft.player?.uuid,
-            minecraft.options.cameraType.isFirstPerson,
+            event.levelRenderState
         )
-        BoundGemLinkRenderer.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
-        MultiblockWorldPreview.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
-        MagicShieldRenderer.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
-        MRULinkRenderer.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
     }
 
     private fun onRegisterSpecialModelRenderer(event: RegisterSpecialModelRendererEvent) {
         event.register(BedrockGeoItemRenderer.ID, BedrockGeoItemRenderer.Unbaked.CODEC)
     }
 
-    private fun onClientInit(event: FMLClientSetupEvent) {
-        event.enqueueWork {
-            ResearchBookClient.init()
-
-            ResearchNetwork.completeResearch = { ClientPacketDistributor.sendToServer(CompleteResearchPayload(it)) }
-            ResearchNetwork.updateFavorite =
-                { research, spread, color -> ClientPacketDistributor.sendToServer(FavoriteResearchPayload(research, spread, color)) }
-            ResearchNetwork.updateView = { state -> runCatching { ClientPacketDistributor.sendToServer(UpdateBookViewPayload(state)) } }
-            BoundGemTooltipNetwork.currentDimension = { Minecraft.getInstance().level?.dimension() }
-            BoundGemTooltipNetwork.sendRequestToServer = { payload -> runCatching { ClientPacketDistributor.sendToServer(payload) } }
-            SoulStoneTooltipNetwork.sendRequestToServer = { payload -> runCatching { ClientPacketDistributor.sendToServer(payload) } }
-            GeoAnimationNetwork.playClientBlockAnimation = ClientGeoAnimations::handle
-            GeoAnimationNetwork.playClientEntityAnimation = ClientGeoAnimations::handle
-            GeoAnimationNetwork.playClientItemAnimation = ClientGeoAnimations::handle
-            GeoAnimationNetwork.stopClientBlockAnimation = ClientGeoAnimations::handle
-            GeoAnimationNetwork.stopClientEntityAnimation = ClientGeoAnimations::handle
-            GeoAnimationNetwork.stopClientItemAnimation = ClientGeoAnimations::handle
-
-            BlockEntityRenderers.register(BlockEntityTypeRegistry.mithrilineFurnace.get(), ::MithrilineFurnaceRenderer)
-            BlockEntityRenderers.register(
-                BlockEntityTypeRegistry.assembledMultiblockPart.get(),
-                ::AssembledMultiblockRenderer,
-            )
-            BlockEntityRenderers.register(
-                BlockEntityTypeRegistry.rayTower.get(),
-                ::AssembledMultiblockRenderer,
-            )
-            BlockEntityRenderers.register(BlockEntityTypeRegistry.matrixDestructor.get(), ::MatrixDestructorRenderer)
-            BlockEntityRenderers.register(
-                BlockEntityTypeRegistry.enrichmentChamberController.get(),
-                ::EnrichmentChamberControllerRenderer,
-            )
-        }
-    }
-
     private fun onMenuScreen(event: RegisterMenuScreensEvent) {
-        event.register(MenuTypeRegistry.mithrilineFurnace, ::MithrilineFurnaceScreen)
-        event.register(MenuTypeRegistry.radiatingChamber, ::RadiatingChamberScreen)
-        event.register(MenuTypeRegistry.heatGenerator, ::HeatGeneratorScreen)
-        event.register(MenuTypeRegistry.magicTable, ::MagicTableMenuScreen)
-        event.register(MenuTypeRegistry.matrixDestructor, ::MatrixDestructorScreen)
-        event.register(MenuTypeRegistry.enrichmentChamberController, ::EnrichmentChamberControllerScreen)
-        event.register(MenuTypeRegistry.enrichmentChamberReceiver, ::EnrichmentChamberReceiverScreen)
-        event.register(MenuTypeRegistry.rayTower, ::RayTowerScreen)
-        event.register(MenuTypeRegistry.magicalTeleporter, ::MagicalTeleporterScreen)
-    }
-
-    private fun onRegisterClientPayloads(event: RegisterClientPayloadHandlersEvent) {
-        event.register(ResearchSyncPayload.TYPE) { payload, _ -> ClientResearchState.apply(payload) }
-        event.register(ResearchProgressPayload.TYPE) { payload, _ -> ClientResearchState.apply(payload) }
-        event.register(BoundGemTooltipResponsePayload.TYPE) { payload, _ -> BoundGemTooltipNetwork.acceptResponse(payload) }
-        event.register(SoulStoneTooltipResponsePayload.TYPE) { payload, _ -> SoulStoneTooltipNetwork.acceptResponse(payload) }
-        event.register(GeoBlockAnimationPayload.TYPE) { payload, _ -> ClientGeoAnimations.handle(payload) }
-        event.register(GeoEntityAnimationPayload.TYPE) { payload, _ -> ClientGeoAnimations.handle(payload) }
-        event.register(GeoItemAnimationPayload.TYPE) { payload, _ -> ClientGeoAnimations.handle(payload) }
-        event.register(GeoBlockAnimationStopPayload.TYPE) { payload, _ -> ClientGeoAnimations.handle(payload) }
-        event.register(GeoEntityAnimationStopPayload.TYPE) { payload, _ -> ClientGeoAnimations.handle(payload) }
-        event.register(GeoItemAnimationStopPayload.TYPE) { payload, _ -> ClientGeoAnimations.handle(payload) }
-        event.register(MagicShieldPayload.TYPE) { payload, _ -> MagicShieldRenderer.accept(payload) }
+        EventBuses.MOD(
+            CrossRegisterMenuScreensEvent(
+                object : CrossRegisterMenuScreensEvent.MenuScreenRegistrar {
+                    override fun <M, S> register(
+                        menuType: MenuType<out M>,
+                        screenConstructor: CrossRegisterMenuScreensEvent.ScreenConstructor<M, S>
+                    ) where M : AbstractContainerMenu, S : Screen, S : MenuAccess<M> {
+                        event.register(menuType) { menu, inventory, title ->
+                            screenConstructor.create(menu, inventory, title)
+                        }
+                    }
+                }
+            )
+        )
     }
 
     private fun onRegisterPIPRenders(event: RegisterPictureInPictureRenderersEvent) {
@@ -160,10 +105,23 @@ object NeoForgeClientInit {
     }
 
     private fun onRegisterEntityRenderers(event: EntityRenderersEvent.RegisterRenderers) {
-        event.registerBlockEntityRenderer(BlockEntityTypeRegistry.mithrilineFurnace.get(), ::MithrilineFurnaceRenderer)
+        EventBuses.MOD(
+            CrossEntityRenderersEvent.RegisterRenderers(
+                object : CrossEntityRenderersEvent.BlockEntityRendererRegistrar {
+                    override fun <T : BlockEntity, S : BlockEntityRenderState> register(
+                        blockEntityType: BlockEntityType<out T>,
+                        rendererProvider: BlockEntityRendererProvider<T, S>
+                    ) = event.registerBlockEntityRenderer(blockEntityType, rendererProvider)
+                }
+            )
+        )
     }
 
     private fun onRegisterEntityModelLayer(event: EntityRenderersEvent.RegisterLayerDefinitions) {
-        event.registerLayerDefinition(MithrilineFurnaceRenderer.MF_LAYER, MithrilineFurnaceRenderer::createBodyLayer)
+        EventBuses.MOD(
+            CrossEntityRenderersEvent.RegisterLayerDefinitions { layerLocation, supplier ->
+                event.registerLayerDefinition(layerLocation, supplier::invoke)
+            }
+        )
     }
 }

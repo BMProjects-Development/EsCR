@@ -38,7 +38,7 @@ class PairAsListSerializer<K, V>(keySerializer: KSerializer<K>, valueSerializer:
 @Serializable(with = SortedMapSerializer::class)
 class SortedMap<K : Comparable<K>, V> private constructor(
     private val sortedEntries: List<Map.Entry<K, V>>,
-    private val backing: Map<K, V> = sortedEntries.associate { it.key to it.value },
+    private val backing: Map<K, V> = sortedEntries.associate { it.key to it.value }
 ) : Map<K, V> by backing {
     constructor(map: Map<K, V>) : this(map.entries.sortedBy { it.key })
 
@@ -65,7 +65,7 @@ class SortedMap<K : Comparable<K>, V> private constructor(
 
 class SortedMapSerializer<K : Comparable<K>, V>(
     keySerializer: KSerializer<K>,
-    valueSerializer: KSerializer<V>,
+    valueSerializer: KSerializer<V>
 ) : KSerializer<SortedMap<K, V>> {
     private val delegate = MapSerializer(keySerializer, valueSerializer)
     override val descriptor = delegate.descriptor

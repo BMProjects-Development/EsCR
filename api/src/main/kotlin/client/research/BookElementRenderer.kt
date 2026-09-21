@@ -27,7 +27,7 @@ data class BookElementRenderContext(
     val research: Identifier? = null,
     val textLineStart: Int = 0,
     val textLineCount: Int = textLines?.size ?: 0,
-    val scissorArea: ScreenRectangle? = null,
+    val scissorArea: ScreenRectangle? = null
 ) {
     val mc: Minecraft = Minecraft.getInstance()
 }
@@ -35,7 +35,7 @@ data class BookElementRenderContext(
 fun interface BookElementRenderer<T : BookElement> {
     fun render(
         context: BookElementRenderContext,
-        element: T,
+        element: T
     )
 }
 
@@ -45,7 +45,7 @@ object BookElementRenderers {
     @JvmStatic
     fun <T : BookElement> register(
         type: Identifier,
-        renderer: BookElementRenderer<T>,
+        renderer: BookElementRenderer<T>
     ) {
         check(renderers.putIfAbsent(type, renderer) == null) { "Duplicate book element renderer: $type" }
     }
@@ -55,7 +55,7 @@ object BookElementRenderers {
     fun render(
         type: Identifier,
         context: BookElementRenderContext,
-        element: BookElement,
+        element: BookElement
     ): Boolean {
         val renderer = renderers[type] as? BookElementRenderer<BookElement> ?: return false
         renderer.render(context, element)

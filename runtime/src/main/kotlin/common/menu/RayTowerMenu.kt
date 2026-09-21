@@ -21,14 +21,14 @@ class RayTowerMenu(
     inv: Inventory,
     container: Container,
     val blockEntity: BlockEntity?,
-    access: ContainerLevelAccess,
+    access: ContainerLevelAccess
 ) : AbstractMenu(MenuTypeRegistry.rayTower, containerId, access) {
     constructor(containerId: Int, inv: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inv,
         SimpleContainer(1),
         inv.player.level().getBlockEntity(typeData.pos),
-        ContainerLevelAccess.NULL,
+        ContainerLevelAccess.NULL
     )
 
     init {
@@ -36,7 +36,7 @@ class RayTowerMenu(
             VanillaSpecialSlot(container, 0, 80, 48, { stack ->
                 val item = stack.item
                 isAssembled() && item is BoundGem && BoundGemHelper.getBoundPos(stack) != null
-            }, { _ -> isAssembled() }),
+            }, { _ -> isAssembled() })
         )
 
         inv.make()
@@ -44,7 +44,7 @@ class RayTowerMenu(
 
     override fun quickMoveStack(
         player: Player,
-        slotIndex: Int,
+        slotIndex: Int
     ): ItemStack {
         val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
         val stack = slot.item.takeIf { it.count > 0 } ?: return ItemStack.EMPTY

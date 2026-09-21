@@ -55,12 +55,12 @@ object MultiblockRegistry : RegistrationHandler(ModId) {
                 ECRModIDs.AIR_CRYSTAL,
                 ECRModIDs.LIGHTNING_COLLECTOR,
                 ECRModIDs.ENRICHMENT_CHAMBER,
-                ECRModIDs.MAGICAL_TELEPORTER,
-            ).mapTo(linkedSetOf(), String::ecRL),
+                ECRModIDs.MAGICAL_TELEPORTER
+            ).mapTo(linkedSetOf(), String::ecRL)
         )
         registerConfiguredAssembledMultiblocks(
             ECConfig.current.multiblocks.customAssembledRegistryIds(),
-            setOf(ECRModIDs.RAY_TOWER.ecRL),
+            setOf(ECRModIDs.RAY_TOWER.ecRL)
         )
     }
 

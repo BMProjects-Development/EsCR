@@ -22,7 +22,7 @@ object BookTaskRenderer {
 
     fun render(
         context: BookElementRenderContext,
-        element: TaskListBookElement,
+        element: TaskListBookElement
     ) {
         val entry = ResearchCatalog.snapshot().entries[element.research] ?: return
         val level = entry.taskLevels.getOrNull(element.level) ?: return
@@ -47,7 +47,7 @@ object BookTaskRenderer {
         definition: ResearchTaskDefinition,
         progress: ResearchTaskProgress,
         x: Int,
-        y: Int,
+        y: Int
     ) {
         val customIcon = entry.taskIcons[definition.id].takeUnless { definition.task is ItemResearchTask }
         val stack = taskStack(definition.task, customIcon)
@@ -73,14 +73,14 @@ object BookTaskRenderer {
                 Minecraft.getInstance().font,
                 tooltip(definition, stack, progress),
                 mouseX,
-                mouseY,
+                mouseY
             )
         }
     }
 
     private fun taskStack(
         task: ResearchTask,
-        customIcon: BookIcon?,
+        customIcon: BookIcon?
     ): ItemStack? =
         when {
             task is ItemResearchTask -> {
@@ -111,7 +111,7 @@ object BookTaskRenderer {
     private fun tooltip(
         definition: ResearchTaskDefinition,
         stack: ItemStack?,
-        progress: ResearchTaskProgress,
+        progress: ResearchTaskProgress
     ): List<Component> =
         buildList {
             add(taskTitle(definition, stack))
@@ -120,7 +120,7 @@ object BookTaskRenderer {
 
     private fun taskTitle(
         definition: ResearchTaskDefinition,
-        stack: ItemStack?,
+        stack: ItemStack?
     ): Component =
         definition.title?.component() ?: when (val task = definition.task) {
             is CraftingResearchTask -> {
@@ -129,7 +129,7 @@ object BookTaskRenderer {
 
             is ExperienceResearchTask -> {
                 Component.translatable(
-                    if (task.levels) "screen.$ModId.research_book.experience.levels" else "screen.$ModId.research_book.experience",
+                    if (task.levels) "screen.$ModId.research_book.experience.levels" else "screen.$ModId.research_book.experience"
                 )
             }
 
@@ -142,7 +142,7 @@ object BookTaskRenderer {
         context: BookElementRenderContext,
         icon: BookIcon?,
         x: Int,
-        y: Int,
+        y: Int
     ) {
         icon ?: return
         icon.item?.let { id ->

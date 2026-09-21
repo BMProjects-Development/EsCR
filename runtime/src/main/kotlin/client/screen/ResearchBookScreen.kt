@@ -33,7 +33,7 @@ import net.minecraft.world.item.ItemStack
 import kotlin.math.*
 
 class ResearchBookScreen(
-    private val bookType: BookType? = null,
+    private val bookType: BookType? = null
 ) : Screen(Component.translatable("screen.$ModId.research_book")) {
     private val bookTexture = "textures/gui/book/book.png".ecRL
     private val arrowLeft = "textures/gui/book/arrow_left.png".ecRL
@@ -270,7 +270,7 @@ class ResearchBookScreen(
             0,
             width,
             height,
-            ResearchBookConfigValues.spaceColor(panX, panY, zoom),
+            ResearchBookConfigValues.spaceColor(panX, panY, zoom)
         )
     }
 
@@ -315,10 +315,10 @@ class ResearchBookScreen(
                     Minecraft.getInstance().font,
                     listOf(
                         category.title.component(category.titleShadow),
-                        categoryProgress(category),
+                        categoryProgress(category)
                     ),
                     mouseX,
-                    mouseY.coerceAtLeast(CATEGORY_HEIGHT + 4),
+                    mouseY.coerceAtLeast(CATEGORY_HEIGHT + 4)
                 )
             }
         }
@@ -448,7 +448,7 @@ class ResearchBookScreen(
 
     private fun researchRequirementComponent(
         research: Identifier,
-        taskId: String?,
+        taskId: String?
     ): Component {
         val entry = ResearchCatalog.snapshot().entries[research]
         val title = entry?.title?.component(entry.titleShadow) ?: Component.literal(research.toString())
@@ -538,9 +538,9 @@ class ResearchBookScreen(
                     entry.id,
                     placement.textLineStart,
                     placement.textLineCount,
-                    pageScissor,
+                    pageScissor
                 ),
-                placement.element.content,
+                placement.element.content
             )
         }
         graphics.disableScissor()
@@ -577,7 +577,7 @@ class ResearchBookScreen(
         return BookTransform(
             ((width - BOOK_WIDTH * finalScale) / 2f).toInt(),
             ((height - BOOK_HEIGHT * finalScale) / 2f).toInt(),
-            finalScale,
+            finalScale
         )
     }
 
@@ -596,7 +596,7 @@ class ResearchBookScreen(
             left,
             top,
             (right - left).coerceAtLeast(1),
-            (bottom - top).coerceAtLeast(1),
+            (bottom - top).coerceAtLeast(1)
         )
     }
 
@@ -614,7 +614,7 @@ class ResearchBookScreen(
                 27,
                 23,
                 27,
-                23,
+                23
             )
         }
         if (spreadIndex < spreads.lastIndex) {
@@ -630,7 +630,7 @@ class ResearchBookScreen(
                 27,
                 23,
                 27,
-                23,
+                23
             )
         }
     }
@@ -695,14 +695,14 @@ class ResearchBookScreen(
             COMPLETE_BUTTON_Y,
             COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH,
             COMPLETE_BUTTON_Y + COMPLETE_BUTTON_HEIGHT,
-            background,
+            background
         )
         graphics.outline(
             COMPLETE_BUTTON_X,
             COMPLETE_BUTTON_Y,
             COMPLETE_BUTTON_WIDTH,
             COMPLETE_BUTTON_HEIGHT,
-            border,
+            border
         )
         val font = Minecraft.getInstance().font
         val labelKey = if (hasFinalTaskLevel(entry)) "complete_research" else "complete_task"
@@ -959,8 +959,8 @@ class ResearchBookScreen(
                     spreadIndex,
                     targetPanX,
                     targetPanY,
-                    targetZoom,
-                ),
+                    targetZoom
+                )
             )
         ClientResearchState.updateLocalView(state)
         ResearchNetwork.updateView(state)
@@ -969,12 +969,12 @@ class ResearchBookScreen(
     private data class BookTransform(
         val x: Int,
         val y: Int,
-        val scale: Float,
+        val scale: Float
     )
 
     private data class MissingRequirements(
         val visible: List<Component>,
-        val hidden: Int,
+        val hidden: Int
     )
 
     companion object {

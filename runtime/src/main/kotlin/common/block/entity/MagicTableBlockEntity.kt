@@ -36,7 +36,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class MagicTableBlockEntity(
     worldPosition: BlockPos,
-    blockState: BlockState,
+    blockState: BlockState
 ) : SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.magicTable.get(), worldPosition, blockState),
     MRUDevice {
     private var items: NonNullList<ItemStack> = NonNullList.withSize(8, ItemStack.EMPTY)
@@ -52,7 +52,7 @@ class MagicTableBlockEntity(
 
             override fun set(
                 index: Int,
-                value: Int,
+                value: Int
             ) {
                 when (index) {
                     0 -> this@MagicTableBlockEntity.progress = value
@@ -78,7 +78,7 @@ class MagicTableBlockEntity(
 
     override fun createMenu(
         containerId: Int,
-        inventory: Inventory,
+        inventory: Inventory
     ): AbstractContainerMenu =
         MagicTableMenu(
             containerId,
@@ -86,7 +86,7 @@ class MagicTableBlockEntity(
             this,
             this,
             ContainerLevelAccess.create(this.level!!, this.blockPos),
-            containerData,
+            containerData
         )
 
     override fun saveAdditional(output: ValueOutput) {
@@ -109,7 +109,7 @@ class MagicTableBlockEntity(
 
     override fun canPlaceItem(
         slot: Int,
-        itemStack: ItemStack,
+        itemStack: ItemStack
     ): Boolean = if (slot == 5) false else super.canPlaceItem(slot, itemStack)
 
     override val mruStorage: IOMRUStorage = MRUStorageContainer(5000, MRUTypeRegistry.radiationUnit) { setChanged() }
@@ -122,7 +122,7 @@ class MagicTableBlockEntity(
         @JvmStatic
         fun onTick(
             level: Level,
-            be: MagicTableBlockEntity,
+            be: MagicTableBlockEntity
         ) {
             if (level.isClientSide) return
             be.processReceive(level)
@@ -187,7 +187,7 @@ class MagicTableBlockEntity(
 
         private fun MagicTableBlockEntity.processTick(
             time: Int,
-            mru: Int,
+            mru: Int
         ) {
             val storage = this.mruStorage
             if (this.progress >= time || !storage.canExtract(mru)) return
@@ -205,13 +205,13 @@ class MagicTableBlockEntity(
 
         private fun shouldConsumeMirrored(
             pattern: ShapedRecipePattern,
-            input: CraftingInput,
+            input: CraftingInput
         ): Boolean = !matchesPattern(pattern, input, mirrored = false) && matchesPattern(pattern, input, mirrored = true)
 
         private fun matchesPattern(
             pattern: ShapedRecipePattern,
             input: CraftingInput,
-            mirrored: Boolean,
+            mirrored: Boolean
         ): Boolean {
             val ingredients = pattern.ingredients()
 

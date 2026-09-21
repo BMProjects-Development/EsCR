@@ -5,6 +5,6 @@ import net.minecraft.world.item.ItemStack
 interface ModifiableSizeItem {
     fun maxStackSize(
         itemStack: ItemStack,
-        originalSize: Int,
+        originalSize: Int
     ): Int
 }

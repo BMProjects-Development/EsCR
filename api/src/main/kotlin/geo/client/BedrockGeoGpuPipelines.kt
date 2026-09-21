@@ -42,7 +42,7 @@ object BedrockGeoGpuPipelines {
                 .withColorTargetState(ColorTargetState.DEFAULT)
                 .withVertexBinding(0, VERTEX_FORMAT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                .build(),
+                .build()
         )
 
     private val cutout =
@@ -57,7 +57,7 @@ object BedrockGeoGpuPipelines {
                 .withColorTargetState(ColorTargetState.DEFAULT)
                 .withVertexBinding(0, VERTEX_FORMAT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                .build(),
+                .build()
         )
 
     private val translucent =
@@ -74,7 +74,7 @@ object BedrockGeoGpuPipelines {
                 .withCull(false)
                 .withVertexBinding(0, VERTEX_FORMAT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                .build(),
+                .build()
         )
 
     private val additive =
@@ -93,7 +93,7 @@ object BedrockGeoGpuPipelines {
                 .withCull(false)
                 .withVertexBinding(0, VERTEX_FORMAT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                .build(),
+                .build()
         )
 
     @JvmStatic

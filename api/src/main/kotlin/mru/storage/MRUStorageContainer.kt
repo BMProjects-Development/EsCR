@@ -7,7 +7,7 @@ import net.minecraft.world.level.storage.ValueOutput
 data class ExtremeMRUStorageContainer(
     override val mruCapacity: Int,
     override val mruType: MRUType,
-    val onChange: (Int) -> Unit = {},
+    val onChange: (Int) -> Unit = {}
 ) : IOMRUStorage {
     private var mutableMRU = 0
 
@@ -60,7 +60,7 @@ data class ExtremeMRUStorageContainer(
 data class MRUStorageContainer(
     override val mruCapacity: Int,
     override val mruType: MRUType,
-    val onChange: (Int) -> Unit = {},
+    val onChange: (Int) -> Unit = {}
 ) : IOMRUStorage {
     private var mutableMRU = 0
 

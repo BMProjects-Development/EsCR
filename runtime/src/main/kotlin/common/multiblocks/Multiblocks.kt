@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape
 val RayTowerMultiblock =
     assembledMultiblock(
         "ray_tower".ecRL,
-        allowAssemblyFromAnyPart = true,
+        allowAssemblyFromAnyPart = true
     ) {
         fun shape(): VoxelShape {
             var shape = Shapes.empty()
@@ -71,7 +71,7 @@ val RayTowerMultiblock =
             ECRModIDs.RAY_TOWER.ecRL,
             ECRModIDs.textureLocation("block/assembled/${ECRModIDs.RAY_TOWER}"),
             lightMode = GeoLightMode.WORLD,
-            blockRotation = GeoBlockRotation.NONE,
+            blockRotation = GeoBlockRotation.NONE
         )
     }
 
@@ -154,42 +154,42 @@ object MithrilineFurnaceMultiblock : Multiblock(5, 5, 3, {
         null,
         null,
         null,
-        a,
+        a
     )
 })
 
 object SoulStoneMultiblock : Multiblock(3, 3, 1, {
     this.makeRecipeMB(
         this.tag(BlockTags.SOUL_SPEED_BLOCKS),
-        this.block(Blocks.EMERALD_BLOCK.defaultBlockState()),
+        this.block(Blocks.EMERALD_BLOCK.defaultBlockState())
     )
 })
 
 object FlameCrystal : Multiblock(3, 3, 1, {
     this.makeRecipeMB(
         this.block(Blocks.LAVA.defaultBlockState()),
-        this.tag(BlockTags.INFINIBURN_NETHER),
+        this.tag(BlockTags.INFINIBURN_NETHER)
     )
 })
 
 object WaterCrystal : Multiblock(3, 3, 1, {
     this.makeRecipeMB(
         this.block(Blocks.WATER.defaultBlockState()),
-        this.tag(BlockTags.ICE),
+        this.tag(BlockTags.ICE)
     )
 })
 
 object EarthCrystal : Multiblock(3, 3, 1, {
     this.makeRecipeMB(
         this.block(Blocks.MOSSY_COBBLESTONE.defaultBlockState()),
-        this.block(Blocks.MOSS_BLOCK.defaultBlockState()),
+        this.block(Blocks.MOSS_BLOCK.defaultBlockState())
     )
 })
 
 object AirCrystal : Multiblock(3, 3, 1, {
     this.makeRecipeMB(
         this.block(Blocks.END_STONE_BRICKS.defaultBlockState()),
-        this.block(Blocks.PURPUR_BLOCK.defaultBlockState()),
+        this.block(Blocks.PURPUR_BLOCK.defaultBlockState())
     )
 })
 
@@ -690,7 +690,7 @@ object LightningCollector : Multiblock(11, 11, 4, {
         null,
         null,
         null,
-        null,
+        null
     )
 })
 
@@ -701,8 +701,8 @@ object EnrichmentChamber : Multiblock(128, 128, 128, {
             this.tag(ECRTags.Blocks.ENRICHMENT_CHAMBER),
             this.block(
                 BlockRegistry.enrichmentChamberController.get().defaultBlockState(),
-                ignoreTag = true,
-            ),
+                ignoreTag = true
+            )
         )
     val air = this.block(Blocks.AIR.defaultBlockState())
 
@@ -795,7 +795,7 @@ object MagicalTeleporter : Multiblock(5, 5, 3, {
         a,
         null,
         a,
-        null,
+        null
     )
 })
 
@@ -1272,13 +1272,13 @@ object SunAbsorber : Multiblock(5, 5, 9, {
         null,
         d,
         b,
-        b,
+        b
     )
 })
 
 private fun Multiblock.makeRecipeMB(
     left: MultiblockMatcher,
-    center: MultiblockMatcher,
+    center: MultiblockMatcher
 ) {
     pattern(
         null,
@@ -1289,6 +1289,6 @@ private fun Multiblock.makeRecipeMB(
         left,
         null,
         left,
-        null,
+        null
     )
 }

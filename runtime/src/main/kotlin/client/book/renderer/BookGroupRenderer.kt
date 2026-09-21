@@ -9,7 +9,7 @@ import kotlin.math.roundToInt
 object BookGroupRenderer {
     fun render(
         context: BookElementRenderContext,
-        element: GroupBookElement,
+        element: GroupBookElement
     ) {
         BookGroupLayout.layout(element, context.width, context.research).elements.forEachIndexed { index, placement ->
             if (placement.y >= context.height || placement.x >= context.width) return@forEachIndexed
@@ -40,9 +40,9 @@ object BookGroupRenderer {
                     scale = context.scale,
                     interactionKey = context.interactionKey?.let { "$it|group_$index" },
                     research = context.research,
-                    scissorArea = context.scissorArea,
+                    scissorArea = context.scissorArea
                 ),
-                placement.element.content,
+                placement.element.content
             )
         }
     }

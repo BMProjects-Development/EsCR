@@ -21,8 +21,8 @@ object ECRConnectedTextures {
             texture = ConnectedTexture.fromMap(
                 source = "block/$block/base".ecRL,
                 map = "block/$block/map".ecRL,
-                textureSize = texSize,
-            ),
+                textureSize = texSize
+            )
         )
     }
 }

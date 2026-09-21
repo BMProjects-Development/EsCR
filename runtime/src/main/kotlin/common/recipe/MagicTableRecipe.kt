@@ -37,13 +37,13 @@ class MagicTableRecipe(
     val catalyst: Optional<Ingredient>,
     val time: Int,
     val mruPerTick: Int,
-    val result: ItemStackTemplate,
+    val result: ItemStackTemplate
 ) : Recipe<MagicTableRecipe.Input> {
     init {
         require(this@MagicTableRecipe.input.isPresent || catalyst.isPresent) { "Recipe must present with inputs or catalyst!" }
         require(
             this@MagicTableRecipe.input.isEmpty ||
-                this@MagicTableRecipe.input.get().height() * this@MagicTableRecipe.input.get().width() <= CRAFTING_SLOT_COUNT,
+                this@MagicTableRecipe.input.get().height() * this@MagicTableRecipe.input.get().width() <= CRAFTING_SLOT_COUNT
         ) {
             "Recipe max have only ~2x2 recipe grid"
         }
@@ -51,7 +51,7 @@ class MagicTableRecipe(
 
     override fun matches(
         input: Input,
-        level: Level,
+        level: Level
     ): Boolean {
         if (this@MagicTableRecipe.input.isPresent) {
             val shaped = this@MagicTableRecipe.input.get()
@@ -91,16 +91,16 @@ class MagicTableRecipe(
                             it
                                 .map(Ingredient::display)
                                 .getOrElse { SlotDisplay.Empty.INSTANCE }
-                        },
+                        }
                 ),
                 Optional.ofNullable(catalyst.getOrNull()?.display()),
                 SlotDisplay.ItemStackSlotDisplay(result),
-                SlotDisplay.ItemSlotDisplay(BlockRegistry.magicTable.get().asItem()),
-            ),
+                SlotDisplay.ItemSlotDisplay(BlockRegistry.magicTable.get().asItem())
+            )
         )
 
     class Input(
-        private val stacks: List<ItemStack>,
+        private val stacks: List<ItemStack>
     ) : RecipeInput {
         init {
             require(stacks.size == INPUT_SLOT_COUNT) { "Envoyer recipe input must contain $INPUT_SLOT_COUNT slots" }
@@ -117,7 +117,7 @@ class MagicTableRecipe(
             CraftingInput.ofPositioned(
                 CRAFTING_WIDTH,
                 CRAFTING_HEIGHT,
-                craftingItems,
+                craftingItems
             )
     }
 
@@ -126,7 +126,7 @@ class MagicTableRecipe(
         val input: Optional<List<SlotDisplay>>,
         val catalyst: Optional<SlotDisplay>,
         private val resultDisplay: SlotDisplay,
-        private val station: SlotDisplay,
+        private val station: SlotDisplay
     ) : RecipeDisplay {
         override fun result(): SlotDisplay = this.resultDisplay
 
@@ -146,7 +146,7 @@ class MagicTableRecipe(
                                 .forGetter(Display::input),
                             SlotDisplay.CODEC.optionalFieldOf("catalyst").forGetter(Display::catalyst),
                             SlotDisplay.CODEC.fieldOf("result").forGetter(Display::resultDisplay),
-                            SlotDisplay.CODEC.fieldOf("station").forGetter(Display::station),
+                            SlotDisplay.CODEC.fieldOf("station").forGetter(Display::station)
                         ).apply(it, ::Display)
                 }
 
@@ -154,7 +154,7 @@ class MagicTableRecipe(
             val STREAM_CODEC =
                 StreamCodec.composite(
                     ByteBufCodecs.optional(
-                        ByteBufCodecs.list<RegistryFriendlyByteBuf, SlotDisplay>().apply(SlotDisplay.STREAM_CODEC),
+                        ByteBufCodecs.list<RegistryFriendlyByteBuf, SlotDisplay>().apply(SlotDisplay.STREAM_CODEC)
                     ),
                     Display::input,
                     ByteBufCodecs.optional(SlotDisplay.STREAM_CODEC),
@@ -163,7 +163,7 @@ class MagicTableRecipe(
                     Display::resultDisplay,
                     SlotDisplay.STREAM_CODEC,
                     Display::station,
-                    ::Display,
+                    ::Display
                 )
         }
     }
@@ -187,7 +187,7 @@ class MagicTableRecipe(
                         Ingredient.CODEC.optionalFieldOf("catalyst").forGetter(MagicTableRecipe::catalyst),
                         Codec.INT.fieldOf("time").forGetter(MagicTableRecipe::time),
                         Codec.INT.fieldOf("mru").forGetter(MagicTableRecipe::mruPerTick),
-                        ItemStackTemplate.MAP_CODEC.fieldOf("result").forGetter(MagicTableRecipe::result),
+                        ItemStackTemplate.MAP_CODEC.fieldOf("result").forGetter(MagicTableRecipe::result)
                     ).apply(it, ::MagicTableRecipe)
             }
 
@@ -196,7 +196,7 @@ class MagicTableRecipe(
 
         private fun encode(
             buf: RegistryFriendlyByteBuf,
-            recipe: MagicTableRecipe,
+            recipe: MagicTableRecipe
         ) {
             buf.writeOptional(recipe.input) { b, pattern ->
                 ShapedRecipePattern.STREAM_CODEC.encode(b as RegistryFriendlyByteBuf, pattern)

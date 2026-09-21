@@ -10,9 +10,9 @@ class LevelCollisionProvider(private val level: Level) : CollisionProvider {
     override fun query(pos: Vector3f, size: Float, offset: Vector3f): Pair<Vector3f, Vector3f>? = query(
         AABB(
             (pos.x - size).toDouble(), (pos.y - size).toDouble(), (pos.z - size).toDouble(),
-            (pos.x + size).toDouble(), (pos.y + size).toDouble(), (pos.z + size).toDouble(),
+            (pos.x + size).toDouble(), (pos.y + size).toDouble(), (pos.z + size).toDouble()
         ),
-        offset,
+        offset
     )
 
     private fun query(aabb: AABB, offset: Vector3f): Pair<Vector3f, Vector3f>? {

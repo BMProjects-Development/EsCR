@@ -38,7 +38,7 @@ fun FloatExpr.eval(context: MolangContext) = getFloat(context.query, context.var
 fun interface FloatExpr {
     fun getFloat(
         query: Query,
-        variables: Variables,
+        variables: Variables
     ): Float
 
     companion object {
@@ -53,7 +53,7 @@ fun interface FloatExpr {
 class FloatVec3Expr(
     val x: FloatExpr,
     val y: FloatExpr,
-    val z: FloatExpr,
+    val z: FloatExpr
 ) {
     fun eval(context: MolangContext) = Vector3f(x.eval(context), y.eval(context), z.eval(context))
 
@@ -72,7 +72,7 @@ object FloatVec3ExprSerializer : KSerializer<FloatVec3Expr> {
 
     override fun serialize(
         encoder: Encoder,
-        value: FloatVec3Expr,
+        value: FloatVec3Expr
     ) = throw UnsupportedOperationException()
 
     private fun parse(json: JsonElement): FloatVec3Expr =
@@ -108,7 +108,7 @@ object FloatExprSerializer : KSerializer<FloatExpr> {
 
     override fun serialize(
         encoder: Encoder,
-        value: FloatExpr,
+        value: FloatExpr
     ) = throw UnsupportedOperationException("Molang serialization not supported yet!")
 
     private fun parse(json: JsonElement): FloatExpr = (json as JsonPrimitive).parseMolangExpression()
@@ -117,7 +117,7 @@ object FloatExprSerializer : KSerializer<FloatExpr> {
 fun interface BoolExpr {
     fun getBoolean(
         query: Query,
-        variables: Variables,
+        variables: Variables
     ): Boolean
 }
 
@@ -125,7 +125,7 @@ object MolangCompiler {
     private class BytecodeClassLoader : ClassLoader(MolangCompiler::class.java.classLoader) {
         fun defineClass(
             name: String,
-            bytecode: ByteArray,
+            bytecode: ByteArray
         ): Class<*> {
             val loaded = findLoadedClass(name)
             if (loaded != null) return loaded
@@ -195,7 +195,7 @@ object MolangCompiler {
             className,
             null,
             "java/lang/Object",
-            arrayOf("com/algorithmlx/ecr/api/molang/compiler/BoolExpr"),
+            arrayOf("com/algorithmlx/ecr/api/molang/compiler/BoolExpr")
         )
         generateCtor(cw)
         val mv =
@@ -204,7 +204,7 @@ object MolangCompiler {
                 "getBoolean",
                 "(${QUERY.descriptor}${VARIABLES.descriptor})Z",
                 null,
-                null,
+                null
             )
         mv.visitCode()
         generateBooleanExpression(mv, ast)
@@ -229,7 +229,7 @@ object MolangCompiler {
             className,
             null,
             "java/lang/Object",
-            arrayOf("com/algorithmlx/ecr/api/molang/compiler/FloatExpr"),
+            arrayOf("com/algorithmlx/ecr/api/molang/compiler/FloatExpr")
         )
         generateCtor(cw)
         val mv =
@@ -238,7 +238,7 @@ object MolangCompiler {
                 "getFloat",
                 "(${QUERY.descriptor}${VARIABLES.descriptor})F",
                 null,
-                null,
+                null
             )
         mv.visitCode()
         generateFloatExpression(mv, ast)
@@ -256,7 +256,7 @@ object MolangCompiler {
 
     private fun generateFloatExpression(
         mv: MethodVisitor,
-        ast: AstFloat,
+        ast: AstFloat
     ) {
         when (ast) {
             is NumberLiteral -> {
@@ -279,7 +279,7 @@ object MolangCompiler {
                     VARIABLES.internalName,
                     "set",
                     "(Ljava/lang/String;F)V",
-                    true,
+                    true
                 )
             }
 
@@ -330,9 +330,9 @@ object MolangCompiler {
                     descriptor.methodName,
                     Type.getMethodDescriptor(
                         Type.getType(descriptor.returnType),
-                        *(0..<descriptor.argCount).map { Type.getType(Float::class.java) }.toTypedArray(),
+                        *(0..<descriptor.argCount).map { Type.getType(Float::class.java) }.toTypedArray()
                     ),
-                    false,
+                    false
                 )
             }
         }
@@ -341,7 +341,7 @@ object MolangCompiler {
     private fun generateVariableAccess(
         ast: VariableAccess,
         mv: MethodVisitor,
-        isBoolean: Boolean,
+        isBoolean: Boolean
     ) {
         val path = ast.path
         if (path == listOf("math", "pi")) {
@@ -360,7 +360,7 @@ object MolangCompiler {
                     LOGGER.warn(
                         "Molang: query property '{}' not found in {}, defaulting to 0",
                         propName,
-                        currentClass.simpleName,
+                        currentClass.simpleName
                     )
                     mv.visitInsn(POP) // discard the current query object left on the stack
                     if (isBoolean) mv.visitInsn(ICONST_0) else mv.visitInsn(FCONST_0)
@@ -381,7 +381,7 @@ object MolangCompiler {
                     Type.getInternalName(getter.declaringClass),
                     getter.name,
                     Type.getMethodDescriptor(getter),
-                    declaringClass.isInterface,
+                    declaringClass.isInterface
                 )
 
                 currentClass = property.returnType.classifier as KClass<*>
@@ -402,7 +402,7 @@ object MolangCompiler {
                 VARIABLES.internalName,
                 "get",
                 "(Ljava/lang/String;)F",
-                true,
+                true
             )
 
             if (isBoolean) {
@@ -438,7 +438,7 @@ object MolangCompiler {
 
     fun findPropertyRecursive(
         name: String,
-        clazz: Class<*>,
+        clazz: Class<*>
     ): PropertyDescriptor? {
         for (pd in Introspector.getBeanInfo(clazz).propertyDescriptors) {
             if (pd.name == name) return pd
@@ -448,7 +448,7 @@ object MolangCompiler {
 
     private fun generateBooleanExpression(
         mv: MethodVisitor,
-        ast: AstBoolean,
+        ast: AstBoolean
     ) {
         when (ast) {
             is BoolLiteral -> {

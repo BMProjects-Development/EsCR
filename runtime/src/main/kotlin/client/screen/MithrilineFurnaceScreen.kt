@@ -33,7 +33,7 @@ class MithrilineFurnaceScreen(
             this.leftPos, this.topPos,
             0F, 0F,
             this.imageWidth, this.imageHeight,
-            256, 256,
+            256, 256
         )
 
         val be = menu.blockEntity

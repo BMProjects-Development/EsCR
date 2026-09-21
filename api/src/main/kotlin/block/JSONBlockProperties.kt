@@ -65,7 +65,7 @@ data class BlockPropertiesData(
     @SerialName("no_terrain_particles")
     val noTerrainParticles: Boolean = false,
     @EncodeDefault(EncodeDefault.Mode.NEVER)
-    val replaceable: Boolean = false,
+    val replaceable: Boolean = false
 ) {
     init {
         numericValues().forEach { (name, value) ->
@@ -118,9 +118,7 @@ data class BlockPropertiesData(
     }
 }
 
-class JSONBlockProperties internal constructor(
-    private val properties: BlockBehaviour.Properties,
-) {
+class JSONBlockProperties internal constructor(private val properties: BlockBehaviour.Properties) {
     private var loaded = false
 
     @Synchronized

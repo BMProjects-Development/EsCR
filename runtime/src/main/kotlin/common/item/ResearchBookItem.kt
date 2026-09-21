@@ -15,13 +15,13 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
 class ResearchBookItem(
-    properties: Properties,
+    properties: Properties
 ) : Item(properties),
     HasSubItem {
     override fun use(
         level: Level,
         player: Player,
-        hand: InteractionHand,
+        hand: InteractionHand
     ): InteractionResult {
         val stack = player.getItemInHand(hand)
         val basic = BookTypeRegistry.basic.get()
@@ -29,7 +29,7 @@ class ResearchBookItem(
         var bookTypeKey =
             stack.getOrDefault(
                 DataComponentRegistry.bookType.get(),
-                basicKey,
+                basicKey
             )
 
         val bookTypeOptional = ECRegistries.BOOK_TYPES.get(bookTypeKey)

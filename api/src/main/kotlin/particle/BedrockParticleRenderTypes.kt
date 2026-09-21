@@ -20,7 +20,7 @@ object BedrockParticleRenderTypes {
                 .builder(RenderPipelinesAccessor.particleSnippet())
                 .withLocation("pipeline/bedrock_particle_additive".ecRL)
                 .withColorTargetState(ColorTargetState(BlendFunction.ADDITIVE))
-                .build(),
+                .build()
         )
     private val cache = ConcurrentHashMap<Key, RenderType>()
 
@@ -28,7 +28,7 @@ object BedrockParticleRenderTypes {
 
     internal fun get(
         texture: Identifier,
-        material: BedrockParticleFile.Material,
+        material: BedrockParticleFile.Material
     ): RenderType = cache.computeIfAbsent(Key(texture, material), ::create)
 
     private fun create(key: Key): RenderType {
@@ -46,12 +46,12 @@ object BedrockParticleRenderTypes {
         if (key.material.needsSorting) setup.sortOnUpload()
         return RenderTypeAccessor.create(
             "bedrock_particle_${key.material.name.lowercase()}",
-            setup.createRenderSetup(),
+            setup.createRenderSetup()
         )
     }
 
     private data class Key(
         val texture: Identifier,
-        val material: BedrockParticleFile.Material,
+        val material: BedrockParticleFile.Material
     )
 }

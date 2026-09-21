@@ -20,14 +20,14 @@ class MatrixDestructorMenu(
     inv: Inventory,
     container: Container,
     val blockEntity: BlockEntity?,
-    access: ContainerLevelAccess,
+    access: ContainerLevelAccess
 ) : AbstractMenu(MenuTypeRegistry.matrixDestructor, containerId, access) {
     constructor(containerId: Int, inv: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inv,
         SimpleContainer(1),
         inv.player.level().getBlockEntity(typeData.pos),
-        ContainerLevelAccess.NULL,
+        ContainerLevelAccess.NULL
     )
 
     init {
@@ -40,8 +40,8 @@ class MatrixDestructorMenu(
                 {
                     val component = it.get(DataComponentRegistry.soulStone.get())
                     component != null && component != SoulStoneComponent.EMPTY
-                },
-            ),
+                }
+            )
         )
 
         inv.make()
@@ -49,7 +49,7 @@ class MatrixDestructorMenu(
 
     override fun quickMoveStack(
         player: Player,
-        index: Int,
+        index: Int
     ): ItemStack {
         var qms = ItemStack.EMPTY
         val ms = this.slots[index]

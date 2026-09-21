@@ -44,7 +44,7 @@ object RecipeCompiler {
 
     @JvmStatic
     fun baked(
-        registries: HolderLookup.Provider,
+        registries: HolderLookup.Provider
     ): List<RecipeHolder<*>> = declarations.map { it.bake(registries) }
 
     @JvmStatic

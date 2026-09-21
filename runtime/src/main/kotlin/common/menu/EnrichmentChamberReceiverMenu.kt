@@ -16,7 +16,7 @@ class EnrichmentChamberReceiverMenu(
     containerId: Int,
     inv: Inventory,
     container: Container,
-    access: ContainerLevelAccess,
+    access: ContainerLevelAccess
 ): AbstractMenu(MenuTypeRegistry.enrichmentChamberReceiver, containerId, access) {
     constructor(containerId: Int, inventory: Inventory): this(
         containerId, inventory, SimpleContainer(1),

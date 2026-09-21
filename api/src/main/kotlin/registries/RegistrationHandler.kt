@@ -28,13 +28,13 @@ interface RegistrationLookup {
     fun <R : Any, T : R> registerHolder(
         id: String,
         registry: Registry<R>,
-        factory: () -> T,
+        factory: () -> T
     ): RegistryHolder<R, T>
 
     fun <R : Any, T : R> registerHolder(
         id: Identifier,
         registry: Registry<R>,
-        factory: () -> T,
+        factory: () -> T
     ): RegistryHolder<R, T>
 
     fun init()
@@ -84,7 +84,7 @@ interface RegistryDefaultExtensions {
 
     fun <T : CreativeModeTab> registerCreativeTabHolder(
         id: String,
-        factory: () -> T,
+        factory: () -> T
     ): RegistryHolder<CreativeModeTab, T> = self().registerHolder(id, BuiltInRegistries.CREATIVE_MODE_TAB, factory)
 
     fun <T : MobEffect> T.registerMobEffect(id: String): RegistryHolder<MobEffect, T> = with(self()) {
@@ -113,13 +113,13 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
     override fun <R : Any, T : R> registerNoEntry(
         id: String,
         registry: Registry<R>,
-        factory: () -> T,
+        factory: () -> T
     ): Supplier<T> = declare(identifier(id), registry, Supplier(factory))
 
     override fun <R : Any, T : R> registerNoEntry(
         id: Identifier,
         registry: Registry<R>,
-        factory: () -> T,
+        factory: () -> T
     ): Supplier<T> = declare(id, registry, Supplier(factory))
 
     override fun <R : Any, T : R> T.registerHolder(id: String, registry: Registry<R>): RegistryHolder<R, T> =
@@ -131,13 +131,13 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
     override fun <R : Any, T : R> registerHolder(
         id: String,
         registry: Registry<R>,
-        factory: () -> T,
+        factory: () -> T
     ): RegistryHolder<R, T> = declareHolder(identifier(id), registry, Supplier(factory))
 
     override fun <R : Any, T : R> registerHolder(
         id: Identifier,
         registry: Registry<R>,
-        factory: () -> T,
+        factory: () -> T
     ): RegistryHolder<R, T> = declareHolder(id, registry, Supplier(factory))
 
     override fun init() {
@@ -168,7 +168,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
     private fun <R : Any, T : R> declare(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): Supplier<T> = synchronized(this) {
         validateDeclaration(id, registry)
         val reference = RegistrationReference<T>(id)
@@ -179,7 +179,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
     private fun <R : Any, T : R> declareHolder(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): RegistryHolder<R, T> = synchronized(this) {
         validateDeclaration(id, registry)
         val reference = HolderRegistrationReference<R, T>(ResourceKey.create(registry.key(), id))
@@ -203,7 +203,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         DECLARING,
         INITIALIZING,
         INITIALIZED,
-        FAILED,
+        FAILED
     }
 
     private fun interface PendingRegistration {
@@ -214,7 +214,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         private val id: Identifier,
         private val registry: Registry<R>,
         private val factory: Supplier<T>,
-        private val reference: RegistrationReference<T>,
+        private val reference: RegistrationReference<T>
     ) : PendingRegistration {
         override fun submit(platform: RegistrationPlatform) {
             reference.bind(platform.register(id, registry, factory))
@@ -225,7 +225,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         private val id: Identifier,
         private val registry: Registry<R>,
         private val factory: Supplier<T>,
-        private val reference: HolderRegistrationReference<R, T>,
+        private val reference: HolderRegistrationReference<R, T>
     ) : PendingRegistration {
         override fun submit(platform: RegistrationPlatform) {
             reference.bind(platform.registerHolder(id, registry, factory))
@@ -247,7 +247,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
     }
 
     private class HolderRegistrationReference<R : Any, T : R>(
-        override val key: ResourceKey<R>,
+        override val key: ResourceKey<R>
     ) : RegistryHolder<R, T> {
         @Volatile
         private var delegate: PlatformRegistryHolder<R, T>? = null
@@ -280,13 +280,13 @@ interface RegistrationPlatform {
     fun <R : Any, T : R> register(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): Supplier<T>
 
     fun <R : Any, T : R> registerHolder(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): PlatformRegistryHolder<R, T>
 
     companion object {
@@ -309,5 +309,5 @@ interface RegistryHolder<R : Any, T : R> : Supplier<T> {
 
 data class PlatformRegistryHolder<R : Any, T : R>(
     val holder: Holder<R>,
-    val supplier: Supplier<T>,
+    val supplier: Supplier<T>
 )

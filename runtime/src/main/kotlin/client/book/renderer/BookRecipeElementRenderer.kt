@@ -31,7 +31,7 @@ object BookRecipeElementRenderer {
 
     fun render(
         context: BookElementRenderContext,
-        element: CraftingBookElement,
+        element: CraftingBookElement
     ) {
         val recipe = ClientResearchState.recipe(element.recipe) ?: return
         val render = BookRecipeRenderers.build(element.recipe, recipe, context)
@@ -51,7 +51,7 @@ object BookRecipeElementRenderer {
     fun preferredHeight(
         element: CraftingBookElement,
         width: Int,
-        research: Identifier?,
+        research: Identifier?
     ): Int? {
         val recipe = ClientResearchState.recipe(element.recipe) ?: return null
 
@@ -73,7 +73,7 @@ object BookRecipeElementRenderer {
 
     private fun renderMissingRenderer(
         context: BookElementRenderContext,
-        recipe: Recipe<*>,
+        recipe: Recipe<*>
     ) {
         val result = resultStack(recipe)
         val font = context.mc.font
@@ -85,7 +85,7 @@ object BookRecipeElementRenderer {
                 context.x + (context.width - font.width(line)) / 2,
                 context.y + index * font.lineHeight,
                 FAILURE_TEXT_COLOR,
-                false,
+                false
             )
         }
         if (result.isEmpty) return
@@ -94,7 +94,7 @@ object BookRecipeElementRenderer {
                 result,
                 BookRecipeSlotType.RESULT,
                 (context.width - SLOT_SIZE) / 2,
-                lines.size * font.lineHeight + FAILURE_CONTENT_GAP,
+                lines.size * font.lineHeight + FAILURE_CONTENT_GAP
             )
         renderSlot(context, slot, true)
     }
@@ -102,7 +102,7 @@ object BookRecipeElementRenderer {
     private fun renderElement(
         context: BookElementRenderContext,
         element: BookRecipeRenderElement,
-        index: Int,
+        index: Int
     ) {
         when (element) {
             is BookRecipeSlot -> renderSlot(context, element, false)
@@ -116,7 +116,7 @@ object BookRecipeElementRenderer {
 
     private fun contentFits(
         context: BookElementRenderContext,
-        contentHeight: Int,
+        contentHeight: Int
     ): Boolean {
         val scissor = context.scissorArea ?: return true
         val screenHeight = max(1, (contentHeight * context.scale).roundToInt())
@@ -129,7 +129,7 @@ object BookRecipeElementRenderer {
     private fun renderMultiblock(
         context: BookElementRenderContext,
         element: BookRecipeMultiblock,
-        index: Int,
+        index: Int
     ) {
         val multiblock = MultiblockDefinitions[element.multiblock] ?: return
 
@@ -150,7 +150,7 @@ object BookRecipeElementRenderer {
                 textLines = null,
                 interactionKey = context.interactionKey?.let { "$it|recipe_multiblock_$index" },
                 textLineStart = 0,
-                textLineCount = 0,
+                textLineCount = 0
             )
         MultiblockBookPreviewController.render(
             subContext,
@@ -159,16 +159,16 @@ object BookRecipeElementRenderer {
                 element.scale,
                 element.rotationX,
                 element.rotationY,
-                element.layer,
+                element.layer
             ),
-            multiblock,
+            multiblock
         )
     }
 
     private fun renderAssembledMultiblock(
         context: BookElementRenderContext,
         element: BookRecipeAssembledMultiblock,
-        index: Int,
+        index: Int
     ) {
         val multiblock = MultiblockDefinitions.assembled(element.multiblock) ?: return
         val subContext = previewContext(context, element.x, element.y, element.width, element.height, index, true)
@@ -180,9 +180,9 @@ object BookRecipeElementRenderer {
                 element.scale,
                 element.rotationX,
                 element.rotationY,
-                element.layer,
+                element.layer
             ),
-            multiblock,
+            multiblock
         )
     }
 
@@ -193,7 +193,7 @@ object BookRecipeElementRenderer {
         width: Int,
         height: Int,
         index: Int,
-        assembled: Boolean,
+        assembled: Boolean
     ): BookElementRenderContext =
         context.copy(
             x = context.x + offsetX,
@@ -210,12 +210,12 @@ object BookRecipeElementRenderer {
                     "$it|recipe_${if (assembled) "assembled_" else ""}multiblock_$index"
                 },
             textLineStart = 0,
-            textLineCount = 0,
+            textLineCount = 0
         )
 
     private fun renderLink(
         context: BookElementRenderContext,
-        link: BookRecipeLink,
+        link: BookRecipeLink
     ) {
         val font = context.mc.font
         val x = context.x + link.x
@@ -231,7 +231,7 @@ object BookRecipeElementRenderer {
     private fun renderSlot(
         context: BookElementRenderContext,
         slot: BookRecipeSlot,
-        viewerTarget: Boolean,
+        viewerTarget: Boolean
     ) {
         val x = context.x + slot.x
         val y = context.y + slot.y
@@ -247,7 +247,7 @@ object BookRecipeElementRenderer {
             FRAME_TEXTURE_SIZE,
             FRAME_TEXTURE_SIZE,
             FRAME_TEXTURE_SIZE,
-            FRAME_TEXTURE_SIZE,
+            FRAME_TEXTURE_SIZE
         )
 
         val stacks = resolveStacks(slot)
@@ -267,7 +267,7 @@ object BookRecipeElementRenderer {
 
     private fun renderTooltip(
         context: BookElementRenderContext,
-        tooltip: BookRecipeTooltip,
+        tooltip: BookRecipeTooltip
     ) {
         val x = context.x + tooltip.x
         val y = context.y + tooltip.y
@@ -278,7 +278,7 @@ object BookRecipeElementRenderer {
 
     private fun renderTooltip(
         context: BookElementRenderContext,
-        text: Component,
+        text: Component
     ) {
         val minecraft = context.mc
         val mouseX = context.screenX + ((context.mouseX - context.x) * context.scale).toInt()
@@ -305,7 +305,7 @@ object BookRecipeElementRenderer {
     private fun renderStackTooltip(
         context: BookElementRenderContext,
         stack: ItemStack,
-        slot: BookRecipeSlot,
+        slot: BookRecipeSlot
     ) {
         val minecraft = context.mc
         val level = minecraft.level ?: return
@@ -329,7 +329,7 @@ object BookRecipeElementRenderer {
 
     private fun missingRendererMessage(
         recipe: Recipe<*>,
-        result: ItemStack,
+        result: ItemStack
     ): Component {
         val itemName = if (result.isEmpty) Component.literal("<unknown>") else result.hoverName
         val recipeType = BuiltInRegistries.RECIPE_TYPE.getKey(recipe.type)?.toString() ?: recipe.type.toString()

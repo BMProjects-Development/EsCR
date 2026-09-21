@@ -42,7 +42,7 @@ object ConnectedTextureMask {
     }
 
     internal fun fourWayFromDiagonals(
-        hasDiagonal: (firstSide: Int, secondSide: Int) -> Boolean,
+        hasDiagonal: (firstSide: Int, secondSide: Int) -> Boolean
     ): Int {
         var missingCorners = 0
         for (side in 0..3) {
@@ -66,7 +66,7 @@ object ConnectedTextureMask {
 
     internal fun withoutRejectedConnections(
         mask: Int,
-        accepts: (side: Int) -> Boolean,
+        accepts: (side: Int) -> Boolean
     ): Int {
         var result = mask
         for (side in 0..3) {

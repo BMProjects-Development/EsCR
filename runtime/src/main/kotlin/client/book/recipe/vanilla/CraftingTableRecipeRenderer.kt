@@ -15,7 +15,7 @@ object CraftingTableRecipeRenderer : BookRecipeRenderer<CraftingRecipe> {
 
     override fun build(
         recipe: CraftingRecipe,
-        builder: BookRecipeRenderBuilder,
+        builder: BookRecipeRenderBuilder
     ) {
         when (val display = recipe.display().firstOrNull { it is ShapedCraftingRecipeDisplay || it is ShapelessCraftingRecipeDisplay }) {
             is ShapedCraftingRecipeDisplay -> {
@@ -42,7 +42,7 @@ object CraftingTableRecipeRenderer : BookRecipeRenderer<CraftingRecipe> {
 
     private fun renderGrid(
         builder: BookRecipeRenderBuilder,
-        ingredientAt: (row: Int, column: Int) -> SlotDisplay?,
+        ingredientAt: (row: Int, column: Int) -> SlotDisplay?
     ) {
         for (row in 0 until GRID_WIDTH) {
             for (column in 0 until GRID_WIDTH) {
@@ -60,7 +60,7 @@ object CraftingTableRecipeRenderer : BookRecipeRenderer<CraftingRecipe> {
 
     private fun renderResult(
         builder: BookRecipeRenderBuilder,
-        result: SlotDisplay,
+        result: SlotDisplay
     ) {
         builder.slot(result, BookRecipeSlotType.RESULT, RESULT_X, RESULT_Y)
         val itemX = RESULT_X - (SLOT_SIZE / 2 + ITEM_OFFSET)
@@ -70,7 +70,7 @@ object CraftingTableRecipeRenderer : BookRecipeRenderer<CraftingRecipe> {
             item.itemName,
             itemX,
             itemY,
-            16,
+            16
         )
     }
 

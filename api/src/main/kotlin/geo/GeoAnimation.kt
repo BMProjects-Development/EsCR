@@ -6,19 +6,19 @@ enum class GeoLoopMode {
     FROM_FILE,
     ONCE,
     LOOP,
-    HOLD,
+    HOLD
 }
 
 enum class GeoBlendMode {
     ADDITIVE,
-    OVERRIDE,
+    OVERRIDE
 }
 
 enum class AnimationType {
     PLAY_ONCE,
     PLAY_FREEZE,
     PLAY_LOOPED,
-    PLAY_REVERSED,
+    PLAY_REVERSED
 }
 
 data class GeoAnimationPlayback(
@@ -28,7 +28,7 @@ data class GeoAnimationPlayback(
     val speed: Float,
     val weight: Float,
     val loop: GeoLoopMode,
-    val blend: GeoBlendMode,
+    val blend: GeoBlendMode
 )
 
 class GeoAnimationState {
@@ -38,7 +38,7 @@ class GeoAnimationState {
     fun play(
         animation: String,
         type: AnimationType = AnimationType.PLAY_ONCE,
-        nowSeconds: Double = Double.NaN,
+        nowSeconds: Double = Double.NaN
     ) = play(
         MAIN_LAYER,
         animation,
@@ -49,13 +49,13 @@ class GeoAnimationState {
                 AnimationType.PLAY_ONCE, AnimationType.PLAY_REVERSED -> GeoLoopMode.ONCE
                 AnimationType.PLAY_FREEZE -> GeoLoopMode.HOLD
                 AnimationType.PLAY_LOOPED -> GeoLoopMode.LOOP
-            },
+            }
     )
 
     @Synchronized
     fun play(
         animation: String,
-        nowSeconds: Double,
+        nowSeconds: Double
     ) = play(animation, AnimationType.PLAY_ONCE, nowSeconds)
 
     @Synchronized
@@ -67,7 +67,7 @@ class GeoAnimationState {
         weight: Float = 1F,
         loop: GeoLoopMode = GeoLoopMode.FROM_FILE,
         blend: GeoBlendMode = GeoBlendMode.ADDITIVE,
-        restart: Boolean = true,
+        restart: Boolean = true
     ) {
         require(layer.isNotBlank()) { "Animation layer must not be blank" }
         require(animation.isNotBlank()) { "Animation identifier must not be blank" }
@@ -84,7 +84,7 @@ class GeoAnimationState {
                 speed,
                 weight,
                 loop,
-                blend,
+                blend
             )
     }
 
@@ -94,7 +94,7 @@ class GeoAnimationState {
         animation: String,
         speed: Float = 1F,
         weight: Float = 1F,
-        blend: GeoBlendMode = GeoBlendMode.ADDITIVE,
+        blend: GeoBlendMode = GeoBlendMode.ADDITIVE
     ) = play(layer, animation, speed = speed, weight = weight, loop = GeoLoopMode.LOOP, blend = blend, restart = false)
 
     @Synchronized
@@ -110,7 +110,7 @@ class GeoAnimationState {
     @Synchronized
     fun isPlaying(
         layer: String,
-        animation: String? = null,
+        animation: String? = null
     ): Boolean = playbacks[layer]?.let { animation == null || it.animation == animation } == true
 
     @Synchronized
@@ -139,7 +139,7 @@ class GeoAnimationState {
                 playback.speed,
                 playback.weight,
                 playback.loop,
-                playback.blend,
+                playback.blend
             )
         }
 
@@ -149,7 +149,7 @@ class GeoAnimationState {
         val speed: Float,
         val weight: Float,
         val loop: GeoLoopMode,
-        val blend: GeoBlendMode,
+        val blend: GeoBlendMode
     )
 
     companion object {

@@ -25,13 +25,13 @@ interface ResearchTask {
 interface OwnerAwareResearchTask : ResearchTask {
     fun progress(
         player: ServerPlayer,
-        owner: Identifier,
+        owner: Identifier
     ): ResearchTaskProgress
 }
 
 fun ResearchTask.progress(
     player: ServerPlayer,
-    owner: Identifier,
+    owner: Identifier
 ): ResearchTaskProgress = if (this is OwnerAwareResearchTask) progress(player, owner) else progress(player)
 
 interface ResearchTaskSerializer<T : ResearchTask> {
@@ -44,7 +44,7 @@ interface ResearchTaskSerializer<T : ResearchTask> {
 
 data class ResearchTaskProgress(
     val current: Int,
-    val required: Int,
+    val required: Int
 ) {
     val complete: Boolean get() = current >= required
 }
@@ -53,7 +53,7 @@ data class ItemResearchTask(
     val item: String,
     val count: Int,
     val consumeItems: Boolean = false,
-    val components: JsonObject = JsonObject(emptyMap()),
+    val components: JsonObject = JsonObject(emptyMap())
 ) : ResearchTask {
     override val type: Identifier = ResearchIds.ITEM_TASK
 
@@ -80,12 +80,12 @@ data class ItemResearchTask(
 
     fun createStack(
         player: ServerPlayer,
-        stackCount: Int = count,
+        stackCount: Int = count
     ): ItemStack = createStack(player.registryAccess(), stackCount)
 
     fun createStack(
         provider: HolderLookup.Provider,
-        stackCount: Int = count,
+        stackCount: Int = count
     ): ItemStack {
         val amount = stackCount.coerceAtLeast(1)
         val stack = ItemParser(provider).parse(StringReader(item)).createItemStack(amount)
@@ -120,7 +120,7 @@ data class ItemResearchTask(
 }
 
 data class CraftingResearchTask(
-    val recipe: Identifier,
+    val recipe: Identifier
 ) : ResearchTask {
     override val type: Identifier = ResearchIds.RECIPE_TASK
 
@@ -131,7 +131,7 @@ data class CraftingResearchTask(
 }
 
 data class OpenResearchTask(
-    val research: Identifier? = null,
+    val research: Identifier? = null
 ) : OwnerAwareResearchTask {
     override val type: Identifier = ResearchIds.OPEN_TASK
 
@@ -139,7 +139,7 @@ data class OpenResearchTask(
 
     override fun progress(
         player: ServerPlayer,
-        owner: Identifier,
+        owner: Identifier
     ): ResearchTaskProgress {
         val target = research ?: owner
         val data = ResearchProgress.data(player)
@@ -150,7 +150,7 @@ data class OpenResearchTask(
 data class ExperienceResearchTask(
     val amount: Int,
     val levels: Boolean = false,
-    val consumeExperience: Boolean = false,
+    val consumeExperience: Boolean = false
 ) : ResearchTask {
     override val type: Identifier = ResearchIds.EXPERIENCE_TASK
 
@@ -166,7 +166,7 @@ data class ExperienceResearchTask(
 }
 
 data class TravelToDimensionResearchTask(
-    val dimension: Identifier,
+    val dimension: Identifier
 ) : ResearchTask {
     override val type: Identifier = ResearchIds.TRAVEL_TO_DIMENSION
 
@@ -178,7 +178,7 @@ data class TravelToDimensionResearchTask(
 
 data class TravelToStructureResearchTask(
     val structure: Identifier?,
-    val tag: Identifier?,
+    val tag: Identifier?
 ) : ResearchTask {
     init {
         require((structure == null) xor (tag == null)) {

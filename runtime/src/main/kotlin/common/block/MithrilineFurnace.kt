@@ -22,10 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class MithrilineFurnace(properties: Properties): Block(properties), EntityBlock, FullBlockParticles {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = MithrilineFurnaceEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = MithrilineFurnaceEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,
@@ -41,9 +38,9 @@ class MithrilineFurnace(properties: Properties): Block(properties), EntityBlock,
         pos: BlockPos,
         player: Player,
         hitResult: BlockHitResult
-    ): InteractionResult = if (MithrilineFurnaceEntity.hasValidStructure(level, pos)) {
+    ): InteractionResult = if (MithrilineFurnaceEntity.hasValidStructure(level, pos))
         checkAndOpenMenu<MithrilineFurnaceEntity>(player, level, pos)
-    } else InteractionResult.FAIL
+    else InteractionResult.FAIL
 
     override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = shape
 

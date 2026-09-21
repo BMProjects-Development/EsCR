@@ -12,12 +12,12 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
 class SoulStone(
-    properties: Properties,
+    properties: Properties
 ) : Item(
         properties.component(
             DataComponentRegistry.soulStone.get(),
-            SoulStoneComponent.EMPTY,
-        ),
+            SoulStoneComponent.EMPTY
+        )
     ),
     SoulStoneLike,
     ModifiableSizeItem {
@@ -25,7 +25,7 @@ class SoulStone(
         itemStack: ItemStack,
         level: ServerLevel,
         owner: Entity,
-        slot: EquipmentSlot?,
+        slot: EquipmentSlot?
     ) {
         if (itemStack.count > 1 || owner !is ServerPlayer) return
 
@@ -47,7 +47,7 @@ class SoulStone(
 
     override fun maxStackSize(
         itemStack: ItemStack,
-        originalSize: Int,
+        originalSize: Int
     ): Int {
         if (itemStack.has(DataComponentRegistry.soulStone.get()) &&
             itemStack[DataComponentRegistry.soulStone.get()] != SoulStoneComponent.EMPTY

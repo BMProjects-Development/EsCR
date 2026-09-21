@@ -40,7 +40,7 @@ import org.joml.Vector3f
 
 class MagicalTeleporterEntity(
     worldPosition: BlockPos,
-    blockState: BlockState,
+    blockState: BlockState
 ) : SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.magicalTeleporter.get(), worldPosition, blockState),
     MRUDevice {
     private var items: NonNullList<ItemStack> = NonNullList.withSize(2, ItemStack.EMPTY)
@@ -72,14 +72,14 @@ class MagicalTeleporterEntity(
 
     override fun createMenu(
         containerId: Int,
-        inventory: Inventory,
+        inventory: Inventory
     ): AbstractContainerMenu =
         MagicalTeleporterMenu(
             containerId,
             inventory,
             this,
             this,
-            ContainerLevelAccess.create(this.level!!, this.blockPos),
+            ContainerLevelAccess.create(this.level!!, this.blockPos)
         )
 
     override fun saveAdditional(output: ValueOutput) {
@@ -111,7 +111,7 @@ class MagicalTeleporterEntity(
 
     override fun preRemoveSideEffects(
         pos: BlockPos,
-        state: BlockState,
+        state: BlockState
     ) {
         if (isChunkLoaded) {
             (level as? ServerLevel)?.let {
@@ -129,14 +129,14 @@ class MagicalTeleporterEntity(
         @JvmStatic
         fun hasValidStructure(
             level: Level,
-            pos: BlockPos,
+            pos: BlockPos
         ): Boolean = MultiblockRegistry.magicalTeleporter.findPlacement(level, pos, BlockPos(2, 0, 2)) != null
 
         @JvmStatic
         fun onTick(
             level: Level,
             pos: BlockPos,
-            blockEntity: MagicalTeleporterEntity,
+            blockEntity: MagicalTeleporterEntity
         ) {
             val oldValid = blockEntity.structureIsValid
             val newValid = hasValidStructure(level, pos)
@@ -235,7 +235,7 @@ class MagicalTeleporterEntity(
                 setOf(),
                 entityAtTeleporter.yRot,
                 entityAtTeleporter.xRot,
-                false,
+                false
             )
 
             blockEntity.resetProgress()

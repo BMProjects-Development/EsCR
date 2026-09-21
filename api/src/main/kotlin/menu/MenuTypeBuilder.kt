@@ -11,7 +11,7 @@ interface MenuTypePlatform {
 
     fun <M : AbstractContainerMenu, D : Any> create(
         codec: StreamCodec<RegistryFriendlyByteBuf, D>,
-        factory: (Int, Inventory, D) -> M,
+        factory: (Int, Inventory, D) -> M
     ): MenuType<M>
 
     companion object {
@@ -25,5 +25,5 @@ fun <M : AbstractContainerMenu> menuType(factory: (Int, Inventory) -> M): MenuTy
 
 fun <M : AbstractContainerMenu, D : Any> menuType(
     codec: StreamCodec<RegistryFriendlyByteBuf, D>,
-    factory: (Int, Inventory, D) -> M,
+    factory: (Int, Inventory, D) -> M
 ): MenuType<M> = MenuTypePlatform.instance.create(codec, factory)

@@ -18,7 +18,7 @@ class ParticleEmitter(
     rotation: Quaternionf,
     velocity: Vector3f,
     val transform: Transform?,
-    val offset: Vector3f? = null,
+    val offset: Vector3f? = null
 ) {
     val position = Vector3f(position)
     val rotation = Quaternionf(rotation)
@@ -229,7 +229,7 @@ class ParticleEmitter(
                         ?.sub(transform.position, Vector3f())
                         ?.rotate(Quaternionf(transform.rotation).invert())
                         ?: offset
-                } else null,
+                } else null
             )
             config.preEffectExpression.eval(targetEmitter.context)
             if (config.type.isParticle) {
@@ -252,7 +252,7 @@ class ParticleEmitter(
                 SoundSource.AMBIENT,
                 1f,
                 1f,
-                false,
+                false
             )
         }
     }

@@ -35,7 +35,7 @@ interface CommandTarget<S> {
 
 class LiteralReference<S> internal constructor(
     override val node: LiteralCommandNode<S>,
-    val aliases: Map<String, LiteralCommandNode<S>>,
+    val aliases: Map<String, LiteralCommandNode<S>>
 ) : CommandTarget<S> {
     val name: String get() = node.name
 }
@@ -43,7 +43,7 @@ class LiteralReference<S> internal constructor(
 class CommandArgument<S, T> internal constructor(
     val name: String,
     val parser: ArgumentType<*>,
-    private val reader: (CommandContext<S>, String) -> T,
+    private val reader: (CommandContext<S>, String) -> T
 ) : CommandTarget<S> {
     private var attachedNode: ArgumentCommandNode<S, *>? = null
 
@@ -308,7 +308,7 @@ abstract class CommandNodeScope<S, B : ArgumentBuilder<S, B>> internal construct
     fun forward(
         target: CommandTarget<S>,
         forks: Boolean,
-        modifier: (CommandCall<S>.() -> Collection<S>)? = null,
+        modifier: (CommandCall<S>.() -> Collection<S>)? = null
     ) {
         forward(target.node, forks, modifier)
     }
@@ -396,5 +396,5 @@ fun <S> commandDispatcher(block: CommandTreeScope<S>.() -> Unit): CommandDispatc
 fun <S> CommandDispatcher<S>.completionSuggestions(
     input: String,
     source: S,
-    cursor: Int = input.length,
+    cursor: Int = input.length
 ): CompletableFuture<Suggestions> = getCompletionSuggestions(parse(input, source), cursor)

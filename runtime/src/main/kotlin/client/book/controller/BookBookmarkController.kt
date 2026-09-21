@@ -46,7 +46,7 @@ class BookBookmarkController {
     fun restore(
         state: BookViewState,
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ) {
         pickerX = state.pickerX.takeIf { it >= 0 } ?: (screenWidth - PICKER_WIDTH - 8)
         pickerY = state.pickerY.takeIf { it >= 0 } ?: 24
@@ -58,7 +58,7 @@ class BookBookmarkController {
         screenWidth: Int,
         screenHeight: Int,
         mouseX: Int,
-        mouseY: Int,
+        mouseY: Int
     ) {
         constrainGlobalScroll(screenHeight)
         globalScroll = approach(globalScroll, targetGlobalScroll, dt)
@@ -76,7 +76,7 @@ class BookBookmarkController {
         graphics: GuiGraphicsExtractor,
         screenWidth: Int,
         mouseX: Int,
-        mouseY: Int,
+        mouseY: Int
     ) {
         val screenHeight = graphics.guiHeight()
         constrainGlobalScroll(screenHeight)
@@ -98,7 +98,7 @@ class BookBookmarkController {
                     Minecraft.getInstance().font,
                     globalBookmarkTooltip(bookmark),
                     mouseX,
-                    mouseY,
+                    mouseY
                 )
             }
         }
@@ -111,7 +111,7 @@ class BookBookmarkController {
         mouseX: Int,
         mouseY: Int,
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): BookBookmark? {
         ClientResearchState.bookmarks().forEachIndexed { index, bookmark ->
             val key = BookBookmarkKey(bookmark.research, bookmark.spread)
@@ -126,7 +126,7 @@ class BookBookmarkController {
         mouseX: Int,
         mouseY: Int,
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Boolean {
         if (!hasGlobalOverflow(screenHeight)) return false
         val sliderX = globalSliderX(screenWidth)
@@ -142,7 +142,7 @@ class BookBookmarkController {
         mouseY: Int,
         scrollY: Double,
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Boolean {
         if (!hasGlobalOverflow(screenHeight)) return false
         if (mouseX !in globalInteractionLeft(screenWidth, screenHeight)..globalInteractionRight(screenWidth, screenHeight)) return false
@@ -156,7 +156,7 @@ class BookBookmarkController {
         entry: BookEntry,
         spread: Int,
         hovered: Boolean,
-        dt: Float,
+        dt: Float
     ) {
         if (!ClientResearchState.has(entry.id)) return
         pageHover = approach(pageHover, if (hovered) 1f else 0f, dt)
@@ -174,14 +174,14 @@ class BookBookmarkController {
             16,
             48,
             16,
-            color ?: 0xFFFFFFFF.toInt(),
+            color ?: 0xFFFFFFFF.toInt()
         )
     }
 
     fun activate(
         entry: BookEntry,
         spread: Int,
-        editImmediately: Boolean,
+        editImmediately: Boolean
     ): Boolean {
         if (!ClientResearchState.has(entry.id)) return false
         val bookmark = ClientResearchState.bookmark(entry.id, spread)
@@ -195,7 +195,7 @@ class BookBookmarkController {
 
     private fun open(
         entry: BookEntry,
-        spread: Int,
+        spread: Int
     ) {
         target = BookBookmarkKey(entry.id, spread)
         val color = ClientResearchState.bookmark(entry.id, spread)?.color
@@ -221,7 +221,7 @@ class BookBookmarkController {
 
     fun click(
         mouseX: Int,
-        mouseY: Int,
+        mouseY: Int
     ): Boolean {
         if (target == null) return false
         val svX = pickerX + PADDING
@@ -268,7 +268,7 @@ class BookBookmarkController {
         mouseX: Int,
         mouseY: Int,
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Boolean {
         if (draggingGlobalSlider) {
             updateGlobalSlider(mouseY, screenHeight)
@@ -298,7 +298,7 @@ class BookBookmarkController {
     fun renderPicker(
         graphics: GuiGraphicsExtractor,
         mouseX: Int,
-        mouseY: Int,
+        mouseY: Int
     ) {
         if (target == null) return
         val svX = pickerX + PADDING
@@ -361,7 +361,7 @@ class BookBookmarkController {
         screenWidth: Int,
         screenHeight: Int,
         mouseX: Int,
-        mouseY: Int,
+        mouseY: Int
     ) {
         val trackHeight = globalBookmarkViewportHeight(screenHeight)
         val contentHeight = globalBookmarksHeight()
@@ -369,7 +369,7 @@ class BookBookmarkController {
             (trackHeight * (trackHeight.toFloat() / contentHeight))
                 .toInt()
                 .coerceAtLeast(
-                    GLOBAL_SLIDER_MIN_THUMB,
+                    GLOBAL_SLIDER_MIN_THUMB
                 ).coerceAtMost(trackHeight)
         val maxScroll = maxGlobalScroll(screenHeight)
         val thumbY =
@@ -391,14 +391,14 @@ class BookBookmarkController {
             GLOBAL_BOOKMARK_START_Y,
             sliderX + GLOBAL_SLIDER_WIDTH,
             GLOBAL_BOOKMARK_START_Y + trackHeight,
-            0x80101820.toInt(),
+            0x80101820.toInt()
         )
         graphics.fill(sliderX, thumbY, sliderX + GLOBAL_SLIDER_WIDTH, thumbY + thumbHeight, 0xFFD0D8E8.toInt())
     }
 
     private fun updateGlobalSlider(
         mouseY: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ) {
         if (!hasGlobalOverflow(screenHeight)) return
         val trackHeight = globalBookmarkViewportHeight(screenHeight)
@@ -407,7 +407,7 @@ class BookBookmarkController {
             (trackHeight * (trackHeight.toFloat() / contentHeight))
                 .toInt()
                 .coerceAtLeast(
-                    GLOBAL_SLIDER_MIN_THUMB,
+                    GLOBAL_SLIDER_MIN_THUMB
                 ).coerceAtMost(trackHeight)
         val ratio = ((mouseY - GLOBAL_BOOKMARK_START_Y - thumbHeight / 2f) / (trackHeight - thumbHeight).coerceAtLeast(1)).coerceIn(0f, 1f)
         targetGlobalScroll = ratio * maxGlobalScroll(screenHeight)
@@ -416,7 +416,7 @@ class BookBookmarkController {
     private fun globalBookmarkX(
         screenWidth: Int,
         screenHeight: Int,
-        progress: Float,
+        progress: Float
     ): Int {
         val fullX = globalBookmarkFullX(screenWidth, screenHeight)
         return if (globalBookmarksOnLeft) {
@@ -428,7 +428,7 @@ class BookBookmarkController {
 
     private fun globalBookmarkFullX(
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Int {
         if (!hasGlobalOverflow(screenHeight)) return if (globalBookmarksOnLeft) 0 else screenWidth - GLOBAL_BOOKMARK_WIDTH
         return if (globalBookmarksOnLeft) {
@@ -444,29 +444,29 @@ class BookBookmarkController {
 
     private fun globalScissorLeft(
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Int = if (globalBookmarksOnLeft) globalBookmarkFullX(screenWidth, screenHeight).coerceAtLeast(0) else 0
 
     private fun globalScissorRight(
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Int = if (globalBookmarksOnLeft) screenWidth else globalBookmarkFullX(screenWidth, screenHeight) + GLOBAL_BOOKMARK_WIDTH
 
     private fun globalInteractionLeft(
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Int = if (globalBookmarksOnLeft) 0 else globalBookmarkFullX(screenWidth, screenHeight)
 
     private fun globalInteractionRight(
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ): Int = if (globalBookmarksOnLeft) globalBookmarkFullX(screenWidth, screenHeight) + GLOBAL_BOOKMARK_WIDTH else screenWidth
 
     private fun renderGlobalBookmark(
         graphics: GuiGraphicsExtractor,
         x: Int,
         y: Int,
-        color: Int,
+        color: Int
     ) {
         if (globalBookmarksOnLeft) {
             graphics.blit(
@@ -480,7 +480,7 @@ class BookBookmarkController {
                 GLOBAL_BOOKMARK_HEIGHT,
                 GLOBAL_BOOKMARK_WIDTH,
                 GLOBAL_BOOKMARK_HEIGHT,
-                color,
+                color
             )
             return
         }
@@ -497,7 +497,7 @@ class BookBookmarkController {
                 GLOBAL_BOOKMARK_HEIGHT,
                 GLOBAL_BOOKMARK_WIDTH,
                 GLOBAL_BOOKMARK_HEIGHT,
-                color,
+                color
             )
         }
     }
@@ -510,7 +510,7 @@ class BookBookmarkController {
         hueX: Int,
         confirmX: Int,
         cancelX: Int,
-        buttonsY: Int,
+        buttonsY: Int
     ): Boolean =
         mouseX in pickerX until pickerX + PICKER_WIDTH && mouseY in pickerY until pickerY + HEADER_HEIGHT ||
             mouseX in svX until svX + SV_SIZE && mouseY in svY until svY + SV_SIZE ||
@@ -545,7 +545,7 @@ class BookBookmarkController {
 
     private fun updateSaturation(
         x: Int,
-        y: Int,
+        y: Int
     ) {
         saturation = (x.toFloat() / SV_SIZE).coerceIn(0f, 1f)
         value = 1f - (y.toFloat() / SV_SIZE).coerceIn(0f, 1f)
@@ -565,7 +565,7 @@ class BookBookmarkController {
         graphics: GuiGraphicsExtractor,
         x: Int,
         y: Int,
-        confirm: Boolean,
+        confirm: Boolean
     ) {
         graphics.blitSprite(
             RenderPipelines.GUI_TEXTURED,
@@ -573,13 +573,13 @@ class BookBookmarkController {
             x,
             y,
             PICKER_BUTTON_SIZE,
-            PICKER_BUTTON_SIZE,
+            PICKER_BUTTON_SIZE
         )
     }
 
     private fun constrain(
         screenWidth: Int,
-        screenHeight: Int,
+        screenHeight: Int
     ) {
         pickerX = pickerX.coerceIn(0, (screenWidth - PICKER_WIDTH).coerceAtLeast(0))
         pickerY = pickerY.coerceIn(0, (screenHeight - PICKER_HEIGHT).coerceAtLeast(0))
@@ -588,7 +588,7 @@ class BookBookmarkController {
     private fun approach(
         current: Float,
         target: Float,
-        dt: Float,
+        dt: Float
     ): Float {
         if (dt <= 0f) return target
         return target + (current - target) * 0.5f.pow(dt / 0.08f)
@@ -608,18 +608,18 @@ class BookBookmarkController {
 
     private fun pageTooltip(
         spread: Int,
-        spreadCount: Int,
+        spreadCount: Int
     ): Component =
         Component
             .literal(
-                "Page ${spread + 1}/${spreadCount.coerceAtLeast(1)}",
+                "Page ${spread + 1}/${spreadCount.coerceAtLeast(1)}"
             ).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)
 
     private fun BookText.component(): Component = if (translated) Component.translatable(value) else Component.literal(value)
 
     private data class BookBookmarkKey(
         val research: Identifier,
-        val spread: Int,
+        val spread: Int
     )
 
     companion object {

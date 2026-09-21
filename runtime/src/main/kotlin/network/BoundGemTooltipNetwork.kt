@@ -2,6 +2,8 @@ package com.algorithmlx.ecr.network
 
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.mru.resolveMRUDevice
+import com.algorithmlx.ecr.api.network.Network
+import com.algorithmlx.ecr.api.network.sendToServer
 import com.algorithmlx.ecr.api.utils.ecRL
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.Registries
@@ -16,7 +18,7 @@ import net.minecraft.world.level.Level
 
 data class BoundGemTooltipRequestPayload(
     val pos: BlockPos,
-    val dimension: ResourceKey<Level>,
+    val dimension: ResourceKey<Level>
 ) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
@@ -34,7 +36,7 @@ data class BoundGemTooltipRequestPayload(
                 { buffer ->
                     BoundGemTooltipRequestPayload(
                         BlockPos.of(buffer.readLong()),
-                        ResourceKey.create(Registries.DIMENSION, buffer.readIdentifier()),
+                        ResourceKey.create(Registries.DIMENSION, buffer.readIdentifier())
                     )
                 }
             )
@@ -44,7 +46,7 @@ data class BoundGemTooltipRequestPayload(
 data class BoundGemTooltipResponsePayload(
     val pos: BlockPos,
     val dimension: ResourceKey<Level>,
-    val status: BoundGemTargetStatus,
+    val status: BoundGemTargetStatus
 ) : CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
@@ -64,7 +66,7 @@ data class BoundGemTooltipResponsePayload(
                     BoundGemTooltipResponsePayload(
                         BlockPos.of(buffer.readLong()),
                         ResourceKey.create(Registries.DIMENSION, buffer.readIdentifier()),
-                        BoundGemTargetStatus.byOrdinal(buffer.readVarInt()),
+                        BoundGemTargetStatus.byOrdinal(buffer.readVarInt())
                     )
                 }
             )
@@ -84,12 +86,6 @@ enum class BoundGemTargetStatus {
 
 object BoundGemTooltipNetwork {
     @JvmField
-    var sendRequestToServer: (BoundGemTooltipRequestPayload) -> Unit = {}
-
-    @JvmField
-    var sendResponseToPlayer: (ServerPlayer, BoundGemTooltipResponsePayload) -> Unit = { _, _ -> }
-
-    @JvmField
     var currentDimension: () -> ResourceKey<Level>? = { null }
 
     private const val CACHE_TTL_MS = 1000L
@@ -102,7 +98,7 @@ object BoundGemTooltipNetwork {
     @JvmStatic
     fun tooltipStatus(
         stack: ItemStack,
-        item: BoundGem,
+        item: BoundGem
     ): BoundGemTargetStatus? {
         val pos = item.getBoundPos(stack) ?: return null
         val dimension = item.getWorld(stack) ?: currentDimension() ?: return null
@@ -126,28 +122,28 @@ object BoundGemTooltipNetwork {
     @JvmStatic
     fun handleRequest(
         player: ServerPlayer,
-        payload: BoundGemTooltipRequestPayload,
+        payload: BoundGemTooltipRequestPayload
     ) {
         val level = player.level().server.getLevel(payload.dimension)
         val status = level?.let { resolveTargetStatus(it, payload.pos) } ?: BoundGemTargetStatus.UNKNOWN
 
-        sendResponseToPlayer(player, BoundGemTooltipResponsePayload(payload.pos, payload.dimension, status))
+        Network.sendTo(player, BoundGemTooltipResponsePayload(payload.pos, payload.dimension, status))
     }
 
     private fun requestStatus(
         key: TargetKey,
-        now: Long,
+        now: Long
     ) {
         val lastRequestAt = pendingRequests[key]
         if (lastRequestAt != null && now - lastRequestAt < REQUEST_THROTTLE_MS) return
 
         pendingRequests[key] = now
-        sendRequestToServer(BoundGemTooltipRequestPayload(key.pos, key.dimension))
+        BoundGemTooltipRequestPayload(key.pos, key.dimension).sendToServer()
     }
 
     private fun resolveTargetStatus(
         level: ServerLevel,
-        pos: BlockPos,
+        pos: BlockPos
     ): BoundGemTargetStatus {
         if (!level.isLoaded(pos)) return BoundGemTargetStatus.UNKNOWN
 
@@ -173,11 +169,11 @@ object BoundGemTooltipNetwork {
 
     private data class TargetKey(
         val pos: BlockPos,
-        val dimension: ResourceKey<Level>,
+        val dimension: ResourceKey<Level>
     )
 
     private data class CachedStatus(
         val status: BoundGemTargetStatus,
-        val updatedAt: Long,
+        val updatedAt: Long
     )
 }

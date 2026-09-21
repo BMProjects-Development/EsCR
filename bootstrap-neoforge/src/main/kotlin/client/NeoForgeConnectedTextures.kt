@@ -50,7 +50,7 @@ object NeoForgeConnectedTextures {
 private class NeoForgeConnectedTextureModel(
     private val delegateModel: BlockStateModel,
     private val texture: ConnectedTexture,
-    private val variants: Array<ResolvedVariant?>,
+    private val variants: Array<ResolvedVariant?>
 ): DelegateBlockStateModel(delegateModel) {
     private val variantFlags = IntArray(variants.size) { variants[it]?.let(::materialFlags) ?: 0 }
     private val allVariantFlags = variantFlags.fold(0, Int::or)
@@ -59,7 +59,7 @@ private class NeoForgeConnectedTextureModel(
         level: BlockAndTintGetter,
         pos: BlockPos,
         state: BlockState,
-        random: RandomSource,
+        random: RandomSource
     ): Any? {
         val delegateKey = delegateModel.createGeometryKey(level, pos, state, random) ?: return null
         return GeometryKey(texture, delegateKey, texture.packedMask(level, pos, state))
@@ -70,7 +70,7 @@ private class NeoForgeConnectedTextureModel(
         pos: BlockPos,
         state: BlockState,
         random: RandomSource,
-        parts: MutableList<BlockStateModelPart>,
+        parts: MutableList<BlockStateModelPart>
     ) {
         val delegateParts = ArrayList<BlockStateModelPart>()
         delegateModel.collectParts(level, pos, state, random, delegateParts)
@@ -83,7 +83,7 @@ private class NeoForgeConnectedTextureModel(
                 texture = texture,
                 variants = variants,
                 packedMask = packedMask,
-                connectedFlags = connectedFlags,
+                connectedFlags = connectedFlags
             )
         }
     }
@@ -93,7 +93,7 @@ private class NeoForgeConnectedTextureModel(
     override fun materialFlags(
         level: BlockAndTintGetter,
         pos: BlockPos,
-        state: BlockState,
+        state: BlockState
     ): Int = delegateModel.materialFlags(level, pos, state) or
         connectedFlags(texture.packedMask(level, pos, state))
 
@@ -108,7 +108,7 @@ private class NeoForgeConnectedTextureModel(
     private data class GeometryKey(
         val texture: ConnectedTexture,
         val delegate: Any,
-        val packedMask: Int,
+        val packedMask: Int
     )
 
     companion object {
@@ -137,7 +137,7 @@ private class NeoForgeConnectedTexturePart(
     private val texture: ConnectedTexture,
     private val variants: Array<ResolvedVariant?>,
     private val packedMask: Int,
-    private val connectedFlags: Int,
+    private val connectedFlags: Int
 ): BlockStateModelPart {
     private val cachedQuads = arrayOfNulls<List<BakedQuad>>(Direction.entries.size + 1)
 
@@ -184,7 +184,7 @@ private class NeoForgeConnectedTexturePart(
             mutable.setUvFromSprite(
                 vertex,
                 target.region.u + rotatedU * target.region.width,
-                target.region.v + rotatedV * target.region.height,
+                target.region.v + rotatedV * target.region.height
             )
         }
         return mutable.toBakedQuad()
@@ -210,14 +210,14 @@ private class NeoForgeConnectedTexturePart(
 private data class ResolvedVariant(
     val material: Material.Baked,
     val rotation: ConnectedTextureRotation,
-    val region: ResolvedRegion,
+    val region: ResolvedRegion
 )
 
 private data class ResolvedRegion(
     val u: Float,
     val v: Float,
     val width: Float,
-    val height: Float,
+    val height: Float
 ) {
     companion object {
         val FULL = ResolvedRegion(0f, 0f, 1f, 1f)
@@ -226,7 +226,7 @@ private data class ResolvedRegion(
 
 private fun resolveRegion(
     sprite: TextureAtlasSprite,
-    region: ConnectedTextureRegion?,
+    region: ConnectedTextureRegion?
 ): ResolvedRegion? {
     if (region == null) return ResolvedRegion.FULL
 
@@ -245,6 +245,6 @@ private fun resolveRegion(
         u = region.x.toFloat() / spriteWidth,
         v = region.y.toFloat() / spriteHeight,
         width = region.width.toFloat() / spriteWidth,
-        height = region.height.toFloat() / spriteHeight,
+        height = region.height.toFloat() / spriteHeight
     )
 }

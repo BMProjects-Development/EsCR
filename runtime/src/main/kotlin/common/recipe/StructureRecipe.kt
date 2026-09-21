@@ -41,7 +41,7 @@ class StructureRecipe(
     val chance: Range,
     val structureCenter: Block?,
     val blockForPlace: Block?,
-    val consumeStructure: Boolean = false,
+    val consumeStructure: Boolean = false
 ) : Recipe<SingleRecipeInput> {
     val multiblock: Multiblock
         get() =
@@ -56,7 +56,7 @@ class StructureRecipe(
         chance: Range,
         structureCenter: Block?,
         blockForPlace: Block?,
-        consumeStructure: Boolean = false,
+        consumeStructure: Boolean = false
     ) : this(
         requireNotNull(MultiblockDefinitions.id(multiblock)) { "Multiblock is not registered" },
         time,
@@ -65,7 +65,7 @@ class StructureRecipe(
         chance,
         structureCenter,
         blockForPlace,
-        consumeStructure,
+        consumeStructure
     )
 
     init {
@@ -80,7 +80,7 @@ class StructureRecipe(
                     .asSequence()
                     .flatMap { it.blocks.asSequence() }
                     .map { it.default() }
-                    .any { it.`is`(structureCenter) },
+                    .any { it.`is`(structureCenter) }
         ) {
             "Structure center is not contained in $multiblockId"
         }
@@ -94,7 +94,7 @@ class StructureRecipe(
 
     override fun matches(
         input: SingleRecipeInput,
-        level: Level,
+        level: Level
     ): Boolean = ingredient.test(input.item())
 
     override fun assemble(input: SingleRecipeInput): ItemStack = result.getOrNull()?.create() ?: ItemStack.EMPTY
@@ -114,14 +114,14 @@ class StructureRecipe(
                 } else {
                     SlotDisplay.ItemStackSlotDisplay(result.get())
                 },
-                Optional.ofNullable(structureCenter?.let { SlotDisplay.ItemSlotDisplay(it.asItem()) }),
-            ),
+                Optional.ofNullable(structureCenter?.let { SlotDisplay.ItemSlotDisplay(it.asItem()) })
+            )
         )
 
     data class Display(
         val ingredient: SlotDisplay,
         private val resultDisplay: SlotDisplay,
-        val structureCenter: Optional<SlotDisplay>,
+        val structureCenter: Optional<SlotDisplay>
     ) : RecipeDisplay {
         override fun result(): SlotDisplay = this.resultDisplay
 
@@ -137,7 +137,7 @@ class StructureRecipe(
                         .group(
                             SlotDisplay.CODEC.fieldOf("input").forGetter(Display::ingredient),
                             SlotDisplay.CODEC.fieldOf("result").forGetter(Display::resultDisplay),
-                            SlotDisplay.CODEC.optionalFieldOf("structure_center").forGetter(Display::structureCenter),
+                            SlotDisplay.CODEC.optionalFieldOf("structure_center").forGetter(Display::structureCenter)
                         ).apply(it, ::Display)
                 }
 
@@ -146,7 +146,7 @@ class StructureRecipe(
 
             private fun encode(
                 buf: RegistryFriendlyByteBuf,
-                display: Display,
+                display: Display
             ) {
                 SlotDisplay.STREAM_CODEC.encode(buf, display.ingredient)
                 SlotDisplay.STREAM_CODEC.encode(buf, display.resultDisplay)
@@ -190,7 +190,7 @@ class StructureRecipe(
                         Codec.BOOL
                             .fieldOf("consume_structure")
                             .orElseGet { false }
-                            .forGetter(StructureRecipe::consumeStructure),
+                            .forGetter(StructureRecipe::consumeStructure)
                     ).apply(it) { multiblockId, time, ingredient, result, chance, center, placement, consumeStructure ->
                         StructureRecipe(
                             multiblockId,
@@ -204,7 +204,7 @@ class StructureRecipe(
                             placement.getOrNull()?.let { l ->
                                 BuiltInRegistries.BLOCK.getOptional(l).getOrNull()
                             },
-                            consumeStructure,
+                            consumeStructure
                         )
                     }
             }
@@ -214,7 +214,7 @@ class StructureRecipe(
 
         private fun encode(
             buf: RegistryFriendlyByteBuf,
-            recipe: StructureRecipe,
+            recipe: StructureRecipe
         ) {
             Identifier.STREAM_CODEC.encode(buf, recipe.multiblockId)
             buf.writeInt(recipe.time)
@@ -248,14 +248,14 @@ class StructureRecipe(
                 chance,
                 structureCenter,
                 blockForPlace,
-                consumeStructure,
+                consumeStructure
             )
         }
     }
 
     data class Range(
         val min: Int,
-        val max: Int,
+        val max: Int
     ) {
         fun isEmpty() = this.min == 0 && max == 0
 
@@ -266,7 +266,7 @@ class StructureRecipe(
                     it
                         .group(
                             Codec.INT.fieldOf("min").forGetter(Range::min),
-                            Codec.INT.fieldOf("max").forGetter(Range::max),
+                            Codec.INT.fieldOf("max").forGetter(Range::max)
                         ).apply(it, ::Range)
                 }
 
@@ -277,7 +277,7 @@ class StructureRecipe(
                     Range::min,
                     ByteBufCodecs.INT,
                     Range::max,
-                    ::Range,
+                    ::Range
                 )
         }
     }

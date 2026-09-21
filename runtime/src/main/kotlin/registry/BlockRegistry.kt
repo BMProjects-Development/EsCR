@@ -91,7 +91,7 @@ object BlockRegistry : RegistrationHandler(ModId) {
                     entry.get(),
                     Item.Properties()
                         .setId(ResourceKey.create(Registries.ITEM, registryId))
-                        .useBlockDescriptionPrefix(),
+                        .useBlockDescriptionPrefix()
                 )
             }
         }

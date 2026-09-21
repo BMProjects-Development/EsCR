@@ -21,7 +21,7 @@ object ItemRegistry: RegistrationHandler(ModId) {
     val researchBook = register(ECRModIDs.RESEARCH_BOOK, ::ResearchBookItem) {
         Item.Properties().component(
             DataComponentRegistry.bookType.get(),
-            BookTypeRegistry.basic.key,
+            BookTypeRegistry.basic.key
         )
     }
 

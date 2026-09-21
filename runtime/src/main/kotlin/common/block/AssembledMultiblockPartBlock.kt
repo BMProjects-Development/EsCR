@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.VoxelShape
 import java.util.function.BiConsumer
 
 class AssembledMultiblockPartBlock(
-    properties: Properties,
+    properties: Properties
 ) : Block(properties),
     EntityBlock,
     FullBlockParticles {
@@ -39,7 +39,7 @@ class AssembledMultiblockPartBlock(
             stateDefinition
                 .any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(CONTROLLER, false),
+                .setValue(CONTROLLER, false)
         )
     }
 
@@ -49,27 +49,27 @@ class AssembledMultiblockPartBlock(
 
     override fun newBlockEntity(
         worldPosition: BlockPos,
-        blockState: BlockState,
+        blockState: BlockState
     ): BlockEntity = AssembledMultiblockPartBlockEntity(worldPosition, blockState)
 
     override fun getShape(
         state: BlockState,
         level: BlockGetter,
         pos: BlockPos,
-        context: CollisionContext,
+        context: CollisionContext
     ): VoxelShape = AssembledMultiblocks.formedSelectionShape(level, pos) ?: Shapes.block()
 
     override fun getCollisionShape(
         state: BlockState,
         level: BlockGetter,
         pos: BlockPos,
-        context: CollisionContext,
+        context: CollisionContext
     ): VoxelShape = AssembledMultiblocks.formedPartShape(level, pos) ?: Shapes.block()
 
     override fun <T : BlockEntity> getTicker(
         level: Level,
         blockState: BlockState,
-        type: BlockEntityType<T>,
+        type: BlockEntityType<T>
     ): BlockEntityTicker<T> =
         BlockEntityTicker { tickerLevel, pos, _, _ ->
             AssembledMultiblocks.tick(tickerLevel, pos)
@@ -80,7 +80,7 @@ class AssembledMultiblockPartBlock(
         level: Level,
         pos: BlockPos,
         player: Player,
-        hitResult: BlockHitResult,
+        hitResult: BlockHitResult
     ): InteractionResult {
         val data =
             (level.getBlockEntity(pos) as? AssembledMultiblockPartEntity)?.assembledMultiblockData
@@ -95,11 +95,11 @@ class AssembledMultiblockPartBlock(
                 hitResult.location.add(
                     (data.controllerPos.x - pos.x).toDouble(),
                     (data.controllerPos.y - pos.y).toDouble(),
-                    (data.controllerPos.z - pos.z).toDouble(),
+                    (data.controllerPos.z - pos.z).toDouble()
                 ),
                 hitResult.direction,
                 data.controllerPos,
-                hitResult.isInside,
+                hitResult.isInside
             )
         return controllerState.useWithoutItem(level, player, controllerHit)
     }
@@ -108,7 +108,7 @@ class AssembledMultiblockPartBlock(
         level: Level,
         pos: BlockPos,
         state: BlockState,
-        player: Player,
+        player: Player
     ): BlockState {
         val original =
             AssembledMultiblocks.disassemble(level, pos)
@@ -124,7 +124,7 @@ class AssembledMultiblockPartBlock(
         pos: BlockPos,
         state: BlockState,
         blockEntity: BlockEntity?,
-        tool: ItemStack,
+        tool: ItemStack
     ) {
         val data = (blockEntity as? AssembledMultiblockPartEntity)?.assembledMultiblockData
         if (data == null || state.block === this) {
@@ -138,7 +138,7 @@ class AssembledMultiblockPartBlock(
             pos,
             state,
             data.original.createBlockEntity(level),
-            tool,
+            tool
         )
     }
 
@@ -147,7 +147,7 @@ class AssembledMultiblockPartBlock(
         level: ServerLevel,
         pos: BlockPos,
         explosion: Explosion,
-        dropConsumer: BiConsumer<ItemStack, BlockPos>,
+        dropConsumer: BiConsumer<ItemStack, BlockPos>
     ) {
         val restored =
             AssembledMultiblocks.disassemble(level, pos)?.state

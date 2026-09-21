@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
 object RadiatingChamberRenderer: BookRecipeRenderer<RadiatingChamberRecipe> {
     override fun build(
         recipe: RadiatingChamberRecipe,
-        builder: BookRecipeRenderBuilder,
+        builder: BookRecipeRenderBuilder
     ) {
         val display = recipe.display().filterIsInstance<RadiatingChamberRecipe.Display>().firstOrNull() ?: return
         val contentWidth = SLOT_SIZE * 2 + ITEM_SIZE + ELEMENT_GAP * 2
@@ -31,7 +31,7 @@ object RadiatingChamberRenderer: BookRecipeRenderer<RadiatingChamberRecipe> {
         val lines = listOf(
             Component.translatable("tooltip.$ModId.during", recipe.time),
             Component.translatable("tooltip.$ModId.radiating_chamber.mru_per_tick", recipe.mruPerTick),
-            balanceText(recipe),
+            balanceText(recipe)
         )
         lines.forEachIndexed { index, text ->
             val textX = (builder.width - builder.mc.font.width(text)) / 2
@@ -48,7 +48,7 @@ object RadiatingChamberRenderer: BookRecipeRenderer<RadiatingChamberRecipe> {
         val right = if (max.isPresent) ")" else "]"
         return Component.translatable(
             "tooltip.$ModId.radiating_chamber.balance",
-            "$left${min.orElse(0.0)}, ${max.orElse(2.0)}$right",
+            "$left${min.orElse(0.0)}, ${max.orElse(2.0)}$right"
         )
     }
 

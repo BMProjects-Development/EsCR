@@ -7,7 +7,7 @@ import com.algorithmlx.ecr.api.particle.file.BedrockParticleFile
 
 class CurveVariables(
     private val context: () -> MolangContext,
-    private val curves: Map<String, BedrockParticleFile.Curve>,
+    private val curves: Map<String, BedrockParticleFile.Curve>
 ) : Variables {
     private var frame = 0
     private val variables = mutableMapOf<String, Variable?>()
@@ -72,7 +72,7 @@ private fun BedrockParticleFile.Curve.eval(context: MolangContext): Float {
                     nodes[index - 1].eval(context),
                     nodes[index].eval(context),
                     nodes[index + 1].eval(context),
-                    nodes[index + 2].eval(context),
+                    nodes[index + 2].eval(context)
                 )
             }
         }
@@ -92,7 +92,7 @@ private fun BedrockParticleFile.Curve.eval(context: MolangContext): Float {
                         nodes[i].eval(context),
                         nodes[i + 1].eval(context),
                         nodes[i + 2].eval(context),
-                        nodes[i + 3].eval(context),
+                        nodes[i + 3].eval(context)
                     )
                 }
             }

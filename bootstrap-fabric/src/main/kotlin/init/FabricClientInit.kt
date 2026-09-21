@@ -1,187 +1,123 @@
 package com.algorithmlx.ecr.fabric.init
 
-import com.algorithmlx.ecr.api.client.render.MultiblockWorldPreview
-import com.algorithmlx.ecr.api.geo.*
-import com.algorithmlx.ecr.api.geo.client.BedrockGeoAssets
+import com.algorithmlx.ecr.api.event.client.AddClientReloadListenersEvent
+import com.algorithmlx.ecr.api.event.client.ClientPlayerNetworkEvent
+import com.algorithmlx.ecr.api.event.client.ClientTickEvent
+import com.algorithmlx.ecr.api.event.client.EntityRenderersEvent
+import com.algorithmlx.ecr.api.event.client.RegisterMenuScreensEvent
+import com.algorithmlx.ecr.api.event.engine.EventBuses
+import com.algorithmlx.ecr.api.event.entity.player.ItemTooltipEvent
 import com.algorithmlx.ecr.api.geo.client.BedrockGeoItemRenderer
-import com.algorithmlx.ecr.api.geo.client.ClientGeoAnimations
-import com.algorithmlx.ecr.api.particle.BedrockParticleRenderTypes
-import com.algorithmlx.ecr.api.particle.BedrockParticles
-import com.algorithmlx.ecr.api.particle.ClientParticleSystems
-import com.algorithmlx.ecr.api.research.*
-import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.client.ECRConnectedTextures
-import com.algorithmlx.ecr.client.book.ResearchBookClient
-import com.algorithmlx.ecr.client.renderer.*
-import com.algorithmlx.ecr.client.screen.*
-import com.algorithmlx.ecr.common.init.events.ECEvents
+import com.algorithmlx.ecr.api.network.ClientNetworkPlatform
+import com.algorithmlx.ecr.client.renderer.ECRClientRendering
 import com.algorithmlx.ecr.fabric.client.FabricConnectedTextures
 import com.algorithmlx.ecr.fabric.client.FabricIrisCompatibility
 import com.algorithmlx.ecr.fabric.client.MultiblockPreviewGuiBridgeInit
-import com.algorithmlx.ecr.network.*
-import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
-import com.algorithmlx.ecr.registry.MenuTypeRegistry
+import com.algorithmlx.ecr.fabric.network.FabricClientNetworkPlatform
+import com.algorithmlx.ecr.init.ECRClientInit
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.MenuScreens
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.gui.screens.inventory.MenuAccess
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState
 import net.minecraft.client.renderer.special.SpecialModelRenderers
+import net.minecraft.core.component.DataComponents
 import net.minecraft.server.packs.PackType
+import net.minecraft.world.inventory.AbstractContainerMenu
+import net.minecraft.world.inventory.MenuType
+import net.minecraft.world.item.component.TooltipDisplay
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
 
 object FabricClientInit {
     @JvmStatic
     fun init() {
+        ClientNetworkPlatform.instance = FabricClientNetworkPlatform
         FabricIrisCompatibility.init()
         SpecialModelRenderers.ID_MAPPER.put(BedrockGeoItemRenderer.ID, BedrockGeoItemRenderer.Unbaked.CODEC)
         FabricConnectedTextures.init()
-        ECRConnectedTextures.init()
-        registerBedrockParticles()
-        registerReceivers()
+        ECRClientInit.init()
+        registerReloadListeners()
+        registerRendering()
         registerTooltipEvent()
         ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->
-            SoulStoneTooltipNetwork.clear()
-            MultiblockWorldPreview.clear()
-            MagicShieldRenderer.clear()
+            EventBuses.GAME(ClientPlayerNetworkEvent.LoggingOut)
         }
+        ClientPlayConnectionEvents.JOIN.register { _, _, _ -> EventBuses.GAME(ClientPlayerNetworkEvent.LoggingIn) }
+        ClientTickEvents.START_CLIENT_TICK.register { EventBuses.GAME(ClientTickEvent.Pre) }
+        ClientTickEvents.END_CLIENT_TICK.register { EventBuses.GAME(ClientTickEvent.Post) }
 
         MultiblockPreviewGuiBridgeInit.init()
-        ResearchBookClient.init()
-
-        BlockEntityRenderers.register(BlockEntityTypeRegistry.mithrilineFurnace.get(), ::MithrilineFurnaceRenderer)
-        BlockEntityRenderers.register(
-            BlockEntityTypeRegistry.assembledMultiblockPart.get(),
-            ::AssembledMultiblockRenderer,
-        )
-        BlockEntityRenderers.register(
-            BlockEntityTypeRegistry.rayTower.get(),
-            ::AssembledMultiblockRenderer,
-        )
-        BlockEntityRenderers.register(BlockEntityTypeRegistry.matrixDestructor.get(), ::MatrixDestructorRenderer)
-        BlockEntityRenderers.register(
-            BlockEntityTypeRegistry.enrichmentChamberController.get(),
-            ::EnrichmentChamberControllerRenderer,
-        )
-
-        ModelLayerRegistry.registerModelLayer(MithrilineFurnaceRenderer.MF_LAYER, MithrilineFurnaceRenderer::createBodyLayer)
-
-        MenuScreens.register(MenuTypeRegistry.mithrilineFurnace, ::MithrilineFurnaceScreen)
-        MenuScreens.register(MenuTypeRegistry.radiatingChamber, ::RadiatingChamberScreen)
-        MenuScreens.register(MenuTypeRegistry.heatGenerator, ::HeatGeneratorScreen)
-        MenuScreens.register(MenuTypeRegistry.magicTable, ::MagicTableMenuScreen)
-        MenuScreens.register(MenuTypeRegistry.matrixDestructor, ::MatrixDestructorScreen)
-        MenuScreens.register(MenuTypeRegistry.enrichmentChamberController, ::EnrichmentChamberControllerScreen)
-        MenuScreens.register(MenuTypeRegistry.enrichmentChamberReceiver, ::EnrichmentChamberReceiverScreen)
-        MenuScreens.register(MenuTypeRegistry.rayTower, ::RayTowerScreen)
-        MenuScreens.register(MenuTypeRegistry.magicalTeleporter, ::MagicalTeleporterScreen)
+        registerClientExtensions()
     }
 
     private fun registerTooltipEvent() {
-        ItemTooltipCallback.EVENT.register { stack, _, _, components ->
-            ECEvents.itemTooltip(stack, components)
-        }
-    }
-
-    private fun registerBedrockParticles() {
-        BedrockParticleRenderTypes.init()
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener("bedrock_particles".ecRL, BedrockParticles)
-        ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloadListener("bedrock_geo".ecRL, BedrockGeoAssets)
-        ClientTickEvents.END_LEVEL_TICK.register { level ->
-            ClientParticleSystems.get(level)?.update()
-            MultiblockWorldPreview.tick(level)
-        }
-        LevelRenderEvents.COLLECT_SUBMITS.register { context ->
-            val minecraft = Minecraft.getInstance()
-            val level = minecraft.level ?: return@register
-            val poseStack = context.poseStack()
-            ClientParticleSystems.get(level)?.submit(
-                poseStack,
-                context.submitNodeCollector(),
-                context.levelState(),
-                minecraft.deltaTracker.getGameTimeDeltaPartialTick(false),
-                minecraft.player?.uuid,
-                minecraft.options.cameraType.isFirstPerson,
+        ItemTooltipCallback.EVENT.register { stack, context, flags, components ->
+            EventBuses.GAME(
+                ItemTooltipEvent(
+                    stack,
+                    Minecraft.getInstance().player,
+                    components,
+                    flags,
+                    context,
+                    stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT)
+                )
             )
-            BoundGemLinkRenderer.submit(poseStack, context.submitNodeCollector(), context.levelState())
-            MultiblockWorldPreview.submit(poseStack, context.submitNodeCollector(), context.levelState())
-            MagicShieldRenderer.submit(poseStack, context.submitNodeCollector(), context.levelState())
-            MRULinkRenderer.submit(poseStack, context.submitNodeCollector(), context.levelState())
         }
     }
 
-    private fun registerReceivers() {
-        ClientPlayNetworking.registerGlobalReceiver(GeoBlockAnimationPayload.TYPE) { payload, context ->
-            context.client().execute { ClientGeoAnimations.handle(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(GeoEntityAnimationPayload.TYPE) { payload, context ->
-            context.client().execute { ClientGeoAnimations.handle(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(GeoItemAnimationPayload.TYPE) { payload, context ->
-            context.client().execute { ClientGeoAnimations.handle(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(GeoBlockAnimationStopPayload.TYPE) { payload, context ->
-            context.client().execute { ClientGeoAnimations.handle(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(GeoEntityAnimationStopPayload.TYPE) { payload, context ->
-            context.client().execute { ClientGeoAnimations.handle(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(GeoItemAnimationStopPayload.TYPE) { payload, context ->
-            context.client().execute { ClientGeoAnimations.handle(payload) }
-        }
+    private fun registerReloadListeners() {
+        val loader = ResourceLoader.get(PackType.CLIENT_RESOURCES)
+        EventBuses.MOD(AddClientReloadListenersEvent(loader::registerReloadListener))
+    }
 
-        ClientPlayNetworking.registerGlobalReceiver(ResearchSyncPayload.TYPE) { payload, context ->
-            context.client().execute { ClientResearchState.apply(payload) }
+    private fun registerRendering() {
+        LevelRenderEvents.COLLECT_SUBMITS.register { context ->
+            ECRClientRendering.submit(
+                context.poseStack(),
+                context.submitNodeCollector(),
+                context.levelState()
+            )
         }
-        ClientPlayNetworking.registerGlobalReceiver(ResearchProgressPayload.TYPE) { payload, context ->
-            context.client().execute { ClientResearchState.apply(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(BoundGemTooltipResponsePayload.TYPE) { payload, context ->
-            context.client().execute { BoundGemTooltipNetwork.acceptResponse(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(SoulStoneTooltipResponsePayload.TYPE) { payload, context ->
-            context.client().execute { SoulStoneTooltipNetwork.acceptResponse(payload) }
-        }
-        ClientPlayNetworking.registerGlobalReceiver(MagicShieldPayload.TYPE) { payload, context ->
-            context.client().execute {
-                MagicShieldRenderer.accept(payload)
-            }
-        }
+    }
 
-        ResearchNetwork.completeResearch = { ClientPlayNetworking.send(CompleteResearchPayload(it)) }
-        ResearchNetwork.updateFavorite =
-            { research, spread, color -> ClientPlayNetworking.send(FavoriteResearchPayload(research, spread, color)) }
-        ResearchNetwork.updateView = { state ->
-            runCatching {
-                if (ClientPlayNetworking.canSend(UpdateBookViewPayload.TYPE)) {
-                    ClientPlayNetworking.send(UpdateBookViewPayload(state))
+    private fun registerClientExtensions() {
+        EventBuses.MOD(
+            EntityRenderersEvent.RegisterRenderers(
+                object : EntityRenderersEvent.BlockEntityRendererRegistrar {
+                    override fun <T : BlockEntity, S : BlockEntityRenderState> register(
+                        blockEntityType: BlockEntityType<out T>,
+                        rendererProvider: BlockEntityRendererProvider<T, S>
+                    ) = BlockEntityRenderers.register(blockEntityType, rendererProvider)
                 }
+            )
+        )
+        EventBuses.MOD(
+            EntityRenderersEvent.RegisterLayerDefinitions { layerLocation, supplier ->
+                ModelLayerRegistry.registerModelLayer(layerLocation, supplier::invoke)
             }
-        }
-        BoundGemTooltipNetwork.currentDimension = { Minecraft.getInstance().level?.dimension() }
-        GeoAnimationNetwork.playClientBlockAnimation = ClientGeoAnimations::handle
-        GeoAnimationNetwork.playClientEntityAnimation = ClientGeoAnimations::handle
-        GeoAnimationNetwork.playClientItemAnimation = ClientGeoAnimations::handle
-        GeoAnimationNetwork.stopClientBlockAnimation = ClientGeoAnimations::handle
-        GeoAnimationNetwork.stopClientEntityAnimation = ClientGeoAnimations::handle
-        GeoAnimationNetwork.stopClientItemAnimation = ClientGeoAnimations::handle
-        BoundGemTooltipNetwork.sendRequestToServer = { payload ->
-            runCatching {
-                if (ClientPlayNetworking.canSend(BoundGemTooltipRequestPayload.TYPE)) {
-                    ClientPlayNetworking.send(payload)
+        )
+        EventBuses.MOD(
+            RegisterMenuScreensEvent(
+                object : RegisterMenuScreensEvent.MenuScreenRegistrar {
+                    override fun <M, S> register(
+                        menuType: MenuType<out M>,
+                        screenConstructor: RegisterMenuScreensEvent.ScreenConstructor<M, S>
+                    ) where M : AbstractContainerMenu, S : Screen, S : MenuAccess<M> {
+                        MenuScreens.register(menuType) { menu, inventory, title ->
+                            screenConstructor.create(menu, inventory, title)
+                        }
+                    }
                 }
-            }
-        }
-        SoulStoneTooltipNetwork.sendRequestToServer = { payload ->
-            runCatching {
-                if (ClientPlayNetworking.canSend(SoulStoneTooltipRequestPayload.TYPE)) {
-                    ClientPlayNetworking.send(payload)
-                }
-            }
-        }
+            )
+        )
     }
 }

@@ -12,7 +12,7 @@ import kotlin.jvm.optionals.getOrElse
 object MagicTableRenderer : BookRecipeRenderer<MagicTableRecipe> {
     override fun build(
         recipe: MagicTableRecipe,
-        builder: BookRecipeRenderBuilder,
+        builder: BookRecipeRenderBuilder
     ) {
         val display = recipe.display().filterIsInstance<MagicTableRecipe.Display>().firstOrNull() ?: return
 
@@ -43,7 +43,7 @@ object MagicTableRenderer : BookRecipeRenderer<MagicTableRecipe> {
                     currentDisplay,
                     BookRecipeSlotType.INPUT,
                     centerX + (x * 2 - 1) * SLOT_SIZE,
-                    centerY + (y * 2 - 1) * SLOT_SIZE,
+                    centerY + (y * 2 - 1) * SLOT_SIZE
                 )
             }
         }

@@ -21,11 +21,11 @@ import net.minecraft.world.level.Level
 class MithrilineFurnaceRecipe(
     val input: Ingredient,
     val espe: Int,
-    private val result: ItemStackTemplate,
+    private val result: ItemStackTemplate
 ) : Recipe<SingleRecipeInput> {
     override fun matches(
         input: SingleRecipeInput,
-        level: Level,
+        level: Level
     ): Boolean {
         if (level.isClientSide || input.isEmpty) return false
 
@@ -51,15 +51,15 @@ class MithrilineFurnaceRecipe(
             Display(
                 input.display(),
                 SlotDisplay.ItemStackSlotDisplay(result),
-                SlotDisplay.ItemSlotDisplay(BlockRegistry.mithrilineFurnace.get().asItem()),
-            ),
+                SlotDisplay.ItemSlotDisplay(BlockRegistry.mithrilineFurnace.get().asItem())
+            )
         )
 
     @JvmRecord
     data class Display(
         val ingredient: SlotDisplay,
         private val resultDisplay: SlotDisplay,
-        private val station: SlotDisplay,
+        private val station: SlotDisplay
     ) : RecipeDisplay {
         override fun result(): SlotDisplay = resultDisplay
 
@@ -75,7 +75,7 @@ class MithrilineFurnaceRecipe(
                         .group(
                             SlotDisplay.CODEC.fieldOf("input").forGetter(Display::ingredient),
                             SlotDisplay.CODEC.fieldOf("result").forGetter(Display::resultDisplay),
-                            SlotDisplay.CODEC.fieldOf("station").forGetter(Display::station),
+                            SlotDisplay.CODEC.fieldOf("station").forGetter(Display::station)
                         ).apply(it, ::Display)
                 }
 
@@ -88,7 +88,7 @@ class MithrilineFurnaceRecipe(
                     Display::resultDisplay,
                     SlotDisplay.STREAM_CODEC,
                     Display::station,
-                    ::Display,
+                    ::Display
                 )
         }
     }
@@ -101,7 +101,7 @@ class MithrilineFurnaceRecipe(
                     .group(
                         Ingredient.CODEC.fieldOf("input").forGetter(MithrilineFurnaceRecipe::input),
                         Codec.INT.fieldOf("espe").forGetter(MithrilineFurnaceRecipe::espe),
-                        ItemStackTemplate.CODEC.fieldOf("result").forGetter(MithrilineFurnaceRecipe::result),
+                        ItemStackTemplate.CODEC.fieldOf("result").forGetter(MithrilineFurnaceRecipe::result)
                     ).apply(it, ::MithrilineFurnaceRecipe)
             }
 
@@ -109,12 +109,12 @@ class MithrilineFurnaceRecipe(
         val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, MithrilineFurnaceRecipe> =
             StreamCodec.of(
                 ::encode,
-                ::decode,
+                ::decode
             )
 
         private fun encode(
             buf: RegistryFriendlyByteBuf,
-            recipe: MithrilineFurnaceRecipe,
+            recipe: MithrilineFurnaceRecipe
         ) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.input)
             buf.writeInt(recipe.espe)

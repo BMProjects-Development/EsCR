@@ -11,7 +11,7 @@ object FabricRegistrationPlatform : RegistrationPlatform {
     override fun <R : Any, T : R> register(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): Supplier<T> {
         val registered = Registry.register(registry, id, factory.get())
         return Supplier { registered }
@@ -20,7 +20,7 @@ object FabricRegistrationPlatform : RegistrationPlatform {
     override fun <R : Any, T : R> registerHolder(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): PlatformRegistryHolder<R, T> {
         val registered = Registry.registerForHolder(registry, id, factory.get())
         @Suppress("UNCHECKED_CAST")

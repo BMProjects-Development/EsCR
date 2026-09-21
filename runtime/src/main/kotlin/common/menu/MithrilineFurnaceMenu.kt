@@ -21,7 +21,7 @@ class MithrilineFurnaceMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess,
-    val data: ContainerData,
+    val data: ContainerData
 ) : AbstractMenu(MenuTypeRegistry.mithrilineFurnace, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
@@ -29,7 +29,7 @@ class MithrilineFurnaceMenu(
         SimpleContainer(2),
         inventory.player.level().getBlockEntity(typeData.pos),
         ContainerLevelAccess.NULL,
-        SimpleContainerData(2),
+        SimpleContainerData(2)
     )
 
     init {
@@ -43,7 +43,7 @@ class MithrilineFurnaceMenu(
 
     override fun quickMoveStack(
         player: Player,
-        index: Int,
+        index: Int
     ): ItemStack {
         var qms = ItemStack.EMPTY
         val ms = this.slots[index]

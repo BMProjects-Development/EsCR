@@ -22,7 +22,7 @@ class MagicTableMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess,
-    val data: ContainerData,
+    val data: ContainerData
 ) : AbstractMenu(MenuTypeRegistry.magicTable, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
@@ -30,7 +30,7 @@ class MagicTableMenu(
         SimpleContainer(8),
         inventory.player.level().getBlockEntity(typeData.pos),
         ContainerLevelAccess.NULL,
-        SimpleContainerData(2),
+        SimpleContainerData(2)
     )
 
     init {
@@ -42,7 +42,7 @@ class MagicTableMenu(
     private fun buildSlots(
         container: Container,
         inv: Inventory,
-        stackSize: Int = 64,
+        stackSize: Int = 64
     ) {
         // Recipe slots
         addSlot(VanillaSpecialSlot(container, 0, 26, 17, stackSize = stackSize, place = { this.item.isEmpty }))
@@ -62,8 +62,8 @@ class MagicTableMenu(
                 6,
                 152,
                 53,
-                BoundGemHelper::isConnectionFoundSpecial,
-            ),
+                BoundGemHelper::isConnectionFoundSpecial
+            )
         )
 
         inv.make()
@@ -73,7 +73,7 @@ class MagicTableMenu(
 
     override fun quickMoveStack(
         player: Player,
-        slotIndex: Int,
+        slotIndex: Int
     ): ItemStack {
         val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
         val stack = slot.item.takeIf { it.count > 0 } ?: return ItemStack.EMPTY

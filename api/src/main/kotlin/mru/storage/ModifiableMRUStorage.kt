@@ -13,7 +13,7 @@ interface ModifiableMRUStorage : MRUStorage {
 
     fun transferTo(
         receiver: ModifiableMRUStorage,
-        limit: Int,
+        limit: Int
     ): Int {
         if (receiver === this || limit <= 0 || !isSameTypes(receiver)) return 0
 

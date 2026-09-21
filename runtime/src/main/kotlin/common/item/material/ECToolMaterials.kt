@@ -7,7 +7,7 @@ import net.minecraft.tags.TagKey
 import net.minecraft.world.item.ToolMaterial
 
 enum class ECToolMaterials(
-    val material: ToolMaterial,
+    val material: ToolMaterial
 ) {
     WEAK(
         ToolMaterial(
@@ -16,8 +16,8 @@ enum class ECToolMaterials(
             1.6F,
             7.5F,
             36,
-            TagKey.create(Registries.ITEM, "weak_repair".ecRL),
-        ),
+            TagKey.create(Registries.ITEM, "weak_repair".ecRL)
+        )
     ),
     ELEMENTAL(
         ToolMaterial(
@@ -26,7 +26,7 @@ enum class ECToolMaterials(
             5F,
             15F,
             36,
-            TagKey.create(Registries.ITEM, "elemental_repair".ecRL),
-        ),
-    ),
+            TagKey.create(Registries.ITEM, "elemental_repair".ecRL)
+        )
+    )
 }

@@ -23,7 +23,7 @@ interface MutableMRUBalance : MRUBalance {
 
     fun setBalance(
         upperBalance: Double,
-        lowerBalance: Double,
+        lowerBalance: Double
     )
 
     fun setBalance(balance: MRUBalance) {
@@ -36,7 +36,7 @@ interface MutableMRUBalance : MRUBalance {
 
     fun includeSource(
         source: MRUBalance,
-        gameTime: Long,
+        gameTime: Long
     )
 
     fun toImmutable(): MRUBalance

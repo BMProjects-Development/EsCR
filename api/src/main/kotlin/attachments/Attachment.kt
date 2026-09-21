@@ -63,7 +63,7 @@ class AttachmentBuilder<T : Any>(initializer: () -> T) {
 
     fun syncWith(
         codec: StreamCodec<in RegistryFriendlyByteBuf, T>,
-        predicate: AttachmentSyncPredicate = AttachmentSyncPredicate.all(),
+        predicate: AttachmentSyncPredicate = AttachmentSyncPredicate.all()
     ) = apply {
         check(synchronization == null) { "Attachment synchronization is already configured" }
         synchronization = AttachmentSynchronization(codec, predicate)
@@ -101,17 +101,17 @@ data class AttachmentSpecification<T : Any>(
     val initializer: Supplier<T>,
     val persistence: AttachmentPersistence<T>?,
     val copyOnDeath: Boolean,
-    val synchronization: AttachmentSynchronization<T>?,
+    val synchronization: AttachmentSynchronization<T>?
 )
 
 data class AttachmentPersistence<T : Any>(
     val codec: Codec<T>,
-    val mapCodec: MapCodec<T>,
+    val mapCodec: MapCodec<T>
 )
 
 data class AttachmentSynchronization<T : Any>(
     val codec: StreamCodec<in RegistryFriendlyByteBuf, T>,
-    val predicate: AttachmentSyncPredicate,
+    val predicate: AttachmentSyncPredicate
 )
 
 interface PlatformAttachment<T : Any> {

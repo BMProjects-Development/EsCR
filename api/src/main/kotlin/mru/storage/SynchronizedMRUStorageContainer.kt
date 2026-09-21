@@ -6,7 +6,7 @@ import net.minecraft.world.level.storage.ValueOutput
 
 class SynchronizedMRUStorageContainer(
     private val fallbackType: MRUType,
-    private val source: () -> IOMRUStorage?,
+    private val source: () -> IOMRUStorage?
 ) : IOMRUStorage {
     private val currentSource: IOMRUStorage?
         get() = source()?.takeUnless { it === this }

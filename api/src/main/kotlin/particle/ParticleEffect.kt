@@ -14,14 +14,14 @@ class ParticleEffect(
     val events: Map<String, BedrockParticleFile.Event>,
     val texture: Identifier?,
     referencedEffects: Map<String, ParticleEffect> = emptyMap(),
-    val referencedSounds: Map<String, SoundEvent> = emptyMap(),
+    val referencedSounds: Map<String, SoundEvent> = emptyMap()
 ) {
     val referencedEffects: MutableMap<String, ParticleEffect> = referencedEffects.toMutableMap()
     val renderPass = texture?.let { RenderPass(material, it) }
 
     data class RenderPass(
         val material: BedrockParticleFile.Material,
-        val texture: Identifier,
+        val texture: Identifier
     ) {
         val renderType by lazy { BedrockParticleRenderTypes.get(texture, material) }
     }
@@ -39,7 +39,7 @@ class ParticleEffect(
                 components = file.particleEffect.components,
                 curves = file.particleEffect.curves,
                 events = file.particleEffect.events,
-                texture = texture,
+                texture = texture
             )
         }
     }

@@ -49,7 +49,7 @@ object FabricConnectedTextures {
                     delegate = model,
                     texture = texture,
                     variants = variants,
-                    spriteFinder = context.baker().materials().spriteFinder(QuadAtlas.BLOCK),
+                    spriteFinder = context.baker().materials().spriteFinder(QuadAtlas.BLOCK)
                 )
             }
         }
@@ -60,7 +60,7 @@ private class FabricConnectedTextureModel(
     private val delegate: BlockStateModel,
     private val texture: ConnectedTexture,
     private val variants: Array<ResolvedVariant?>,
-    private val spriteFinder: SpriteFinder,
+    private val spriteFinder: SpriteFinder
 ): WrapperBlockStateModel(delegate) {
     private val variantFlags = IntArray(variants.size) { variants[it]?.let(::materialFlags) ?: 0 }
     private val allVariantFlags = variantFlags.fold(0, Int::or)
@@ -71,7 +71,7 @@ private class FabricConnectedTextureModel(
         pos: BlockPos,
         state: BlockState,
         random: RandomSource,
-        cullTest: Predicate<Direction?>,
+        cullTest: Predicate<Direction?>
     ) {
         val packedMask = texture.packedMask(level, pos, state)
 
@@ -90,7 +90,7 @@ private class FabricConnectedTextureModel(
         level: BlockAndTintGetter,
         pos: BlockPos,
         state: BlockState,
-        random: RandomSource,
+        random: RandomSource
     ): Any? {
         val delegateKey = delegate.createGeometryKey(level, pos, state, random) ?: return null
         return GeometryKey(texture, delegateKey, texture.packedMask(level, pos, state))
@@ -102,7 +102,7 @@ private class FabricConnectedTextureModel(
         level: BlockAndTintGetter,
         pos: BlockPos,
         state: BlockState,
-        random: RandomSource,
+        random: RandomSource
     ): Int {
         val packedMask = texture.packedMask(level, pos, state)
         var flags = delegate.materialFlags(level, pos, state, random)
@@ -117,7 +117,7 @@ private class FabricConnectedTextureModel(
         pos: BlockPos,
         state: BlockState,
         random: RandomSource,
-        flag: Int,
+        flag: Int
     ): Boolean = materialFlags(level, pos, state, random) and flag != 0
 
     private fun transformQuad(quad: MutableQuadView, packedMask: Int) {
@@ -143,14 +143,14 @@ private class FabricConnectedTextureModel(
     private data class GeometryKey(
         val texture: ConnectedTexture,
         val delegate: Any,
-        val packedMask: Int,
+        val packedMask: Int
     )
 
     companion object {
         private fun moveUvs(
             quad: MutableQuadView,
             source: TextureAtlasSprite,
-            target: ResolvedVariant,
+            target: ResolvedVariant
         ) {
             val sourceWidth = source.u1 - source.u0
             val sourceHeight = source.v1 - source.v0
@@ -164,7 +164,7 @@ private class FabricConnectedTextureModel(
                 quad.uv(
                     vertex,
                     targetSprite.getU(target.region.u + rotatedU * target.region.width),
-                    targetSprite.getV(target.region.v + rotatedV * target.region.height),
+                    targetSprite.getV(target.region.v + rotatedV * target.region.height)
                 )
             }
             quad.postMaterialBake(target.material)
@@ -206,14 +206,14 @@ private class FabricConnectedTextureModel(
 private data class ResolvedVariant(
     val material: Material.Baked,
     val rotation: ConnectedTextureRotation,
-    val region: ResolvedRegion,
+    val region: ResolvedRegion
 )
 
 private data class ResolvedRegion(
     val u: Float,
     val v: Float,
     val width: Float,
-    val height: Float,
+    val height: Float
 ) {
     companion object {
         val FULL = ResolvedRegion(0f, 0f, 1f, 1f)
@@ -222,7 +222,7 @@ private data class ResolvedRegion(
 
 private fun resolveRegion(
     sprite: TextureAtlasSprite,
-    region: ConnectedTextureRegion?,
+    region: ConnectedTextureRegion?
 ): ResolvedRegion? {
     if (region == null) return ResolvedRegion.FULL
 
@@ -241,6 +241,6 @@ private fun resolveRegion(
         u = region.x.toFloat() / spriteWidth,
         v = region.y.toFloat() / spriteHeight,
         width = region.width.toFloat() / spriteWidth,
-        height = region.height.toFloat() / spriteHeight,
+        height = region.height.toFloat() / spriteHeight
     )
 }

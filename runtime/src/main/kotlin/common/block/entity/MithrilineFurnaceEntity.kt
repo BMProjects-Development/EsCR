@@ -123,19 +123,12 @@ class MithrilineFurnaceEntity(
 
     override fun getSlotsForFace(direction: Direction): IntArray = intArrayOf(0, 1)
 
-    override fun canPlaceItemThroughFace(
-        slot: Int,
-        itemStack: ItemStack,
-        direction: Direction?
-    ): Boolean = this.canPlaceItem(slot, itemStack)
+    override fun canPlaceItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction?): Boolean = this.canPlaceItem(slot, itemStack)
 
-    override fun canTakeItemThroughFace(
-        slot: Int,
-        itemStack: ItemStack,
-        direction: Direction
-    ): Boolean = slot == 0
+    override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean = slot == 0
 
-    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = if (slot == 1) false else super<SynchronizedContainerBlockEntity>.canPlaceItem(slot, itemStack)
+    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean =
+        slot != 1 && super<SynchronizedContainerBlockEntity>.canPlaceItem(slot, itemStack)
 
     companion object {
         @JvmStatic

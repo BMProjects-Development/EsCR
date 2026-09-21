@@ -28,7 +28,7 @@ class RadiatingChamberMenu(
         inventory,
         SimpleContainer(MACHINE_SLOTS),
         inventory.player.level().getBlockEntity(typeData.pos),
-        ContainerLevelAccess.NULL,
+        ContainerLevelAccess.NULL
     )
 
     init {
@@ -44,7 +44,7 @@ class RadiatingChamberMenu(
 
     override fun quickMoveStack(
         player: Player,
-        index: Int,
+        index: Int
     ): ItemStack {
         val slot = this.slots.getOrNull(index) ?: return ItemStack.EMPTY
         if (!slot.hasItem()) return ItemStack.EMPTY

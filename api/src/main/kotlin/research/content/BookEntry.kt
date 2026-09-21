@@ -23,7 +23,7 @@ data class BookEntry(
     val hiddenUntilAvailable: Boolean = false,
     val titleShadow: Boolean = false,
     val align: Set<BookEntryAlign> = emptySet(),
-    val link: BookEntryLink? = null,
+    val link: BookEntryLink? = null
 ) {
     val taskDefinitions: List<ResearchTaskDefinition> = taskLevels.flatMap(ResearchTaskLevel::tasks)
     val tasks: List<ResearchTask> = taskDefinitions.map(ResearchTaskDefinition::task)
@@ -37,16 +37,16 @@ data class BookEntry(
 
 sealed interface BookEntryLink {
     data class Category(
-        val category: Identifier,
+        val category: Identifier
     ) : BookEntryLink
 
     data class Research(
-        val research: Identifier,
+        val research: Identifier
     ) : BookEntryLink
 
     data class Page(
         val research: Identifier,
-        val spread: Int,
+        val spread: Int
     ) : BookEntryLink {
         init {
             require(spread >= 0)

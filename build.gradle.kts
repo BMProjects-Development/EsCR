@@ -52,7 +52,7 @@ val generateModMetadata = tasks.register("generateModMetadata") {
                 sub.name.contains("fabric", ignoreCase = true) -> fabricJars.add(mapOf("file" to path))
                 sub.name.contains("neoforge", ignoreCase = true) -> neoForgeJars.add(mapOf(
                     "identifier" to mapOf("group" to sub.group.toString(), "artifact" to sub.name),
-                    "version" to mapOf("range" to "[${sub.version},)", "artifactVersion" to sub.version.toString()),
+                    "version" to mapOf("range" to "[${sub.version})", "artifactVersion" to sub.version.toString()),
                     "path" to path,
                     "isObfuscated" to false
                 ))
@@ -93,7 +93,7 @@ val generateModMetadata = tasks.register("generateModMetadata") {
         neoForgeModMetadata.writeText(
             """
                 modLoader="javafml"
-                loaderVersion="[1,)"
+                loaderVersion="[1)"
                 license="$modLicense"
 
                 [[mods]]

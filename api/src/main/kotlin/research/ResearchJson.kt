@@ -66,7 +66,7 @@ object ResearchJson {
             hiddenUntilAvailable = dto.hiddenUntilAvailable,
             titleShadow = dto.shadow,
             align = dto.align.mapTo(LinkedHashSet()) { BookEntryAlign.valueOf(it.uppercase()) },
-            link = dto.link?.let { decodeEntryLink(it, id) },
+            link = dto.link?.let { decodeEntryLink(it, id) }
         )
     }
 
@@ -113,7 +113,7 @@ object ResearchJson {
             hiddenUntilAvailable = entry.hiddenUntilAvailable,
             shadow = entry.titleShadow,
             align = entry.align.mapTo(LinkedHashSet()) { it.name.lowercase() },
-            link = entry.link?.let(::encodeEntryLink),
+            link = entry.link?.let(::encodeEntryLink)
         )
     ).jsonObject
 
@@ -351,7 +351,7 @@ private data class EntryDto(
     val automatic: Boolean? = null,
     @SerialName("hidden_until_available") val hiddenUntilAvailable: Boolean = false,
     val shadow: Boolean = false,
-    val link: JsonElement? = null,
+    val link: JsonElement? = null
 )
 
 @Serializable

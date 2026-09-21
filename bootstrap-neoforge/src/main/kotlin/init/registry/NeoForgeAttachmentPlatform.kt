@@ -14,7 +14,7 @@ import java.util.function.Supplier
 object NeoForgeAttachmentPlatform : AttachmentPlatform {
     override fun <T : Any> register(
         id: Identifier,
-        specification: AttachmentSpecification<T>,
+        specification: AttachmentSpecification<T>
     ): PlatformAttachment<T> {
         val builder = AttachmentType.builder(specification.initializer)
         specification.persistence?.let { builder.serialize(it.mapCodec) }
@@ -22,13 +22,13 @@ object NeoForgeAttachmentPlatform : AttachmentPlatform {
         specification.synchronization?.let { synchronization ->
             builder.sync(
                 BiPredicate { holder, player -> synchronization.predicate.test(holder, player) },
-                synchronization.codec,
+                synchronization.codec
             )
         }
         val reference: Supplier<AttachmentType<T>> = RegistrationPlatform.instance.register(
             id,
             NeoForgeRegistries.ATTACHMENT_TYPES,
-            Supplier { builder.build() },
+            Supplier { builder.build() }
         )
         return NeoForgeAttachment(reference)
     }

@@ -50,14 +50,14 @@ object BookDefaultRenderers {
 
     private fun renderText(
         context: BookElementRenderContext,
-        element: TextBookElement,
+        element: TextBookElement
     ) {
         BookLinkedTextLayout.render(context, element)
     }
 
     private fun renderItem(
         context: BookElementRenderContext,
-        element: ItemBookElement,
+        element: ItemBookElement
     ) {
         val item = BuiltInRegistries.ITEM.getOptional(element.item).orElse(null) ?: return
         val stack = ItemStack(item, element.count)
@@ -68,7 +68,7 @@ object BookDefaultRenderers {
 
     private fun renderBlock(
         context: BookElementRenderContext,
-        element: BlockBookElement,
+        element: BlockBookElement
     ) {
         val block = BuiltInRegistries.BLOCK.getOptional(element.block).orElse(null) ?: return
         context.graphics.item(ItemStack(block.asItem()), context.x, context.y)
@@ -76,7 +76,7 @@ object BookDefaultRenderers {
 
     private fun renderMultiblock(
         context: BookElementRenderContext,
-        element: MultiblockBookElement,
+        element: MultiblockBookElement
     ) {
         val multiblock = MultiblockDefinitions[element.multiblock] ?: return
         MultiblockBookPreviewController.render(context, element, multiblock)
@@ -84,7 +84,7 @@ object BookDefaultRenderers {
 
     private fun renderBookMultiblock(
         context: BookElementRenderContext,
-        element: BookMultiblockElement,
+        element: BookMultiblockElement
     ) {
         MultiblockBookPreviewController.render(
             context,
@@ -93,15 +93,15 @@ object BookDefaultRenderers {
                 element.scale,
                 element.rotationX,
                 element.rotationY,
-                element.layer,
+                element.layer
             ),
-            element.multiblock,
+            element.multiblock
         )
     }
 
     private fun renderAssembledMultiblock(
         context: BookElementRenderContext,
-        element: AssembledMultiblockBookElement,
+        element: AssembledMultiblockBookElement
     ) {
         val multiblock = MultiblockDefinitions.assembled(element.multiblock) ?: return
         MultiblockBookPreviewController.render(context, element, multiblock)
@@ -109,7 +109,7 @@ object BookDefaultRenderers {
 
     private fun renderItemTooltip(
         context: BookElementRenderContext,
-        stack: ItemStack,
+        stack: ItemStack
     ) {
         val hoverWidth = minOf(16, context.width).coerceAtLeast(0)
         val hoverHeight = minOf(16, context.height).coerceAtLeast(0)

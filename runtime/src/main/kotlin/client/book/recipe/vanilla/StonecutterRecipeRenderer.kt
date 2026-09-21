@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.display.StonecutterRecipeDisplay
 object StonecutterRecipeRenderer : BookRecipeRenderer<StonecutterRecipe> {
     override fun build(
         recipe: StonecutterRecipe,
-        builder: BookRecipeRenderBuilder,
+        builder: BookRecipeRenderBuilder
     ) {
         val display = recipe.display().filterIsInstance<StonecutterRecipeDisplay>().firstOrNull() ?: return
 

@@ -12,7 +12,7 @@ import java.util.UUID
 data class SoulStoneComponent(
     val owner: UUID,
     val ownerName: String,
-    val legacyCapacity: Int? = null,
+    val legacyCapacity: Int? = null
 ) {
     companion object {
         @JvmField
@@ -24,7 +24,7 @@ data class SoulStoneComponent(
                 UUIDUtil.CODEC.fieldOf("owner").forGetter(SoulStoneComponent::owner),
                 Codec.STRING.fieldOf("owner_name").forGetter(SoulStoneComponent::ownerName),
                 Codec.INT.optionalFieldOf("capacity", -1)
-                    .forGetter { component -> component.legacyCapacity ?: -1 },
+                    .forGetter { component -> component.legacyCapacity ?: -1 }
             ).apply(instance) { owner, ownerName, capacity ->
                 SoulStoneComponent(owner, ownerName, capacity.takeIf { it >= 0 })
             }

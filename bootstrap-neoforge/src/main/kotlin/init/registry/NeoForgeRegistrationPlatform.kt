@@ -21,7 +21,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
     override fun <R : Any, T : R> register(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): Supplier<T> = synchronized(this) {
         declare(id, registry, factory)
     }
@@ -29,7 +29,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
     override fun <R : Any, T : R> registerHolder(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): PlatformRegistryHolder<R, T> = synchronized(this) {
         val holder = declare(id, registry, factory)
         PlatformRegistryHolder(holder, holder)
@@ -38,7 +38,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
     private fun <R : Any, T : R> declare(
         id: Identifier,
         registry: Registry<R>,
-        factory: Supplier<T>,
+        factory: Supplier<T>
     ): DeferredHolder<R, T> {
         check(!registrationStarted) { "Cannot declare $id after NeoForge registry events have started" }
 
@@ -70,7 +70,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
     private class TypedPendingRegistration<R : Any, T : R>(
         private val id: Identifier,
         private val registry: Registry<R>,
-        private val factory: Supplier<T>,
+        private val factory: Supplier<T>
     ) : PendingRegistration {
         override val registryKey: Identifier = registry.key().identifier()
 

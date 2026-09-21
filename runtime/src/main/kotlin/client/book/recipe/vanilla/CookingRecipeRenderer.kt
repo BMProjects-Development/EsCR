@@ -21,7 +21,7 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
         ingredient: SlotDisplay,
         result: SlotDisplay,
         duration: Int,
-        item: ItemStack,
+        item: ItemStack
     ) {
         val contentWidth = SLOT_SIZE + ELEMENT_GAP + ITEM_SIZE + ELEMENT_GAP + SLOT_SIZE
 
@@ -38,8 +38,8 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
                 "screen.$ModId.research_book.recipe.duration",
                 Component.translatable(
                     "screen.$ModId.research_book.recipe.duration.seconds",
-                    duration / 20,
-                ),
+                    duration / 20
+                )
             )
         val durationX = (builder.width - builder.mc.font.width(durationText)) / 2
 
@@ -50,7 +50,7 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
             item.itemName,
             furnaceX,
             furnaceY,
-            ITEM_SIZE,
+            ITEM_SIZE
         )
 
         builder.slot(result, BookRecipeSlotType.RESULT, resultX, slotY)
@@ -76,7 +76,7 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
     object Smelting : CookingRecipeRenderer<SmeltingRecipe>() {
         override fun build(
             recipe: SmeltingRecipe,
-            builder: BookRecipeRenderBuilder,
+            builder: BookRecipeRenderBuilder
         ) {
             val display = recipe.display().filterIsInstance<FurnaceRecipeDisplay>().firstOrNull() ?: return
             this.render(builder, display.ingredient(), display.result(), display.duration(), ItemStack(Items.FURNACE))
@@ -86,7 +86,7 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
     object Blasting : CookingRecipeRenderer<BlastingRecipe>() {
         override fun build(
             recipe: BlastingRecipe,
-            builder: BookRecipeRenderBuilder,
+            builder: BookRecipeRenderBuilder
         ) {
             val display = recipe.display().filterIsInstance<FurnaceRecipeDisplay>().firstOrNull() ?: return
             this.render(builder, display.ingredient(), display.result(), display.duration(), ItemStack(Items.BLAST_FURNACE))
@@ -96,7 +96,7 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
     object Smoking : CookingRecipeRenderer<SmokingRecipe>() {
         override fun build(
             recipe: SmokingRecipe,
-            builder: BookRecipeRenderBuilder,
+            builder: BookRecipeRenderBuilder
         ) {
             val display = recipe.display().filterIsInstance<FurnaceRecipeDisplay>().firstOrNull() ?: return
             this.render(builder, display.ingredient(), display.result(), display.duration(), ItemStack(Items.SMOKER))
@@ -106,7 +106,7 @@ abstract class CookingRecipeRenderer<T : AbstractCookingRecipe> : BookRecipeRend
     object CampfireCooking : CookingRecipeRenderer<CampfireCookingRecipe>() {
         override fun build(
             recipe: CampfireCookingRecipe,
-            builder: BookRecipeRenderBuilder,
+            builder: BookRecipeRenderBuilder
         ) {
             val display = recipe.display().filterIsInstance<FurnaceRecipeDisplay>().firstOrNull() ?: return
             this.render(builder, display.ingredient(), display.result(), display.duration(), ItemStack(Items.CAMPFIRE))

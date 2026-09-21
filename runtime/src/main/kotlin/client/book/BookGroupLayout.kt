@@ -17,19 +17,19 @@ data class BookGroupPlacement(
     val x: Int,
     val y: Int,
     val width: Int,
-    val height: Int,
+    val height: Int
 )
 
 data class BookGroupLayoutResult(
     val elements: List<BookGroupPlacement>,
-    val height: Int,
+    val height: Int
 )
 
 object BookGroupLayout {
     fun layout(
         group: GroupBookElement,
         width: Int,
-        owner: Identifier?,
+        owner: Identifier?
     ): BookGroupLayoutResult {
         val availableWidth = width.coerceAtLeast(0)
         val placements = mutableListOf<BookGroupPlacement>()
@@ -66,7 +66,7 @@ object BookGroupLayout {
     private fun measure(
         spec: BookElementSpec,
         availableWidth: Int,
-        owner: Identifier?,
+        owner: Identifier?
     ): ElementSize {
         val serializer = ResearchSerializers.elementSerializer(spec.content.type)
         val width =
@@ -87,7 +87,7 @@ object BookGroupLayout {
     private fun autoWidth(
         spec: BookElementSpec,
         availableWidth: Int,
-        owner: Identifier?,
+        owner: Identifier?
     ): Int? = when (val element = spec.content) {
         is TextBookElement ->
             BookLinkedTextLayout
@@ -101,7 +101,7 @@ object BookGroupLayout {
     private fun autoHeight(
         spec: BookElementSpec,
         width: Int,
-        owner: Identifier?,
+        owner: Identifier?
     ): Int? = when (val element = spec.content) {
         is TextBookElement ->
             BookLinkedTextLayout.lineCount(element.text, Minecraft.getInstance().font, width, owner) *
@@ -128,6 +128,6 @@ object BookGroupLayout {
 
     private data class ElementSize(
         val width: Int,
-        val height: Int,
+        val height: Int
     )
 }

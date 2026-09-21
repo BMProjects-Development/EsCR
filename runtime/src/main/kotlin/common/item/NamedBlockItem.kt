@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Block
 
 class NamedBlockItem(
     block: Block,
-    properties: Properties,
+    properties: Properties
 ) : BlockItem(block, properties) {
     override fun getName(itemStack: ItemStack): Component = this.block.name
 }

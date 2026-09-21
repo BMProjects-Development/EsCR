@@ -47,7 +47,7 @@ class CreativeTabBuilder {
     }
 
     fun withTabsBefore(vararg tabs: ResourceKey<CreativeModeTab>) = withTabsBefore(
-        *tabs.map(ResourceKey<CreativeModeTab>::identifier).toTypedArray(),
+        *tabs.map(ResourceKey<CreativeModeTab>::identifier).toTypedArray()
     )
 
     fun withTabsAfter(vararg tabs: Identifier) = apply {
@@ -55,7 +55,7 @@ class CreativeTabBuilder {
     }
 
     fun withTabsAfter(vararg tabs: ResourceKey<CreativeModeTab>) = withTabsAfter(
-        *tabs.map(ResourceKey<CreativeModeTab>::identifier).toTypedArray(),
+        *tabs.map(ResourceKey<CreativeModeTab>::identifier).toTypedArray()
     )
 
     fun build(): CreativeModeTab {
@@ -63,7 +63,7 @@ class CreativeTabBuilder {
         built = true
         return platform.build(
             delegate,
-            CreativeTabOrdering(tabsBefore.toList(), tabsAfter.toList()),
+            CreativeTabOrdering(tabsBefore.toList(), tabsAfter.toList())
         )
     }
 
@@ -80,7 +80,7 @@ class CreativeTabBuilder {
 
 data class CreativeTabOrdering(
     val tabsBefore: List<Identifier>,
-    val tabsAfter: List<Identifier>,
+    val tabsAfter: List<Identifier>
 )
 
 interface CreativeTabPlatform {

@@ -14,6 +14,8 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.resources.Identifier
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.crafting.Recipe
+import com.algorithmlx.ecr.api.network.Network
+import com.algorithmlx.ecr.api.network.sendToServer
 
 data class ResearchSyncPayload(
     val catalog: String,
@@ -160,11 +162,12 @@ data class FavoriteResearchPayload(val research: Identifier, val spread: Int, va
 }
 
 object ResearchNetwork {
-    @JvmField var sendToPlayer: (ServerPlayer, ResearchSyncPayload) -> Unit = { _, _ -> }
-    @JvmField var sendProgressToPlayer: (ServerPlayer, ResearchProgressPayload) -> Unit = { _, _ -> }
-    @JvmField var completeResearch: (Identifier) -> Unit = {}
-    @JvmField var updateFavorite: (Identifier, Int, Int?) -> Unit = { _, _, _ -> }
-    @JvmField var updateView: (BookViewState) -> Unit = {}
+    @JvmStatic fun sendToPlayer(player: ServerPlayer, payload: ResearchSyncPayload) = Network.sendTo(player, payload)
+    @JvmStatic fun sendProgressToPlayer(player: ServerPlayer, payload: ResearchProgressPayload) = Network.sendTo(player, payload)
+    @JvmStatic fun completeResearch(research: Identifier) = CompleteResearchPayload(research).sendToServer()
+    @JvmStatic fun updateFavorite(research: Identifier, spread: Int, color: Int?) =
+        FavoriteResearchPayload(research, spread, color).sendToServer()
+    @JvmStatic fun updateView(state: BookViewState) = runCatching { UpdateBookViewPayload(state).sendToServer() }
     @JvmField var researchUnlocked: (Identifier) -> Unit = {}
     @JvmField var taskCompleted: (Identifier, ResearchTaskDefinition) -> Unit = { _, _ -> }
 }

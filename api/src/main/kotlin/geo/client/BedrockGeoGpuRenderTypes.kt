@@ -12,7 +12,7 @@ internal object BedrockGeoGpuRenderTypes {
 
     fun get(
         texture: Identifier,
-        type: GeoRenderType,
+        type: GeoRenderType
     ): RenderType = cache.computeIfAbsent(Key(texture, type), ::create)
 
     fun clear() {
@@ -29,12 +29,12 @@ internal object BedrockGeoGpuRenderTypes {
         }
         return RenderTypeAccessor.create(
             "bedrock_geo_${key.type.name.lowercase()}",
-            setup.createRenderSetup(),
+            setup.createRenderSetup()
         )
     }
 
     private data class Key(
         val texture: Identifier,
-        val type: GeoRenderType,
+        val type: GeoRenderType
     )
 }

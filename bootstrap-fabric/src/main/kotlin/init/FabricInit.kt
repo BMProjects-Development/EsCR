@@ -5,31 +5,30 @@ import com.algorithmlx.ecr.api.attachments.AttachmentPlatform
 import com.algorithmlx.ecr.api.block.JSONBlockProperties
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingPlatform
 import com.algorithmlx.ecr.api.config.ConfigManager
-import com.algorithmlx.ecr.api.geo.*
-import com.algorithmlx.ecr.api.item.BoundGem
-import com.algorithmlx.ecr.api.item.HasSubItem
-import com.algorithmlx.ecr.api.item.NoTab
+import com.algorithmlx.ecr.api.event.AddServerReloadListenersEvent
+import com.algorithmlx.ecr.api.event.BuildCreativeModeTabContentsEvent
+import com.algorithmlx.ecr.api.event.OnDatapackSyncEvent
+import com.algorithmlx.ecr.api.event.RegisterCommandsEvent
+import com.algorithmlx.ecr.api.event.engine.EventBuses
+import com.algorithmlx.ecr.api.event.entity.LivingDeathEvent
+import com.algorithmlx.ecr.api.event.entity.player.AttackEntityEvent
+import com.algorithmlx.ecr.api.event.entity.player.PlayerInteractEvent
+import com.algorithmlx.ecr.api.event.tick.LevelTickEvent
+import com.algorithmlx.ecr.api.event.tick.PlayerTickEvent
+import com.algorithmlx.ecr.api.event.tick.ServerTickEvent
 import com.algorithmlx.ecr.api.menu.MenuTypeData
 import com.algorithmlx.ecr.api.menu.MenuTypePlatform
-import com.algorithmlx.ecr.api.mru.resolveMRUDevice
-import com.algorithmlx.ecr.api.multiblock.MultiblockDataReloadListener
+import com.algorithmlx.ecr.api.network.NetworkPlatform
 import com.algorithmlx.ecr.api.registries.CreativeTabPlatform
 import com.algorithmlx.ecr.api.registries.ECRegistries
 import com.algorithmlx.ecr.api.registries.ECRegistryKeys
 import com.algorithmlx.ecr.api.registries.RegistrationPlatform
-import com.algorithmlx.ecr.api.research.*
-import com.algorithmlx.ecr.api.research.content.ResearchAction
 import com.algorithmlx.ecr.api.utils.countByIngredient
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.api.utils.openMenuScreenInternal
-import com.algorithmlx.ecr.common.init.ECRCommands
-import com.algorithmlx.ecr.common.init.ECRInit
 import com.algorithmlx.ecr.common.init.ECRModIDs
 import com.algorithmlx.ecr.common.init.config.ECConfig
-import com.algorithmlx.ecr.common.init.events.ECEvents
-import com.algorithmlx.ecr.common.init.reload.ResearchReloadListener
-import com.algorithmlx.ecr.common.init.reload.SoulStoneDataReloadListener
-import com.algorithmlx.ecr.common.item.NamedBlockItem
+import com.algorithmlx.ecr.common.init.events.ECEventHandlers
 import com.algorithmlx.ecr.common.research.ResearchConfigDisabler
 import com.algorithmlx.ecr.fabric.api.CountIngredient
 import com.algorithmlx.ecr.fabric.chunk.FabricChunkLoadingPlatform
@@ -37,9 +36,10 @@ import com.algorithmlx.ecr.fabric.init.registry.FabricAttachmentPlatform
 import com.algorithmlx.ecr.fabric.init.registry.FabricCreativeTabPlatform
 import com.algorithmlx.ecr.fabric.init.registry.FabricMenuTypePlatform
 import com.algorithmlx.ecr.fabric.init.registry.FabricRegistrationPlatform
+import com.algorithmlx.ecr.fabric.network.FabricNetworkPlatform
+import com.algorithmlx.ecr.init.ECRInit
 import com.algorithmlx.ecr.fabric.utils.FabricPlatformUtils
-import com.algorithmlx.ecr.network.*
-import com.algorithmlx.ecr.registry.CreativeTabRegistry
+import com.algorithmlx.ecr.network.ECRPackets
 import com.algorithmlx.ecr.utils.PlatformUtils
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors
@@ -50,8 +50,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.fabricmc.fabric.api.event.player.*
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer
 import net.fabricmc.fabric.api.recipe.v1.ingredient.FabricIngredient
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader
@@ -63,12 +61,9 @@ import net.minecraft.resources.ResourceKey
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.packs.PackType
 import net.minecraft.world.InteractionResult
-import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.inventory.AbstractContainerMenu
-import net.minecraft.world.item.BlockItem
-import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.levelgen.GenerationStep
 import java.io.File
 
@@ -79,24 +74,27 @@ object FabricInit {
         CreativeTabPlatform.instance = FabricCreativeTabPlatform
         AttachmentPlatform.instance = FabricAttachmentPlatform
         MenuTypePlatform.instance = FabricMenuTypePlatform
+        NetworkPlatform.instance = FabricNetworkPlatform
         JSONBlockProperties.allowNamespace(ModId)
         ECConfig.instance = ConfigManager.saveOrLoad(File("config/$ModId.json"), ECConfig())
+        ECEventHandlers.init()
 
         initBuiltinRegistries()
         ResearchConfigDisabler.init()
 
-        registerPayloads()
+        ECRPackets.install()
         registerReloadListener()
         registerProgressEvents()
         registerAccessEvents()
         registerTabEvent()
-        registerBoundGemEvents()
         registerEntityEvents()
 
         initRegistries()
         registerWorldgen()
 
-        CommandRegistrationCallback.EVENT.register { dispatcher, _, _ -> ECRCommands.register(dispatcher) }
+        CommandRegistrationCallback.EVENT.register { dispatcher, context, selection ->
+            EventBuses.GAME(RegisterCommandsEvent(dispatcher, context, selection))
+        }
 
         extendPlatform()
     }
@@ -119,229 +117,76 @@ object FabricInit {
         register(ECRegistryKeys.MULTIBLOCK_MATCHER_TYPE_KEY, ECRegistries.MULTIBLOCK_MATCHER_TYPE)
     }
 
+    private fun registerReloadListener() {
+        val loader = ResourceLoader.get(PackType.SERVER_DATA)
+        EventBuses.GAME(AddServerReloadListenersEvent(loader::registerReloadListener))
+    }
+
     private fun registerWorldgen() {
         BiomeModifications.addFeature(
             BiomeSelectors.foundInOverworld(),
             GenerationStep.Decoration.UNDERGROUND_ORES,
-            ResourceKey.create(Registries.PLACED_FEATURE, ECRModIDs.MITHRILINE_ORE.ecRL),
-        )
-    }
-
-    private fun registerPayloads() {
-        PayloadTypeRegistry.clientboundPlay().registerLarge(ResearchSyncPayload.TYPE, ResearchSyncPayload.STREAM_CODEC, 8 * 1024 * 1024)
-        PayloadTypeRegistry.clientboundPlay().register(ResearchProgressPayload.TYPE, ResearchProgressPayload.STREAM_CODEC)
-        PayloadTypeRegistry.serverboundPlay().register(CompleteResearchPayload.TYPE, CompleteResearchPayload.STREAM_CODEC)
-        PayloadTypeRegistry.serverboundPlay().register(FavoriteResearchPayload.TYPE, FavoriteResearchPayload.STREAM_CODEC)
-        PayloadTypeRegistry.serverboundPlay().register(UpdateBookViewPayload.TYPE, UpdateBookViewPayload.STREAM_CODEC)
-        PayloadTypeRegistry.serverboundPlay().register(BoundGemTooltipRequestPayload.TYPE, BoundGemTooltipRequestPayload.STREAM_CODEC)
-        PayloadTypeRegistry.clientboundPlay().register(BoundGemTooltipResponsePayload.TYPE, BoundGemTooltipResponsePayload.STREAM_CODEC)
-        PayloadTypeRegistry.serverboundPlay().register(SoulStoneTooltipRequestPayload.TYPE, SoulStoneTooltipRequestPayload.STREAM_CODEC)
-        PayloadTypeRegistry.clientboundPlay().register(SoulStoneTooltipResponsePayload.TYPE, SoulStoneTooltipResponsePayload.STREAM_CODEC)
-        PayloadTypeRegistry.clientboundPlay().register(MagicShieldPayload.TYPE, MagicShieldPayload.STREAM_CODEC)
-        PayloadTypeRegistry.clientboundPlay().register(
-            GeoBlockAnimationPayload.TYPE,
-            GeoBlockAnimationPayload.STREAM_CODEC,
-        )
-        PayloadTypeRegistry.clientboundPlay().register(
-            GeoEntityAnimationPayload.TYPE,
-            GeoEntityAnimationPayload.STREAM_CODEC,
-        )
-        PayloadTypeRegistry.clientboundPlay().register(
-            GeoItemAnimationPayload.TYPE,
-            GeoItemAnimationPayload.STREAM_CODEC,
-        )
-        PayloadTypeRegistry.clientboundPlay().register(
-            GeoBlockAnimationStopPayload.TYPE,
-            GeoBlockAnimationStopPayload.STREAM_CODEC,
-        )
-        PayloadTypeRegistry.clientboundPlay().register(
-            GeoEntityAnimationStopPayload.TYPE,
-            GeoEntityAnimationStopPayload.STREAM_CODEC,
-        )
-        PayloadTypeRegistry.clientboundPlay().register(
-            GeoItemAnimationStopPayload.TYPE,
-            GeoItemAnimationStopPayload.STREAM_CODEC,
-        )
-
-        ServerPlayNetworking.registerGlobalReceiver(CompleteResearchPayload.TYPE) { payload, context ->
-            context.server().execute { ResearchProgress.tryUnlock(context.player(), payload.research) }
-        }
-        ServerPlayNetworking.registerGlobalReceiver(FavoriteResearchPayload.TYPE) { payload, context ->
-            context.server().execute { ResearchProgress.setBookmark(context.player(), payload.research, payload.spread, payload.color) }
-        }
-        ServerPlayNetworking.registerGlobalReceiver(UpdateBookViewPayload.TYPE) { payload, context ->
-            context.server().execute { ResearchProgress.updateView(context.player(), payload.state) }
-        }
-        ServerPlayNetworking.registerGlobalReceiver(BoundGemTooltipRequestPayload.TYPE) { payload, context ->
-            context.server().execute { BoundGemTooltipNetwork.handleRequest(context.player(), payload) }
-        }
-        ServerPlayNetworking.registerGlobalReceiver(SoulStoneTooltipRequestPayload.TYPE) { payload, context ->
-            context.server().execute { SoulStoneTooltipNetwork.handleRequest(context.player(), payload) }
-        }
-    }
-
-    private fun registerReloadListener() {
-        ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(
-            "multiblocks".ecRL,
-            MultiblockDataReloadListener(),
-        )
-        ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener("research".ecRL, ResearchReloadListener())
-        ResourceLoader.get(PackType.SERVER_DATA).registerReloadListener(
-            "settings/${ECRModIDs.SOUL_STONE}".ecRL,
-            SoulStoneDataReloadListener(ConfigManager.json),
+            ResourceKey.create(Registries.PLACED_FEATURE, ECRModIDs.MITHRILINE_ORE.ecRL)
         )
     }
 
     private fun registerProgressEvents() {
-        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register { player, _ -> ResearchProgress.onPlayerJoin(player) }
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register { server, _, success ->
-            if (success) ResearchProgress.syncAll(server)
+        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register { player, _ ->
+            EventBuses.GAME(OnDatapackSyncEvent(player.level().server.playerList, player))
         }
-        ServerTickEvents.END_SERVER_TICK.register { server -> server.playerList.players.forEach(ResearchProgress::tick) }
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register { server, _, success ->
+            if (success) EventBuses.GAME(OnDatapackSyncEvent(server.playerList, null))
+        }
+        ServerTickEvents.START_SERVER_TICK.register { server ->
+            EventBuses.GAME(ServerTickEvent.Pre(server))
+            server.playerList.players.forEach { player -> EventBuses.GAME(PlayerTickEvent.Pre(player)) }
+        }
+        ServerTickEvents.END_SERVER_TICK.register { server ->
+            server.playerList.players.forEach { player -> EventBuses.GAME(PlayerTickEvent.Post(player)) }
+            EventBuses.GAME(ServerTickEvent.Post(server))
+        }
+        ServerTickEvents.START_LEVEL_TICK.register { level -> EventBuses.GAME(LevelTickEvent.Pre(level)) }
+        ServerTickEvents.END_LEVEL_TICK.register { level -> EventBuses.GAME(LevelTickEvent.Post(level)) }
     }
 
     private fun registerAccessEvents() {
         UseItemCallback.EVENT.register { player, _, hand ->
-            if (ResearchAccess.canAccess(
-                    player,
-                    player.getItemInHand(hand),
-                    ResearchAction.USE,
-                )
-            ) {
-                InteractionResult.PASS
-            } else {
-                InteractionResult.FAIL
-            }
+            EventBuses.GAME(PlayerInteractEvent.RightClickItem(player, hand)).result()
         }
         UseBlockCallback.EVENT.register { player, level, hand, hit ->
-            val blockAllowed = ResearchAccess.canAccess(player, level.getBlockState(hit.blockPos), ResearchAction.INTERACT)
-            val stack = player.getItemInHand(hand)
-            val action = if (stack.item is BlockItem) ResearchAction.PLACE else ResearchAction.USE
-            val itemAllowed = ResearchAccess.canAccess(player, stack, action)
-            if (blockAllowed && itemAllowed) InteractionResult.PASS else InteractionResult.FAIL
+            EventBuses.GAME(PlayerInteractEvent.RightClickBlock(player, hand, hit)).result()
         }
-        AttackBlockCallback.EVENT.register { player, level, hand, pos, _ ->
-            val blockAllowed = ResearchAccess.canAccess(player, level.getBlockState(pos), ResearchAction.BREAK)
-            val itemAllowed = ResearchAccess.canAccess(player, player.getItemInHand(hand), ResearchAction.ATTACK)
-            if (blockAllowed && itemAllowed) InteractionResult.PASS else InteractionResult.FAIL
+        AttackBlockCallback.EVENT.register { player, _, _, pos, direction ->
+            val event = PlayerInteractEvent.LeftClickBlock(
+                player,
+                pos,
+                direction,
+                PlayerInteractEvent.LeftClickBlock.Action.START
+            )
+            if (EventBuses.GAME(event).isCanceled) InteractionResult.FAIL else InteractionResult.PASS
         }
-        UseEntityCallback.EVENT.register { player, _, hand, entity, _ ->
-            val entityAllowed = ResearchAccess.canAccess(player, entity, ResearchAction.INTERACT)
-            val itemAllowed = ResearchAccess.canAccess(player, player.getItemInHand(hand), ResearchAction.USE)
-            if (entityAllowed && itemAllowed) InteractionResult.PASS else InteractionResult.FAIL
+        UseEntityCallback.EVENT.register { player, _, hand, entity, hit ->
+            val location = hit.location.subtract(entity.position())
+            EventBuses.GAME(PlayerInteractEvent.EntityInteract(player, hand, entity, location)).result()
         }
-        AttackEntityCallback.EVENT.register { player, _, hand, entity, _ ->
-            val entityAllowed = ResearchAccess.canAccess(player, entity, ResearchAction.ATTACK)
-            val itemAllowed = ResearchAccess.canAccess(player, player.getItemInHand(hand), ResearchAction.ATTACK)
-            if (entityAllowed && itemAllowed) InteractionResult.PASS else InteractionResult.FAIL
+        AttackEntityCallback.EVENT.register { player, _, _, entity, _ ->
+            if (EventBuses.GAME(AttackEntityEvent(player, entity)).isCanceled) InteractionResult.FAIL else InteractionResult.PASS
         }
     }
 
     private fun registerTabEvent() {
         CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register { tab, output ->
-            BuiltInRegistries.ITEM.keySet().filter { it.namespace == ModId }.forEach {
-                val item = BuiltInRegistries.ITEM.getOptional(it).get()
-                if (tab == CreativeTabRegistry.blocks.get()) {
-                    if ((item is BlockItem || item is NamedBlockItem) && item.block !is NoTab) {
-                        output.accept(item)
-                    }
-                    return@forEach
-                }
-
-                if (BuiltInRegistries.BLOCK.getOptional(it).isPresent) return@forEach
-
-                if (item is NoTab || tab != CreativeTabRegistry.items.get()) return@forEach
-
-                if (item is HasSubItem) {
-                    item.addSubItems(ItemStack(item)).forEach { stack ->
-                        output.accept(stack)
-                    }
-
-                    return@forEach
-                }
-
-                output.accept(item)
-            }
-        }
-    }
-
-    private fun registerBoundGemEvents() {
-        UseItemCallback.EVENT.register evt@{ player, _, hand ->
-            val stack = player.getItemInHand(hand)
-
-            val item = stack.item
-            if (item is BoundGem) {
-                if (!player.isShiftKeyDown || item.getBoundPos(stack) == null) return@evt InteractionResult.PASS
-
-                player.sendOverlayMessage(Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.revoke"))
-                item.setBoundPos(stack, null)
-
-                return@evt InteractionResult.SUCCESS
-            }
-
-            InteractionResult.PASS
-        }
-
-        UseBlockCallback.EVENT.register evt@{ player, level, hand, hit ->
-            val stack = player.getItemInHand(hand)
-            val pos = hit.blockPos
-
-            val item = stack.item
-            if (item is BoundGem) {
-                val device = level.resolveMRUDevice(hit.blockPos)
-                if (device == null || !device.deviceType.isConnectable || item.getBoundPos(stack) != null) return@evt InteractionResult.PASS
-
-                player.sendOverlayMessage(
-                    Component
-                        .translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked")
-                        .append(": ")
-                        .append("X: ${pos.x} Y: ${pos.y} Z: ${pos.z}"),
-                )
-
-                if (stack.count > 1) {
-                    val copied =
-                        stack.copy().apply {
-                            this.count = 1
-                            item.setBoundPos(this, pos)
-                        }
-
-                    stack.shrink(1)
-
-                    val itemEntity =
-                        ItemEntity(level, player.x, player.y, player.z, copied).apply {
-                            this.setNoPickUpDelay()
-                            this.setThrower(player)
-                        }
-
-                    level.addFreshEntity(itemEntity)
-                } else {
-                    item.setBoundPos(stack, pos)
-                }
-
-                return@evt InteractionResult.SUCCESS
-            }
-
-            InteractionResult.PASS
+            EventBuses.MOD(BuildCreativeModeTabContentsEvent(tab, output::accept))
         }
     }
 
     private fun registerEntityEvents() {
-        ServerLivingEntityEvents.AFTER_DEATH.register(ECEvents::livingDeath)
+        ServerLivingEntityEvents.ALLOW_DEATH.register { entity, source, _ ->
+            !EventBuses.GAME(LivingDeathEvent(entity, source)).isCanceled
+        }
     }
 
     private fun extendPlatform() {
-        ResearchNetwork.sendToPlayer = ServerPlayNetworking::send
-        ResearchNetwork.sendProgressToPlayer = ServerPlayNetworking::send
-        BoundGemTooltipNetwork.sendResponseToPlayer = ServerPlayNetworking::send
-        SoulStoneTooltipNetwork.sendResponseToPlayer = ServerPlayNetworking::send
-        GeoAnimationNetwork.sendToPlayer = ServerPlayNetworking::send
-        GeoAnimationNetwork.sendEntityToPlayer = ServerPlayNetworking::send
-        GeoAnimationNetwork.sendItemToPlayer = ServerPlayNetworking::send
-        GeoAnimationNetwork.sendBlockStopToPlayer = ServerPlayNetworking::send
-        GeoAnimationNetwork.sendEntityStopToPlayer = ServerPlayNetworking::send
-        GeoAnimationNetwork.sendItemStopToPlayer = ServerPlayNetworking::send
-        MagicShieldNetwork.sendToPlayer = ServerPlayNetworking::send
-
         countByIngredient = { ((it as FabricIngredient).customIngredient as? CountIngredient)?.count ?: 1 }
 
         openMenuScreenInternal = menuScreen@{ player, provider, level, pos ->
@@ -354,11 +199,11 @@ object FabricInit {
                     override fun createMenu(
                         containerId: Int,
                         inventory: Inventory,
-                        player: Player,
+                        player: Player
                     ): AbstractContainerMenu? = provider.createMenu(containerId, inventory, player)
 
                     override fun getScreenOpeningData(player: ServerPlayer): MenuTypeData = MenuTypeData(pos)
-                },
+                }
             )
         }
     }
@@ -366,6 +211,15 @@ object FabricInit {
     @Suppress("UNCHECKED_CAST")
     private fun <T : Registry<*>> register(
         resourceKey: ResourceKey<T>,
-        t: T,
+        t: T
     ): T = Registry.register(BuiltInRegistries.REGISTRY as Registry<Registry<*>>, resourceKey.identifier(), t)
+
+    private fun PlayerInteractEvent.RightClickItem.result(): InteractionResult =
+        if (isCanceled) cancellationResult else InteractionResult.PASS
+
+    private fun PlayerInteractEvent.RightClickBlock.result(): InteractionResult =
+        if (isCanceled) cancellationResult else InteractionResult.PASS
+
+    private fun PlayerInteractEvent.EntityInteract.result(): InteractionResult =
+        if (isCanceled) cancellationResult else InteractionResult.PASS
 }

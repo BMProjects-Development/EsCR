@@ -1,11 +1,11 @@
 package com.algorithmlx.ecr.network
 
 import com.algorithmlx.ecr.api.utils.ecRL
+import com.algorithmlx.ecr.api.network.Network
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.phys.Vec3
@@ -46,15 +46,13 @@ data class MagicShieldPayload(
 }
 
 object MagicShieldNetwork {
-    var sendToPlayer: (ServerPlayer, MagicShieldPayload) -> Unit = { _, _ -> }
-
-    fun show(level: ServerLevel, targer: Entity, source: DamageSource, blocked: Boolean) {
-        val position = hitPosition(targer, source)
+    fun show(level: ServerLevel, target: Entity, source: DamageSource, blocked: Boolean) {
+        val position = hitPosition(target, source)
         val payload = MagicShieldPayload(
-            targer.id, position.x.toFloat(), position.y.toFloat(), position.z.toFloat(), blocked
+            target.id, position.x.toFloat(), position.y.toFloat(), position.z.toFloat(), blocked
         )
 
-        level.players().filter { it.distanceToSqr(targer) <= MAX_DIST_SQUARE }.forEach { sendToPlayer(it, payload) }
+        level.players().filter { it.distanceToSqr(target) <= MAX_DIST_SQUARE }.forEach { Network.sendTo(it, payload) }
     }
 
     private fun hitPosition(target: Entity, source: DamageSource): Vec3 {

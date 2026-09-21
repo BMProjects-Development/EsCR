@@ -50,7 +50,7 @@ data class ECConfig(
         MagicDefenseEntry("minecraft:wind_charge", listOf(MagicDefenseIgnoreFunction)),
         MagicDefenseEntry("minecraft:witch", listOf(MagicDefenseIgnoreFunction)),
         MagicDefenseEntry("minecraft:wither", listOf(MagicDefenseIgnoreFunction)),
-        MagicDefenseEntry("minecraft:wither_skull", listOf(MagicDefenseIgnoreFunction)),
+        MagicDefenseEntry("minecraft:wither_skull", listOf(MagicDefenseIgnoreFunction))
     )
 ) {
     fun magicDefense(type: EntityType<*>): MagicDefenseEntry? = magicDefense.firstOrNull { it.matches(type) }

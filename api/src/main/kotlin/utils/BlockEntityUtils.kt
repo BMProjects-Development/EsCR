@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState
 inline fun <reified T> checkAndOpenMenu(
     player: Player,
     level: Level,
-    blockPos: BlockPos,
+    blockPos: BlockPos
 ): InteractionResult where T : BlockEntity, T : MenuProvider {
     if (!level.isClientSide) {
         val be = level.getBlockEntity(blockPos)
@@ -31,7 +31,7 @@ inline fun <reified T> checkAndOpenMenu(
 }
 
 inline fun <T : BlockEntity, reified V : BlockEntity> simpleTicker(
-    crossinline onTick: (level: Level, blockPos: BlockPos, blockState: BlockState, blockEntity: V) -> Unit,
+    crossinline onTick: (level: Level, blockPos: BlockPos, blockState: BlockState, blockEntity: V) -> Unit
 ) = BlockEntityTicker<T> { level, pos, state, entity -> onTick(level, pos, state, entity as V) }
 
 // INITIALIZED ON PLATFORM
@@ -40,5 +40,5 @@ lateinit var openMenuScreenInternal: (player: Player, provider: MenuProvider, le
 fun Player.openMenuScreen(
     provider: MenuProvider,
     level: Level,
-    pos: BlockPos,
+    pos: BlockPos
 ) = openMenuScreenInternal(this, provider, level, pos)

@@ -35,7 +35,7 @@ class RadiatingChamberRecipe(
     val mruPerTick: Int,
     val result: ItemStackTemplate,
     val balance: BalanceRange,
-    val ignoreBalance: Boolean,
+    val ignoreBalance: Boolean
 ) : Recipe<RadiatingChamberRecipe.Input> {
     init {
         require(time > 0) { "Radiating chamber processing time must be positive" }
@@ -73,14 +73,14 @@ class RadiatingChamberRecipe(
             input.display(),
             secondary.map(Ingredient::display).orElse(SlotDisplay.Empty.INSTANCE),
             SlotDisplay.ItemStackSlotDisplay(result),
-            SlotDisplay.ItemSlotDisplay(BlockRegistry.radiatingChamber.get().asItem()),
-        ),
+            SlotDisplay.ItemSlotDisplay(BlockRegistry.radiatingChamber.get().asItem())
+        )
     )
 
     class Input(
         val primary: ItemStack,
         val secondary: ItemStack,
-        val balance: MRUBalance,
+        val balance: MRUBalance
     ) : RecipeInput {
         override fun getItem(index: Int): ItemStack = when (index) {
             0 -> primary
@@ -93,7 +93,7 @@ class RadiatingChamberRecipe(
 
     data class BalanceRange(
         val min: Optional<Double> = Optional.empty(),
-        val max: Optional<Double> = Optional.empty(),
+        val max: Optional<Double> = Optional.empty()
     ) {
         init {
             require(min.isEmpty || min.get().isFinite() && min.get() in 0.0..2.0) { "Minimum balance must be between 0 and 2" }
@@ -111,7 +111,7 @@ class RadiatingChamberRecipe(
             val CODEC: Codec<BalanceRange> = RecordCodecBuilder.create {
                 it.group(
                     Codec.doubleRange(0.0, 2.0).optionalFieldOf("min").forGetter(BalanceRange::min),
-                    Codec.doubleRange(0.0, 2.0).optionalFieldOf("max").forGetter(BalanceRange::max),
+                    Codec.doubleRange(0.0, 2.0).optionalFieldOf("max").forGetter(BalanceRange::max)
                 ).apply(it, ::BalanceRange)
             }
         }
@@ -122,7 +122,7 @@ class RadiatingChamberRecipe(
         val input: SlotDisplay,
         val secondary: SlotDisplay,
         private val resultDisplay: SlotDisplay,
-        private val station: SlotDisplay,
+        private val station: SlotDisplay
     ) : RecipeDisplay {
         override fun result(): SlotDisplay = resultDisplay
 
@@ -137,7 +137,7 @@ class RadiatingChamberRecipe(
                     SlotDisplay.CODEC.fieldOf("input").forGetter(Display::input),
                     SlotDisplay.CODEC.fieldOf("secondary").forGetter(Display::secondary),
                     SlotDisplay.CODEC.fieldOf("result").forGetter(Display::resultDisplay),
-                    SlotDisplay.CODEC.fieldOf("station").forGetter(Display::station),
+                    SlotDisplay.CODEC.fieldOf("station").forGetter(Display::station)
                 ).apply(it, ::Display)
             }
 
@@ -151,7 +151,7 @@ class RadiatingChamberRecipe(
                 Display::resultDisplay,
                 SlotDisplay.STREAM_CODEC,
                 Display::station,
-                ::Display,
+                ::Display
             )
         }
     }
@@ -166,7 +166,7 @@ class RadiatingChamberRecipe(
                 Codec.intRange(1, Int.MAX_VALUE).optionalFieldOf("mru", 1).forGetter(RadiatingChamberRecipe::mruPerTick),
                 ItemStackTemplate.MAP_CODEC.fieldOf("result").forGetter(RadiatingChamberRecipe::result),
                 BalanceRange.CODEC.optionalFieldOf("balance", BalanceRange()).forGetter(RadiatingChamberRecipe::balance),
-                Codec.BOOL.optionalFieldOf("ignore_balance", false).forGetter(RadiatingChamberRecipe::ignoreBalance),
+                Codec.BOOL.optionalFieldOf("ignore_balance", false).forGetter(RadiatingChamberRecipe::ignoreBalance)
             ).apply(it, ::RadiatingChamberRecipe)
         }
 

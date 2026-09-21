@@ -21,7 +21,7 @@ import kotlin.math.sqrt
 
 class BedrockParticle(
     val emitter: ParticleEmitter,
-    private val localSpace: Transform?,
+    private val localSpace: Transform?
 ) {
     private val components = emitter.effect.components
     private val curveVariables: CurveVariables = CurveVariables({ molang }, emitter.effect.curves)
@@ -81,7 +81,7 @@ class BedrockParticle(
             val point = Vector3f(
                 random.nextFloat() * 2f - 1f,
                 random.nextFloat() * 2f - 1f,
-                random.nextFloat() * 2f - 1f,
+                random.nextFloat() * 2f - 1f
             )
             if (config.surfaceOnly) {
                 val side = random.nextInt(6)
@@ -292,7 +292,7 @@ class BedrockParticle(
         cameraRotation: Quaternionf,
         cameraFacing: Vector3fc,
         cameraUuid: UUID?,
-        firstPerson: Boolean,
+        firstPerson: Boolean
     ): ParticleQuad? {
         if (cameraUuid == (emitter.sourceEntity as? LivingEntityQuery)?.entity?.uuid) {
             val visibility = components.particleVisibility
@@ -349,7 +349,7 @@ class BedrockParticle(
             color = packColor(color),
             light = light,
             flip = flip,
-            distance = distance,
+            distance = distance
         )
     }
 
@@ -358,7 +358,7 @@ class BedrockParticle(
         worldPosition: Vector3fc,
         cameraPosition: Vector3fc,
         cameraRotation: Quaternionf,
-        renderRotationAngle: Float,
+        renderRotationAngle: Float
     ): Quaternionf {
         fun computedDirection(): Vector3f {
             val localDirection = when (val value = appearance.direction) {
@@ -424,7 +424,7 @@ internal data class ParticleQuad(
     val color: Int,
     val light: Int,
     val flip: Boolean,
-    val distance: Float,
+    val distance: Float
 ) {
     fun render(pose: PoseStack.Pose, consumer: VertexConsumer) {
         fun vertex(x: Float, y: Float, u: Float, v: Float) {

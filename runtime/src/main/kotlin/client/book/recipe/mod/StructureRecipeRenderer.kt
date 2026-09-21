@@ -12,7 +12,7 @@ import java.util.Locale
 object StructureRecipeRenderer : BookRecipeRenderer<StructureRecipe> {
     override fun build(
         recipe: StructureRecipe,
-        builder: BookRecipeRenderBuilder,
+        builder: BookRecipeRenderBuilder
     ) {
         val display = recipe.display().filterIsInstance<StructureRecipe.Display>().firstOrNull() ?: return
         val font = builder.mc.font
@@ -40,7 +40,7 @@ object StructureRecipeRenderer : BookRecipeRenderer<StructureRecipe> {
         listOf(
             Component.translatable("tooltip.$ModId.during", recipe.time),
             Component.translatable("screen.$ModId.research_book.recipe.structure.consume", recipe.consumeStructure),
-            Component.translatable("screen.$ModId.research_book.recipe.structure.chance", chancePercent(recipe.chance)),
+            Component.translatable("screen.$ModId.research_book.recipe.structure.chance", chancePercent(recipe.chance))
         ).forEach { text ->
             renderCenteredText(builder, text, y)
             y += font.lineHeight
@@ -51,7 +51,7 @@ object StructureRecipeRenderer : BookRecipeRenderer<StructureRecipe> {
             (builder.width - MULTIBLOCK_WIDTH) / 2,
             y + SECTION_GAP,
             MULTIBLOCK_WIDTH,
-            MULTIBLOCK_HEIGHT,
+            MULTIBLOCK_HEIGHT
         )
     }
 
@@ -73,14 +73,14 @@ object StructureRecipeRenderer : BookRecipeRenderer<StructureRecipe> {
     private fun renderCenteredText(
         builder: BookRecipeRenderBuilder,
         text: Component,
-        y: Int,
+        y: Int
     ) {
         builder.text(text, centeredX(builder, text), y)
     }
 
     private fun centeredX(
         builder: BookRecipeRenderBuilder,
-        text: Component,
+        text: Component
     ): Int = (builder.width - builder.mc.font.width(text)) / 2
 
     private fun centeredSlotX(builder: BookRecipeRenderBuilder): Int = (builder.width - SLOT_SIZE) / 2

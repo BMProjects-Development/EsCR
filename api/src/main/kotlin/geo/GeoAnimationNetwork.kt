@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.level.Level
+import com.algorithmlx.ecr.api.network.Network
 
 data class GeoBlockAnimationPayload(
     val controllerPos: BlockPos,
@@ -163,24 +164,6 @@ object GeoAnimationNetwork {
     @JvmField
     var stopClientItemAnimation: (GeoItemAnimationStopPayload) -> Boolean = { false }
 
-    @JvmField
-    var sendToPlayer: (ServerPlayer, GeoBlockAnimationPayload) -> Unit = { _, _ -> }
-
-    @JvmField
-    var sendEntityToPlayer: (ServerPlayer, GeoEntityAnimationPayload) -> Unit = { _, _ -> }
-
-    @JvmField
-    var sendItemToPlayer: (ServerPlayer, GeoItemAnimationPayload) -> Unit = { _, _ -> }
-
-    @JvmField
-    var sendBlockStopToPlayer: (ServerPlayer, GeoBlockAnimationStopPayload) -> Unit = { _, _ -> }
-
-    @JvmField
-    var sendEntityStopToPlayer: (ServerPlayer, GeoEntityAnimationStopPayload) -> Unit = { _, _ -> }
-
-    @JvmField
-    var sendItemStopToPlayer: (ServerPlayer, GeoItemAnimationStopPayload) -> Unit = { _, _ -> }
-
     @JvmStatic
     fun play(
         level: Level,
@@ -200,7 +183,7 @@ object GeoAnimationNetwork {
         level.players().asSequence()
             .filterIsInstance<ServerPlayer>()
             .filter { player -> player.distanceToSqr(centerX, centerY, centerZ) <= TRACKING_DISTANCE_SQR }
-            .forEach { player -> sendToPlayer(player, payload) }
+            .forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -217,7 +200,7 @@ object GeoAnimationNetwork {
             return playClientEntityAnimation(payload)
         } else {
             nearbyPlayers(level, entity.x, entity.y, entity.z)
-                .forEach { player -> sendEntityToPlayer(player, payload) }
+                .forEach { player -> Network.sendTo(player, payload) }
         }
         return true
     }
@@ -236,7 +219,7 @@ object GeoAnimationNetwork {
             return playClientItemAnimation(payload)
         } else {
             nearbyPlayers(level, entity.x, entity.y, entity.z)
-                .forEach { player -> sendItemToPlayer(player, payload) }
+                .forEach { player -> Network.sendTo(player, payload) }
         }
         return true
     }
@@ -250,7 +233,7 @@ object GeoAnimationNetwork {
         val centerY = controllerPos.y + 0.5
         val centerZ = controllerPos.z + 0.5
         nearbyPlayers(level, centerX, centerY, centerZ)
-            .forEach { player -> sendBlockStopToPlayer(player, payload) }
+            .forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -261,7 +244,7 @@ object GeoAnimationNetwork {
         if (level.isClientSide) return stopClientEntityAnimation(payload)
 
         nearbyPlayers(level, entity.x, entity.y, entity.z)
-            .forEach { player -> sendEntityStopToPlayer(player, payload) }
+            .forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -272,7 +255,7 @@ object GeoAnimationNetwork {
         if (level.isClientSide) return stopClientItemAnimation(payload)
 
         nearbyPlayers(level, entity.x, entity.y, entity.z)
-            .forEach { player -> sendItemStopToPlayer(player, payload) }
+            .forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 

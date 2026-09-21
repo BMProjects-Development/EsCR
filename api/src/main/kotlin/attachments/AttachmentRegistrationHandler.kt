@@ -27,7 +27,7 @@ open class AttachmentRegistrationHandler(val namespace: String) {
     fun <T : Any> registerAttachment(
         id: String,
         initializer: () -> T,
-        configure: AttachmentBuilder<T>.() -> Unit = {},
+        configure: AttachmentBuilder<T>.() -> Unit = {}
     ): Attachment<T> = attachment(initializer, configure).registerAttachment(id)
 
     fun init() {
@@ -57,7 +57,7 @@ open class AttachmentRegistrationHandler(val namespace: String) {
         DECLARING,
         INITIALIZING,
         INITIALIZED,
-        FAILED,
+        FAILED
     }
 
     private fun interface PendingAttachment {
@@ -67,7 +67,7 @@ open class AttachmentRegistrationHandler(val namespace: String) {
     private class TypedPendingAttachment<T : Any>(
         private val id: Identifier,
         private val specification: AttachmentSpecification<T>,
-        private val attachment: Attachment<T>,
+        private val attachment: Attachment<T>
     ) : PendingAttachment {
         override fun submit(platform: AttachmentPlatform) {
             attachment.bind(platform.register(id, specification))

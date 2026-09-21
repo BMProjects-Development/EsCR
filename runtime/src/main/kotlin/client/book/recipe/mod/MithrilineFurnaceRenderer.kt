@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack
 object MithrilineFurnaceRenderer : BookRecipeRenderer<MithrilineFurnaceRecipe> {
     override fun build(
         recipe: MithrilineFurnaceRecipe,
-        builder: BookRecipeRenderBuilder,
+        builder: BookRecipeRenderBuilder
     ) {
         val display = recipe.display().filterIsInstance<MithrilineFurnaceRecipe.Display>().firstOrNull() ?: return
 

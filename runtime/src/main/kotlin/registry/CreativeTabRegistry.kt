@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack
 object CreativeTabRegistry : RegistrationHandler(ModId) {
     private val itemsKey = ResourceKey.create(
         Registries.CREATIVE_MODE_TAB,
-        ECRModIDs.TAB_ITEMS.ecRL,
+        ECRModIDs.TAB_ITEMS.ecRL
     )
     val items = registerCreativeTab(ECRModIDs.TAB_ITEMS) {
         CreativeTabBuilder()

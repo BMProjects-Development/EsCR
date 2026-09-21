@@ -46,13 +46,13 @@ class MultiblockPreviewRenderer(
         blocks: List<Pair<BlockPos, BlockState>>,
         poseStack: PoseStack,
         submitter: SubmitNodeCollector,
-        outlineColor: Int = -1,
+        outlineColor: Int = -1
     ) {
         submitBlocks(
             blocks.flatMap { (position, state) -> previewParts(position, state) },
             poseStack,
             submitter,
-            outlineColor,
+            outlineColor
         )
     }
 
@@ -213,7 +213,7 @@ class MultiblockPreviewRenderer(
         blocks: List<PreviewBlock>,
         poseStack: PoseStack,
         submitter: SubmitNodeCollector,
-        outlineColor: Int = -1,
+        outlineColor: Int = -1
     ) {
         blocks.forEach { block ->
             submitBlock(block, poseStack, submitter, outlineColor)
@@ -340,7 +340,7 @@ class MultiblockPreviewRenderer(
         block: PreviewBlock,
         poseStack: PoseStack,
         submitter: SubmitNodeCollector,
-        outlineColor: Int,
+        outlineColor: Int
     ) {
         val state = block.state
         if (state.isAir) return

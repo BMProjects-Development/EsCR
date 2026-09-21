@@ -25,11 +25,11 @@ data class BookElementPlacement(
     val height: Int,
     val textLines: List<FormattedCharSequence>? = null,
     val textLineStart: Int = 0,
-    val textLineCount: Int = textLines?.size ?: 0,
+    val textLineCount: Int = textLines?.size ?: 0
 )
 
 data class BookSpread(
-    val elements: List<BookElementPlacement>,
+    val elements: List<BookElementPlacement>
 )
 
 object BookPageLayout {
@@ -70,7 +70,7 @@ object BookPageLayout {
                     elementHeight(
                         spec,
                         measuredHeight,
-                        serializer?.defaultHeight ?: 16,
+                        serializer?.defaultHeight ?: 16
                     ).coerceIn(0, PAGE_HEIGHT)
 
                 if (spec.content === SpaceBookElement) {
@@ -86,7 +86,7 @@ object BookPageLayout {
                         cursor.alignedX(width, spec.align),
                         cursor.y,
                         width,
-                        height,
+                        height
                     )
 
                 cursor.y += height
@@ -112,7 +112,7 @@ object BookPageLayout {
 
     private fun autoWidth(
         spec: BookElementSpec,
-        entry: BookEntry,
+        entry: BookEntry
     ): Int? =
         when (val element = spec.content) {
             is TextBookElement -> {
@@ -120,7 +120,7 @@ object BookPageLayout {
                     .singleLineWidth(
                         element.text,
                         Minecraft.getInstance().font,
-                        entry.id,
+                        entry.id
                     ).coerceIn(1, PAGE_WIDTH)
             }
 
@@ -136,7 +136,7 @@ object BookPageLayout {
     private fun autoHeight(
         spec: BookElementSpec,
         width: Int,
-        entry: BookEntry,
+        entry: BookEntry
     ): Int? =
         when (val element = spec.content) {
             is CraftingBookElement -> BookRecipeElementRenderer.preferredHeight(element, width, entry.id)
@@ -147,7 +147,7 @@ object BookPageLayout {
     private fun elementHeight(
         spec: BookElementSpec,
         measuredHeight: Int?,
-        defaultHeight: Int,
+        defaultHeight: Int
     ): Int {
         if (spec.content is CraftingBookElement && measuredHeight != null) {
             return maxOf(spec.height ?: 0, measuredHeight)
@@ -159,7 +159,7 @@ object BookPageLayout {
         spec: BookElementSpec,
         width: Int,
         cursor: PageCursor,
-        owner: Identifier,
+        owner: Identifier
     ) {
         val font = Minecraft.getInstance().font
         val element = spec.content as TextBookElement
@@ -182,7 +182,7 @@ object BookPageLayout {
                     width,
                     height,
                     textLineStart = line,
-                    textLineCount = lineCount,
+                    textLineCount = lineCount
                 )
             line += lineCount
             cursor.y += height
@@ -209,7 +209,7 @@ object BookPageLayout {
     }
 
     private class PageCursor(
-        val spreads: MutableList<MutableList<BookElementPlacement>>,
+        val spreads: MutableList<MutableList<BookElementPlacement>>
     ) {
         var side = 0
         var y = TOP
@@ -217,7 +217,7 @@ object BookPageLayout {
 
         fun alignedX(
             width: Int,
-            align: BookElementAlign = BookElementAlign.LEFT,
+            align: BookElementAlign = BookElementAlign.LEFT
         ): Int =
             when (align) {
                 BookElementAlign.LEFT -> x

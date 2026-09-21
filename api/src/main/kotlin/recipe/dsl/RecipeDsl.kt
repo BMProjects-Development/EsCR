@@ -382,7 +382,7 @@ class RecipesScope(private val namespace: String) {
             .build()
     }
 
-    infix fun String.stonecutting(block: StonecuttingRecipeScope.() -> Unit, ) {
+    infix fun String.stonecutting(block: StonecuttingRecipeScope.() -> Unit ) {
         val recipeId = id(this)
         declarations += StonecuttingRecipeScope(recipeId)
             .apply(block)

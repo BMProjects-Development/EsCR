@@ -12,7 +12,7 @@ import net.minecraft.resources.Identifier
 object FabricAttachmentPlatform : AttachmentPlatform {
     override fun <T : Any> register(
         id: Identifier,
-        specification: AttachmentSpecification<T>,
+        specification: AttachmentSpecification<T>
     ): PlatformAttachment<T> {
         val type = AttachmentRegistry.create(id) { builder ->
             builder.initializer(specification.initializer)
@@ -21,7 +21,7 @@ object FabricAttachmentPlatform : AttachmentPlatform {
             specification.synchronization?.let { synchronization ->
                 builder.syncWith(
                     synchronization.codec,
-                    AttachmentSyncPredicate { holder, player -> synchronization.predicate.test(holder, player) },
+                    AttachmentSyncPredicate { holder, player -> synchronization.predicate.test(holder, player) }
                 )
             }
         }

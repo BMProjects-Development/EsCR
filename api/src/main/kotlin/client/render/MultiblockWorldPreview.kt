@@ -26,7 +26,7 @@ object MultiblockWorldPreview {
     fun place(
         multiblock: Multiblock,
         center: BlockPos,
-        direction: Direction = Direction.NORTH,
+        direction: Direction = Direction.NORTH
     ): Boolean {
         val level = Minecraft.getInstance().level ?: return false
         val pattern = multiblock.variants.firstOrNull() ?: return false
@@ -35,7 +35,7 @@ object MultiblockWorldPreview {
                 pattern,
                 center.immutable(),
                 direction.takeIf { it.axis.isHorizontal } ?: Direction.NORTH,
-                level.dimension(),
+                level.dimension()
             )
         return true
     }
@@ -67,7 +67,7 @@ object MultiblockWorldPreview {
     fun submit(
         poseStack: PoseStack,
         collector: SubmitNodeCollector,
-        levelRenderState: LevelRenderState,
+        levelRenderState: LevelRenderState
     ) {
         val preview = active ?: return
         val minecraft = Minecraft.getInstance()
@@ -86,7 +86,7 @@ object MultiblockWorldPreview {
         poseStack.translate(
             preview.center.x - camera.x,
             preview.center.y - camera.y,
-            preview.center.z - camera.z,
+            preview.center.z - camera.z
         )
         renderer.submit(
             missing
@@ -96,7 +96,7 @@ object MultiblockWorldPreview {
                 .toList(),
             poseStack,
             collector,
-            MODEL_OUTLINE_COLOR,
+            MODEL_OUTLINE_COLOR
         )
 
         val lineWidth = minecraft.gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth
@@ -111,7 +111,7 @@ object MultiblockWorldPreview {
             poseStack.translate(
                 expected.relativePosition.x.toDouble(),
                 expected.relativePosition.y.toDouble(),
-                expected.relativePosition.z.toDouble(),
+                expected.relativePosition.z.toDouble()
             )
             collector.submitShapeOutline(
                 poseStack,
@@ -119,7 +119,7 @@ object MultiblockWorldPreview {
                 RenderTypes.lines(),
                 if (currentState.isAir) MISSING_OUTLINE_COLOR else WRONG_OUTLINE_COLOR,
                 lineWidth,
-                false,
+                false
             )
             poseStack.popPose()
         }
@@ -130,7 +130,7 @@ object MultiblockWorldPreview {
         val pattern: MultiblockPattern,
         val center: BlockPos,
         val direction: Direction,
-        val dimension: ResourceKey<Level>,
+        val dimension: ResourceKey<Level>
     ) {
         val expectedBlocks: List<ExpectedBlock> = buildList {
             pattern.blocks.forEachIndexed { index, matcher ->
@@ -141,15 +141,15 @@ object MultiblockWorldPreview {
                         patternPosition.x - pattern.center.x,
                         patternPosition.y - pattern.center.y,
                         patternPosition.z - pattern.center.z,
-                        direction,
+                        direction
                     )
                 add(
                     ExpectedBlock(
                         center.offset(relative),
                         relative,
                         matcher.default(),
-                        matcher,
-                    ),
+                        matcher
+                    )
                 )
             }
         }
@@ -159,14 +159,14 @@ object MultiblockWorldPreview {
         val worldPosition: BlockPos,
         val relativePosition: BlockPos,
         val previewState: BlockState,
-        val matcher: MultiblockMatcher,
+        val matcher: MultiblockMatcher
     )
 
     private fun rotate(
         x: Int,
         y: Int,
         z: Int,
-        direction: Direction,
+        direction: Direction
     ): BlockPos = when (direction) {
         Direction.NORTH -> BlockPos(x, y, -z)
         Direction.SOUTH -> BlockPos(-x, y, z)

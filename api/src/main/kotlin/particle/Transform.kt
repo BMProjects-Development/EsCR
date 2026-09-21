@@ -23,7 +23,7 @@ interface Transform {
     companion object {
         fun create(
             position: Vector3f = Vector3f(),
-            rotation: Quaternionf = Quaternionf(),
+            rotation: Quaternionf = Quaternionf()
         ): Transform = object : Transform {
             override val parent: Transform? = null
             override val isValid: Boolean = true

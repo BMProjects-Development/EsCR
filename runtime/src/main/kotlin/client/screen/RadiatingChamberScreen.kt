@@ -29,7 +29,7 @@ class RadiatingChamberScreen(
             this.leftPos, this.topPos,
             0F, 0F,
             this.imageWidth, this.imageHeight,
-            256, 256,
+            256, 256
         )
 
         val be = this.menu.blockEntity as? RadiatingChamberEntity ?: return
@@ -40,7 +40,7 @@ class RadiatingChamberScreen(
             124, 8,
             mouseX, mouseY,
             animation = this.mruAnimation,
-            deltaTicks = deltaTicks,
+            deltaTicks = deltaTicks
         )
 
         drawBalance(graphics, "upper_balance", be.balance.upperBalance, 30)
