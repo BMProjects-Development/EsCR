@@ -1,4 +1,4 @@
-package com.algorithmlx.ecr.common.init.reload
+package com.algorithmlx.ecr.init.reload
 
 import com.algorithmlx.ecr.api.LOGGER
 import com.algorithmlx.ecr.api.ModId

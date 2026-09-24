@@ -8,7 +8,7 @@ import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.RayTowerEntity
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.level.ServerLevel

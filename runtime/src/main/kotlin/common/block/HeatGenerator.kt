@@ -4,7 +4,7 @@ import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.HeatGeneratorEntity
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.ItemRegistry
 import net.minecraft.core.BlockPos

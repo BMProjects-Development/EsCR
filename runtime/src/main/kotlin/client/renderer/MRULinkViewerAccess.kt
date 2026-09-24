@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.client.renderer
 
-import com.algorithmlx.ecr.common.init.ECRTags
+import com.algorithmlx.ecr.init.ECRTags
 import net.minecraft.world.entity.player.Player
 import java.util.*
 

@@ -180,6 +180,7 @@ screen.escr:
 toast.escr.research_book:
   research_unlocked: Research unlocked
   research_completed: Research completed
+  research_updated: Research updated
 
 message.escr:
   heat_generator:

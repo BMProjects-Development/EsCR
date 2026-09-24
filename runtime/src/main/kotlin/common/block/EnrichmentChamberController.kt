@@ -4,7 +4,7 @@ import com.algorithmlx.ecr.api.multiblock.MultiblockPlacement
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.enrichment.EnrichmentChamberControllerEntity
-import com.algorithmlx.ecr.common.init.ECRTags
+import com.algorithmlx.ecr.init.ECRTags
 import com.algorithmlx.ecr.registry.BlockRegistry
 import com.algorithmlx.ecr.registry.MultiblockRegistry
 import net.minecraft.core.BlockPos

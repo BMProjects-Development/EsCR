@@ -1,4 +1,4 @@
-package com.algorithmlx.ecr.common.init
+package com.algorithmlx.ecr.init
 
 import com.algorithmlx.ecr.api.utils.ecRL
 import net.minecraft.core.registries.Registries

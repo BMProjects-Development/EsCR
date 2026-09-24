@@ -169,6 +169,7 @@ object ResearchNetwork {
         FavoriteResearchPayload(research, spread, color).sendToServer()
     @JvmStatic fun updateView(state: BookViewState) = runCatching { UpdateBookViewPayload(state).sendToServer() }
     @JvmField var researchUnlocked: (Identifier) -> Unit = {}
+    @JvmField var researchContentUpdated: (Identifier) -> Unit = {}
     @JvmField var taskCompleted: (Identifier, ResearchTaskDefinition) -> Unit = { _, _ -> }
 }
 
@@ -181,14 +182,28 @@ object ClientResearchState {
     @Volatile private var recipes = emptyMap<Identifier, Recipe<*>>()
     @Volatile private var savedViewState = BookViewState()
     @Volatile private var stateRevision = 0L
+    @Volatile private var catalogInitialized = false
 
     @JvmStatic fun apply(payload: ResearchSyncPayload) {
         val previous = unlockedResearch
         val previousProgress = progress
+        val previousEntries = ResearchCatalog.snapshot().entries
         MultiblockJsonSync.apply(payload.multiblockDefinitions)
         ResearchCatalog.importJson(payload.catalog)
+        val nextEntries = ResearchCatalog.snapshot().entries
         val nextUnlocked = payload.unlocked.toSet()
-        val added = if (stateRevision == 0L && previous.isEmpty()) emptySet() else nextUnlocked - previous
+        val added = if (catalogInitialized) nextUnlocked - previous else emptySet()
+        val updated = if (catalogInitialized) {
+            nextUnlocked.asSequence()
+                .filter(previous::contains)
+                .filter { research ->
+                    val before = previousEntries[research] ?: return@filter false
+                    val after = nextEntries[research] ?: return@filter false
+                    before.textContent() != after.textContent()
+                }.toList()
+        } else {
+            emptyList()
+        }
         unlockedResearch = nextUnlocked
         bookmarks = payload.bookmarks.toList()
         progress = payload.taskProgress.toMap()
@@ -197,8 +212,10 @@ object ClientResearchState {
         recipes = payload.recipes.toMap()
         savedViewState = payload.viewState
         notifyCompletedTasks(previousProgress, progress)
+        catalogInitialized = true
         stateRevision++
         added.forEach(ResearchNetwork.researchUnlocked)
+        updated.forEach(ResearchNetwork.researchContentUpdated)
     }
 
     @JvmStatic fun apply(payload: ResearchProgressPayload) {
@@ -244,6 +261,17 @@ object ClientResearchState {
     @JvmStatic fun recipe(id: Identifier): Recipe<*>? = recipes[id]
     @JvmStatic fun viewState(): BookViewState = savedViewState
     @JvmStatic fun revision(): Long = stateRevision
+    @JvmStatic fun clear() {
+        unlockedResearch = emptySet()
+        bookmarks = emptyList()
+        progress = emptyMap()
+        completedTaskLevels = emptyMap()
+        currentBookLevel = null
+        recipes = emptyMap()
+        savedViewState = BookViewState()
+        stateRevision = 0L
+        catalogInitialized = false
+    }
     @JvmStatic fun updateLocalView(state: BookViewState) {
         savedViewState = state
     }

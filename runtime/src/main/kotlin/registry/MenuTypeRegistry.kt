@@ -4,7 +4,7 @@ import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.menu.MenuTypeData
 import com.algorithmlx.ecr.api.menu.menuType
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.menu.EnrichmentChamberControllerMenu
 import com.algorithmlx.ecr.common.menu.EnrichmentChamberReceiverMenu
 import com.algorithmlx.ecr.common.menu.HeatGeneratorMenu

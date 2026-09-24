@@ -3,9 +3,8 @@ package com.algorithmlx.ecr.client.screen
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.client.MRULineAnimation
 import com.algorithmlx.ecr.api.client.drawMRULine
-import com.algorithmlx.ecr.api.client.isCursorAtPos
 import com.algorithmlx.ecr.common.block.entity.RadiatingChamberEntity
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.menu.RadiatingChamberMenu
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen

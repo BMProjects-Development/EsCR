@@ -5,7 +5,7 @@ import com.algorithmlx.ecr.api.client.MRULineAnimation
 import com.algorithmlx.ecr.api.client.drawMRULine
 import com.algorithmlx.ecr.api.mru.MRUType
 import com.algorithmlx.ecr.api.mru.storage.MRUStorage
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.menu.HeatGeneratorMenu
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.client.gui.GuiGraphicsExtractor

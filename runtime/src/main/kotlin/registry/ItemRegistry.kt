@@ -3,7 +3,7 @@ package com.algorithmlx.ecr.registry
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.item.BoundGemItem
 import com.algorithmlx.ecr.common.item.Hammer
 import com.algorithmlx.ecr.common.item.ResearchBookItem

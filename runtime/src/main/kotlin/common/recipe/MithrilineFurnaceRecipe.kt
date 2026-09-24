@@ -1,7 +1,7 @@
 package com.algorithmlx.ecr.common.recipe
 
 import com.algorithmlx.ecr.api.ModId
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.registry.BlockRegistry
 import com.algorithmlx.ecr.registry.RecipeDisplayTypeRegistry
 import com.algorithmlx.ecr.registry.RecipeSerializerRegistry

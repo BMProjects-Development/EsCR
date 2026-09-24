@@ -14,7 +14,7 @@ import com.algorithmlx.ecr.api.recipe.CachedRecipe
 import com.algorithmlx.ecr.api.utils.StackHelper
 import com.algorithmlx.ecr.api.utils.count
 import com.algorithmlx.ecr.api.utils.ecPrefix
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.menu.MithrilineFurnaceMenu
 import com.algorithmlx.ecr.registry.*
 import net.minecraft.core.BlockPos

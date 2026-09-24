@@ -7,8 +7,8 @@ import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockDefinitio
 import com.algorithmlx.ecr.api.registries.ECRegistries
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.common.init.config.ECConfig
+import com.algorithmlx.ecr.init.ECRModIDs
+import com.algorithmlx.ecr.init.config.ECConfig
 import com.algorithmlx.ecr.common.multiblocks.AirCrystal
 import com.algorithmlx.ecr.common.multiblocks.EarthCrystal
 import com.algorithmlx.ecr.common.multiblocks.EnrichmentChamber

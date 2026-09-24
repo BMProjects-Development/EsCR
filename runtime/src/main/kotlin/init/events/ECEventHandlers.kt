@@ -1,17 +1,17 @@
-package com.algorithmlx.ecr.common.init.events
+package com.algorithmlx.ecr.init.events
 
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.config.ConfigManager
 import com.algorithmlx.ecr.api.event.AddServerReloadListenersEvent
 import com.algorithmlx.ecr.api.event.BuildCreativeModeTabContentsEvent
-import com.algorithmlx.ecr.api.event.engine.EventBuses
 import com.algorithmlx.ecr.api.event.OnDatapackSyncEvent
 import com.algorithmlx.ecr.api.event.RegisterCommandsEvent
+import com.algorithmlx.ecr.api.event.engine.EventBuses
+import com.algorithmlx.ecr.api.event.engine.listeners
 import com.algorithmlx.ecr.api.event.entity.LivingDeathEvent
 import com.algorithmlx.ecr.api.event.entity.player.AttackEntityEvent
 import com.algorithmlx.ecr.api.event.entity.player.ItemTooltipEvent
 import com.algorithmlx.ecr.api.event.entity.player.PlayerInteractEvent
-import com.algorithmlx.ecr.api.event.engine.listeners
 import com.algorithmlx.ecr.api.event.tick.PlayerTickEvent
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.item.HasSubItem
@@ -22,10 +22,10 @@ import com.algorithmlx.ecr.api.research.ResearchAccess
 import com.algorithmlx.ecr.api.research.ResearchProgress
 import com.algorithmlx.ecr.api.research.content.ResearchAction
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRCommands
-import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.common.init.reload.ResearchReloadListener
-import com.algorithmlx.ecr.common.init.reload.SoulStoneDataReloadListener
+import com.algorithmlx.ecr.init.ECRCommands
+import com.algorithmlx.ecr.init.ECRModIDs
+import com.algorithmlx.ecr.init.reload.ResearchReloadListener
+import com.algorithmlx.ecr.init.reload.SoulStoneDataReloadListener
 import com.algorithmlx.ecr.registry.CreativeTabRegistry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component

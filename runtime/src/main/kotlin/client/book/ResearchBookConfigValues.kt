@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.client.book
 
-import com.algorithmlx.ecr.common.init.config.ECConfig
+import com.algorithmlx.ecr.init.config.ECConfig
 import kotlin.math.roundToInt
 
 object ResearchBookConfigValues {

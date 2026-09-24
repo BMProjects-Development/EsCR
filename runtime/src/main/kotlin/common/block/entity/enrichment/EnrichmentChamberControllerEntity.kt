@@ -9,7 +9,7 @@ import com.algorithmlx.ecr.api.mru.storage.ExtremeMRUStorageContainer
 import com.algorithmlx.ecr.api.mru.storage.IOMRUStorage
 import com.algorithmlx.ecr.api.multiblock.MultiblockPlacement
 import com.algorithmlx.ecr.common.block.EnrichmentChamberController
-import com.algorithmlx.ecr.common.init.config.ECConfig
+import com.algorithmlx.ecr.init.config.ECConfig
 import com.algorithmlx.ecr.common.menu.EnrichmentChamberControllerMenu
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.BlockRegistry

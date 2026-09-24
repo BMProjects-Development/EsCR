@@ -4,7 +4,7 @@ import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.registries.CreativeTabBuilder
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceKey

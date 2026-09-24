@@ -2,7 +2,7 @@ package com.algorithmlx.ecr.common.research
 
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.research.ResearchCatalog
-import com.algorithmlx.ecr.common.init.config.ECConfig
+import com.algorithmlx.ecr.init.config.ECConfig
 import net.minecraft.resources.Identifier
 
 object ResearchConfigDisabler {

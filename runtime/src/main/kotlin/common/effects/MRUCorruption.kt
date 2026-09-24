@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.common.effects
 
-import com.algorithmlx.ecr.common.init.ResourceKeys
+import com.algorithmlx.ecr.init.ResourceKeys
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.effect.MobEffect

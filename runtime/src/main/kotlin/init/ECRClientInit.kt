@@ -14,6 +14,7 @@ import com.algorithmlx.ecr.api.geo.client.BedrockGeoAssets
 import com.algorithmlx.ecr.api.particle.BedrockParticleRenderTypes
 import com.algorithmlx.ecr.api.particle.BedrockParticles
 import com.algorithmlx.ecr.api.particle.ClientParticleSystems
+import com.algorithmlx.ecr.api.research.ClientResearchState
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.client.ECRConnectedTextures
 import com.algorithmlx.ecr.client.book.ResearchBookClient
@@ -62,6 +63,7 @@ object ECRClientInit {
                 }
             }
             subscribe<ClientPlayerNetworkEvent.LoggingOut> {
+                ClientResearchState.clear()
                 SoulStoneTooltipNetwork.clear()
                 MultiblockWorldPreview.clear()
                 MagicShieldRenderer.clear()

@@ -11,8 +11,8 @@ import com.algorithmlx.ecr.api.mru.saveMRUData
 import com.algorithmlx.ecr.api.mru.storage.IOMRUStorage
 import com.algorithmlx.ecr.api.mru.storage.MRUStorageContainer
 import com.algorithmlx.ecr.common.block.HeatGenerator
-import com.algorithmlx.ecr.common.init.config.ECConfig
-import com.algorithmlx.ecr.common.init.config.UltraHeatWorldEffectsConfig
+import com.algorithmlx.ecr.init.config.ECConfig
+import com.algorithmlx.ecr.init.config.UltraHeatWorldEffectsConfig
 import com.algorithmlx.ecr.common.menu.HeatGeneratorMenu
 import com.algorithmlx.ecr.common.temperature.TemperatureUnit
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry

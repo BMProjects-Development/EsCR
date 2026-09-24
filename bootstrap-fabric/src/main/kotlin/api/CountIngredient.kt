@@ -1,7 +1,7 @@
 package com.algorithmlx.ecr.fabric.api
 
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.mojang.serialization.Codec
 import com.mojang.serialization.MapCodec
 import com.mojang.serialization.codecs.RecordCodecBuilder

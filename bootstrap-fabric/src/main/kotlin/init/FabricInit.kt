@@ -26,9 +26,9 @@ import com.algorithmlx.ecr.api.registries.RegistrationPlatform
 import com.algorithmlx.ecr.api.utils.countByIngredient
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.api.utils.openMenuScreenInternal
-import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.common.init.config.ECConfig
-import com.algorithmlx.ecr.common.init.events.ECEventHandlers
+import com.algorithmlx.ecr.init.ECRModIDs
+import com.algorithmlx.ecr.init.config.ECConfig
+import com.algorithmlx.ecr.init.events.ECEventHandlers
 import com.algorithmlx.ecr.common.research.ResearchConfigDisabler
 import com.algorithmlx.ecr.fabric.api.CountIngredient
 import com.algorithmlx.ecr.fabric.chunk.FabricChunkLoadingPlatform

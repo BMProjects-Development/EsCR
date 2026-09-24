@@ -3,13 +3,11 @@ package com.algorithmlx.ecr.common.magic
 import com.algorithmlx.ecr.api.item.MagicShieldBreaker
 import com.algorithmlx.ecr.api.research.ResearchProgress
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.common.init.ResourceKeys
-import com.algorithmlx.ecr.common.init.config.ECConfig
-import com.algorithmlx.ecr.common.init.config.MagicDefenseEntry
-import com.algorithmlx.ecr.common.init.config.MagicDefenseFunction
+import com.algorithmlx.ecr.init.ECRModIDs
+import com.algorithmlx.ecr.init.ResourceKeys
+import com.algorithmlx.ecr.init.config.ECConfig
+import com.algorithmlx.ecr.init.config.MagicDefenseFunction
 import com.algorithmlx.ecr.network.MagicShieldNetwork
-import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.core.registries.Registries
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer

@@ -1,7 +1,7 @@
 package com.algorithmlx.ecr.neoforge.init.registry
 
 import com.algorithmlx.ecr.api.ModId
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.neoforge.api.CountIngredient
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.common.crafting.IngredientType

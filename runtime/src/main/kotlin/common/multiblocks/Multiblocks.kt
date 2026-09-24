@@ -7,8 +7,8 @@ import com.algorithmlx.ecr.api.multiblock.MultiblockMatcher
 import com.algorithmlx.ecr.api.multiblock.assembled.AssembledBlockMatcher
 import com.algorithmlx.ecr.api.multiblock.assembled.assembledMultiblock
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.common.init.ECRTags
+import com.algorithmlx.ecr.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRTags
 import com.algorithmlx.ecr.registry.BlockRegistry
 import net.minecraft.core.BlockPos
 import net.minecraft.tags.BlockTags

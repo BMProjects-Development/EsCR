@@ -7,7 +7,7 @@ import com.algorithmlx.ecr.api.research.BookType
 import com.algorithmlx.ecr.common.components.BoundGemComponent
 import com.algorithmlx.ecr.common.components.PlayerMatrixComponent
 import com.algorithmlx.ecr.common.components.SoulStoneComponent
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceKey

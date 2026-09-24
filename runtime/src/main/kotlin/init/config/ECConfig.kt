@@ -1,4 +1,4 @@
-package com.algorithmlx.ecr.common.init.config
+package com.algorithmlx.ecr.init.config
 
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.config.JsonComment

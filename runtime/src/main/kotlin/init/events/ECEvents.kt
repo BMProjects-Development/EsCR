@@ -1,4 +1,4 @@
-package com.algorithmlx.ecr.common.init.events
+package com.algorithmlx.ecr.init.events
 
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.item.BoundGem
@@ -9,8 +9,8 @@ import com.algorithmlx.ecr.api.utils.countByIngredient
 import com.algorithmlx.ecr.common.components.SoulStoneComponent
 import com.algorithmlx.ecr.common.components.updatePlayerMatrix
 import com.algorithmlx.ecr.common.data.SoulStoneData
-import com.algorithmlx.ecr.common.init.ECRModIDs
 import com.algorithmlx.ecr.common.recipe.StructureRecipe
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.network.BoundGemTargetStatus
 import com.algorithmlx.ecr.network.BoundGemTooltipNetwork
 import com.algorithmlx.ecr.network.SoulStoneTooltipNetwork
@@ -136,8 +136,7 @@ object ECEvents {
 
         val placement = if (recipe.structureCenter == null)
             recipe.multiblock.findPlacement(level, center)
-        else
-            recipe.multiblock.findPlacementAtCenter(level, center)
+        else recipe.multiblock.findPlacementAtCenter(level, center)
 
         if (!isAtCenter || placement == null) {
             timer[0] = 0

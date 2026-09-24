@@ -2,7 +2,7 @@ package com.algorithmlx.ecr.mixin;
 
 import com.algorithmlx.ecr.api.recipe.CachedRecipe;
 import com.algorithmlx.ecr.api.utils.UtilitiesKt;
-import com.algorithmlx.ecr.common.init.events.ECEvents;
+import com.algorithmlx.ecr.init.events.ECEvents;
 import com.algorithmlx.ecr.registry.RecipeTypeRegistry;
 import com.algorithmlx.ecr.common.recipe.StructureRecipe;
 import net.minecraft.world.entity.Entity;

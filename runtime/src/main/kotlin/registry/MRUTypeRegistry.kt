@@ -4,7 +4,7 @@ import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.mru.MRUType
 import com.algorithmlx.ecr.api.registries.ECRegistries
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 
 object MRUTypeRegistry : RegistrationHandler(ModId) {
     private val espeReference = registerNoEntry(ECRModIDs.ESPE, ECRegistries.MRU_TYPE, ::MRUType)

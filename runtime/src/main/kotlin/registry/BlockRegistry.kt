@@ -6,7 +6,7 @@ import com.algorithmlx.ecr.api.block.json
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.common.block.*
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.item.NamedBlockItem
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.Identifier

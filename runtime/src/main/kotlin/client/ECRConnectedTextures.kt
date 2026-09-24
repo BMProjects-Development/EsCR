@@ -3,7 +3,7 @@ package com.algorithmlx.ecr.client
 import com.algorithmlx.ecr.api.client.texture.ConnectedTexture
 import com.algorithmlx.ecr.api.client.texture.ConnectedTextures
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 
 object ECRConnectedTextures {
     fun init() {

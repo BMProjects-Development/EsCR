@@ -177,9 +177,10 @@ screen.escr:
         chance: "Шанс: %s"
     page: Страница %s/%s
 
-toast.escr:
+toast.escr.research_book:
   research_unlocked: Исследование открыто
   research_completed: Исследование завершено
+  research_updated: Исследование обновлено
 
 message.escr:
   heat_generator:

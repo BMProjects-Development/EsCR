@@ -16,8 +16,8 @@ import com.algorithmlx.ecr.api.particle.ParticleEmitter
 import com.algorithmlx.ecr.api.particle.Transform
 import com.algorithmlx.ecr.api.utils.ecPrefix
 import com.algorithmlx.ecr.common.api.BoundGemHelper
-import com.algorithmlx.ecr.common.init.ECRModIDs
-import com.algorithmlx.ecr.common.init.config.ECConfig
+import com.algorithmlx.ecr.init.ECRModIDs
+import com.algorithmlx.ecr.init.config.ECConfig
 import com.algorithmlx.ecr.common.menu.MagicalTeleporterMenu
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MRUTypeRegistry

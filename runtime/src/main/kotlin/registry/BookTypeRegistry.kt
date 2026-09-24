@@ -6,7 +6,7 @@ import com.algorithmlx.ecr.api.registries.ECRegistryKeys
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.api.research.BookType
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.common.init.ECRModIDs
+import com.algorithmlx.ecr.init.ECRModIDs
 import net.minecraft.resources.ResourceKey
 
 object BookTypeRegistry: RegistrationHandler(ModId) {

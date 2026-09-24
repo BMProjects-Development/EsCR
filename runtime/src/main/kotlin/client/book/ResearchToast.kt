@@ -18,7 +18,10 @@ import net.minecraft.world.item.ItemStack
 import kotlin.math.ceil
 import kotlin.math.max
 
-class ResearchToast private constructor(private val entry: BookEntry) : Toast {
+class ResearchToast private constructor(
+    private val entry: BookEntry,
+    private val type: Type
+) : Toast {
     private var visibility = Toast.Visibility.SHOW
 
     override fun getWantedVisibility(): Toast.Visibility = visibility
@@ -52,7 +55,7 @@ class ResearchToast private constructor(private val entry: BookEntry) : Toast {
         if (introAlpha > 0) {
             graphics.text(
                 font,
-                Component.translatable("toast.$ModId.research_book.research_completed"),
+                Component.translatable("toast.$ModId.research_book.${type.translationKey}"),
                 TEXT_X,
                 (contentHeight - font.lineHeight) / 2,
                 (introAlpha shl 24) or 0x9FD5FF,
@@ -112,8 +115,16 @@ class ResearchToast private constructor(private val entry: BookEntry) : Toast {
 
     companion object {
         fun show(research: Identifier) {
+            show(research, Type.COMPLETED)
+        }
+
+        fun showUpdated(research: Identifier) {
+            show(research, Type.UPDATED)
+        }
+
+        private fun show(research: Identifier, type: Type) {
             val entry = ResearchCatalog.snapshot().entries[research] ?: return
-            Minecraft.getInstance().gui.toastManager().addToast(ResearchToast(entry))
+            Minecraft.getInstance().gui.toastManager().addToast(ResearchToast(entry, type))
         }
 
         private const val WIDTH = 160
@@ -131,5 +142,10 @@ class ResearchToast private constructor(private val entry: BookEntry) : Toast {
         private const val PAUSE_TIME = 100L
         private const val DETAILS_FADE_IN = 350L
         private const val ANIMATION_TIME = INTRO_FADE_OUT + PAUSE_TIME + DETAILS_FADE_IN
+    }
+
+    private enum class Type(val translationKey: String) {
+        COMPLETED("research_completed"),
+        UPDATED("research_updated")
     }
 }
