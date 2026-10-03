@@ -333,14 +333,8 @@ private fun Multiblock.makeRecipeMB(
     center: MultiblockMatcher
 ) {
     pattern(
-        null,
-        left,
-        null,
-        left,
-        center,
-        left,
-        null,
-        left,
-        null
+        null, left, null,
+        left, center, left,
+        null, left, null
     )
 }
