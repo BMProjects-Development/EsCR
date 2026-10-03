@@ -18,30 +18,22 @@ import com.algorithmlx.ecr.common.multiblocks.MagicalTeleporter
 import com.algorithmlx.ecr.common.multiblocks.MithrilineFurnaceMultiblock
 import com.algorithmlx.ecr.common.multiblocks.RayTowerMultiblock
 import com.algorithmlx.ecr.common.multiblocks.SoulStoneMultiblock
+import com.algorithmlx.ecr.common.multiblocks.SunAbsorber
 import com.algorithmlx.ecr.common.multiblocks.WaterCrystal
 import net.minecraft.resources.Identifier
 
 object MultiblockRegistry : RegistrationHandler(ModId) {
-    private val codeMithrilineFurnace =
-        registerNoEntry(ECRModIDs.MITHRILINE_FURNACE, ECRegistries.MULTIBLOCK) { MithrilineFurnaceMultiblock }
-    private val codeSoulStone =
-        registerNoEntry(ECRModIDs.SOUL_STONE, ECRegistries.MULTIBLOCK) { SoulStoneMultiblock }
-    private val codeFlameCrystal =
-        registerNoEntry(ECRModIDs.FLAME_CRYSTAL, ECRegistries.MULTIBLOCK) { FlameCrystal }
-    private val codeWaterCrystal =
-        registerNoEntry(ECRModIDs.WATER_CRYSTAL, ECRegistries.MULTIBLOCK) { WaterCrystal }
-    private val codeEarthCrystal =
-        registerNoEntry(ECRModIDs.EARTH_CRYSTAL, ECRegistries.MULTIBLOCK) { EarthCrystal }
-    private val codeAirCrystal =
-        registerNoEntry(ECRModIDs.AIR_CRYSTAL, ECRegistries.MULTIBLOCK) { AirCrystal }
-    private val codeLightningCollector =
-        registerNoEntry(ECRModIDs.LIGHTNING_COLLECTOR, ECRegistries.MULTIBLOCK) { LightningCollector }
-    private val codeEnrichmentChamber =
-        registerNoEntry(ECRModIDs.ENRICHMENT_CHAMBER, ECRegistries.MULTIBLOCK) { EnrichmentChamber }
-    private val codeRayTower =
-        registerNoEntry(ECRModIDs.RAY_TOWER, ECRegistries.ASSEMBLED_MULTIBLOCK) { RayTowerMultiblock }
-    private val codeMagicalTeleporter =
-        registerNoEntry(ECRModIDs.MAGICAL_TELEPORTER, ECRegistries.MULTIBLOCK) { MagicalTeleporter }
+    private val codeMithrilineFurnace = registerNoEntry(ECRModIDs.MITHRILINE_FURNACE, ECRegistries.MULTIBLOCK) { MithrilineFurnaceMultiblock }
+    private val codeSoulStone = registerNoEntry(ECRModIDs.SOUL_STONE, ECRegistries.MULTIBLOCK) { SoulStoneMultiblock }
+    private val codeFlameCrystal = registerNoEntry(ECRModIDs.FLAME_CRYSTAL, ECRegistries.MULTIBLOCK) { FlameCrystal }
+    private val codeWaterCrystal = registerNoEntry(ECRModIDs.WATER_CRYSTAL, ECRegistries.MULTIBLOCK) { WaterCrystal }
+    private val codeEarthCrystal = registerNoEntry(ECRModIDs.EARTH_CRYSTAL, ECRegistries.MULTIBLOCK) { EarthCrystal }
+    private val codeAirCrystal = registerNoEntry(ECRModIDs.AIR_CRYSTAL, ECRegistries.MULTIBLOCK) { AirCrystal }
+    private val codeLightningCollector = registerNoEntry(ECRModIDs.LIGHTNING_COLLECTOR, ECRegistries.MULTIBLOCK) { LightningCollector }
+    private val codeEnrichmentChamber = registerNoEntry(ECRModIDs.ENRICHMENT_CHAMBER, ECRegistries.MULTIBLOCK) { EnrichmentChamber }
+    private val codeRayTower = registerNoEntry(ECRModIDs.RAY_TOWER, ECRegistries.ASSEMBLED_MULTIBLOCK) { RayTowerMultiblock }
+    private val codeMagicalTeleporter = registerNoEntry(ECRModIDs.MAGICAL_TELEPORTER, ECRegistries.MULTIBLOCK) { MagicalTeleporter }
+    private val codeSunAbsorber = registerNoEntry(ECRModIDs.SUN_ABSORBER, ECRegistries.MULTIBLOCK) { SunAbsorber }
 
     init {
         registerConfiguredMultiblocks(
@@ -55,7 +47,8 @@ object MultiblockRegistry : RegistrationHandler(ModId) {
                 ECRModIDs.AIR_CRYSTAL,
                 ECRModIDs.LIGHTNING_COLLECTOR,
                 ECRModIDs.ENRICHMENT_CHAMBER,
-                ECRModIDs.MAGICAL_TELEPORTER
+                ECRModIDs.MAGICAL_TELEPORTER,
+                ECRModIDs.SUN_ABSORBER
             ).mapTo(linkedSetOf(), String::ecRL)
         )
         registerConfiguredAssembledMultiblocks(
@@ -64,31 +57,22 @@ object MultiblockRegistry : RegistrationHandler(ModId) {
         )
     }
 
-    val mithrilineFurnace: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.MITHRILINE_FURNACE.ecRL] ?: codeMithrilineFurnace.get()
-    val soulStone: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.SOUL_STONE.ecRL] ?: codeSoulStone.get()
-    val flameCrystal: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.FLAME_CRYSTAL.ecRL] ?: codeFlameCrystal.get()
-    val waterCrystal: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.WATER_CRYSTAL.ecRL] ?: codeWaterCrystal.get()
-    val earthCrystal: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.EARTH_CRYSTAL.ecRL] ?: codeEarthCrystal.get()
-    val airCrystal: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.AIR_CRYSTAL.ecRL] ?: codeAirCrystal.get()
-    val lightningCollector: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.LIGHTNING_COLLECTOR.ecRL] ?: codeLightningCollector.get()
-    val enrichmentChamber: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.ENRICHMENT_CHAMBER.ecRL] ?: codeEnrichmentChamber.get()
-    val rayTower: AssembledMultiblockDefinition
-        get() = MultiblockDefinitions.assembled(ECRModIDs.RAY_TOWER.ecRL) ?: codeRayTower.get()
-    val magicalTeleporter: Multiblock
-        get() = MultiblockDefinitions[ECRModIDs.MAGICAL_TELEPORTER.ecRL] ?: codeMagicalTeleporter.get()
+    val mithrilineFurnace: Multiblock get() = MultiblockDefinitions[ECRModIDs.MITHRILINE_FURNACE.ecRL] ?: codeMithrilineFurnace.get()
+    val soulStone: Multiblock get() = MultiblockDefinitions[ECRModIDs.SOUL_STONE.ecRL] ?: codeSoulStone.get()
+    val flameCrystal: Multiblock get() = MultiblockDefinitions[ECRModIDs.FLAME_CRYSTAL.ecRL] ?: codeFlameCrystal.get()
+    val waterCrystal: Multiblock get() = MultiblockDefinitions[ECRModIDs.WATER_CRYSTAL.ecRL] ?: codeWaterCrystal.get()
+    val earthCrystal: Multiblock get() = MultiblockDefinitions[ECRModIDs.EARTH_CRYSTAL.ecRL] ?: codeEarthCrystal.get()
+    val airCrystal: Multiblock get() = MultiblockDefinitions[ECRModIDs.AIR_CRYSTAL.ecRL] ?: codeAirCrystal.get()
+    val lightningCollector: Multiblock get() = MultiblockDefinitions[ECRModIDs.LIGHTNING_COLLECTOR.ecRL] ?: codeLightningCollector.get()
+    val enrichmentChamber: Multiblock get() = MultiblockDefinitions[ECRModIDs.ENRICHMENT_CHAMBER.ecRL] ?: codeEnrichmentChamber.get()
+    val rayTower: AssembledMultiblockDefinition get() = MultiblockDefinitions.assembled(ECRModIDs.RAY_TOWER.ecRL) ?: codeRayTower.get()
+    val magicalTeleporter: Multiblock get() = MultiblockDefinitions[ECRModIDs.MAGICAL_TELEPORTER.ecRL] ?: codeMagicalTeleporter.get()
+    val sunAbsorber: Multiblock get() = MultiblockDefinitions[ECRModIDs.SUN_ABSORBER.ecRL] ?: codeSunAbsorber.get()
+
     private fun registerConfiguredMultiblocks(ids: Set<Identifier>, occupiedIds: Set<Identifier>) {
         ids.forEach { id ->
             check(id !in occupiedIds) {
-                "Configured custom multiblock $id is already registered; remove it from custom_ids " +
-                    "and use its JSON file as an override"
+                "Configured custom multiblock $id is already registered; remove it from custom_ids and use its JSON file as an override"
             }
             registerNoEntry(id, ECRegistries.MULTIBLOCK) { Multiblock.jsonOnly() }
         }
@@ -97,12 +81,9 @@ object MultiblockRegistry : RegistrationHandler(ModId) {
     private fun registerConfiguredAssembledMultiblocks(ids: Set<Identifier>, occupiedIds: Set<Identifier>) {
         ids.forEach { id ->
             check(id !in occupiedIds) {
-                "Configured custom assembled multiblock $id is already registered; remove it from " +
-                    "custom_assembled_ids and use its JSON file as an override"
+                "Configured custom assembled multiblock $id is already registered; remove it from custom_assembled_ids and use its JSON file as an override"
             }
-            registerNoEntry(id, ECRegistries.ASSEMBLED_MULTIBLOCK) {
-                AssembledMultiblockDefinition.jsonOnly(id)
-            }
+            registerNoEntry(id, ECRegistries.ASSEMBLED_MULTIBLOCK) { AssembledMultiblockDefinition.jsonOnly(id) }
         }
     }
 }

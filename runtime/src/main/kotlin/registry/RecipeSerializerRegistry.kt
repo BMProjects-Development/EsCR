@@ -11,14 +11,12 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.crafting.RecipeSerializer
 
 object RecipeSerializerRegistry : RegistrationHandler(ModId) {
-    private val mithrilineFurnaceReference =
-        registerNoEntry(ECRModIDs.MITHRILINE_FURNACE, BuiltInRegistries.RECIPE_SERIALIZER) {
-            RecipeSerializer(MithrilineFurnaceRecipe.CODEC, MithrilineFurnaceRecipe.STREAM_CODEC)
-        }
-    private val radiatingChamberReference =
-        registerNoEntry(ECRModIDs.RADIATING_CHAMBER, BuiltInRegistries.RECIPE_SERIALIZER) {
-            RecipeSerializer(RadiatingChamberRecipe.CODEC, RadiatingChamberRecipe.STREAM_CODEC)
-        }
+    private val mithrilineFurnaceReference = registerNoEntry(ECRModIDs.MITHRILINE_FURNACE, BuiltInRegistries.RECIPE_SERIALIZER) {
+        RecipeSerializer(MithrilineFurnaceRecipe.CODEC, MithrilineFurnaceRecipe.STREAM_CODEC)
+    }
+    private val radiatingChamberReference = registerNoEntry(ECRModIDs.RADIATING_CHAMBER, BuiltInRegistries.RECIPE_SERIALIZER) {
+        RecipeSerializer(RadiatingChamberRecipe.CODEC, RadiatingChamberRecipe.STREAM_CODEC)
+    }
     private val structureReference = registerNoEntry(ECRModIDs.STRUCTURE, BuiltInRegistries.RECIPE_SERIALIZER) {
         RecipeSerializer(StructureRecipe.CODEC, StructureRecipe.STREAM_CODEC)
     }

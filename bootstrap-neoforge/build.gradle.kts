@@ -61,7 +61,6 @@ dependencies {
     implementation("org.spongepowered:mixin:0.8.7")
     compileOnly("maven.modrinth:iris:$irisVersion+$irisMcVersion-neoforge")
 
-
     project.property("mod.depend.klf_loader_version").toString()
     val klfVersion = project.property("mod.depend.klf_version").toString()
     val klfLoaderVersion = project.property("mod.depend.klf_loader_version").toString()

@@ -36,6 +36,7 @@ object BlockRegistry : RegistrationHandler(ModId) {
     val magicalTeleporter = register(ECRModIDs.MAGICAL_TELEPORTER, ::MagicalTeleporter)
     val matrixDestructor = register(ECRModIDs.MATRIX_DESTRUCTOR, ::MatrixDestructor)
     val solarPrism = register(ECRModIDs.SOLAR_PRISM, ::SolarPrism)
+    val sunAbsorber = register(ECRModIDs.SUN_ABSORBER, ::SunRayAbsorber)
     val coldDistiller = register(ECRModIDs.COLD_DISTILLER, ::ColdDistiller)
     val heatGenerator = register(ECRModIDs.HEAT_GENERATOR, ::HeatGenerator)
     val voidStone = registerBasic(ECRModIDs.VOID_STONE)

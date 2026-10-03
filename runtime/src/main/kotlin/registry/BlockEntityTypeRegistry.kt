@@ -12,6 +12,7 @@ import com.algorithmlx.ecr.common.block.entity.MatrixDestructorEntity
 import com.algorithmlx.ecr.common.block.entity.MithrilineFurnaceEntity
 import com.algorithmlx.ecr.common.block.entity.RadiatingChamberEntity
 import com.algorithmlx.ecr.common.block.entity.RayTowerEntity
+import com.algorithmlx.ecr.common.block.entity.SunRayAbsorberEntity
 import com.algorithmlx.ecr.common.block.entity.enrichment.EnrichmentChamberControllerEntity
 import com.algorithmlx.ecr.common.block.entity.enrichment.EnrichmentChamberExtractorEntity
 import com.algorithmlx.ecr.common.block.entity.enrichment.EnrichmentChamberReceiverEntity
@@ -65,6 +66,9 @@ object BlockEntityTypeRegistry : RegistrationHandler(ModId) {
     }
     val coldDistiller = register(ECRModIDs.COLD_DISTILLER) {
         BlockEntityType(::ColdDistillerEntity, setOf(BlockRegistry.coldDistiller.get()))
+    }
+    val sunAbsorber = register(ECRModIDs.SUN_ABSORBER) {
+        BlockEntityType(::SunRayAbsorberEntity, setOf(BlockRegistry.sunAbsorber.get()))
     }
     val heatGenerator = register(ECRModIDs.HEAT_GENERATOR) {
         BlockEntityType(::HeatGeneratorEntity, setOf(BlockRegistry.heatGenerator.get()))

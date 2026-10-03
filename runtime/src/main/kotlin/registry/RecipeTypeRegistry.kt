@@ -13,10 +13,8 @@ import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeType
 
 object RecipeTypeRegistry : RegistrationHandler(ModId) {
-    val mithrilineFurnace =
-        registerSimple<MithrilineFurnaceRecipe>(ECRModIDs.MITHRILINE_FURNACE)
-    val radiatingChamber =
-        registerSimple<RadiatingChamberRecipe>(ECRModIDs.RADIATING_CHAMBER)
+    val mithrilineFurnace = registerSimple<MithrilineFurnaceRecipe>(ECRModIDs.MITHRILINE_FURNACE)
+    val radiatingChamber = registerSimple<RadiatingChamberRecipe>(ECRModIDs.RADIATING_CHAMBER)
     val structure = registerSimple<StructureRecipe>(ECRModIDs.STRUCTURE)
     val magicTable = registerSimple<MagicTableRecipe>(ECRModIDs.MAGIC_TABLE)
 

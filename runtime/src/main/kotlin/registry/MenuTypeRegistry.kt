@@ -32,14 +32,12 @@ object MenuTypeRegistry : RegistrationHandler(ModId) {
     private val matrixDestructorReference = registerNoEntry(ECRModIDs.MATRIX_DESTRUCTOR, BuiltInRegistries.MENU) {
         menuType(MenuTypeData.codec, ::MatrixDestructorMenu)
     }
-    private val enrichmentChamberControllerReference =
-        registerNoEntry(ECRModIDs.ENRICHMENT_CHAMBER_CONTROLLER, BuiltInRegistries.MENU) {
-            menuType(MenuTypeData.codec, ::EnrichmentChamberControllerMenu)
-        }
-    private val enrichmentChamberReceiverReference =
-        registerNoEntry(ECRModIDs.ENRICHMENT_CHAMBER_RECEIVER, BuiltInRegistries.MENU) {
-            menuType(::EnrichmentChamberReceiverMenu)
-        }
+    private val enrichmentChamberControllerReference = registerNoEntry(ECRModIDs.ENRICHMENT_CHAMBER_CONTROLLER, BuiltInRegistries.MENU) {
+        menuType(MenuTypeData.codec, ::EnrichmentChamberControllerMenu)
+    }
+    private val enrichmentChamberReceiverReference = registerNoEntry(ECRModIDs.ENRICHMENT_CHAMBER_RECEIVER, BuiltInRegistries.MENU) {
+        menuType(::EnrichmentChamberReceiverMenu)
+    }
     private val rayTowerReference = registerNoEntry(ECRModIDs.RAY_TOWER, BuiltInRegistries.MENU) {
         menuType(MenuTypeData.codec, ::RayTowerMenu)
     }

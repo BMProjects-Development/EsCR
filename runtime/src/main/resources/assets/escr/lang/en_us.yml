@@ -74,6 +74,7 @@ block.escr:
   earth_cluster: Earth Cluster
   air_cluster: Air Cluster
   solar_prism: Solar Prism
+  sun_absorber: Sun Ray Absorber
   cold_distiller: Cold Distiller
   heat_generator: Heat Generator
   ultra_heat_generator: Ultra Heat Generator

@@ -24,6 +24,7 @@ data class ECConfig(
     @SerialName("research_book") val researchBook: ResearchBookConfig = ResearchBookConfig(),
     val multiblocks: MultiblockDataConfig = MultiblockDataConfig(),
     @SerialName("cold_distiller") val coldDistillerConfig: ColdDistillerConfig = ColdDistillerConfig(),
+    @SerialName("sun_ray_absorber") val sunRayAbsorber: SunRayAbsorberConfig = SunRayAbsorberConfig(),
     @SerialName("matrix_destructor") val matrixDestructor: MatrixDestructorConfig = MatrixDestructorConfig(),
     @SerialName("magical_teleporter") val magicalTeleporter: MagicalTeleporterConfig = MagicalTeleporterConfig(),
     @SerialName("enrichment_chamber") val enrichmentChamber: EnrichmentChamberConfig = EnrichmentChamberConfig(),
@@ -137,6 +138,30 @@ data class ColdDistillerConfig(
 ) {
     init {
         require(balanceProduced.isFinite() && balanceProduced in 0.0..2.0) { "Cold Distiller balance must be between zero and two" }
+    }
+}
+
+@JsonDefaults
+@Serializable
+data class SunRayAbsorberConfig(
+    val capacity: Int = 100000,
+    @SerialName("generation_per_tick") val generationPerTick: Int = 500,
+    @SerialName("balance_produced") val balanceProduced: Double = 2.0,
+    @SerialName("beam_chance") val beamChance: Double = 0.025,
+    @SerialName("beam_duration") val beamDuration: Int = 20,
+    @SerialName("requires_unobstructed_sky") val requiresUnobstructedSky: Boolean = true,
+    @SerialName("requires_midday") val requiresMidday: Boolean = true,
+    @SerialName("midday_start") val middayStart: Long = 5000,
+    @SerialName("midday_end") val middayEnd: Long = 7000,
+    @SerialName("ignore_rain") val ignoreRain: Boolean = false
+) {
+    init {
+        require(capacity > 0) { "Sun Ray Absorber capacity must be positive" }
+        require(generationPerTick >= 0) { "Sun Ray Absorber generation cannot be negative" }
+        require(balanceProduced.isFinite() && balanceProduced in 0.0..2.0) { "Sun Ray Absorber balance must be between zero and two" }
+        require(beamChance.isFinite() && beamChance in 0.0..1.0) { "Sun Ray Absorber beam chance must be between zero and one" }
+        require(beamDuration > 0) { "Sun Ray Absorber beam duration must be positive" }
+        require(middayStart in 0..<24000 && middayEnd in middayStart..<24000) { "Sun Ray Absorber midday range must fit within a Minecraft day" }
     }
 }
 
