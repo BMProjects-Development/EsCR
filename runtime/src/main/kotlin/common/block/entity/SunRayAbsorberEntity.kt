@@ -56,7 +56,7 @@ class SunRayAbsorberEntity(
     companion object {
         private val config get() = ECConfig.current.sunRayAbsorber
         private val controllerPosition = BlockPos(3, 1, 3)
-        private const val PRISM_HEIGHT = 7
+        private const val PRISM_HEIGHT = 5
         private const val DAY_LENGTH = 24000L
 
         @JvmStatic

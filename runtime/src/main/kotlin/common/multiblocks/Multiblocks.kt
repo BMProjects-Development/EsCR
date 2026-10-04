@@ -245,86 +245,70 @@ object MagicalTeleporter : Multiblock(5, 5, 3, {
     )
 })
 
-object SunAbsorber : Multiblock(5, 5, 9, {
-    val a = this.block(Blocks.AIR.defaultBlockState())
-    val b = this.block(BlockRegistry.fortifiedStone.get().defaultBlockState())
-    val c = this.block(BlockRegistry.fortifiedGlass.get().defaultBlockState())
-    val d = this.block(BlockRegistry.voidStone.get().defaultBlockState())
-    val e = this.block(BlockRegistry.solarPrism.get().defaultBlockState())
-    val f = null
+object SunAbsorber : Multiblock(7, 7, 7, {
+    val air = this.block(Blocks.AIR.defaultBlockState())
+    val fortifiedStone = this.block(BlockRegistry.fortifiedStone.get().defaultBlockState())
+    val fortifiedGlass = this.block(BlockRegistry.fortifiedGlass.get().defaultBlockState())
+    val voidStone = this.block(BlockRegistry.voidStone.get().defaultBlockState())
+    val solarPrism = this.block(BlockRegistry.solarPrism.get().defaultBlockState(), ignoreTag = true)
+    val sunAbsorber = this.block(BlockRegistry.sunAbsorber.get().defaultBlockState())
 
     pattern(
-        d, d, b, null, b, d, d,
-        d, b, b, b, b, b, d,
-        b, b, d, d, d, b, b,
-        null, b, d, null, d, b, null,
-        b, b, d, d, d, b, b,
-        d, b, b, b, b, b, d,
-        d, d, b, null, b, d, d,
+        null, null, null, null, null, null, null,
+        null, null, voidStone, voidStone, voidStone, null, null,
+        null, voidStone, voidStone, fortifiedStone, voidStone, voidStone, null,
+        null, voidStone, fortifiedStone, fortifiedStone, fortifiedStone, voidStone, null,
+        null, voidStone, voidStone, fortifiedStone, voidStone, voidStone, null,
+        null, null, voidStone, voidStone, voidStone, null, null,
+        null, null, null, null, null, null, null,
 
-        a, a, a, a, a, a, a, a,
-        a, a, a, b, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, b, a, f, a, b, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, b, a, a, a,
-        a, a, a, a, a, a, a, a,
+        null, null, null, null, null, null, null,
+        null, null, air, fortifiedStone, air, null, null,
+        null, air, air, air, air, air, null,
+        null, fortifiedStone, air, sunAbsorber, air, fortifiedStone, null,
+        null, air, air, air, air, air, null,
+        null, null, air, fortifiedStone, air, null, null,
+        null, null, null, null, null, null, null,
 
-        a, a, a, b, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        b, a, a, a, a, a, b,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, b, a, a, a,
+        null, null, null, voidStone, null, null, null,
+        null, null, air, air, air, null, null,
+        null, air, air, air, air, air, null,
+        voidStone, air, air, air, air, air, voidStone,
+        null, air, air, air, air, air, null,
+        null, null, air, air, air, null, null,
+        null, null, null, voidStone, null, null, null,
 
-        a, a, a, c, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        c, a, a, a, a, a, c,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, c, a, a, a,
+        null, null, voidStone, voidStone, voidStone, null, null,
+        null, fortifiedStone, air, air, air, fortifiedStone, null,
+        voidStone, air, air, air, air, air, voidStone,
+        voidStone, air, air, air, air, air, voidStone,
+        voidStone, air, air, air, air, air, voidStone,
+        null, fortifiedStone, air, air, air, fortifiedStone, null,
+        null, null, voidStone, voidStone, voidStone, null, null,
 
-        a, b, c, c, c, b, a,
-        b, b, a, a, a, b, b,
-        c, a, a, a, a, a, c,
-        c, a, a, a, a, a, c,
-        c, a, a, a, a, a, c,
-        b, b, a, a, a, b, b,
-        a, b, c, c, c, b, a,
+        null, null, null, voidStone, null, null, null,
+        null, null, fortifiedGlass, air, fortifiedGlass, null, null,
+        null, fortifiedGlass, air, air, air, fortifiedGlass, null,
+        voidStone, air, air, air, air, air, voidStone,
+        null, fortifiedGlass, air, air, air, fortifiedGlass, null,
+        null, null, fortifiedGlass, air, fortifiedGlass, null, null,
+        null, null, null, voidStone, null, null, null,
 
-        a, a, a, c, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        c, a, a, a, a, a, c,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, c, a, a, a,
+        null, null, null, null, null, null, null,
+        null, null, null, fortifiedStone, null, null, null,
+        null, null, fortifiedGlass, air, fortifiedGlass, null, null,
+        null, fortifiedStone, air, air, air, fortifiedStone, null,
+        null, null, fortifiedGlass, air, fortifiedGlass, null, null,
+        null, null, null, fortifiedStone, null, null, null,
+        null, null, null, null, null, null, null,
 
-        a, a, a, b, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        b, a, a, a, a, a, b,
-        a, a, a, a, a, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, b, a, a, a,
-
-        a, a, a, a, a, a, a, a,
-        a, a, a, b, a, a, a,
-        a, a, a, a, a, a, a, a,
-        a, b, a, a, a, b, a,
-        a, a, a, a, a, a, a, a,
-        a, a, a, b, a, a, a,
-        a, a, a, a, a, a, a, a,
-
-        b, b, d, null, d, b, b,
-        b, e, e, d, e, e, b,
-        d, e, e, e, e, e, d,
-        null, d, e, e, e, d, null,
-        d, e, e, e, e, e, d,
-        b, e, e, d, e, e, b,
-        b, b, d, null, d, b, b,
+        null, null, null, null, null, null, null,
+        null, null, solarPrism, null, solarPrism, null, null,
+        null, solarPrism, solarPrism, fortifiedGlass, solarPrism, solarPrism, null,
+        null, null, fortifiedGlass, solarPrism, fortifiedGlass, null, null,
+        null, solarPrism, solarPrism, fortifiedGlass, solarPrism, solarPrism, null,
+        null, null, solarPrism, null, solarPrism, null, null,
+        null, null, null, null, null, null, null,
     )
 })
 

@@ -2,6 +2,7 @@ package com.algorithmlx.ecr.client.book
 
 import com.algorithmlx.ecr.api.research.ClientResearchState
 import com.algorithmlx.ecr.api.research.content.BookElementAlign
+import com.algorithmlx.ecr.api.research.content.BookElementSerializer
 import com.algorithmlx.ecr.api.research.content.BookElementSpec
 import com.algorithmlx.ecr.api.research.content.BookEntry
 import com.algorithmlx.ecr.api.research.content.BookTextVariant
@@ -55,55 +56,49 @@ object BookPageLayout {
 
             page.elements.forEach { originalSpec ->
                 val spec = originalSpec.resolveText(entry) ?: return@forEach
-                val serializer = ResearchSerializers.elementSerializer(spec.content.type)
-
-                val width =
-                    (
-                        spec.width
-                            ?: autoWidth(spec, entry)
-                            ?: serializer?.defaultWidth
-                            ?: 16
-                    ).coerceIn(0, PAGE_WIDTH)
-
-                val measuredHeight = autoHeight(spec, width, entry)
-                val height =
-                    elementHeight(
-                        spec,
-                        measuredHeight,
-                        serializer?.defaultHeight ?: 16
-                    ).coerceIn(0, PAGE_HEIGHT)
-
-                if (spec.content === SpaceBookElement) {
-                    cursor.y = (cursor.y + height).coerceAtMost(BOTTOM)
-                    return@forEach
-                }
-
-                if (cursor.y + height > BOTTOM) cursor.nextSide()
-
-                spreads.last() +=
-                    BookElementPlacement(
-                        spec,
-                        cursor.alignedX(width, spec.align),
-                        cursor.y,
-                        width,
-                        height
-                    )
-
-                cursor.y += height
+                placeElement(spec, cursor, entry)
             }
         }
 
         return spreads.map(::BookSpread).ifEmpty { listOf(BookSpread(emptyList())) }
     }
 
+    private fun placeElement(
+        spec: BookElementSpec,
+        cursor: PageCursor,
+        entry: BookEntry,
+    ) {
+        val serializer = ResearchSerializers.elementSerializer(spec.content.type)
+
+        val width = (spec.width ?: autoWidth(spec, entry) ?: serializer?.defaultWidth ?: 16).coerceIn(0, PAGE_WIDTH)
+
+        if (spec.content is TextBookElement) {
+            placeText(spec, width.coerceAtLeast(1), cursor, entry.id)
+            return
+        }
+
+        val measuredHeight = autoHeight(spec, width, entry)
+        val height = elementHeight(
+            spec,
+            measuredHeight,
+            serializer?.defaultHeight ?: 16
+        ).coerceIn(0, PAGE_HEIGHT)
+
+        if (spec.content === SpaceBookElement) {
+            cursor.advance(height)
+            return
+        }
+
+        if (cursor.remainingHeight < height) cursor.nextSide()
+
+        cursor.place(spec, width, height)
+    }
+
     private fun taskElement(entry: BookEntry): BookElementSpec? {
         if (entry.taskLevels.isEmpty()) return null
-        val level =
-            if (ClientResearchState.has(entry.id)) {
-                entry.taskLevels.lastIndex
-            } else {
-                ClientResearchState.completedTaskLevels(entry.id).coerceIn(0, entry.taskLevels.lastIndex)
-            }
+        val level = if (ClientResearchState.has(entry.id)) entry.taskLevels.lastIndex
+        else ClientResearchState.completedTaskLevels(entry.id).coerceIn(0, entry.taskLevels.lastIndex)
+
         val visibleTasks = entry.taskLevels[level].tasks.count { !it.hidden }
         if (visibleTasks == 0) return null
         val rows = ceil(visibleTasks / TASKS_PER_ROW.toFloat()).toInt().coerceAtLeast(1)
@@ -113,25 +108,15 @@ object BookPageLayout {
     private fun autoWidth(
         spec: BookElementSpec,
         entry: BookEntry
-    ): Int? =
-        when (val element = spec.content) {
-            is TextBookElement -> {
-                BookLinkedTextLayout
-                    .singleLineWidth(
-                        element.text,
-                        Minecraft.getInstance().font,
-                        entry.id
-                    ).coerceIn(1, PAGE_WIDTH)
-            }
-
-            is CraftingBookElement -> {
-                BookRecipeElementRenderer.preferredWidth(element)
-            }
-
-            else -> {
-                null
-            }
-        }
+    ): Int? = when (val element = spec.content) {
+        is TextBookElement -> BookLinkedTextLayout.singleLineWidth(
+            element.text,
+            Minecraft.getInstance().font,
+            entry.id
+        ).coerceIn(1, PAGE_WIDTH)
+        is CraftingBookElement -> BookRecipeElementRenderer.preferredWidth(element)
+        else -> null
+    }
 
     private fun autoHeight(
         spec: BookElementSpec,
@@ -174,16 +159,15 @@ object BookPageLayout {
             }
             val lineCount = minOf(availableLines, linkedLines.size - line)
             val height = lineCount * font.lineHeight
-            cursor.spreads.last() +=
-                BookElementPlacement(
-                    spec,
-                    cursor.alignedX(width, spec.align),
-                    cursor.y,
-                    width,
-                    height,
-                    textLineStart = line,
-                    textLineCount = lineCount
-                )
+            cursor.spreads.last() += BookElementPlacement(
+                spec,
+                cursor.alignedX(width, spec.align),
+                cursor.y,
+                width,
+                height,
+                textLineStart = line,
+                textLineCount = lineCount
+            )
             line += lineCount
             cursor.y += height
             if (line < linkedLines.size) {
@@ -194,36 +178,38 @@ object BookPageLayout {
 
     private fun BookElementSpec.resolveText(entry: BookEntry): BookElementSpec? {
         val element = content as? TextBookElement ?: return this
-        val candidates =
-            buildList {
-                add(BookTextVariant(element.text, element.requirement))
-                addAll(element.variants)
-            }
-        val selected =
-            candidates.lastOrNull { variant ->
-                variant.requirement?.let { ClientResearchState.requirementMet(entry.id, it) } == true
-            }
-                ?: candidates.lastOrNull { it.requirement == null }
-                ?: return null
+        val candidates = buildList {
+            add(BookTextVariant(element.text, element.requirement))
+            addAll(element.variants)
+        }
+        val selected = candidates.lastOrNull { variant ->
+            variant.requirement?.let { ClientResearchState.requirementMet(entry.id, it) } == true
+        }
+            ?: candidates.lastOrNull { it.requirement == null }
+            ?: return null
         return copy(content = element.copy(text = selected.text, requirement = null, variants = emptyList()))
     }
 
-    private class PageCursor(
-        val spreads: MutableList<MutableList<BookElementPlacement>>
-    ) {
+    private class PageCursor(val spreads: MutableList<MutableList<BookElementPlacement>>) {
         var side = 0
         var y = TOP
         val x get() = if (side % 2 == 0) FIRST_X else SECOND_X
+        val remainingHeight: Int get() = BOTTOM - y
 
-        fun alignedX(
-            width: Int,
-            align: BookElementAlign = BookElementAlign.LEFT
-        ): Int =
-            when (align) {
-                BookElementAlign.LEFT -> x
-                BookElementAlign.CENTER -> x + (PAGE_WIDTH - width) / 2
-                BookElementAlign.RIGHT -> x + PAGE_WIDTH - width
-            }
+        fun alignedX(width: Int, align: BookElementAlign = BookElementAlign.LEFT): Int = when (align) {
+            BookElementAlign.LEFT -> x
+            BookElementAlign.CENTER -> x + (PAGE_WIDTH - width) / 2
+            BookElementAlign.RIGHT -> x + PAGE_WIDTH - width
+        }
+
+        fun place(spec: BookElementSpec, width: Int, height: Int) {
+            spreads.last() += BookElementPlacement(spec, alignedX(width, spec.align), y, width, height)
+            y += height
+        }
+
+        fun advance(height: Int) {
+            y = (y + height).coerceAtMost(BOTTOM)
+        }
 
         fun nextSide() {
             side++
