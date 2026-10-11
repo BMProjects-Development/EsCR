@@ -1,2 +1,49 @@
-Copyright (c) 2026 AlgorithmLX
-All rights reserved.
+PROJECT LICENSING NOTICE
+========================
+
+Copyright (c) 2026 Nero Elex (AlgorithmLX).
+
+This project contains materials distributed under separate licenses.
+The license applicable to a particular component depends on whether
+that component is source code, an asset or third-party material.
+
+1. SOURCE CODE
+
+  Original source code owned by Nero Elex (AlgorithmLX) is licensed
+  under the AlgorithmLX Source-Available License, Version 1.0
+  (SPDX identifier: LicenseRef-ASAL-1.0).
+
+  Full terms: LICENSE-CODE.txt
+
+  These terms permit GitHub forks and contributions under specified
+  conditions, but do not permit independent releases or commercial
+  use of the covered code without separate written authorization.
+  Refer to LICENSE-CODE.txt for the complete, controlling terms.
+
+2. ASSETS
+
+  Original project assets designated as licensed under Creative
+  Commons Attribution-NonCommercial-ShareAlike 4.0 International
+  (SPDX identifier: CC-BY-NC-SA-4.0) are governed by that license.
+
+  Full terms: LICENSE-ASSETS.txt
+  Official license: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+3. THIRD-PARTY MATERIAL
+
+  Third-party libraries, code, and assets remain subject to their
+  respective licenses and notices. Nothing in this document claims
+  ownership of such materials or grants permissions beyond those
+  held by their respective rights holders.
+
+4. INTERPRETATION
+
+  This file identifies the applicable licenses; it does not replace
+  their full texts or grant additional permissions. If a component
+  has a more specific license notice, follow that notice for the
+  component in question.
+
+  For uses requiring additional authorization, obtain written
+  permission from the relevant copyright holder.
+
+========================
