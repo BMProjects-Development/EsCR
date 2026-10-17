@@ -50,6 +50,16 @@ loom {
     }
 }
 
+fabricApi {
+    configureTests {
+        createSourceSet = true
+        modId = "escr-vfx-tests"
+        enableGameTests = false
+        enableClientGameTests = true
+        clearRunDirectory = false
+    }
+}
+
 dependencies {
     val irisVersion = rootProject.providers.gradleProperty("libs.iris").get()
 

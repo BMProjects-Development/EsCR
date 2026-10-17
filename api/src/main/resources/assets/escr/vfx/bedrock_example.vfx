@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/emitter",
+      "id": "crystals",
+      "emission": { "rate": 8, "burst": 8, "duration": 0.5, "loop": false, "maxParticles": 24 },
+      "shape": { "kind": "MODEL", "model": "escr:vfx_crystal" },
+      "spawn": { "lifetime": 2, "speed": 0.3 },
+      "children": [
+        {
+          "type": "escr:vfx/model",
+          "id": "crystal",
+          "model": "escr:vfx_crystal",
+          "texture": "minecraft:textures/block/gold_block.png",
+          "material": { "blend": "ADDITIVE", "lighting": "FULL_BRIGHT" },
+          "particle": { "size": { "x": 2, "y": 2, "z": 2 } }
+        }
+      ]
+    },
+    {
+      "type": "escr:vfx/post_effect",
+      "id": "impact",
+      "shader": "escr:vfx/post/impact",
+      "uniforms": [
+        { "name": "Strength", "value": { "type": "float", "value": { "type": "expr", "source": "max(0, 1 - p.age)" } } },
+        { "name": "Radius", "value": { "type": "float", "value": { "type": "expr", "source": "p.age * 0.4" } } }
+      ]
+    },
+    {
+      "type": "escr:vfx/sky",
+      "id": "sky",
+      "shader": "escr:vfx/sky/shockwave",
+      "uniforms": [
+        { "name": "Strength", "value": { "type": "float", "value": { "type": "expr", "source": "max(0, 1 - p.age / 2)" } } },
+        { "name": "Radius", "value": { "type": "float", "value": { "type": "expr", "source": "p.age * 0.3" } } }
+      ]
+    }
+  ],
+  "timeline": { "duration": 3, "loop": false }
+}

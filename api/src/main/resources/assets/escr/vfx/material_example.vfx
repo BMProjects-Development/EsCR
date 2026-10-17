@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/plane", "id": "opaque",
+      "transform": { "position": { "x": -2.4, "y": 0, "z": 0 } },
+      "material": { "texture": "minecraft:textures/block/white_concrete.png", "blend": "OPAQUE", "cull": true, "depthWrite": true },
+      "tint": { "type": "solid", "color": { "r": 1, "g": 0.2, "b": 0.1, "a": 1 } }
+    },
+    {
+      "type": "escr:vfx/plane", "id": "blend",
+      "transform": { "position": { "x": -1.2, "y": 0, "z": 0 } },
+      "material": { "texture": "minecraft:textures/block/white_concrete.png", "blend": "BLEND", "lighting": "WORLD" },
+      "tint": { "type": "solid", "color": { "r": 0.2, "g": 1, "b": 0.2, "a": 0.7 } }
+    },
+    {
+      "type": "escr:vfx/plane", "id": "additive",
+      "transform": { "position": { "x": 0, "y": 0, "z": 0 } },
+      "material": { "texture": "minecraft:textures/block/white_concrete.png", "blend": "ADDITIVE", "shader": "escr:vfx/tint", "depthTest": false },
+      "tint": { "type": "solid", "color": { "r": 0.1, "g": 0.3, "b": 1, "a": 0.6 } }
+    },
+    {
+      "type": "escr:vfx/plane", "id": "multiply",
+      "transform": { "position": { "x": 1.2, "y": 0, "z": 0 } },
+      "material": { "texture": "minecraft:textures/block/white_concrete.png", "blend": "MULTIPLY" },
+      "tint": { "type": "solid", "color": { "r": 0.3, "g": 0.4, "b": 0.6, "a": 1 } }
+    },
+    {
+      "type": "escr:vfx/model", "id": "custom_model",
+      "model": "escr:vfx_crystal", "texture": "minecraft:textures/block/gold_block.png",
+      "transform": { "position": { "x": 2.4, "y": 0, "z": 0 }, "scale": { "x": 2, "y": 2, "z": 2 } },
+      "material": { "blend": "OPAQUE", "shader": "escr:vfx/model_tint" }
+    }
+  ],
+  "timeline": { "duration": 3, "loop": false }
+}

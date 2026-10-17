@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/sphere", "id": "glowing_sphere",
+      "transform": { "position": { "x": -1.5, "y": 0, "z": 0 }, "scale": { "x": 0.7, "y": 0.7, "z": 0.7 } },
+      "material": { "texture": "minecraft:textures/block/white_concrete.png", "blend": "ADDITIVE", "glow": { "type": "expr", "source": "max(0, 3 + d.glow)" } },
+      "tint": { "type": "solid", "color": { "r": 1, "g": 0.3, "b": 0.1, "a": 1 } }
+    },
+    {
+      "type": "escr:vfx/plane", "id": "soft_plane", "facing": "NONE",
+      "transform": { "position": { "x": 0, "y": -0.8, "z": 0 }, "scale": { "x": 1.5, "y": 2, "z": 1 } },
+      "material": { "texture": "minecraft:textures/block/white_concrete.png", "blend": "BLEND", "softness": { "type": "expr", "source": "max(0, 0.8 + d.softness)" } },
+      "tint": { "type": "solid", "color": { "r": 0.1, "g": 0.6, "b": 1, "a": 0.8 } }
+    },
+    {
+      "type": "escr:vfx/plane", "id": "uniform_plane", "facing": "CAMERA",
+      "transform": { "position": { "x": 0, "y": 1.3, "z": 0 }, "scale": { "x": 1, "y": 0.6, "z": 1 } },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png", "shader": "escr:vfx/parameters_particle",
+        "uniforms": [
+          { "name": "Charge", "value": { "type": "float", "value": 1 } },
+          { "name": "Shift", "value": { "type": "vec2", "value": { "x": 0.1, "y": 0 } } },
+          { "name": "Tint", "value": { "type": "color", "value": { "type": "solid", "color": { "r": 0.5, "g": 0.2, "b": 1, "a": 1 } } } }
+        ],
+        "samplers": [ { "name": "PatternSampler", "texture": "minecraft:textures/block/white_concrete.png" } ]
+      }
+    },
+    {
+      "type": "escr:vfx/model", "id": "uniform_model",
+      "model": "escr:vfx_crystal", "texture": "minecraft:textures/block/gold_block.png",
+      "transform": { "position": { "x": 1.5, "y": 0, "z": 0 }, "scale": { "x": 3, "y": 3, "z": 3 } },
+      "material": {
+        "blend": "BLEND", "shader": "escr:vfx/parameters_model", "glow": 1,
+        "uniforms": [
+          { "name": "Charge", "value": { "type": "float", "value": { "type": "expr", "source": "max(0.5, d.charge)" } } },
+          { "name": "Shift", "value": { "type": "vector", "value": { "x": 0.1, "y": 0, "z": 0 } } },
+          { "name": "Tint", "value": { "type": "color", "value": { "type": "solid", "color": { "r": 0.4, "g": 1, "b": 0.8, "a": 1 } } } }
+        ],
+        "samplers": [ { "name": "PatternSampler", "texture": "minecraft:textures/block/white_concrete.png" } ]
+      }
+    }
+  ],
+  "timeline": { "duration": 4, "loop": false }
+}

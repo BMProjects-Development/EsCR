@@ -2,6 +2,7 @@ package com.algorithmlx.ecr.client.renderer
 
 import com.algorithmlx.ecr.api.client.render.MultiblockWorldPreview
 import com.algorithmlx.ecr.api.particle.ClientParticleSystems
+import com.algorithmlx.ecr.api.vfx.VfxScenes
 import com.mojang.blaze3d.vertex.PoseStack
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.SubmitNodeCollector
@@ -23,6 +24,7 @@ object ECRClientRendering {
             minecraft.player?.uuid,
             minecraft.options.cameraType.isFirstPerson
         )
+        VfxScenes.submit(poseStack, collector, levelRenderState, minecraft.deltaTracker.getGameTimeDeltaPartialTick(false))
         BoundGemLinkRenderer.submit(poseStack, collector, levelRenderState)
         MultiblockWorldPreview.submit(poseStack, collector, levelRenderState)
         MagicShieldRenderer.submit(poseStack, collector, levelRenderState)

@@ -9,7 +9,12 @@
     "client.RenderPipelinesAccessor",
     "client.RenderTypeAccessor",
     "client.SubmitNodeCollectionMixin",
-    "client.SubmitNodeStorageMixin"
+    "client.SubmitNodeStorageMixin",
+    "client.VfxCameraMixin",
+    "client.VfxGameRendererMixin",
+    "client.VfxPostChainAccessor",
+    "client.VfxPostPassAccessor",
+    "client.VfxPostPassMixin"
   ],
   "mixins": [
     "ConsumableMixin",

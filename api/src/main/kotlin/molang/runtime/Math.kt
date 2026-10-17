@@ -12,6 +12,8 @@ object Math {
     @JvmStatic
     fun sin(value: Float) = kotlin.math.sin(value * kotlin.math.PI / 180.0).toFloat()
     @JvmStatic
+    fun tan(value: Float) = kotlin.math.tan(value * kotlin.math.PI / 180.0).toFloat()
+    @JvmStatic
     fun floor(value: Float) = kotlin.math.floor(value)
     @JvmStatic
     fun ceil(value: Float) = kotlin.math.ceil(value)

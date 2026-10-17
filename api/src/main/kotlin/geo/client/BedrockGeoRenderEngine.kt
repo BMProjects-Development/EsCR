@@ -7,6 +7,7 @@ import com.algorithmlx.ecr.api.geo.GeoModel
 import com.algorithmlx.ecr.api.geo.GeoRenderType
 import com.algorithmlx.ecr.api.molang.runtime.MolangContext
 import com.mojang.blaze3d.vertex.PoseStack
+import com.mojang.blaze3d.vertex.VertexConsumer
 import net.minecraft.client.renderer.SubmitNodeCollector
 import net.minecraft.client.renderer.rendertype.RenderType
 import net.minecraft.client.renderer.rendertype.RenderTypes
@@ -82,6 +83,16 @@ object BedrockGeoRenderEngine {
         collector: SubmitNodeCollector,
         packedLight: Int,
         packedOverlay: Int = OverlayTexture.NO_OVERLAY
+    ) = submit(data, poseStack, collector, packedLight, packedOverlay, null, -1)
+
+    fun submit(
+        data: BedrockGeoRenderData,
+        poseStack: PoseStack,
+        collector: SubmitNodeCollector,
+        packedLight: Int,
+        packedOverlay: Int,
+        renderTypeOverride: RenderType?,
+        color: Int
     ) {
         poseStack.pushPose()
         poseStack.scale(data.scale, data.scale, data.scale)
@@ -90,9 +101,9 @@ object BedrockGeoRenderEngine {
         } else {
             packedLight
         }
-        val renderType = renderType(data)
+        val renderType = renderTypeOverride ?: renderType(data)
         if (
-            gpuRenderingEnabled &&
+            renderTypeOverride == null && color == -1 && gpuRenderingEnabled &&
             !BedrockGeoGpuRuntime.failed &&
             collector is BedrockGeoGpuSubmitCollector &&
             data.renderType.supportsGpuInstancing &&
@@ -113,33 +124,37 @@ object BedrockGeoRenderEngine {
             return
         }
         collector.submitCustomGeometry(poseStack, renderType) { basePose, consumer ->
-            val point = Vector3f()
-            val normal = Vector3f()
-            data.model.bones.forEachIndexed { boneIndex, bone ->
-                val transform = data.pose.transforms[boneIndex]
-                val normalTransform = data.pose.normalTransforms[boneIndex]
-                bone.quads.forEach { quad ->
-                    normal.set(quad.normalX, quad.normalY, quad.normalZ)
-                    normalTransform.transform(normal).normalize()
-                    repeat(4) { vertexIndex ->
-                        val positionIndex = vertexIndex * 3
-                        transform.transformPosition(
-                            quad.positions[positionIndex],
-                            quad.positions[positionIndex + 1],
-                            quad.positions[positionIndex + 2],
-                            point
-                        )
-                        consumer.addVertex(basePose, point)
-                            .setColor(-1)
-                            .setUv(quad.uvs[vertexIndex * 2], quad.uvs[vertexIndex * 2 + 1])
-                            .setOverlay(packedOverlay)
-                            .setLight(modelLight)
-                            .setNormal(basePose, normal)
-                    }
+            emitVertices(data, basePose, consumer, modelLight, packedOverlay, color)
+        }
+        poseStack.popPose()
+    }
+
+    fun emitVertices(data: BedrockGeoRenderData, basePose: PoseStack.Pose, consumer: VertexConsumer, modelLight: Int, packedOverlay: Int, color: Int) {
+        val point = Vector3f()
+        val normal = Vector3f()
+        data.model.bones.forEachIndexed { boneIndex, bone ->
+            val transform = data.pose.transforms[boneIndex]
+            val normalTransform = data.pose.normalTransforms[boneIndex]
+            bone.quads.forEach { quad ->
+                normal.set(quad.normalX, quad.normalY, quad.normalZ)
+                normalTransform.transform(normal).normalize()
+                repeat(4) { vertexIndex ->
+                    val positionIndex = vertexIndex * 3
+                    transform.transformPosition(
+                        quad.positions[positionIndex],
+                        quad.positions[positionIndex + 1],
+                        quad.positions[positionIndex + 2],
+                        point
+                    )
+                    consumer.addVertex(basePose, point)
+                        .setColor(color)
+                        .setUv(quad.uvs[vertexIndex * 2], quad.uvs[vertexIndex * 2 + 1])
+                        .setOverlay(packedOverlay)
+                        .setLight(modelLight)
+                        .setNormal(basePose, normal)
                 }
             }
         }
-        poseStack.popPose()
     }
 
     @JvmStatic

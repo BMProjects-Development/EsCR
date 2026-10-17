@@ -51,7 +51,9 @@ object ECEventHandlers {
             subscribe<PlayerInteractEvent.EntityInteract> { handle() }
             subscribe<AttackEntityEvent> { handle() }
             subscribe<PlayerTickEvent.Post> { (entity as? ServerPlayer)?.let(ResearchProgress::tick) }
-            subscribe<RegisterCommandsEvent> { ECRCommands.register(dispatcher) }
+            subscribe<RegisterCommandsEvent> {
+                ECRCommands.register(dispatcher)
+            }
             subscribe<OnDatapackSyncEvent> { relevantPlayers.forEach(ResearchProgress::onPlayerJoin) }
             subscribe<AddServerReloadListenersEvent> { registerListeners() }
         }

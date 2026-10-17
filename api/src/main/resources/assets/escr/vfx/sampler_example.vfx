@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/post_effect", "id": "filter", "shader": "escr:vfx/post/filter",
+      "uniforms": [
+        { "name": "Strength", "value": { "type": "float", "value": 0.7 } },
+        { "name": "Scale", "value": { "type": "vec2", "value": { "x": 2, "y": 2 } } },
+        { "name": "Tint", "value": { "type": "vector", "value": { "x": 1, "y": 0.8, "z": 0.6 } } }
+      ],
+      "samplers": [ { "name": "PatternSampler", "texture": "minecraft:textures/block/gold_block.png" } ]
+    }
+  ],
+  "timeline": { "duration": 2, "loop": false }
+}

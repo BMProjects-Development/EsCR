@@ -48,10 +48,12 @@ object FabricClientInit {
         registerReloadListeners()
         registerRendering()
         registerTooltipEvent()
-        ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->
-            EventBuses.GAME(ClientPlayerNetworkEvent.LoggingOut)
+        ClientPlayConnectionEvents.DISCONNECT.register { _, client ->
+            client.execute { EventBuses.GAME(ClientPlayerNetworkEvent.LoggingOut) }
         }
-        ClientPlayConnectionEvents.JOIN.register { _, _, _ -> EventBuses.GAME(ClientPlayerNetworkEvent.LoggingIn) }
+        ClientPlayConnectionEvents.JOIN.register { _, _, client ->
+            client.execute { EventBuses.GAME(ClientPlayerNetworkEvent.LoggingIn) }
+        }
         ClientTickEvents.START_CLIENT_TICK.register { EventBuses.GAME(ClientTickEvent.Pre) }
         ClientTickEvents.END_CLIENT_TICK.register { EventBuses.GAME(ClientTickEvent.Post) }
 

@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/emitter",
+      "id": "sparks",
+      "children": [
+        {
+          "type": "escr:vfx/plane",
+          "id": "spark",
+          "material": {
+            "texture": "minecraft:textures/particle/flash.png",
+            "shader": "escr:vfx/tint",
+            "blend": "ADDITIVE"
+          },
+          "particle": {
+            "size": {
+              "x": { "type": "const", "value": 0.15 },
+              "y": { "type": "const", "value": 0.15 },
+              "z": { "type": "const", "value": 0.15 }
+            },
+            "color": {
+              "type": "gradient",
+              "gradient": {
+                "stops": [
+                  { "position": 0, "color": { "r": 1, "g": 0.8, "b": 0.2, "a": 1 } },
+                  { "position": 1, "color": { "r": 1, "g": 0.1, "b": 0, "a": 0 } }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "emission": {
+        "rate": { "type": "const", "value": 30 },
+        "burst": 16,
+        "duration": 0.2,
+        "loop": false,
+        "maxParticles": 64
+      },
+      "shape": {
+        "kind": "SPHERE",
+        "radius": { "type": "const", "value": 0.1 }
+      },
+      "spawn": {
+        "lifetime": { "type": "range", "from": 0.5, "to": 1.2 },
+        "speed": { "type": "range", "from": 1.5, "to": 3.5 }
+      },
+      "motion": {
+        "gravity": { "type": "const", "value": 2 },
+        "drag": { "type": "const", "value": 0.4 }
+      }
+    }
+  ],
+  "timeline": { "duration": 2, "loop": false }
+}

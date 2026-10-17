@@ -1,0 +1,31 @@
+{
+  "targets": { "swap": {} },
+  "passes": [
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "escr:post/vfx",
+      "inputs": [
+        { "sampler_name": "In", "target": "minecraft:main" },
+        { "sampler_name": "Depth", "target": "minecraft:main", "use_depth_buffer": true }
+      ],
+      "output": "swap",
+      "uniforms": { "VfxConfig": [
+        { "name": "Strength", "type": "float", "value": 1.0 },
+        { "name": "EffectTime", "type": "float", "value": 0.0 },
+        { "name": "Radius", "type": "float", "value": 0.25 },
+        { "name": "Width", "type": "float", "value": 0.08 },
+        { "name": "Opacity", "type": "float", "value": 1.0 },
+        { "name": "CenterX", "type": "float", "value": 0.5 },
+        { "name": "CenterY", "type": "float", "value": 0.5 },
+        { "name": "Mode", "type": "float", "value": 3.0 }
+      ] }
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/blit",
+      "inputs": [{ "sampler_name": "In", "target": "swap" }],
+      "uniforms": { "BlitConfig": [{ "name": "ColorModulate", "type": "vec4", "value": [1.0, 1.0, 1.0, 1.0] }] },
+      "output": "minecraft:main"
+    }
+  ]
+}

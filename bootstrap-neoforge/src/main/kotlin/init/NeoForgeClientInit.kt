@@ -16,6 +16,7 @@ import com.algorithmlx.ecr.init.ECRClientInit
 import com.algorithmlx.ecr.neoforge.client.NeoForgeConnectedTextures
 import com.algorithmlx.ecr.neoforge.client.NeoForgeIrisCompatibility
 import com.algorithmlx.ecr.neoforge.network.NeoForgeClientNetworkPlatform
+import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.inventory.MenuAccess
@@ -64,11 +65,11 @@ object NeoForgeClientInit {
     }
 
     private fun onClientLogin(event: ClientPlayerNetworkEvent.LoggingIn) {
-        EventBuses.GAME(CrossClientPlayerNetworkEvent.LoggingIn)
+        Minecraft.getInstance().execute { EventBuses.GAME(CrossClientPlayerNetworkEvent.LoggingIn) }
     }
 
     private fun onClientLogout(event: ClientPlayerNetworkEvent.LoggingOut) {
-        EventBuses.GAME(CrossClientPlayerNetworkEvent.LoggingOut)
+        Minecraft.getInstance().execute { EventBuses.GAME(CrossClientPlayerNetworkEvent.LoggingOut) }
     }
 
     private fun onSubmitCustomGeometry(event: SubmitCustomGeometryEvent) {

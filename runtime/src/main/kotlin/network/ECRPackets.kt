@@ -15,6 +15,7 @@ import com.algorithmlx.ecr.api.research.ResearchProgress
 import com.algorithmlx.ecr.api.research.ResearchProgressPayload
 import com.algorithmlx.ecr.api.research.ResearchSyncPayload
 import com.algorithmlx.ecr.api.research.UpdateBookViewPayload
+import com.algorithmlx.ecr.api.vfx.VfxCommandPayload
 
 object ECRPackets : PacketRegistry(ModId) {
     val geoBlockAnimation = clientbound(GeoBlockAnimationPayload.TYPE, GeoBlockAnimationPayload.STREAM_CODEC)
@@ -32,6 +33,7 @@ object ECRPackets : PacketRegistry(ModId) {
         MaxPayloadSize(8 * 1024 * 1024)
     )
     val researchProgress = clientbound(ResearchProgressPayload.TYPE, ResearchProgressPayload.STREAM_CODEC)
+    val vfxCommand = clientbound(VfxCommandPayload.TYPE, VfxCommandPayload.STREAM_CODEC)
 
     val completeResearch = serverbound(CompleteResearchPayload.TYPE, CompleteResearchPayload.STREAM_CODEC) { payload ->
         ResearchProgress.tryUnlock(player, payload.research)

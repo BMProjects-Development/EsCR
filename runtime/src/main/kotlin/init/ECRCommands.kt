@@ -1,6 +1,7 @@
 package com.algorithmlx.ecr.init
 
 import com.algorithmlx.ecr.api.ModId
+import com.algorithmlx.ecr.api.vfx.VfxCommands
 import com.algorithmlx.ecr.api.commands.commands
 import com.algorithmlx.ecr.api.research.ResearchJson
 import com.algorithmlx.ecr.api.research.ResearchProgress
@@ -20,6 +21,7 @@ object ECRCommands {
         dispatcher.commands { ModId {
             aliases("essential-craft", "essentialcraft", "ecr")
             requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+            then(VfxCommands.create())
 
             "research" {
                 "reset" {

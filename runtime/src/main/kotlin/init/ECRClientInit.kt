@@ -15,6 +15,7 @@ import com.algorithmlx.ecr.api.particle.BedrockParticleRenderTypes
 import com.algorithmlx.ecr.api.particle.BedrockParticles
 import com.algorithmlx.ecr.api.particle.ClientParticleSystems
 import com.algorithmlx.ecr.api.research.ClientResearchState
+import com.algorithmlx.ecr.api.vfx.VfxClient
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.client.ECRConnectedTextures
 import com.algorithmlx.ecr.client.book.ResearchBookClient
@@ -48,6 +49,7 @@ object ECRClientInit {
 
         ECRConnectedTextures.init()
         BedrockParticleRenderTypes.init()
+        VfxClient.init()
         ECRClientPackets.init()
         ResearchBookClient.init()
         registerReceivers()

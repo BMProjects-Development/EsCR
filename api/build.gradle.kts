@@ -30,6 +30,9 @@ dependencies {
     compileOnly(kotlin("reflect"))
 
     testImplementation(kotlin("test-junit"))
+    testImplementation(libs.bundles.kotlinx.serialization)
+    testImplementation("org.ow2.asm:asm:9.9.1")
+    testImplementation(kotlin("reflect"))
 
     compileOnly("org.spongepowered:mixin:0.8.7")
     compileOnly("org.ow2.asm:asm:9.9.1")
