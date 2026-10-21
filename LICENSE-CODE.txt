@@ -1,0 +1,237 @@
+AlgorithmLX Source-Available License, Version 1.0
+License Identifier: ASAL-1.0
+SPDX License Identifier: LicenseRef-ASAL-1.0
+
+===============================================
+
+Copyright (c) 2026 Nero Elex (AlgorithmLX). All rights reserved.
+
+===============================================
+
+IMPORTANT: This is a custom source-available license, not an open-source
+license approved by the Open Source Initiative.
+
+1. DEFINITIONS
+
+"Project" means the software project to which this license is attached.
+
+"Code" means the software code of the Project that is owned by the
+Licensor and expressly made available under this license, in source form
+and in compiled, executable, or other non-source forms of that code,
+excluding third-party components and Assets.
+
+"Licensor" means the individual or legal entity identified in the
+copyright notice accompanying the Project as the copyright holder
+of the Code and granting permissions under this License.
+
+"Fork" means a repository created from the Project's official GitHub
+repository using GitHub's built-in fork functionality, which maintains an
+identifiable link to the original repository.
+
+"Contributions" means code or other material intentionally submitted to
+the Project's official repository for inclusion, including via a pull
+request, but excluding submissions conspicuously marked as not licensed
+for inclusion.
+
+"Assets" means non-code creative materials associated with the Project,
+including but not limited to textures, models, audio, artwork,
+animations, and other artistic resources.
+
+"Extension" means independently developed software, such as an add-on,
+plugin, module, integration, or adapter, that interacts with the Project
+without incorporating copied or adapted copyright-protected
+implementation code from the Project. Copies or modified versions of
+the Code itself are not Extensions. An Extension may depend on the
+Project and need not be capable of operating without it.
+
+2. PERMITTED USE
+
+Subject to this license, the Licensor grants you a non-exclusive
+worldwide, royalty-free license to:
+
+  a. access, view, download, and study the Code;
+
+  b. copy, modify, compile, and run the Code for personal, educational,
+     research or other non-commercial development purposes;
+
+  c. create and maintain public or private source-code Forks on GitHub,
+     including Forks containing modified source code, provided they retain
+     the original copyright notices, attribution, and this license;
+
+  d. submit Contributions to the Project's official repository;
+
+  e. develop, use, distribute, and commercialize Extensions, and use the
+     Code for Extension development, as expressly permitted by Section 11.
+
+The permissions above do not include the right to publish or distribute
+standalone builds or releases of the Project or derivative software
+containing the Code. The Fork permission in Section 2(c) covers source
+code only and does not authorize distribution of compiled or executable
+forms through Forks or their releases.
+
+3. RESTRICTIONS
+
+Unless you obtain the Licensor's prior written permission, you may not:
+
+  a. use the Code or derivatives of the Code for commercial purposes,
+     including selling, licensing for payment, or monetizing their use,
+     except as expressly permitted by Section 11;
+
+  b. publish, distribute, or make available independent releases, builds,
+     packaged modifications, or other redistributions containing original
+     or modified Code, except for source-code Forks explicitly allowed by
+     Section 2(c);
+
+  c. re-upload or mirror the Code in an independently created repository
+     or on another platform, except as expressly permitted here;
+
+  d. remove, obscure, or misrepresent copyright notices, author credits,
+     or license notices;
+
+  e. falsely represent yourself as the creator or copyright holder of the
+     original Code, or imply the Licensor endorses your Fork.
+
+This license does not restrict uses that applicable law permits without
+the copyright holder's authorization.
+
+4. ATTRIBUTION
+
+Every permitted public Fork must retain the original copyright notices,
+author attribution, and a copy of this license. If you modify the Code,
+you must not misrepresent the modified Code as an official Project release.
+
+5. CONTRIBUTIONS
+
+By intentionally submitting a Contribution for inclusion in the official
+Project, you represent that you have the rights necessary to submit it
+under these terms.
+
+You retain copyright in your own Contribution. You grant the Licensor a
+perpetual, worldwide, non-exclusive, irrevocable, royalty-free license to
+use, reproduce, modify, adapt, merge, distribute, publicly perform,
+publicly display, sublicense, and otherwise exploit that Contribution,
+including in commercial or differently licensed versions of the Project.
+
+You also permit the Contribution to be included in the Project and
+accessed, forked, and modified by other users under this license.
+
+This section applies only to Contributions intentionally submitted for
+inclusion in the official Project. Merely creating or maintaining a Fork
+is not a Contribution and does not trigger this grant.
+
+6. ASSETS AND THIRD-PARTY MATERIALS
+
+This License applies exclusively to the Code, as defined in Section 1.
+
+Assets, including but not limited to textures, models, audio, artwork,
+animations, and other creative resources, are excluded from the scope
+of this License unless expressly stated otherwise.
+
+Such Assets may be subject to separate licenses, as specified in the
+Project's licensing documentation or accompanying license notices.
+
+Third-party code, libraries, dependencies, and other third-party
+materials remain subject to their respective licenses.
+
+Nothing in this License grants rights to materials that the Licensor
+does not own or is not authorized to license.
+
+7. RESERVATION OF RIGHTS
+
+The Licensor retains ownership of the Code in both source and compiled
+forms, including when it is packaged or distributed as finished software.
+Receiving, compiling, or running the Code does not transfer that
+ownership or grant permissions beyond those expressly provided by this
+license or by separate written authorization from the Licensor.
+
+Copyright in Contributions, Extensions, Assets, and third-party
+materials remains with their respective copyright holders, subject to
+the applicable licenses and permissions.
+
+All rights not expressly granted are reserved. No trademark rights or
+rights to use the Project's name or branding as an indication of official
+status are granted.
+
+8. TERMINATION
+
+If you breach this license, the permissions granted by the Licensor under
+it terminate. The Licensor may reinstate them by written permission.
+Termination does not limit remedies available under applicable law.
+
+9. DISCLAIMER
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE CODE IS PROVIDED
+"AS IS", WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. TO THE
+MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSOR SHALL NOT BE
+LIABLE FOR CLAIMS OR DAMAGES ARISING FROM USE OF THE CODE.
+
+10. ADDITIONAL PERMISSIONS
+
+For uses not permitted by this license, including commercial use or
+independent distribution of the Code outside its express permissions,
+seek separate written authorization from the Licensor.
+
+The Licensor reserves the right to grant additional permissions,
+including commercial usage rights, under separate written agreements.
+
+Such permissions apply exclusively to the parties, activities, and
+scope expressly identified in the applicable agreement and do not
+modify the terms of this License for any other recipient.
+
+11. THIRD-PARTY EXTENSIONS
+
+The Licensor expressly permits the development, use, distribution, and
+commercialization of Extensions. Their authors may choose any license
+for their own Extension code, including commercial and proprietary
+licenses, without obtaining separate permission from the Licensor.
+
+As an express exception to the purpose limitations in Sections 2(b) and
+3(a), you may copy, modify, compile, and run the Code for the development,
+compilation, testing, debugging, and maintenance of Extensions, including
+commercial Extensions. Charging for an Extension does not, by itself,
+constitute prohibited commercial use of the Code.
+
+Extensions may access or invoke any accessible components of the
+Project, and may implement its interfaces or inherit from its classes,
+including components of its public API and internal implementation.
+Such interaction or use of the Project as an external dependency does
+not, by itself, make an Extension a modification of the Code or subject
+the Extension to this license.
+
+Changes to the Code itself remain subject to this license, including
+when made while developing an Extension. This section does not authorize
+the sale or other commercialization of the Code itself, or its
+redistribution beyond Section 2(c), whether separately or bundled with
+an Extension, in source or compiled form. It also grants no additional
+rights to Assets or third-party materials.
+
+The Licensor makes no guarantee of compatibility or continued
+availability of internal implementation components.
+
+12. USE OF OFFICIAL RELEASES
+
+The intent of this section is to allow use of the Project, not resale
+or republication of it.
+
+"Official Release" means an unmodified build of the Project published
+by the Licensor through the channels designated in the Project's README.
+
+Notwithstanding Sections 2 and 3, you may without separate permission:
+
+  a. include an Official Release, unmodified, in a bundle, collection,
+     or distribution of independent works, provided it is obtained from,
+     or linked to, an official channel;
+
+  b. run or operate an Official Release for others and monetize that
+     operation in any way, including donations and sales of goods or
+     services;
+
+  c. use an Official Release in videos, streams, articles, and other
+     content, including monetized content.
+
+This section does not permit distributing modified builds, re-uploading
+to other sites or repositories, or selling, or charging for access to,
+the Project itself (its files or builds). Sections 3(d), 3(e), and 4
+continue to apply.
+
+All rights not expressly granted remain reserved.

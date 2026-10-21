@@ -1,0 +1,80 @@
+PROJECT LICENSING NOTICE
+========================
+
+Copyright (c) 2026 Nero Elex (AlgorithmLX).
+
+========================
+This project contains materials distributed under separate licenses.
+The license applicable to a particular component depends on whether
+that component is software code, an asset or third-party material.
+
+1. SOFTWARE CODE
+
+  Original software code owned by Nero Elex (AlgorithmLX) is licensed
+  under the AlgorithmLX Source-Available License, Version 1.0
+  (SPDX identifier: LicenseRef-ASAL-1.0).
+
+  These terms cover both source and compiled forms of the covered code,
+  including when it is packaged or distributed as finished software.
+
+  Full terms: LICENSE-CODE.txt
+
+  These terms permit source-code GitHub forks and contributions under
+  specified conditions. They also permit independently developed
+  extensions, including commercial extensions, and use of the covered
+  code for their development under Section 11 of LICENSE-CODE.txt.
+  They further permit use of Official Releases as described in
+  Section 12 of LICENSE-CODE.txt.
+
+  Independent distribution and commercial use of the covered code
+  outside the license's express permissions require separate written
+  authorization. Ownership of the covered code remains with its
+  copyright holder in both source and compiled forms.
+  Refer to LICENSE-CODE.txt for the complete, controlling terms.
+
+2. ASSETS
+
+  Original project assets in runtime/resources,
+  bootstrap-neoforge/resources, bootstrap-fabric/resources,
+  api/resources, additions/common/resources, additions/fabric/resources,
+  additions/neoforge/resources are designated as licensed under Creative
+  Commons Attribution-NonCommercial-ShareAlike 4.0 International
+  (SPDX identifier: CC-BY-NC-SA-4.0).
+
+  Data files, configuration files and metadata in those directories
+  (for example recipes, loot tables, tags, mixin configurations and mod
+  descriptors) are not Assets and are covered by LICENSE-CODE.txt.
+
+  Full terms: LICENSE-ASSETS.txt
+  Official license: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+  Credits: textures by IWaithI and DeadBlack1; other assets by
+  AlgorithmLX. Attribution requested under Section 3(a)(1) of the CC
+  license: "EsCR - assets by AlgorithmLX; textures by IWaithI and
+  DeadBlack1", with a link
+  https://github.com/BMProjects-Development/EsCR.
+
+  Additional permission: the Licensor additionally permits use of
+  assets included in an Official Release as described in Section 12 of
+  LICENSE-CODE.txt. This is a separate grant under Section 6(c) of the
+  CC license and does not modify that license.
+
+3. THIRD-PARTY MATERIAL
+
+  Third-party libraries, code, and assets remain subject to their
+  respective licenses and notices. Nothing in this document claims
+  ownership of such materials or grants permissions beyond those
+  held by their respective rights holders.
+
+4. INTERPRETATION
+
+  This file identifies the applicable licenses; it does not replace
+  their full texts or grant additional permissions, except for the
+  additional permission stated in Section 2. If a component has a more
+  specific license notice, follow that notice for the component in
+  question.
+
+  For uses requiring additional authorization, obtain written
+  permission from the relevant copyright holder.
+
+========================

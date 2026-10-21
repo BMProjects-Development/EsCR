@@ -1,1 +1,0 @@
-team._0mods.ecr.common.compact.kubejs.ECKubeJSPlugin

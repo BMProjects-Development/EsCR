@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "ecreimagined:flame_cluster",
-    "ecreimagined:water_cluster",
-    "ecreimagined:earth_cluster",
-    "ecreimagined:air_cluster"
-  ]
-}

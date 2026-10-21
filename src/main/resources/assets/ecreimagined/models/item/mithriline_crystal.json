@@ -1,6 +1,0 @@
-{
-  "parent": "ecreimagined:item/crystal/crystal_item_base",
-  "textures": {
-    "texture": "ecreimagined:block/mithriline_plating"
-  }
-}
