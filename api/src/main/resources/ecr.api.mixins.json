@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.algorithmlx.ecr.api.mixin",
+  "client": [
+    "client.FeatureRenderDispatcherMixin",
+    "client.GameRendererAccessor",
+    "client.GuiGraphicsExtractorAccessor",
+    "client.RenderPipelinesAccessor",
+    "client.RenderTypeAccessor",
+    "client.SubmitNodeCollectionMixin",
+    "client.SubmitNodeStorageMixin",
+    "client.VfxCameraMixin",
+    "client.VfxGameRendererMixin",
+    "client.VfxPostChainAccessor",
+    "client.VfxPostPassAccessor",
+    "client.VfxPostPassMixin"
+  ],
+  "mixins": [
+    "CompoundContainerAccessor",
+    "ConsumableMixin",
+    "ItemStackMixin",
+    "RecipeManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

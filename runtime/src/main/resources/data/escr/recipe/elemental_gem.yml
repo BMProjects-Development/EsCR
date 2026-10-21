@@ -1,0 +1,12 @@
+type: minecraft:crafting_shaped
+pattern:
+  - " a "
+  - "bcd"
+  - " e "
+key:
+  a: escr:flame_gem
+  b: escr:water_gem
+  c: minecraft:diamond
+  d: escr:earth_gem
+  e: escr:air_gem
+result: escr:elemental_gem

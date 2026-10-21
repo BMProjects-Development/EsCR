@@ -1,0 +1,24 @@
+model:
+  type: minecraft:select
+  property: minecraft:component
+  component: escr:book_type
+  cases:
+    - when: escr:mru
+      model:
+        type: minecraft:model
+        model: escr:item/research_book/mru
+    - when: escr:engineer
+      model:
+        type: minecraft:model
+        model: escr:item/research_book/engineer
+    - when: escr:hoanna
+      model:
+        type: minecraft:model
+        model: escr:item/research_book/hoanna
+    - when: escr:shade
+      model:
+        type: minecraft:model
+        model: escr:item/research_book/shade
+  fallback:
+    type: minecraft:model
+    model: escr:item/research_book

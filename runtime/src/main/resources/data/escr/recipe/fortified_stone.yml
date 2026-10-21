@@ -1,0 +1,12 @@
+type: escr:magic_table
+input:
+  pattern:
+    - A
+  key:
+    A: minecraft:iron_ingot
+catalyst: minecraft:stone
+time: 1
+mru: 10
+result:
+  count: 4
+  id: escr:fortified_stone

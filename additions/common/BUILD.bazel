@@ -1,0 +1,15 @@
+load("//tools/build:modules.bzl", "ecr_module")
+load("@ecr_additions_project//:config.bzl", "PROJECT")
+
+ecr_module(
+    name = "common",
+    suffix = "common",
+    project = PROJECT,
+    deps = [
+        "//api:classes",
+        "//runtime:classes",
+        "@additions_maven//:mezz_jei_jei_26_3_common_api",
+        "@additions_maven//:me_shedaniel_RoughlyEnoughItems_api",
+        "@additions_maven//:dev_emi_emi_neoforge_api",
+    ],
+)

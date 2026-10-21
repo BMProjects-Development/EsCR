@@ -1,0 +1,3 @@
+parent: minecraft:item/handheld
+textures:
+  layer0: escr:item/weakness_elemental_sword

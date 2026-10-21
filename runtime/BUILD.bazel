@@ -1,0 +1,10 @@
+load("//tools/build:modules.bzl", "ecr_module")
+
+ecr_module(
+    name = "runtime",
+    suffix = "runtime",
+    deps = [
+        "//api:classes",
+        "@maven//:io_github_llamalad7_mixinextras_common",
+    ],
+)

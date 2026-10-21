@@ -1,0 +1,11 @@
+run/
+logs/
+.idea/
+build/
+.kotlin/
+.tmp/
+!tools/build/
+!tools/build/**
+/bazel-*
+/.bazelbsp/
+/.bazelrc.local

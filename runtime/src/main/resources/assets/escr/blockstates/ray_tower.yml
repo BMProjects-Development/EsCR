@@ -1,0 +1,5 @@
+variants:
+  assembled=false:
+    model: escr:block/ray_tower
+  assembled=true:
+    model: escr:block/assembled_multiblock_part

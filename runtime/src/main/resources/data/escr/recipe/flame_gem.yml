@@ -1,0 +1,16 @@
+type: escr:magic_table
+input:
+  pattern:
+    - "ab"
+    - "cd"
+  key:
+    a: minecraft:glowstone_dust
+    b: minecraft:nether_brick
+    c: minecraft:resin_brick
+    d: minecraft:fire_charge
+catalyst: minecraft:magma_cream
+result:
+  id: escr:flame_gem
+  count: 5
+time: 300
+mru: 50

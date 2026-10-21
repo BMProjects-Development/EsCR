@@ -1,0 +1,6 @@
+type: escr:mithriline_furnace
+espe: 32
+input: minecraft:gunpowder
+result:
+  count: 12
+  id: minecraft:bone

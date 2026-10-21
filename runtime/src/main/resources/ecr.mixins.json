@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.algorithmlx.ecr.mixin",
+  "client": [
+    "client.BoundGemSlotTooltipMixin",
+    "client.BlockEntityClientMixin",
+    "client.ClientLevelMixin",
+    "client.ContainerScreenAccessor",
+    "client.MIMCoreInputMixin",
+    "client.MIMFloatingLayerMixin",
+    "client.RenderPipelinesAccessor",
+    "client.RenderTypeAccessor"
+  ],
+  "mixins": [
+    "EntityMixin",
+    "InventoryAccessor",
+    "ItemEntityMixin",
+    "LivingEntityMixin",
+    "SlotPositionAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

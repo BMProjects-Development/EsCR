@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/emitter",
+      "id": "particles",
+      "emission": {
+        "rate": 30,
+        "burst": 12,
+        "duration": 2,
+        "loop": false
+      },
+      "shape": {
+        "kind": "CONE",
+        "radius": 0.3,
+        "angle": 20
+      },
+      "spawn": {
+        "lifetime": 2.5,
+        "speed": 1
+      },
+      "motion": {
+        "gravity": 2
+      },
+      "modules": [
+        {
+          "type": "escr:vfx/force",
+          "id": "wind",
+          "kind": "DIRECTIONAL",
+          "strength": 0.5,
+          "direction": {
+            "x": 1,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "type": "escr:vfx/noise",
+          "id": "noise",
+          "strength": 0.2
+        },
+        {
+          "type": "escr:vfx/collision",
+          "id": "collision",
+          "action": "BOUNCE",
+          "bounce": 0.8,
+          "friction": 0.95
+        },
+        {
+          "type": "escr:vfx/velocity_over_lifetime",
+          "id": "velocity",
+          "velocity": {
+            "x": 0,
+            "y": 0.2,
+            "z": 0
+          },
+          "space": "WORLD"
+        },
+        {
+          "type": "escr:vfx/uv_animation",
+          "id": "uv",
+          "columns": 2,
+          "rows": 2
+        }
+      ],
+      "children": [
+        {
+          "type": "escr:vfx/plane",
+          "id": "spark",
+          "material": {
+            "texture": "minecraft:textures/block/white_concrete.png",
+            "blend": "ADDITIVE"
+          },
+          "particle": {
+            "size": 0.12,
+            "color": {
+              "type": "solid",
+              "color": {
+                "r": 1,
+                "g": 0.6,
+                "b": 0.1,
+                "a": 1
+              }
+            }
+          }
+        },
+        {
+          "type": "escr:vfx/emitter",
+          "id": "death",
+          "subEmission": {
+            "event": "DEATH",
+            "count": 3
+          },
+          "spawn": {
+            "lifetime": 0.4,
+            "speed": 0.5
+          },
+          "shape": {
+            "kind": "SPHERE"
+          },
+          "children": [
+            {
+              "type": "escr:vfx/plane",
+              "id": "child",
+              "material": {
+                "texture": "minecraft:textures/block/white_concrete.png",
+                "blend": "ADDITIVE"
+              },
+              "particle": {
+                "size": 0.08,
+                "color": {
+                  "type": "solid",
+                  "color": {
+                    "r": 0.2,
+                    "g": 1,
+                    "b": 0.8,
+                    "a": 1
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "timeline": {
+    "duration": 5,
+    "loop": false,
+    "tracks": []
+  }
+}

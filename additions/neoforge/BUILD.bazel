@@ -1,0 +1,17 @@
+load("//tools/build:modules.bzl", "ecr_module")
+load("@ecr_additions_project//:config.bzl", "PROJECT")
+
+ecr_module(
+    name = "neoforge",
+    suffix = "neoforge",
+    platform = "neoforge",
+    project = PROJECT,
+    deps = [
+        "//api:classes",
+        "//bootstrap-neoforge:classes",
+        "//additions/common:classes",
+        "@neoforge_maven//:net_neoforged_neoforge_universal",
+        "@neoforge_maven//:dev_nyon_KotlinLangForge",
+    ],
+    merge = ["//additions/common"],
+)

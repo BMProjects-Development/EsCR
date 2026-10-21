@@ -1,0 +1,9 @@
+{
+  "title": "book.escr.title.basics",
+  "icon": {
+    "item": "escr:research_book"
+  },
+  "order": 0,
+  "book_level": "escr:basic",
+  "thread_color": "#6AA8FF"
+}

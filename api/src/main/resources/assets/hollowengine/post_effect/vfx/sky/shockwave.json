@@ -1,0 +1,157 @@
+{
+  "targets": {
+    "swap": {}
+  },
+  "passes": [
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "hollowengine:post/compat/sky/shockwave",
+      "inputs": [
+        {
+          "sampler_name": "SceneColor",
+          "target": "minecraft:main"
+        },
+        {
+          "sampler_name": "SceneDepth",
+          "target": "minecraft:main",
+          "use_depth_buffer": true
+        }
+      ],
+      "output": "swap",
+      "uniforms": {
+        "HollowConfig": [
+          {
+            "name": "DepthScale",
+            "type": "float",
+            "value": 2
+          },
+          {
+            "name": "DepthBias",
+            "type": "float",
+            "value": -1
+          },
+          {
+            "name": "InvViewProjMat",
+            "type": "matrix4x4",
+            "value": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "name": "SkyCenter",
+            "type": "vec3",
+            "value": [
+              0,
+              1,
+              0
+            ]
+          },
+          {
+            "name": "NodeOffset",
+            "type": "vec3",
+            "value": [
+              0,
+              200,
+              0
+            ]
+          },
+          {
+            "name": "EffectTime",
+            "type": "float",
+            "value": 0
+          },
+          {
+            "name": "Radius",
+            "type": "float",
+            "value": 60
+          },
+          {
+            "name": "Width",
+            "type": "float",
+            "value": 6
+          },
+          {
+            "name": "Opacity",
+            "type": "float",
+            "value": 1
+          },
+          {
+            "name": "Stars",
+            "type": "float",
+            "value": 1
+          },
+          {
+            "name": "SkyColor",
+            "type": "vec4",
+            "value": [
+              0.98,
+              0.68,
+              0.26,
+              0.85
+            ]
+          },
+          {
+            "name": "WaveColor",
+            "type": "vec4",
+            "value": [
+              1,
+              0.9,
+              0.62,
+              1
+            ]
+          },
+          {
+            "name": "StarColor",
+            "type": "vec4",
+            "value": [
+              1,
+              0.95,
+              0.82,
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/blit",
+      "inputs": [
+        {
+          "sampler_name": "In",
+          "target": "swap"
+        }
+      ],
+      "output": "minecraft:main",
+      "uniforms": {
+        "BlitConfig": [
+          {
+            "name": "ColorModulate",
+            "type": "vec4",
+            "value": [
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

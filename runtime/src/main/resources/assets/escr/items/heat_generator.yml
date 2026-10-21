@@ -1,0 +1,12 @@
+model:
+  type: minecraft:select
+  property: minecraft:block_state
+  block_state_property: upgraded
+  cases:
+    - when: "true"
+      model:
+        type: minecraft:model
+        model: escr:block/ultra_heat_generator
+  fallback:
+    type: minecraft:model
+    model: escr:block/heat_generator

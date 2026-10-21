@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/plane",
+      "id": "plane",
+      "transform": {
+        "position": {
+          "x": -2.5,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 15,
+          "y": 25,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png",
+        "blend": "BLEND",
+        "cull": false
+      },
+      "tint": {
+        "type": "solid",
+        "color": {
+          "r": 1,
+          "g": 0.4,
+          "b": 0.3,
+          "a": 1
+        }
+      }
+    },
+    {
+      "type": "escr:vfx/cube",
+      "id": "cube",
+      "transform": {
+        "position": {
+          "x": -1.25,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 15,
+          "y": 25,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png",
+        "blend": "OPAQUE",
+        "cull": false
+      },
+      "tint": {
+        "type": "solid",
+        "color": {
+          "r": 0.3,
+          "g": 1,
+          "b": 0.3,
+          "a": 1
+        }
+      }
+    },
+    {
+      "type": "escr:vfx/sphere",
+      "id": "sphere",
+      "transform": {
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 15,
+          "y": 25,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png",
+        "blend": "BLEND",
+        "cull": false
+      },
+      "tint": {
+        "type": "solid",
+        "color": {
+          "r": 0.3,
+          "g": 0.4,
+          "b": 1,
+          "a": 1
+        }
+      }
+    },
+    {
+      "type": "escr:vfx/cylinder",
+      "id": "cylinder",
+      "transform": {
+        "position": {
+          "x": 1.25,
+          "y": 0,
+          "z": 0
+        },
+        "rotation": {
+          "x": 15,
+          "y": 25,
+          "z": 0
+        },
+        "scale": {
+          "x": 0.8,
+          "y": 0.8,
+          "z": 0.8
+        }
+      },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png",
+        "blend": "OPAQUE",
+        "cull": false
+      },
+      "tint": {
+        "type": "solid",
+        "color": {
+          "r": 0.3,
+          "g": 0.4,
+          "b": 1,
+          "a": 1
+        }
+      }
+    },
+    {
+      "type": "escr:vfx/model",
+      "id": "model",
+      "transform": {
+        "position": {
+          "x": 2.5,
+          "y": 0,
+          "z": 0
+        },
+        "scale": {
+          "x": 2,
+          "y": 2,
+          "z": 2
+        }
+      },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png",
+        "blend": "BLEND",
+        "cull": false
+      },
+      "model": "escr:vfx_crystal",
+      "texture": "minecraft:textures/block/gold_block.png",
+      "tint": {
+        "type": "solid",
+        "color": {
+          "r": 0.3,
+          "g": 0.4,
+          "b": 1,
+          "a": 1
+        }
+      }
+    }
+  ],
+  "timeline": {
+    "duration": 4,
+    "loop": false,
+    "tracks": []
+  }
+}

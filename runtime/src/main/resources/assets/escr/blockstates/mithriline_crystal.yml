@@ -1,0 +1,5 @@
+variants:
+  part=crystal_up:
+    model: escr:block/mithriline_crystal/up
+  part=crystal_down:
+    model: escr:block/mithriline_crystal/down

@@ -1,0 +1,4 @@
+type: escr:mithriline_furnace
+espe: 1
+input: minecraft:birch_sapling
+result: minecraft:acacia_sapling

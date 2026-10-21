@@ -1,0 +1,17 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "abc"
+  - "dbe"
+  - "fbg"
+key:
+  a: minecraft:cyan_dye
+  b: minecraft:book
+  c: minecraft:feather
+  d: minecraft:magenta_dye
+  e: minecraft:ink_sac
+  f: minecraft:yellow_dye
+  g: minecraft:glow_ink_sac
+result:
+  id: escr:research_book
+  count: 1
+show_notification: true

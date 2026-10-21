@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/camera_shake",
+      "id": "shake",
+      "strength": {
+        "type": "expr",
+        "source": "max(0, 1 - p.progress)"
+      },
+      "frequency": 12,
+      "amplitude": {
+        "x": 3,
+        "y": 3,
+        "z": 1.5
+      }
+    }
+  ],
+  "timeline": {
+    "duration": 1,
+    "loop": false,
+    "tracks": []
+  }
+}

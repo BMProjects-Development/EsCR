@@ -1,0 +1,17 @@
+variants:
+  controller=false,facing=east:
+    model: &model escr:block/assembled_multiblock_part
+  controller=false,facing=north:
+    model: *model
+  controller=false,facing=south:
+    model: *model
+  controller=false,facing=west:
+    model: *model
+  controller=true,facing=east:
+    model: *model
+  controller=true,facing=north:
+    model: *model
+  controller=true,facing=south:
+    model: *model
+  controller=true,facing=west:
+    model: *model

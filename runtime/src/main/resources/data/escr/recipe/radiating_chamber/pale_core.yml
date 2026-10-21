@@ -1,0 +1,9 @@
+type: escr:radiating_chamber
+input: minecraft:stone
+secondary: escr:elemental_gem
+time: 100
+mru: 10
+ignore_balance: true
+result:
+  id: escr:pale_core
+  count: 1

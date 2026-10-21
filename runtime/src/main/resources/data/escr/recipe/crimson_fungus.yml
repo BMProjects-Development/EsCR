@@ -1,0 +1,4 @@
+type: escr:mithriline_furnace
+espe: 1
+input: minecraft:warped_fungus
+result: minecraft:crimson_fungus

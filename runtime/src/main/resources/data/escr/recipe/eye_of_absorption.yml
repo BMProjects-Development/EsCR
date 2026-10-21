@@ -1,0 +1,12 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "aba"
+  - "bcb"
+  - "aba"
+key:
+  a: minecraft:iron_ingot
+  b: escr:elemental_gem
+  c: minecraft:ender_eye
+result:
+  id: escr:eye_of_absorption
+  count: 1

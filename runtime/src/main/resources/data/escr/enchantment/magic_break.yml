@@ -1,0 +1,16 @@
+anvil_cost: 4
+description:
+  translate: enchantment.escr.magic_break
+effects: {}
+max_cost:
+  base: 55
+  per_level_above_first: 10
+max_level: 3
+min_cost:
+  base: 15
+  per_level_above_first: 10
+primary_items: "#escr:enchantable/magic_break"
+slots:
+  - "mainhand"
+supported_items: "#escr:enchantable/magic_break"
+weight: 2

@@ -1,0 +1,3 @@
+load("//tools/build:modules.bzl", "ecr_module")
+
+ecr_module(name = "api", suffix = "API")

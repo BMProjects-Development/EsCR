@@ -1,0 +1,11 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "aba"
+  - "aba"
+  - "aba"
+key:
+  a: escr:flame_gem
+  b: minecraft:iron_ingot
+result:
+  id: escr:heating_rod
+  count: 1

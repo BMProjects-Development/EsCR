@@ -1,0 +1,6 @@
+{
+  "parent": "escr:block/crystal_base/down",
+  "textures": {
+    "texture": "escr:block/mithriline_plating/base"
+  }
+}

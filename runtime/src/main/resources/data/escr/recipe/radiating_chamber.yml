@@ -1,0 +1,14 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "DAD"
+  - "ECE"
+  - "DHD"
+key:
+  D: escr:diamond_plate
+  A: escr:particle_catcher
+  E: escr:eye_of_absorption
+  C: escr:elemental_core
+  H: escr:heating_rod
+result:
+  id: escr:radiating_chamber
+  count: 1

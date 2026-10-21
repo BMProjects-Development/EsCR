@@ -1,0 +1,16 @@
+type: escr:magic_table
+input:
+  pattern:
+    - "ab"
+    - "cd"
+  key:
+    a: "#escr:ice"
+    b: minecraft:sugar_cane
+    c: minecraft:turtle_scute
+    d: minecraft:heart_of_the_sea
+catalyst: minecraft:snowball
+result:
+  id: escr:water_gem
+  count: 5
+time: 300
+mru: 50

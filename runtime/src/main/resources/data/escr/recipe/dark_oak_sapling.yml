@@ -1,0 +1,4 @@
+type: escr:mithriline_furnace
+espe: 1
+input: minecraft:spruce_sapling
+result: minecraft:dark_oak_sapling

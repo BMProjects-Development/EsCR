@@ -1,0 +1,11 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "ABA"
+  - "B B"
+  - "ABA"
+key:
+  A: escr:fortified_glass
+  B: escr:fortified_stone
+result:
+  id: escr:fortified_frame
+  count: 1

@@ -1,0 +1,16 @@
+load("//tools/build:modules.bzl", "ecr_module")
+load("@ecr_additions_project//:config.bzl", "PROJECT")
+
+ecr_module(
+    name = "fabric",
+    suffix = "fabric",
+    platform = "fabric",
+    project = PROJECT,
+    deps = [
+        "//api:classes",
+        "//bootstrap-fabric:classes",
+        "//additions/common:classes",
+        "@fabric_maven//:net_fabricmc_fabric_loader",
+    ],
+    merge = ["//additions/common"],
+)

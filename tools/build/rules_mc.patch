@@ -1,0 +1,47 @@
+diff --git a/extensions.bzl b/extensions.bzl
+--- a/extensions.bzl
++++ b/extensions.bzl
+@@ -108,12 +108,16 @@ def _append_library_entry(name, manifest):
+             else:
+                 add_classifier(classifier)
+ 
++    native_arch = ""
++    if ":natives-" in name:
++        native_arch = "-arm64" if name.endswith("-arm64") else "-x86_32" if name.endswith("-x86") else "-x86_64"
++
+     if "default" in classifiers:
+         if common:
+             platforms["common"] = "default"
+         else:
+             for platform in allow_platforms:
+-                platforms[platform] = "default"
++                platforms[platform + native_arch] = "default"
+ 
+     if natives:
+         if rules:
+diff --git a/private/repo/repo.bzl b/private/repo/repo.bzl
+--- a/private/repo/repo.bzl
++++ b/private/repo/repo.bzl
+@@ -10,6 +10,10 @@ platform_constraints = {
+ }
+ 
+ def _find_constraint(platform):
++    for arch in ["arm64", "x86_32", "x86_64"]:
++        for os in platform_constraints:
++            if platform == os + "-" + arch:
++                return "//:" + os + "_" + arch
+     constraint = None
+     for prefix, constraint in platform_constraints.items():
+         if platform.startswith(prefix):
+@@ -18,6 +22,11 @@ def _find_constraint(platform):
+     return None
+ 
+ def _minecraft_repo_impl(rctx):
++    constraints = []
++    for os, constraint in platform_constraints.items():
++        for arch, cpu in [("arm64", "aarch64"), ("x86_32", "x86_32"), ("x86_64", "x86_64")]:
++            constraints.append("config_setting(name = " + repr(os + "_" + arch) + ", constraint_values = " + repr([constraint, "@platforms//cpu:" + cpu]) + ")")
++    rctx.file("BUILD.bazel", "\n".join(constraints) + "\n")
+     version_entries = rctx.attr.version_entries
+     version_libraries = rctx.attr.version_libraries
+     library_extracts = rctx.attr.library_extracts

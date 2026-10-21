@@ -1,0 +1,16 @@
+type: escr:magic_table
+input:
+  pattern:
+    - "ab"
+    - "cd"
+  key:
+    a: minecraft:breeze_rod
+    b: minecraft:wind_charge
+    c: minecraft:snowball
+    d: minecraft:white_wool
+catalyst: minecraft:ender_eye
+result:
+  id: escr:air_gem
+  count: 5
+time: 300
+mru: 50

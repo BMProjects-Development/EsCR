@@ -1,0 +1,10 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "a a"
+  - "bcb"
+  - "a a"
+key:
+  a: minecraft:iron_ingot
+  b: minecraft:emerald
+  c: escr:elemental_gem
+result: escr:emerald_plate

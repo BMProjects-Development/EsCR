@@ -1,0 +1,26 @@
+load("//tools/build:modules.bzl", "ecr_module")
+load("//tools/build:game.bzl", "game_launches")
+
+ecr_module(
+    name = "bootstrap-neoforge",
+    suffix = "bootstrap-neoforge",
+    platform = "neoforge",
+    deps = [
+        "//api:classes",
+        "//runtime:classes",
+        "@neoforge_maven//:net_neoforged_neoforge_universal",
+        "@neoforge_maven//:dev_nyon_KotlinLangForge",
+        "@neoforge_maven//:maven_modrinth_iris",
+    ],
+    merge = ["//api", "//runtime"],
+)
+
+game_launches(
+    platform = "neoforge",
+    mod = ":bootstrap-neoforge",
+    deps = [
+        "//tools/build:neoforge_minecraft",
+        "@neoforge_maven//:net_neoforged_neoforge_universal",
+        "@neoforge_maven//:dev_nyon_KotlinLangForge",
+    ],
+)

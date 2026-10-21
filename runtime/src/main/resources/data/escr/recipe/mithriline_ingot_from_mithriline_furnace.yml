@@ -1,0 +1,4 @@
+type: escr:mithriline_furnace
+espe: 60
+input: escr:mithriline_dust
+result: escr:mithriline_ingot

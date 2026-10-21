@@ -1,0 +1,6 @@
+type: escr:mithriline_furnace
+espe: 64
+input: minecraft:gold_ingot
+result:
+  count: 8
+  id: minecraft:iron_ingot

@@ -1,0 +1,534 @@
+diff --git a/MODULE.bazel b/MODULE.bazel
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,203 +1,10 @@
+-"TouchController module file"
++module(name = "touchcontroller", version = "0.3.1-alpha")
+ 
+-module(
+-    name = "touchcontroller",
+-    version = "0.3.1-alpha",
+-)
+-
+-bazel_dep(name = "rules_java", version = "9.9.0")
++bazel_dep(name = "rules_java", version = "9.3.0")
+ bazel_dep(name = "rules_kotlin", version = "2.4.20")
+-bazel_dep(name = "rules_jvm_external", version = "7.1")
+-bazel_dep(name = "bazel_skylib", version = "1.9.2")
+-bazel_dep(name = "bazel_lib", version = "3.7.2")
+-bazel_dep(name = "platforms", version = "1.1.0")
+-bazel_dep(name = "rules_rust", version = "0.74.0")
+-bazel_dep(name = "rules_rust_mdbook", version = "0.74.0")
+-bazel_dep(name = "rules_python", version = "2.3.3")
+-bazel_dep(name = "rules_jni", version = "0.11.1")
+-bazel_dep(name = "rules_cc", version = "0.2.25")
+-bazel_dep(name = "rules_shell", version = "0.8.0")
+-bazel_dep(name = "hermetic_cc_toolchain", version = "4.1.0")
+-bazel_dep(name = "bazel_worker_api", version = "0.0.11")
+-bazel_dep(name = "with_cfg.bzl", version = "1.0.0")
+-bazel_dep(name = "rules_apple", version = "5.1.0")
+-
+-# FastMerger is not ready, so use jarjar as alternative
+-bazel_dep(name = "bazel_jar_jar", version = "0.1.15")
+-
+-# Our own rules
+-bazel_dep(name = "rules_mc", version = "0.0.0")
+-local_path_override(
+-    module_name = "rules_mc",
+-    path = "rules_mc",
+-)
+-
+-# Patch rule_android to enable maven pinning
+-bazel_dep(name = "rules_android", version = "0.7.3")
+-single_version_override(
+-    module_name = "rules_android",
+-    patch_strip = 1,
+-    patches = [
+-        "//third_party/rules_android/patches:maven_pinning.patch",
+-        "//third_party/rules_android/patches:lower_min_sdk_floor.patch",
+-    ],
+-    version = "0.7.3",
+-)
+-
+-# Patch rules_android_ndk to fix https://github.com/bazelbuild/rules_android_ndk/issues/107
+-bazel_dep(name = "rules_android_ndk", version = "0.1.5")
+-single_version_override(
+-    module_name = "rules_android_ndk",
+-    patch_strip = 1,
+-    patches = [
+-        "//third_party/rules_android_ndk/patches:fix-windows-path.patch",
+-    ],
+-    version = "0.1.5",
+-)
+-
+-# Patch bazel_worker_java to add maven pinning
++bazel_dep(name = "rules_jvm_external", version = "7.2")
+ bazel_dep(name = "bazel_worker_java", version = "0.0.11")
+-single_version_override(
+-    module_name = "bazel_worker_java",
+-    patch_strip = 1,
+-    patches = [
+-        "//third_party/bazel_worker_java/patches:maven_pinning.patch",
+-    ],
+-    version = "0.0.11",
+-)
+-
+-# Patch rules_kotlin to add common source support
+-single_version_override(
+-    module_name = "rules_kotlin",
+-    patch_strip = 1,
+-    patches = [
+-        "//third_party/rules_kotlin/patches:common_library.patch",
+-    ],
+-    version = "2.4.20",
+-)
+-
+-rules_kotlin_extensions = use_extension(
+-    "@rules_kotlin//src/main/starlark/core/repositories:bzlmod_setup.bzl",
+-    "rules_kotlin_extensions",
+-)
+-use_repo(rules_kotlin_extensions, "btapi_impl", "com_github_google_ksp", "com_github_jetbrains_kotlin", "com_github_jetbrains_kotlin_git", "com_github_pinterest_ktlint", "kotlin_build_tools_api", "kotlinx_coroutines_core_jvm", "kotlinx_serialization_core_jvm", "kotlinx_serialization_json", "kotlinx_serialization_json_jvm")
+-
+-bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+-git_override(
+-    module_name = "hedron_compile_commands",
+-    commit = "7fe1eab26d2b8eeb5e1c6a2f38bddb001e3f9696",
+-    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+-)
+-
+-# Patch protobuf to resolve https://github.com/protocolbuffers/protobuf/pull/28224. Can be removed when 34.0 got released
+-bazel_dep(name = "protobuf", version = "36.2")
+-single_version_override(
+-    module_name = "protobuf",
+-    patch_strip = 1,
+-    patches = [
+-        "//third_party/protobuf/patches:protobuf-cargo-lockfile.patch",
+-    ],
+-    version = "36.2",
+-)
+-
+-# libraries
+-bazel_dep(name = "libffi", version = "3.4.7.bcr.4")
+-bazel_dep(name = "bullet", version = "3.26.0-rc0.bcr.2")
+-bazel_dep(name = "glfw", version = "3.4.0.bcr.2")
+-bazel_dep(name = "glm", version = "1.0.3")
+-bazel_dep(name = "zlib", version = "1.3.2")
+-bazel_dep(name = "libpng", version = "1.6.54")
+-
+-# Patch libexpat to add windows support
+-bazel_dep(name = "libexpat", version = "2.7.1.bcr.1")
+-single_version_override(
+-    module_name = "libexpat",
+-    patch_strip = 1,
+-    patches = ["//third_party/expat/patches:add_windows_support.patch"],
+-    version = "2.7.1.bcr.1",
+-)
+-
+-# toolchain
+-include("//module:zig_cc.MODULE.bazel")
+-include("//module:llvm-mingw.MODULE.bazel")
+-
+-# languages
+-include("//module:rust.MODULE.bazel")
+-
+-# platforms
+-include("//module:android.MODULE.bazel")
+-
+-# tools
+-include("//module:mdbook.MODULE.bazel")
+-include("//module:copybara.MODULE.bazel")
+-
+-# rules
+-include("//module:rules.MODULE.bazel")
+-include("//module:minecraft.MODULE.bazel")
+-include("//module:parchment.MODULE.bazel")
+-include("//module:modrinth.MODULE.bazel")
+-
+-# loaders
+-include("//module:neoforge.MODULE.bazel")
+-include("//module:fabric.MODULE.bazel")
+-
+-# third party
+-include("//module/third_party:jkeychain.MODULE.bazel")
+-include("//module/third_party:sodium.MODULE.bazel")
+-include("//module/third_party:iris.MODULE.bazel")
+-include("//module/third_party:kotlinforforge.MODULE.bazel")
+-include("//module/third_party:mocha.MODULE.bazel")
+-include("//module/third_party:wayland.MODULE.bazel")
+-include("//module/third_party:saba.MODULE.bazel")
+-include("//module/third_party:fabric_loom.MODULE.bazel")
+-include("//module/third_party:pngcrush.MODULE.bazel")
+-include("//module/third_party:aboutlibraries.MODULE.bazel")
+-include("//module/third_party:androidx_compose_runtime.MODULE.bazel")
+-include("//module/third_party:androidx_savedstate.MODULE.bazel")
+-include("//module/third_party:androidx_lifecycle.MODULE.bazel")
+-include("//module/third_party:intellij.MODULE.bazel")
+-include("//module/third_party:intellij_bazel.MODULE.bazel")
+-
+-# projects
+-include("//module:blazerod.MODULE.bazel")
+-include("//module:armorstand.MODULE.bazel")
+-include("//module:combine.MODULE.bazel")
+-include("//module:touchcontroller.MODULE.bazel")
+-include("//module:blazesdl.MODULE.bazel")
++bazel_dep(name = "with_cfg.bzl", version = "1.0.0")
+ 
+ maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+-maven.install(
+-    artifacts = [
+-        # Kotlin
+-        "org.jetbrains.kotlin:kotlin-stdlib:2.2.21",
+-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2",
+-        "org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0",
+-        "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0",
+-
+-        # JSON
+-        "com.ubertob.kondor:kondor-core:4.1.0",
+-
+-        # Graphics
+-        "org.joml:joml:1.10.5",
+-        "it.unimi.dsi:fastutil:8.5.15",
+-
+-        # Swing
+-        "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2",
+-
+-        # Testing
+-        "junit:junit:4.13.2",
+-        "org.jetbrains.kotlin:kotlin-test-junit:2.4.20",
+-    ],
+-    fetch_sources = True,
+-    known_contributing_modules = ["protobuf"],
+-    lock_file = "//:maven_install.json",
+-    repositories = [
+-        "https://repo1.maven.org/maven2",
+-        "https://maven.google.com/",
+-        "https://maven.fabricmc.net/",
+-        "https://maven.neoforged.net/releases",
+-    ],
+-)
+ use_repo(maven, "maven")
+-
+-register_toolchains("//:kotlin_toolchain")
+diff --git a/BUILD.bazel b/BUILD.bazel
+--- a/BUILD.bazel
++++ b/BUILD.bazel
+@@ -1,29 +1,7 @@
+-load("@hedron_compile_commands//:refresh_compile_commands.bzl", "refresh_compile_commands")
+ load("@rules_java//java:defs.bzl", "java_library", "java_plugin")
+-load("@rules_kotlin//kotlin:core.bzl", "define_kt_toolchain", "kt_compiler_plugin", "kt_kotlinc_options")
++load("@rules_kotlin//kotlin:core.bzl", "kt_compiler_plugin")
+ load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+ 
+-exports_files(["maven_install.json"])
+-
+-refresh_compile_commands(
+-    name = "refresh_compile_commands",
+-    targets = {
+-        "//touchcontroller/proxy/server/android": "--platforms=//platforms:android_arm64",
+-        "//touchcontroller/proxy/server/ios": "--platforms=//platforms:ios_arm64",
+-        "//touchcontroller/proxy/server/linux:wayland": "--platforms=//platforms:linux_x86_64",
+-        "//touchcontroller/proxy/server/windows:lib": "--platforms=//platforms:windows_x86_64",
+-        "//touchcontroller/proxy/server/windows:lib-legacy": "--platforms=//platforms:windows_x86_64",
+-        "//rule/dev_launch_wrapper:launcher": "",
+-    },
+-)
+-
+-config_setting(
+-    name = "config_release",
+-    values = {
+-        "compilation_mode": "opt",
+-    },
+-)
+-
+ kt_compiler_plugin(
+     name = "kotlin_serialization_plugin",
+     compile_phase = True,
+@@ -44,26 +22,6 @@ kt_jvm_library(
+     ],
+ )
+ 
+-kt_compiler_plugin(
+-    name = "compose_plugin",
+-    id = "androidx.compose.compiler.plugins.kotlin",
+-    target_embedded_compiler = True,
+-    visibility = ["//visibility:public"],
+-    deps = [
+-        "@maven//:org_jetbrains_kotlin_kotlin_compose_compiler_plugin_embeddable",
+-    ],
+-)
+-
+-kt_jvm_library(
+-    name = "compose",
+-    srcs = [],
+-    exported_compiler_plugins = [":compose_plugin"],
+-    visibility = ["//visibility:public"],
+-    exports = [
+-        "@maven//:androidx_compose_runtime_runtime_desktop",
+-    ],
+-)
+-
+ java_plugin(
+     name = "picocli_plugin",
+     processor_class = "picocli.codegen.aot.graalvm.processor.NativeImageConfigGeneratorProcessor",
+@@ -77,23 +35,3 @@ java_library(
+     exports = ["@maven//:info_picocli_picocli"],
+ )
+ 
+-kt_kotlinc_options(
+-    name = "kotlinc_opts",
+-    x_lambdas = "indy",
+-    x_optin = ["kotlin.uuid.ExperimentalUuidApi"],
+-)
+-
+-define_kt_toolchain(
+-    name = "kotlin_toolchain",
+-    api_version = "2.2",
+-    experimental_build_tools_api = True,
+-    #experimental_report_unused_deps = "error",
+-    experimental_strict_kotlin_deps = select({
+-        "@platforms//os:windows": "off",
+-        "//conditions:default": "error",
+-    }),
+-    experimental_use_abi_jars = True,
+-    jvm_target = "21",
+-    kotlinc_options = ":kotlinc_opts",
+-    language_version = "2.2",
+-)
+diff --git a/private/pin_file.bzl b/private/pin_file.bzl
+--- a/private/pin_file.bzl
++++ b/private/pin_file.bzl
+@@ -46,7 +46,7 @@ def _pin_impl(rctx):
+         "",
+         "java_binary(",
+         '    name = "pin",',
+-        '    srcs = ["@//repo/neoform/pin_generator:PinGenerator.java"],',
++        '    srcs = ["@touchcontroller//repo/neoform/pin_generator:PinGenerator.java"],',
+         '    main_class = "PinGenerator",',
+         "    deps = [",
+         '        "@bazel_tools//tools/java/runfiles",',
+diff --git a/repo/neoform.bzl b/repo/neoform.bzl
+--- a/repo/neoform.bzl
++++ b/repo/neoform.bzl
+@@ -1,9 +1,9 @@
+ """NeoForm repository rule, fetches NeoForm artifact and setup Bazel rules"""
+ 
+-load("@//private:maven_coordinate.bzl", _convert_maven_coordinate = "convert_maven_coordinate", _convert_maven_coordinate_to_repo = "convert_maven_coordinate_to_repo", _convert_maven_coordinate_to_url = "convert_maven_coordinate_to_url")
+-load("@//private:pin_file.bzl", _parse_pin_file = "parse_pin_file", _pin_file = "pin_file")
+-load("@//private:snake_case.bzl", _camel_case_to_snake_case = "camel_case_to_snake_case")
+-load("@//repo/neoform:definitions.bzl", _default_function_special = "default_function_special", _function_specials = "function_specials", _legacy_names = "legacy_names", _output_placeholder_map = "output_placeholder_map", _placeholder_config = "placeholder_config", _step_handlers = "step_handlers")
++load("@touchcontroller//private:maven_coordinate.bzl", _convert_maven_coordinate = "convert_maven_coordinate", _convert_maven_coordinate_to_repo = "convert_maven_coordinate_to_repo", _convert_maven_coordinate_to_url = "convert_maven_coordinate_to_url")
++load("@touchcontroller//private:pin_file.bzl", _parse_pin_file = "parse_pin_file", _pin_file = "pin_file")
++load("@touchcontroller//private:snake_case.bzl", _camel_case_to_snake_case = "camel_case_to_snake_case")
++load("@touchcontroller//repo/neoform:definitions.bzl", _default_function_special = "default_function_special", _function_specials = "function_specials", _legacy_names = "legacy_names", _output_placeholder_map = "output_placeholder_map", _placeholder_config = "placeholder_config", _step_handlers = "step_handlers")
+ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
+ load("@rules_java//java:defs.bzl", "JavaInfo")
+ 
+@@ -169,7 +169,7 @@ def _generate_function_build_file(rctx, version_info, java_target, function_name
+     runtime_deps.extend(spec.extra_runtime_deps)
+ 
+     function_build = [
+-        'load("@//repo/neoform:java_version_binary.bzl", "java_%s_binary")' % java_target,
++        'load("@touchcontroller//repo/neoform:java_version_binary.bzl", "java_%s_binary")' % java_target,
+         "",
+         "java_%s_binary(" % java_target,
+         '    name = "%s",' % function_name,
+@@ -252,7 +252,7 @@ def _generate_function_impl(function_name, impl_name, output_type, main_class, a
+     rule_impl = []
+ 
+     if output_type == "jar":
+-        rule_impl.append('load("@//repo/neoform:java_source_info.bzl", "JavaSourceInfo")')
++        rule_impl.append('load("@touchcontroller//repo/neoform:java_source_info.bzl", "JavaSourceInfo")')
+ 
+     # 1. output_file + log files
+     rule_impl += [
+diff --git a/repo/neoforge.bzl b/repo/neoforge.bzl
+--- a/repo/neoforge.bzl
++++ b/repo/neoforge.bzl
+@@ -1,8 +1,8 @@
+ """NeoForge repository rule, fetches NeoForge artifact and setup Bazel rules"""
+ 
+-load("@//private:maven_coordinate.bzl", _convert_maven_coordinate = "convert_maven_coordinate", _convert_maven_coordinate_to_repo = "convert_maven_coordinate_to_repo", _convert_maven_coordinate_to_url = "convert_maven_coordinate_to_url")
+-load("@//private:pin_file.bzl", _parse_pin_file = "parse_pin_file", _pin_file = "pin_file")
+-load("@//repo/neoform/rule:split_resources.bzl", "SplitResourceInfo")
++load("@touchcontroller//private:maven_coordinate.bzl", _convert_maven_coordinate = "convert_maven_coordinate", _convert_maven_coordinate_to_repo = "convert_maven_coordinate_to_repo", _convert_maven_coordinate_to_url = "convert_maven_coordinate_to_url")
++load("@touchcontroller//private:pin_file.bzl", _parse_pin_file = "parse_pin_file", _pin_file = "pin_file")
++load("@touchcontroller//repo/neoform/rule:split_resources.bzl", "SplitResourceInfo")
+ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_jar")
+ 
+ _neoforge_repository_url = "https://maven.neoforged.net/releases"
+@@ -89,15 +89,15 @@ def _neoforge_repo_impl(rctx):
+ 
+     build_file_contents = [
+         'package(default_visibility = ["//visibility:public"])',
+-        'load("@//repo/neoforge/rule:java_source_transform.bzl", "java_source_transform")',
+-        'load("@//repo/neoforge/rule:remove_manifest.bzl", "remove_manifest")',
+-        'load("@//repo/neoforge/rule:java_merge.bzl", "java_merge")',
+-        'load("@//repo/neoform/rule:patch_zip_content.bzl", "patch_zip_content")',
+-        'load("@//repo/neoform/rule:import_source_info.bzl", "import_source_info")',
+-        'load("@//repo/neoform/rule:inject_zip_content.bzl", "inject_zip_content")',
+-        'load("@//repo/neoform/rule:jar_import.bzl", "jar_import")',
+-        'load("@//repo/neoform/rule:split_resources.bzl", "strip_resources_file")',
+-        'load("@//repo/neoforge/rule:extract_resources.bzl", "extract_resources")',
++        'load("@touchcontroller//repo/neoforge/rule:java_source_transform.bzl", "java_source_transform")',
++        'load("@touchcontroller//repo/neoforge/rule:remove_manifest.bzl", "remove_manifest")',
++        'load("@touchcontroller//repo/neoforge/rule:java_merge.bzl", "java_merge")',
++        'load("@touchcontroller//repo/neoform/rule:patch_zip_content.bzl", "patch_zip_content")',
++        'load("@touchcontroller//repo/neoform/rule:import_source_info.bzl", "import_source_info")',
++        'load("@touchcontroller//repo/neoform/rule:inject_zip_content.bzl", "inject_zip_content")',
++        'load("@touchcontroller//repo/neoform/rule:jar_import.bzl", "jar_import")',
++        'load("@touchcontroller//repo/neoform/rule:split_resources.bzl", "strip_resources_file")',
++        'load("@touchcontroller//repo/neoforge/rule:extract_resources.bzl", "extract_resources")',
+         'load("@rules_java//java:defs.bzl", "java_library", "java_import")',
+         "",
+         "alias(",
+diff --git a/repo/neoform/definitions.bzl b/repo/neoform/definitions.bzl
+--- a/repo/neoform/definitions.bzl
++++ b/repo/neoform/definitions.bzl
+@@ -1,6 +1,6 @@
+ """NeoForm definitions: dicts for dispatch, placeholder config, function specials, etc."""
+ 
+-load("@//private:maven_coordinate.bzl", _convert_maven_coordinate_to_repo = "convert_maven_coordinate_to_repo")
++load("@touchcontroller//private:maven_coordinate.bzl", _convert_maven_coordinate_to_repo = "convert_maven_coordinate_to_repo")
+ 
+ # ── URL constants ──────────────────────────────────────────────────────────────
+ 
+@@ -58,7 +58,7 @@ def _decompile_extra_attrs(context):
+         return []
+     return [
+         '        "_sas_bin": attr.label(',
+-        '            default = "@//repo/neoform/rule/sas",',
++        '            default = "@touchcontroller//repo/neoform/rule/sas",',
+         "            executable = True,",
+         '            cfg = "exec",',
+         "        ),",
+@@ -79,7 +79,7 @@ default_function_special = struct(
+ function_specials = {
+     "decompile": struct(
+         main_class_override = "DecompilerWrapper",
+-        extra_runtime_deps = ['"@//repo/neoform/rule/decompiler_wrapper"'],
++        extra_runtime_deps = ['"@touchcontroller//repo/neoform/rule/decompiler_wrapper"'],
+         before_template_args = _decompile_before_args,
+         output_type = "jar",
+         extra_attrs = _decompile_extra_attrs,
+@@ -220,16 +220,16 @@ def _build_strip_step(task_def, ctx):
+ step_handlers = {
+     "strip": struct(
+         load_line = lambda spec: (
+-            'load("@//repo/neoform/rule:strip_mapped_classes.bzl", strip = "strip_mapped_classes")' if spec == 1 else 'load("@//repo/neoform/rule:split_resources.bzl", strip = "split_resources")'
++            'load("@touchcontroller//repo/neoform/rule:strip_mapped_classes.bzl", strip = "strip_mapped_classes")' if spec == 1 else 'load("@touchcontroller//repo/neoform/rule:split_resources.bzl", strip = "split_resources")'
+         ),
+         build = _build_strip_step,
+     ),
+     "inject": struct(
+-        load_line = lambda _spec: 'load("@//repo/neoform/rule:inject_zip_content.bzl", inject = "inject_zip_content")',
++        load_line = lambda _spec: 'load("@touchcontroller//repo/neoform/rule:inject_zip_content.bzl", inject = "inject_zip_content")',
+         build = lambda task_def, ctx: task_def.append('    deps = ["//:inject"],'),
+     ),
+     "patch": struct(
+-        load_line = lambda _spec: 'load("@//repo/neoform/rule:patch_zip_content.bzl", patch = "patch_zip_content")',
++        load_line = lambda _spec: 'load("@touchcontroller//repo/neoform/rule:patch_zip_content.bzl", patch = "patch_zip_content")',
+         build = _build_patch_step,
+     ),
+ }
+diff --git a/repo/neoform/rule/import_source_info.bzl b/repo/neoform/rule/import_source_info.bzl
+--- a/repo/neoform/rule/import_source_info.bzl
++++ b/repo/neoform/rule/import_source_info.bzl
+@@ -1,4 +1,4 @@
+-load("@//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
++load("@touchcontroller//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
+ load("@rules_java//java:defs.bzl", "JavaInfo", "java_common")
+ 
+ def _import_source_info_impl(ctx):
+diff --git a/repo/neoform/rule/inject_zip_content.bzl b/repo/neoform/rule/inject_zip_content.bzl
+--- a/repo/neoform/rule/inject_zip_content.bzl
++++ b/repo/neoform/rule/inject_zip_content.bzl
+@@ -1,4 +1,4 @@
+-load("@//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
++load("@touchcontroller//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
+ load("@rules_java//java:defs.bzl", "JavaInfo")
+ 
+ def _inject_zip_content_impl(ctx):
+diff --git a/repo/neoform/rule/patch_zip_content.bzl b/repo/neoform/rule/patch_zip_content.bzl
+--- a/repo/neoform/rule/patch_zip_content.bzl
++++ b/repo/neoform/rule/patch_zip_content.bzl
+@@ -1,4 +1,4 @@
+-load("@//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
++load("@touchcontroller//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
+ 
+ PatchZipInfo = provider(
+     doc = "Contains both the patched and rejected JARs",
+diff --git a/repo/neoforge/rule/java_source_transform.bzl b/repo/neoforge/rule/java_source_transform.bzl
+--- a/repo/neoforge/rule/java_source_transform.bzl
++++ b/repo/neoforge/rule/java_source_transform.bzl
+@@ -1,4 +1,4 @@
+-load("@//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
++load("@touchcontroller//repo/neoform:java_source_info.bzl", "JavaSourceInfo")
+ 
+ JavaSourceTransformInfo = provider(
+     doc = "Provides information about a Java source transformation",
+diff --git a/repo/neoforge/rule/extract_resources.bzl b/repo/neoforge/rule/extract_resources.bzl
+--- a/repo/neoforge/rule/extract_resources.bzl
++++ b/repo/neoforge/rule/extract_resources.bzl
+@@ -22,7 +22,7 @@ extract_resources = rule(
+     attrs = {
+         "src": attr.label(mandatory = True, allow_single_file = [".jar", ".zip", ".srcjar"]),
+         "_extract_resources": attr.label(
+-            default = "@//repo/neoforge/rule/extract_resources",
++            default = "@touchcontroller//repo/neoforge/rule/extract_resources",
+             executable = True,
+             cfg = "exec",
+         ),
+diff --git a/rule/access_widener_transformer/AccessWidenerTransformer.java b/rule/access_widener_transformer/AccessWidenerTransformer.java
+--- a/rule/access_widener_transformer/AccessWidenerTransformer.java
++++ b/rule/access_widener_transformer/AccessWidenerTransformer.java
+@@ -2,7 +2,6 @@ package top.fifthlight.fabazel.accesswidenertransformer;
+ 
+ import net.fabricmc.classtweaker.api.ClassTweaker;
+ import net.fabricmc.classtweaker.api.ClassTweakerReader;
+-import net.fabricmc.classtweaker.classvisitor.AccessWidenerClassVisitor;
+ import org.jspecify.annotations.NonNull;
+ import org.jspecify.annotations.Nullable;
+ import org.objectweb.asm.ClassReader;
+@@ -16,6 +15,8 @@ import java.nio.file.Path;
+ import java.nio.file.attribute.FileTime;
+ import java.time.LocalDateTime;
+ import java.time.ZoneOffset;
++import java.util.Map;
++import java.util.TreeMap;
+ import java.util.jar.JarEntry;
+ import java.util.jar.JarInputStream;
+ import java.util.jar.JarOutputStream;
+@@ -54,6 +55,7 @@ public class AccessWidenerTransformer extends Worker {
+                 }
+             }
+ 
++            Map<String, byte[]> generated = new TreeMap<>();
+             try (var input = new JarInputStream(Files.newInputStream(inputFile)); var output = new JarOutputStream(Files.newOutputStream(outputFile))) {
+                 JarEntry entry;
+                 while ((entry = input.getNextJarEntry()) != null) {
+@@ -64,7 +66,10 @@ public class AccessWidenerTransformer extends Worker {
+                     if (entry.getName().endsWith(".class")) {
+                         var classReader = new ClassReader(input);
+                         var classWriter = new ClassWriter(0);
+-                        var classVisitor = new AccessWidenerClassVisitor(Opcodes.ASM9, classWriter, accessWidener);
++                        var classVisitor = accessWidener.createClassVisitor(Opcodes.ASM9, classWriter, (name, bytes) -> {
++                            if (generated.putIfAbsent(name + ".class", bytes) != null)
++                                throw new IllegalStateException("Duplicate generated class: " + name);
++                        });
+                         classReader.accept(classVisitor, 0);
+                         output.write(classWriter.toByteArray());
+                     } else {
+@@ -74,6 +79,13 @@ public class AccessWidenerTransformer extends Worker {
+                     input.closeEntry();
+                     output.closeEntry();
+                 }
++                for (var generatedClass : generated.entrySet()) {
++                    var generatedEntry = new JarEntry(generatedClass.getKey());
++                    setJarEntryTime(generatedEntry);
++                    output.putNextEntry(generatedEntry);
++                    output.write(generatedClass.getValue());
++                    output.closeEntry();
++                }
+             }
+             return 0;
+         } catch (Exception e) {

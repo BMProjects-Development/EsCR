@@ -1,0 +1,71 @@
+load("@rules_java//java:defs.bzl", "java_binary", "java_import", "java_library")
+load("@ecr_project//:config.bzl", "PROJECT")
+load("@rules_kotlin//kotlin:core.bzl", "define_kt_toolchain", "kt_compiler_plugin", "kt_kotlinc_options")
+load("@touchcontroller//rule:extract_access_widener.bzl", "extract_access_widener")
+load("@touchcontroller//rule:apply_access_widener.bzl", "apply_access_widener")
+
+MINECRAFT_LIBRARIES = "@minecraft//" + PROJECT["minecraft_version"] + ":client_libraries"
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["maven.lock.json", "fabric_maven.lock.json", "neoforge_maven.lock.json", "additions_maven.lock.json", "touchcontroller.patch", "rules_mc.patch", "neoform_pin.txt", "neoforge_pin.txt"])
+
+kt_kotlinc_options(
+    name = "kotlin_options",
+    x_lambdas = "indy",
+)
+
+define_kt_toolchain(
+    name = "kotlin_toolchain",
+    language_version = ".".join(PROJECT["kotlin_version"].split(".")[:2]),
+    api_version = ".".join(PROJECT["kotlin_version"].split(".")[:2]),
+    jvm_target = str(PROJECT["java_version"]),
+    kotlinc_options = ":kotlin_options",
+)
+
+kt_compiler_plugin(
+    name = "serialization",
+    id = "org.jetbrains.kotlinx.serialization",
+    deps = ["@rules_kotlin//kotlin/compiler:kotlinx-serialization-compiler-plugin"],
+)
+
+java_binary(
+    name = "archive_tool",
+    srcs = ["ArchiveTool.java", "ResourceProcessor.java"],
+    main_class = "com.algorithmlx.escr.build.ArchiveTool",
+    deps = ["@maven//:com_google_code_gson_gson", "@maven//:org_yaml_snakeyaml"],
+)
+
+java_library(
+    name = "game_launcher",
+    srcs = ["GameLauncher.java", "GameLaunchOptions.java"],
+    deps = ["@maven//:com_google_code_gson_gson", "@rules_java//java/runfiles"],
+)
+
+java_import(
+    name = "minecraft",
+    jars = ["@neoform//tasks/joined_pre_process_jar"],
+    deps = [MINECRAFT_LIBRARIES],
+)
+
+java_library(
+    name = "neoforge_minecraft",
+    exports = ["@neoforge//:neoforge", MINECRAFT_LIBRARIES],
+)
+
+extract_access_widener(
+    name = "fabric_access_wideners",
+    inputs = ["@fabric_maven//:net_fabricmc_fabric_api_fabric_api"],
+)
+
+apply_access_widener(
+    name = "fabric_minecraft_accessible",
+    input = ":minecraft",
+    srcs = [":fabric_access_wideners"],
+)
+
+java_library(
+    name = "fabric_minecraft",
+    exports = [":fabric_minecraft_accessible", MINECRAFT_LIBRARIES],
+)
+

@@ -1,0 +1,10 @@
+type: escr:mithriline_furnace
+espe: 128
+input:
+  fabric:type: &t escr:count
+  neoforge:ingredient_type: *t
+  base: minecraft:ender_pearl
+  count: 3
+result:
+  count: 2
+  id: minecraft:blaze_rod

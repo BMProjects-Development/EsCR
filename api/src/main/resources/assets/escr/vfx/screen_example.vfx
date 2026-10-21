@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/post_effect",
+      "id": "grayscale",
+      "shader": "escr:vfx/post/grayscale",
+      "strength": 0.65
+    },
+    {
+      "type": "escr:vfx/post_effect",
+      "id": "chromatic",
+      "shader": "escr:vfx/post/chromatic_aberration",
+      "strength": 2,
+      "centerX": 0.5,
+      "centerY": 0.5
+    }
+  ],
+  "timeline": {
+    "duration": 2,
+    "loop": false,
+    "tracks": []
+  }
+}

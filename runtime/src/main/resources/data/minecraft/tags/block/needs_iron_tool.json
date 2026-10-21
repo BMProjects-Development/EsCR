@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "escr:flame_cluster",
+    "escr:water_cluster",
+    "escr:earth_cluster",
+    "escr:air_cluster"
+  ]
+}

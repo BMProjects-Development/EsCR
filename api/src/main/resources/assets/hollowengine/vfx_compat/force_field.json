@@ -1,0 +1,8 @@
+{
+  "shader": "hollowengine:vfx/force_field",
+  "uniforms": [
+    { "name": "FieldColor", "value": { "type": "color", "value": { "type": "solid", "color": { "r": 0.35, "g": 0.7, "b": 1, "a": 1 } } } },
+    { "name": "FresnelPower", "value": { "type": "float", "value": 2.5 } },
+    { "name": "IntersectionWidth", "value": { "type": "float", "value": 0.35 } }
+  ]
+}

@@ -1,0 +1,7 @@
+https://maven.neoforged.net/releases/ca/weblite/java-objc-bridge/1.1/java-objc-bridge-1.1.jar 77e34a13bccffc6c8b1a0e3ed46ddb0ea7dd56f2104ecdfacaaec9e4054ac332
+https://maven.neoforged.net/releases/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar 766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7
+https://maven.neoforged.net/releases/net/neoforged/installertools/installertools/4.0.17/installertools-4.0.17-fatjar.jar 412c5f5bd74717d62441a3d5914945122f7f44f063c90284545bb0b9ba8751b9
+https://maven.neoforged.net/releases/net/neoforged/mergetool/2.0.7/mergetool-2.0.7-api.jar e78f586e085206e3b5699bf0a8de3ee94c59dd34d8cd5b4033e8c58e5ac9c2ec
+https://maven.neoforged.net/releases/net/neoforged/vineflower-plugins/0.1.6/vineflower-plugins-0.1.6.jar 4702b1403a19d2fc082eb67deb564a18c68920315fbf2cb67d8821eef653abef
+https://maven.neoforged.net/releases/org/jetbrains/annotations/26.0.2-1/annotations-26.0.2-1.jar 2037be378980d3ba9333e97955f3b2cde392aa124d04ca73ce2eee6657199297
+https://maven.neoforged.net/releases/org/vineflower/vineflower/1.12.0/vineflower-1.12.0.jar 1dfcfe974395734fa467ce620661c7623d05ba83670de0529b1fbd63ff548b9d

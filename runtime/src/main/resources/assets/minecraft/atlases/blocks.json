@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "escr:block/mithriline_furnace"
+    },
+    {
+      "type": "single",
+      "resource": "escr:particle/mithriline_furnace"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+type: escr:structure
+multiblock: escr:air_crystal
+input: minecraft:wind_charge
+placement: escr:air_cluster
+time: 20
+chance:
+  min: 3
+  max: 5

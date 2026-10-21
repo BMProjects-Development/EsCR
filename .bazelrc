@@ -1,0 +1,15 @@
+common --enable_bzlmod
+build --@protobuf//bazel/toolchains:prefer_prebuilt_protoc
+build --java_language_version=25
+build --tool_java_language_version=25
+build --java_runtime_version=local_jdk
+build --tool_java_runtime_version=local_jdk
+build --enable_runfiles
+build --javacopt=-encoding
+build --javacopt=UTF-8
+build --jvmopt=-Dfile.encoding=UTF-8
+build --verbose_failures
+build --worker_max_instances=KotlinCompile=2
+test --test_output=errors
+
+try-import %workspace%/.bazelrc.local

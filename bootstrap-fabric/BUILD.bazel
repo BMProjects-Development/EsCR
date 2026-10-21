@@ -1,0 +1,34 @@
+load("//tools/build:modules.bzl", "ecr_module")
+load("//tools/build:game.bzl", "game_launches")
+
+ecr_module(
+    name = "bootstrap-fabric",
+    suffix = "bootstrap-fabric",
+    platform = "fabric",
+    deps = [
+        "//api:classes",
+        "//runtime:classes",
+        "@fabric_maven//:net_fabricmc_fabric_loader",
+        "@fabric_maven//:net_fabricmc_fabric_api_fabric_api",
+        "@fabric_maven//:net_fabricmc_fabric_language_kotlin",
+        "@fabric_maven//:maven_modrinth_iris",
+    ],
+    merge = ["//api", "//runtime"],
+)
+
+game_launches(
+    platform = "fabric",
+    mod = ":bootstrap-fabric",
+    deps = [
+        "//tools/build:minecraft",
+        "@fabric_maven//:net_fabricmc_fabric_loader",
+        "@fabric_maven//:net_fabricmc_fabric_api_fabric_api",
+        "@fabric_maven//:net_fabricmc_fabric_language_kotlin",
+        "@fabric_maven//:net_fabricmc_sponge_mixin",
+        "@fabric_maven//:org_ow2_asm_asm",
+        "@fabric_maven//:org_ow2_asm_asm_analysis",
+        "@fabric_maven//:org_ow2_asm_asm_commons",
+        "@fabric_maven//:org_ow2_asm_asm_tree",
+        "@fabric_maven//:org_ow2_asm_asm_util",
+    ],
+)

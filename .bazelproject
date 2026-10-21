@@ -1,0 +1,33 @@
+directories:
+  api
+  runtime
+  bootstrap-fabric
+  bootstrap-neoforge
+  additions
+  tools/build
+  -bazel-bin
+  -bazel-out
+  -bazel-testlogs
+  -bazel-escr
+
+targets:
+  //api:classes
+  //runtime:classes
+  //bootstrap-fabric:classes
+  //bootstrap-neoforge:classes
+  //additions/common:classes
+  //additions/fabric:classes
+  //additions/neoforge:classes
+  //additions:release
+  //bootstrap-fabric:client
+  //bootstrap-fabric:server
+  //bootstrap-neoforge:client
+  //bootstrap-neoforge:server
+  //:release
+
+derive_targets_from_directories: false
+
+workspace_type: java
+
+additional_languages:
+  kotlin

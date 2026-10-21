@@ -1,0 +1,7 @@
+type: escr:magic_table
+catalyst: minecraft:iron_ingot
+time: 50
+mru: 10
+result:
+  count: 1
+  id: escr:magical_ingot

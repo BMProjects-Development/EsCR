@@ -1,0 +1,9 @@
+type: escr:radiating_chamber
+input: minecraft:diamond
+secondary: minecraft:emerald
+time: 100
+mru: 50
+ignore_balance: true
+result:
+  id: escr:mru_resonating_crystal
+  count: 1

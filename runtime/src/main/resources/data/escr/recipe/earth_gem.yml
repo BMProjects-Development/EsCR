@@ -1,0 +1,16 @@
+type: escr:magic_table
+input:
+  pattern:
+    - "ab"
+    - "cd"
+  key:
+    a: minecraft:honeycomb
+    b: minecraft:mud
+    c: minecraft:moss_block
+    d: minecraft:sulfur
+catalyst: minecraft:torchflower
+result:
+  id: escr:earth_gem
+  count: 5
+time: 300
+mru: 50

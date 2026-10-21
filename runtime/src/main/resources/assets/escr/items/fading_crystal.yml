@@ -1,0 +1,4 @@
+model:
+  type: minecraft:model
+  model: escr:item/fading_crystal
+

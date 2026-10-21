@@ -1,0 +1,35 @@
+{
+  "title": "book.escr.entry.welcome.title",
+  "description": "book.escr.entry.welcome.description",
+  "category": "escr:basics",
+  "icon": {
+    "item": "escr:research_book"
+  },
+  "tasks": [
+    {
+      "type": "open"
+    }
+  ],
+  "pages": [
+    {
+      "elements": [
+        {
+          "type": "text",
+          "text": "book.escr.entry.welcome.content.1"
+        },
+        {
+          "type": "text",
+          "text": "book.escr.entry.welcome.content.2"
+        },
+        {
+          "type": "space",
+          "height": 8
+        },
+        {
+          "type": "text",
+          "text": "book.escr.entry.welcome.content.3"
+        }
+      ]
+    }
+  ]
+}

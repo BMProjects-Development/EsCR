@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${modVersion}",
+  "name": "${modName}",
+  "description": "${modDesc}",
+  "authors": [
+    "${modAuthors}"
+  ],
+  "license": "${modLicense}",
+  "icon": "ecr.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.algorithmlx.ecr.fabric.init.FabricInit::init"
+    ],
+    "client": [
+      "com.algorithmlx.ecr.fabric.init.FabricClientInit::init"
+    ]
+  },
+  "mixins": [
+    "ecr.mixins.json",
+    "ecr.api.mixins.json",
+    "ecr.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fabricLoaderVersion}",
+    "minecraft": "~${minecraftVersion}",
+    "fabric-api": "*",
+    "fabric-language-kotlin": "*"
+  }
+}

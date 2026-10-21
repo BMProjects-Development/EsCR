@@ -1,0 +1,6 @@
+values:
+  - "#minecraft:enchantable/melee_weapon"
+  - "#minecraft:enchantable/bow"
+  - "#minecraft:enchantable/crossbow"
+  - "#minecraft:enchantable/trident"
+  - "#minecraft:enchantable/mace"

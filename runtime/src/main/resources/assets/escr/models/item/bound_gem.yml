@@ -1,0 +1,3 @@
+parent: minecraft:item/generated
+textures:
+  layer0: escr:item/bound_gem

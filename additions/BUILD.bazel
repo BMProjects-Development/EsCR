@@ -1,0 +1,11 @@
+load("//tools/build:modules.bzl", "universal_mod")
+load("@ecr_additions_project//:config.bzl", "PROJECT")
+
+package(default_visibility = ["//visibility:public"])
+
+universal_mod(
+    name = "release",
+    fabric = "//additions/fabric",
+    neoforge = "//additions/neoforge",
+    project = PROJECT,
+)

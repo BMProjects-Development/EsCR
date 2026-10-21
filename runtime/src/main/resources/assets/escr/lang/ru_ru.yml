@@ -1,0 +1,376 @@
+#$json_flat
+#$json_lowercase
+tag.item.escr:
+  enchantable:
+    magic_break: Breaks Magic Shield
+  ice: Лёд
+  link_viewer: MRU Link Viewer
+
+itemGroup.escr:
+  items: "Essential Craft: Предметы"
+  blocks: "Essential Craft: Блоки"
+
+item.escr:
+  hammer: Молот
+  soul_stone: Камень души
+  research_book: Книга исследований
+  weakness_elemental_axe: Ослабленный элементальный топор
+  weakness_elemental_hoe: Ослабленная элементальная мотыга
+  weakness_elemental_pickaxe: Ослабленная элементальная кирка
+  weakness_elemental_shovel: Ослабленная элементальная лопата
+  weakness_elemental_sword: Ослабленная элементальный меч
+  elemental_gem: Элементальный кристалл
+  flame_gem: Пылающий кристалл
+  water_gem: Водный кристалл
+  earth_gem: Земной кристалл
+  air_gem: Воздушный кристалл
+  bound_gem: Кристалл привязки
+  elemental_core: Элементальное ядро
+  combined_magic_alloys: Комбинированный магический сплав
+  demonic_core: Демоническое ядро
+  diamond_plate: Алмазная пластина
+  emerald_plate: Изумрудная пластина
+  ender_scale_alloy: Сплав чешуи края
+  forcefield_core: Ядро силового поля
+  forcefield_plating: Покрытие силового поля
+  fortified_frame: Укрепленная рамка
+  fortified_plate: Укрепленная пластина
+  magic_plate: Магическая пластина
+  magic_purified_blaze_alloy: Магически очищенный огненный сплав
+  magic_purified_ender_scale_alloy: Магически очищенный сплав чешуи края
+  magic_purified_glass_alloy: Магически очищенный стеклянный сплав
+  obsidian_plate: Обсидиановая пластина
+  pale_core: Тусклое ядро
+  pale_plate: Туская пластина
+  particle_catcher: Улавливатель частиц
+  particle_emitter: Излучатель частиц
+  sun_imbued_glass: Стекло укреплённое солнцем
+  void_plating: Пустотная пластина
+  mithriline_ingot: Мифрилиновый слиток
+  magical_ingot: Магический слиток
+  magical_slag: Магический шлак
+  mithriline_dust: Мифрилиновая пыль
+  heating_rod: Тепловой стержень
+  mithriline_crystal_gem: Мифрилиновый кристалл
+  mru_resonating_crystal: Резонирующий MRU кристалл
+  fading_crystal: Увядающий кристалл
+  eye_of_absorption: Глаз поглощения
+  heat_core: Тепловое ядро
+  monocle: Монокль
+  crafting_frame: Рамка создания
+  magical_inventory_filter: Фильтр инвентаря
+  advanced_magical_inventory_filter: Улучшенный фильтр инвентаря
+  control_rod: Управляющий стержень
+
+block.escr:
+  radiating_chamber: Радиационная камера
+  mithriline_plating: Мифрилиновое покрытие
+  mithriline_furnace: Мифрилиновая печь
+  matrix_destructor: Разрушитель матрицы
+  magic_table: Магический стол
+  mithriline_crystal: Мифрилиновый кристалл
+  void_stone: Пустотный камень
+  pale_block: Ослабленный блок
+  pale_plating: Ослабленное покрытие
+  magic_plating: Магическое покрытие
+  demonic_plating: Демоническое покрытие
+  flame_cluster: Огненный кластер
+  water_cluster: Водный кластер
+  earth_cluster: Земной кластер
+  air_cluster: Воздушный кластер
+  solar_prism: Солнечная призма
+  sun_absorber: Cолнечный поглотитель
+  cold_distiller: Дистиллятор холода
+  heat_generator: Тепловой генератор
+  ultra_heat_generator: Ультра тепловой генератор
+  enrichment_chamber_controller: Контроллер камеры поглощения
+  enrichment_chamber_extractor: Экстрактор камеры поглощения
+  enrichment_chamber_receiver: Приемник камеры поглощения
+  enrichment_chamber_holder: Усилитель камеры поглощения
+  fortified_glass: Усиленное стекло
+  fortified_stone: Усиленный камень
+  magical_teleporter: Магический телепорт
+  ray_tower: Реле-башня
+  ray_tower_base: Основание реле-башни
+  creative_mru_source: Творческий источник MRU
+  deepslate_mithriline_ore: Мифрилоносный глубинный сланец
+  mithriline_ore: Мифрилиновая руда
+  magical_inventory_manager_core: Ядро менеджера магического инвентаря
+  magical_inventory_manager_storage_module: Модуль хранения ММИ
+  magical_inventory_manager_storage_node: Нода хранения ММИ
+  magical_inventory_manager_screen_module: Экран менеджера магического инвентаря
+  magical_inventory_manager_crafting_module: Модуль создания ММИ
+  magical_inventory_manager_import_node: Нода импорта ММИ
+  magical_inventory_manager_export_node: Нода экспорта ММИ
+  magical_inventory_manager_persistent_import_node: Постоянная нода импорта ММИ
+  magical_inventory_manager_persistent_export_node: Постоянная нода экспорта ММИ
+  magical_mirror: Mагическое зеркало
+
+tooltip.escr:
+  radiating_chamber:
+    balance: "Баланс: %s"
+    any_balance: Любой баланс
+    mru_per_tick: "%s MRU/t"
+  sword_multiplier: Бонус получения MRU
+  book:
+    knowledge_contains: Хранит знания
+    more: И более %s знаний
+  soul_stone:
+    error: Не удалось загрузить метаданные камня души
+    tracking: Отслеживание матрицы MRU %s
+    detected_ubmru: Обнаружено %s энергии UBMRU
+    matrix: MRU матрица пульсирует %s энергией
+  bound_gem:
+    linked:
+      .: Камень привязки запомнил позицию на
+      pos: Привязан к позиции
+      not_mru: Камень привязки имеет позицию без MRU устройств
+      outside_radius: Привязанный блок находится вне радиуса камня привязки
+      mru_connectable_not_exporter: Камень привязки имеет позицию где находится MRU устройство, но не передает MRU
+    revoke: Камень привязки отвязан
+    dimension:
+      .: Измерение
+      disallowed: Текущий камень привязки не поддерживает привязки между мирами
+    incompatible: Несовместимая привязка
+    unavailable: Объект недоступен
+    mru: "MRU: %s/%s"
+    coordinates: "X: %s Y: %s Z: %s"
+  need_mru: "Требуется MRU: %s"
+  during: "Время: %s тик(а/ов)"
+  recipe: Рецепт
+  mim:
+    recipe_available: Рецепт доступен только в панели создания
+    stored: "Хранится: %s"
+    storage_node: Нода хранения
+    inventories: "Инвентари: %s/%s"
+    full: Заполнен
+    storage: Менеджер хранилища
+    nodes: "Ноды: %s/%s"
+    crafting: Модули создания
+    frames: "Рамки: %s/%s"
+    open_recipe: "Нажмите, чтобы посмотреть зависимости рецепта."
+
+book_type.escr:
+  basic: Основы
+  mru: Знания об MRU
+  engineer: Инженерию
+  hoana: Хоаны
+  shade: Тени
+
+mru_type.escr:
+  mru: MRU
+  espe: ESPE
+  ubmru: UBMRU
+
+matrix.escr:
+  neutral: Нейтральная
+
+screen.escr:
+  radiating_chamber:
+    upper_balance: "Верхний: %s"
+    lower_balance: "Нижний: %s"
+  heat_generator:
+    mode:
+      normal: Тепловой генератор
+      ultra: Ультра-тепловой генератор
+    temperature: "Температура: %s"
+    generation: "Генерация: %s MRU/т"
+    fuel: "Топливо: %s с"
+  research_book:
+    .: Книга исследований
+    complete_research: Завершить исследование
+    experience:
+      .: Опыт
+      levels: Уровни опыта
+    task:
+      .: Задание
+      requires: "Требуется:"
+      more: и еще %s...
+    research:
+      .: "Исследование: %s"
+    category:
+      progress: "Исследовано: %s%%"
+    multiblock:
+      place: Показать структуру в мире
+      placed: "Центр отображения структуры: %s, %s, %s"
+    recipe:
+      duration:
+        .: "Длительность: %s"
+        seconds: "%s сек."
+      espe: ESPE
+      failed: Не удалось отобразить рецепт для предмета %s, потому что рендер рецепта не найден для типа %s.
+      structure:
+        drop: Нужно бросить предмет
+        inside: внутрь структуры
+        at: на блок
+        consume: "Структура будет забрана после крафта: %s"
+        chance: "Шанс: %s"
+    page: Страница %s/%s
+  mim:
+    dependency:
+      .: Зависимости рецепта
+      close: Закрыть древо зависимости
+      zoom_out: Отдалить
+      zoom_in: Приблизить
+      loading: Загрузка...
+      summary: "%s - x%s"
+      footer: "Планируемое MRU: %s - %s"
+      core_mru: "MRU ядра: %s/%s"
+      plan_mru: "Планируемое MRU: %s"
+      amounts: "Требуется: %s - Хранится: %s - Создастся: %s"
+      details: "x%s  %s"
+      status:
+        stored: Хранится
+        craftable: Создаваемое
+        missing: Отсутствует шаблон / предмет
+        cycle: Циклично
+        limit: Планируемый лимит
+      ready: Готово
+      missing: Отсутствуют ресурсы / рецепт
+      scroll: Прокрут древа рецептов
+    craft_recipe: Создать по выбранному рецепту
+    cancel_jobs: Отменить очередь создания
+    recipe: Рецепт
+    work:
+      power: Ожидание MRU
+      materials: Ожидание ингредиентов
+      space: Ожидание места в хранилище
+      crafting: "Создание: %s/%s"
+      planning: Планирование
+      queued: "В очереди: %s"
+    craft: Создать
+    stop: Остановить
+    close_crafting: Закрыть создание
+    batches:
+      .: Партии создания
+      hint: Партии
+      tooltip: Число запусков рецепта
+      decrease: "Уменьшить количество: 1 / Ctrl 5 / Shift 50 / Ctrl + Shift 100"
+      increase: "Увеличить количество: 1 / Ctrl 5 / Shift 50 / Ctrl + Shift 100"
+    no_recipes: Нет рецептов
+    crafting: Создание
+    tree: Древо
+    cancel: Отменить
+    open_crafting: Открыть создание
+    no_core: Ядро недоступно
+    no_power: Недостаточно MRU
+    frame:
+      clear: Очистить рецепт
+      exact: Точные компоненты
+      exact_state: "Точные компоненты: %s"
+    filter:
+      clear: "Очистить образцы"
+      components: "Игнорировать компоненты: %s"
+      damage:
+        .: "Урон: %s"
+        any: любой
+        exact: точный
+      tags: "Теги: %s "
+      samples: Теги (вложенные фильтры разрешены)
+      blacklist: Чёрный список
+      whitelist: Белый список
+    scroll:
+      .: Хранимая строка предметов
+      position: "Строка %s из %s"
+    count:
+      billion: "%sb"
+      million: "%sm"
+      thousand: "%sk"
+    node:
+      storage: Storage Mode
+      crafting: Crafting Mode
+    tasks:
+      .: Crafting Tasks
+      open: Open Crafting Tasks
+      close: Close Crafting Tasks
+      stop_all: Stop All
+      cancel: Cancel this Task
+      scroll: Crafting Task Rows
+      empty: No Crafting Tasks
+      module: Module Tasks
+      details: "x%s - %s"
+      queued: "В очереди"
+      page: "Задач %s-%s из %s"
+
+toast.escr.research_book:
+  research_unlocked: Исследование открыто
+  research_completed: Исследование завершено
+  research_updated: Исследование обновлено
+
+message.escr:
+  heat_generator:
+    temperature_unit: "Единица температуры: %s (%s)"
+  research_required: "Требуемое(ые) исследования: %s"
+  magical_mirror:
+    selected: Mirror selected; use the rod on a destination inventory face.
+    select_first: Select a magical mirror first.
+    dimension: The selected mirror is in another dimension.
+    unloaded: The selected mirror is not loaded.
+    missing: The selected mirror no longer exists.
+    cleared: Selection cleared.
+    range: Place the mirror above a source inventory and choose a different inventory within %s blocks.
+    linked: "Mirror linked to %s %s %s (%s)."
+    unlinked: Mirror link cleared
+    face:
+      north: North
+      south: South
+      west: West
+      east: East
+      up: Up
+      down: Down
+  mim.filter_limit: "Filter exceeds %s same slots or %s nested levels; remove samples or nested filters."
+
+temperature_unit.escr:
+  celsius: Цельсий
+  fahrenheit: Фаренгейт
+  kelvin: Кельвин
+  rankine: Ранкин
+
+book.escr:
+  title:
+    basics: Основы
+  entry:
+    welcome:
+      title: Привет, мир!
+      description: Где я?
+      content:
+        1: Мир - существо неизведанное. Происхождение над которым, ученые думают уже ни первый десяток лет.
+        2: Что действительно происходит в этом "существе"?
+        3: Именно это Вам и придется выяснить. Вам придется понять устройство данного мира, что с ним не так, 
+          обуздать технологии той, иной цивилизации и понять, что именно произошло с той самой цивилизацией. 
+          И почему некоторые вещи и технологии проникли и/или проникают к нам в измерение до сих пор.
+
+command.escr:
+  research:
+    reset:
+      failure: Сброс прогресса исследования без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "Сброс прогресса исследования для %s успешно."
+        sized: "Сброс програсса исслодлвания для %s игрока(ов) успешно."
+    unlock:
+      all:
+        failure: Разблокировка исследований без указания игрока доступно только в игре. Не из консоли.
+        success:
+          .: "Разблокированы все исследования для %s."
+          sized: "Разблокированы все исследования для %s игрока(ов)."
+      failure: Изменение прогресса исследований без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "Обновлен прогресс исследования для %s."
+        sized: "Обновлен прогресс исследования для %s игрока(ов)."
+  ubmru:
+    query:
+      failure: Получение количества UBMRU без указания игрока доступно только в игре. Не из консоли.
+      # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+      success: "%s имеет %s %s."
+    add:
+      failure: Добавление UBMRU без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "%s %s добавлен(о) к %s."
+        # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+        sized: "%s %s добавлен(о) к %s игрока(ов)."
+    set:
+      failure: Назначение UBMRU без указания игрока доступно только в игре. Не из консоли.
+      success:
+        .: "%s %s назначен(о) для %s."
+        # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+        sized: "%s %s назначен(о) для %s игрока(ов)."

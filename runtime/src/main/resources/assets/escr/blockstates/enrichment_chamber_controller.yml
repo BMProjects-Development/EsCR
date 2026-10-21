@@ -1,0 +1,23 @@
+variants:
+  facing=east,active=false:
+    model: &model escr:block/enrichment_chamber_controller
+    y: 90
+  facing=east,active=true:
+    model: &model_on escr:block/enrichment_chamber_controller_on
+    y: 90
+  facing=north,active=false:
+    model: *model
+  facing=north,active=true:
+    model: *model_on
+  facing=south,active=false:
+    model: *model
+    y: 180
+  facing=south,active=true:
+    model: *model_on
+    y: 180
+  facing=west,active=false:
+    model: *model
+    y: 270
+  facing=west,active=true:
+    model: *model_on
+    y: 270

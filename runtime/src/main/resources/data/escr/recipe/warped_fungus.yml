@@ -1,0 +1,4 @@
+type: escr:mithriline_furnace
+espe: 1
+input: minecraft:pale_oak_sapling
+result: minecraft:warped_fungus

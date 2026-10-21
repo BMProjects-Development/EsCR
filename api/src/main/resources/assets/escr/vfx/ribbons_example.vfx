@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/beam",
+      "id": "beam",
+      "transform": {
+        "position": {
+          "x": -2,
+          "y": 0,
+          "z": 0
+        }
+      },
+      "end": {
+        "x": 4,
+        "y": 0,
+        "z": 0
+      },
+      "material": {
+        "texture": "minecraft:textures/block/white_concrete.png",
+        "blend": "ADDITIVE"
+      },
+      "width": {
+        "type": "expr",
+        "source": "0.02 + 0.15 * math.sin(p.progress * 180)"
+      },
+      "noise": 0.15,
+      "tint": {
+        "type": "solid",
+        "color": {
+          "r": 0.2,
+          "g": 0.5,
+          "b": 1,
+          "a": 1
+        }
+      },
+      "uvMode": "TILE",
+      "tileLength": 0.5,
+      "uvScroll": 0.25
+    },
+    {
+      "type": "escr:vfx/emitter",
+      "id": "trail_emitter",
+      "emission": {
+        "burst": 8,
+        "rate": 0,
+        "duration": 0.1,
+        "loop": false
+      },
+      "shape": {
+        "kind": "SPHERE",
+        "radius": 0.1
+      },
+      "spawn": {
+        "lifetime": 3,
+        "speed": 1.2
+      },
+      "motion": {
+        "gravity": 0.5
+      },
+      "children": [
+        {
+          "type": "escr:vfx/group",
+          "id": "trail_group",
+          "children": [
+            {
+              "type": "escr:vfx/trail",
+              "id": "trail",
+              "material": {
+                "texture": "minecraft:textures/block/white_concrete.png",
+                "blend": "ADDITIVE"
+              },
+              "width": {
+                "type": "expr",
+                "source": "0.12 * (1 - p.progress)"
+              },
+              "lifetime": 1,
+              "tint": {
+                "type": "gradient",
+                "gradient": {
+                  "stops": [
+                    {
+                      "position": 0,
+                      "color": {
+                        "r": 1,
+                        "g": 0.6,
+                        "b": 0.1,
+                        "a": 1
+                      }
+                    },
+                    {
+                      "position": 1,
+                      "color": {
+                        "r": 1,
+                        "g": 0.1,
+                        "b": 0.05,
+                        "a": 0
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "timeline": {
+    "duration": 4,
+    "loop": false,
+    "tracks": []
+  }
+}

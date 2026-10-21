@@ -1,0 +1,377 @@
+#$json_flat
+#$json_lowercase
+tag.item.escr:
+  enchantable:
+    magic_break: Ломает магический щит
+  ice: Ice
+  link_viewer: MRU Link Viewer
+
+itemGroup.escr:
+  items: "Essential Craft: Items"
+  blocks: "Essential Craft: Blocks"
+
+item.escr:
+  hammer: Hammer
+  soul_stone: Soul Stone
+  research_book: Research Book
+  weakness_elemental_axe: Weakness Elemental Axe
+  weakness_elemental_hoe: Weakness Elemental Hoe
+  weakness_elemental_pickaxe: Weakness Elemental Pickaxe
+  weakness_elemental_shovel: Weakness Elemental Shovel
+  weakness_elemental_sword: Weakness Elemental Sword
+  elemental_gem: Elemental Gem
+  flame_gem: Flame Gem
+  water_gem: Water Gem
+  earth_gem: Earth Gem
+  air_gem: Air Gem
+  bound_gem: Bound Gem
+  elemental_core: Elemental Core
+  combined_magic_alloys: Combined Magic Alloys
+  demonic_core: Demonic Core
+  diamond_plate: Diamond Plate
+  emerald_plate: Emerald Plate
+  ender_scale_alloy: Ender Scale Alloy
+  forcefield_core: Force Field Core
+  forcefield_plating: Force Field Plating
+  fortified_frame: Fortified Frame
+  fortified_plate: Fortified Plate
+  magic_plate: Magic Plate
+  magic_purified_blaze_alloy: Magic Purified Blaze Alloy
+  magic_purified_ender_scale_alloy: Magic Purified Ender Scale Alloy
+  magic_purified_glass_alloy: Magic Purified Glass Alloy
+  obsidian_plate: Obsidian Plate
+  pale_core: Pale Core
+  pale_plate: Pale Plate
+  particle_catcher: Particle Catcher
+  particle_emitter: Particle Emitter
+  sun_imbued_glass: Sun Imbued Glass
+  void_plating: Void Plating
+  mithriline_ingot: Mithriline Ingot
+  magical_ingot: Magical Ingot
+  magical_slag: Magical Slag
+  mithriline_dust: Mithriline Dust
+  heating_rod: Heat Rod
+  mithriline_crystal_gem: Mithriline Crystal
+  mru_resonating_crystal: MRU Resonating Crystal
+  fading_crystal: Fading Crystal
+  eye_of_absorption: Eye Of Absorption
+  heat_core: Heat Core
+  monocle: Monocle
+  crafting_frame: Crafting Frame
+  magical_inventory_filter: Inventory Filter
+  advanced_magical_inventory_filter: Advanced Inventory Filter
+  control_rod: Control Rod
+
+block.escr:
+  radiating_chamber: Radiating Chamber
+  mithriline_plating: Mithriline Plating
+  mithriline_furnace: Mithriline Furnace
+  matrix_destructor: Matrix Destructor
+  magic_table: Magic Table
+  mithriline_crystal: Mithriline Crystal
+  void_stone: Void Stone
+  pale_block: Pale Block
+  pale_plating: Pale Plating
+  magic_plating: Magic Plating
+  demonic_plating: Demonic Plating
+  flame_cluster: Flame Cluster
+  water_cluster: Water Cluster
+  earth_cluster: Earth Cluster
+  air_cluster: Air Cluster
+  solar_prism: Solar Prism
+  sun_absorber: Sun Ray Absorber
+  cold_distiller: Cold Distiller
+  heat_generator: Heat Generator
+  ultra_heat_generator: Ultra Heat Generator
+  enrichment_chamber_controller: Enrichment Chamber Controller
+  enrichment_chamber_extractor: Enrichment Chamber Extractor
+  enrichment_chamber_receiver: Enrichment Chamber Receiver
+  enrichment_chamber_holder: Enrichment Chamber Holder
+  fortified_glass: Fortified Glass
+  fortified_stone: Fortified Stone
+  magical_teleporter: Magical Teleporter
+  ray_tower: Ray Tower
+  ray_tower_base: Ray Tower Base
+  creative_mru_source: Creative MRU Source
+  deepslate_mithriline_ore: Deepslate Mithriline Ore
+  mithriline_ore: Mithriline Ore
+  magical_inventory_manager_core: Magical Inventory Manager Core
+  magical_inventory_manager_storage_module: MIM Storage Module
+  magical_inventory_manager_storage_node: MIM Storage Node
+  magical_inventory_manager_screen_module: Magical Inventory Manager Screen
+  magical_inventory_manager_crafting_module: MIM Crafting Module
+  magical_inventory_manager_import_node: MIM Import Node
+  magical_inventory_manager_export_node: MIM Export Node
+  magical_inventory_manager_persistent_import_node: MIM Persistent Import Node
+  magical_inventory_manager_persistent_export_node: MIM Persistent Export Node
+  magical_mirror: Magical Mirror
+
+tooltip.escr:
+  radiating_chamber:
+    balance: "Balance: %s"
+    any_balance: Any balance
+    mru_per_tick: "%s MRU/t"
+  sword_multiplier: MRU Gain Bonus
+  book:
+    knowledge_contains: Contains Knowledge
+    more: And %s more knowledge
+  soul_stone:
+    error: Failed to load metadata for soul stone
+    tracking: Tracking MRU Matrix of %s
+    detected_ubmru: Detected %s UBMRU Energy
+    matrix: MRU Matrix twists with %s Energies
+  bound_gem:
+    linked:
+      .: Bound gem was bounded at pos
+      pos: Currently bound to position at
+      not_mru: Bound gem is linked to a position where no MRU devices are detected
+      outside_radius: Linked block is outside the Bound Gem transfer radius
+      mru_connectable_not_exporter: Bound gem is linked to a position where has MRU device but it's not transfers MRU
+    revoke: Bound gem was unbounded
+    dimension:
+      .: Dimension
+      disallowed: Current Bound Gem is not supports the dimension bounds
+    incompatible: Incompatible link
+    unavailable: Target unavailable
+    mru: "MRU: %s/%s"
+    coordinates: "X: %s Y: %s Z: %s"
+  need_mru: "Required MRU: %s"
+  during: "Time: %s ticks"
+  recipe: Recipe
+  mim:
+    recipe_available: Recipe available in the crafting panel
+    stored: "Stored: %s"
+    storage_node: Storage Node
+    inventories: "Inventories: %s/%s"
+    full: Full
+    storage: Storage Manager
+    nodes: "Nodes: %s/%s"
+    crafting: Crafting Module
+    frames: "Frames: %s/%s"
+    open_recipe: "Click to open the recipe dependencies"
+
+book_type.escr:
+  basic: Basics
+  mru: MRU Knowledge
+  engineer: Engineer's
+  hoana: Hoana
+  shade: Shade
+
+mru_type.escr:
+  mru: MRU
+  espe: ESPE
+  ubmru: UBMRU
+
+matrix.escr:
+  neutral: Neutral
+
+screen.escr:
+  radiating_chamber:
+    upper_balance: "Upper: %s"
+    lower_balance: "Lower: %s"
+  heat_generator:
+    mode:
+      normal: Normal Heat Generator
+      ultra: Ultra Heat Generator
+    temperature: "Temperature: %s"
+    generation: "Generation: %s MRU/t"
+    fuel: "Fuel: %s s"
+  research_book:
+    .: Research Book
+    complete_research: Complete research
+    experience:
+      .: Experience
+      levels: Experience Levels
+    task:
+      .: Task
+      requires: "Requires:"
+      more: and %s more...
+    research:
+      .: "Research: %s"
+    category:
+      progress: "Researched: %s%%"
+    multiblock:
+      place: Project structure in the world
+      placed: "Structure projection centered at %s, %s, %s"
+    recipe:
+      duration:
+        .: "Duration: %s"
+        seconds: "%ss"
+      espe: ESPE
+      failed: Failed to init recipe render for item %s because recipe render is not registered for type %s.
+      structure:
+        drop: You need to drop item
+        inside: inside structure
+        at: at block
+        consume: "Structure will consumed after craft: %s"
+        chance: "Chance: %s"
+    page: Page %s/%s
+  mim:
+    dependency:
+      .: Recipe Dependencies
+      close: Close Dependency tree
+      zoom_out: Zoom Out
+      zoom_in: Zoom In
+      loading: Loading...
+      summary: "%s - x%s"
+      footer: "Plan MRU: %s - %s"
+      core_mru: "Core MRU: %s/%s"
+      plan_mru: "Plan MRU: %s"
+      amounts: "Required: %s - Stored: %s - Crafts: %s"
+      details: "x%s  %s"
+      status:
+        stored: Stored
+        craftable: Craftable
+        missing: Missing Template / item
+        cycle: Cycle
+        limit: Planning limit
+      ready: Ready
+      missing: Missing Resources / Recipe
+      scroll: Recipe Dependencies Scroll
+    craft_recipe: Craft Selected Recipe
+    cancel_jobs: Cancel Queued Crafting Jobs
+    recipe: Recipe
+    work:
+      power: Waiting for MRU
+      materials: Waiting for Ingredients
+      space: Waiting for Storage Space
+      crafting: "Crafting: %s/%s"
+      planning: Planning
+      queued: "Queued: %s"
+    craft: Craft
+    stop: Stop
+    close_crafting: Close Crafting
+    batches:
+      .: Craft Batches
+      hint: Batches
+      tooltip: Number of Recipe Executions
+      decrease: "Decrease Quantity: 1 / Ctrl 5 / Shift 50 / Ctrl + Shift 100"
+      increase: "Increase Quantity: 1 / Ctrl 5 / Shift 50 / Ctrl + Shift 100"
+    no_recipes: No Recipes
+    crafting: Crafting
+    tree: Tree
+    cancel: Cancel
+    open_crafting: Open Crafting
+    no_core: No Core Available
+    no_power: Not Enough MRU
+    frame:
+      clear: Clear Recipe
+      exact: Exact Components
+      exact_state: "Exact Components: %s"
+    filter:
+      clear: "Clear Samples"
+      components: "Ignore Components: %s"
+      damage:
+        .: "Damage: %s"
+        any: any
+        exact: exact
+      tags: "Tags: %s"
+      samples: Samples (nested filters allowed)
+      blacklist: Blacklist
+      whitelist: Whitelist
+    scroll:
+      .: Stored item rows
+      position: "Row %s of %s"
+    count:
+      billion: "%sb"
+      million: "%sm"
+      thousand: "%sk"
+    node:
+      storage: Storage Mode
+      crafting: Crafting Mode
+    tasks:
+      .: Crafting Tasks
+      open: Open Crafting Tasks
+      close: Close Crafting Tasks
+      stop_all: Stop All
+      cancel: Cancel this Task
+      scroll: Crafting Task Rows
+      empty: No Crafting Tasks
+      module: Module Tasks
+      details: "x%s - %s"
+      queued: "Queued"
+      page: "Tasks %s-%s of %s"
+
+toast.escr.research_book:
+  research_unlocked: Research unlocked
+  research_completed: Research completed
+  research_updated: Research updated
+
+message.escr:
+  heat_generator:
+    temperature_unit: "Temperature unit: %s (%s)"
+  research_required: "Required research: %s"
+  magical_mirror:
+    selected: Mirror selected; use the rod on a destination inventory face.
+    select_first: Select a magical mirror first.
+    dimension: The selected mirror is in another dimension.
+    unloaded: The selected mirror is not loaded.
+    missing: The selected mirror no longer exists.
+    cleared: Selection cleared.
+    range: Place the mirror above a source inventory and choose a different inventory within %s blocks.
+    linked: "Mirror linked to %s %s %s (%s)."
+    unlinked: Mirror link cleared
+    face:
+      north: North
+      south: South
+      west: West
+      east: East
+      up: Up
+      down: Down
+  mim.filter_limit: "Filter exceeds %s same slots or %s nested levels; remove samples or nested filters."
+
+temperature_unit.escr:
+  celsius: Celsius
+  fahrenheit: Fahrenheit
+  kelvin: Kelvin
+  rankine: Rankine
+
+book.escr:
+  title:
+    basics: Basics
+  entry:
+    welcome:
+      title: Hello, world!
+      description: Where I am?
+      content:
+        1: The world is an unknown entity. Scientists have been pondering its origins for more than a decade.
+        2: What is really going on inside this “entity”?
+        3: That is exactly what you will have to figure out. 
+          You will have to understand how this world works, what is wrong with it, master the technologies of that civilization, 
+          and figure out exactly what happened to that civilization. 
+          And why certain things and technologies have infiltrated-and/or are still infiltrating-our dimension to this day.
+
+command.escr:
+  research:
+    reset:
+      failure: Research reset without player available only inside game. Not console.
+      success:
+        .: "Reset research progress for %s successful."
+        sized: "Reset research progress for %s player(s) successful."
+    unlock:
+      all:
+        failure: Research unlock without player available only inside game. Not console.
+        success:
+          .: "Unlocked all research for %s."
+          sized: "Unlocked all research for %s player(s)."
+      failure: Research progress update without player available only inside game. Not console.
+      success:
+        .: "Updated research progress for %s."
+        sized: "Updated research progress for %s player(s)."
+  ubmru:
+    query:
+      failure: Get UBMRU count without player available only inside game. Not console.
+      # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+      success: "%s has %s %s."
+    add:
+      failure: UBMRU addition without player available only inside game. Not console.
+      success:
+        .: "%s %s was added to %s."
+        # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+        sized: "%s %s was added for %s player(s)."
+    set:
+      failure: UBMRU set without player available only inside game. Not console.
+      success:
+        .: "%s %s sets for %s."
+        # first %s - player name, second %s - count of mru, last %s - matrix name. For translators, lol
+        sized: "%s %s was sets for %s player(s)."

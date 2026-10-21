@@ -1,0 +1,8 @@
+type: escr:mithriline_furnace
+espe: 128
+input:
+  fabric:type: &t escr:count
+  neoforge:ingredient_type: *t
+  base: minecraft:wheat
+  count: 3
+result: minecraft:leather

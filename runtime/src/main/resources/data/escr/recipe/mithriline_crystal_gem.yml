@@ -1,0 +1,11 @@
+type: minecraft:crafting_shaped
+pattern:
+  - " a "
+  - "aba"
+  - " a "
+key:
+  a: escr:mithriline_ingot
+  b: escr:mithriline_dust
+result:
+  id: escr:mithriline_crystal_gem
+  count: 1

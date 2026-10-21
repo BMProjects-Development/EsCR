@@ -1,0 +1,3 @@
+parent: minecraft:block/cube_all
+textures:
+  all: escr:block/creative_mru_source

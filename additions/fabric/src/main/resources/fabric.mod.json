@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${modVersion}",
+  "name": "${modName}",
+  "description": "${modDesc}",
+  "authors": ["${modAuthors}"],
+  "license": "${modLicense}",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.algorithmlx.ecr.additions.fabric.AdditionsFabricInit::init"],
+    "client": ["com.algorithmlx.ecr.additions.fabric.AdditionsFabricClient::init"],
+    "jei_mod_plugin": ["com.algorithmlx.ecr.additions.client.recipe.JeiBookPlugin"]
+  },
+  "depends": {
+    "fabricloader": ">=${fabricLoaderVersion}",
+    "minecraft": "~${minecraftVersion}",
+    "fabric-language-kotlin": "*",
+    "escr": "*"
+  }
+}

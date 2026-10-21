@@ -1,0 +1,5 @@
+variants:
+  upgraded=false:
+    model: escr:block/heat_generator
+  upgraded=true:
+    model: escr:block/ultra_heat_generator

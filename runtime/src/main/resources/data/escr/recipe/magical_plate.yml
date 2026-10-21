@@ -1,0 +1,13 @@
+type: escr:magic_table
+input:
+  pattern:
+    - AA
+    - AA
+  key:
+    A: escr:magical_ingot
+catalyst: escr:fortified_plate
+time: 100
+mru: 1
+result:
+  count: 1
+  id: escr:magic_plate

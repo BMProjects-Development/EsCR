@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.algorithmlx.ecr.fabric.mixin",
+  "client": [
+    "GuiRendererAccessor"
+  ],
+  "mixins": [
+    "CreativeModeTabAccessor",
+    "CreativeModeTabsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

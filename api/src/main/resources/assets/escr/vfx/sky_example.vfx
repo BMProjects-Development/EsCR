@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "type": "escr:vfx/sky",
+      "id": "sky",
+      "shader": "escr:vfx/sky/shockwave",
+      "radius": 0.25,
+      "width": 0.04,
+      "strength": 1,
+      "centerX": 0.5,
+      "centerY": 0.65
+    }
+  ],
+  "timeline": {
+    "duration": 2,
+    "loop": false,
+    "tracks": []
+  }
+}

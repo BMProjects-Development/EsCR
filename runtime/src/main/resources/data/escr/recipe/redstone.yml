@@ -1,0 +1,6 @@
+type: escr:mithriline_furnace
+espe: 1024
+input: minecraft:ghast_tear
+result:
+  count: 64
+  id: minecraft:redstone

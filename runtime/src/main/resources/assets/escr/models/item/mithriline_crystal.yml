@@ -1,0 +1,3 @@
+parent: escr:item/crystal/crystal_item_base
+textures:
+  texture: escr:block/mithriline_plating/base

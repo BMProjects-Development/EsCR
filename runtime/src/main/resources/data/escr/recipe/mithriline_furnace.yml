@@ -1,0 +1,15 @@
+type: minecraft:crafting_shaped
+pattern:
+  - "mcm"
+  - "efe"
+  - "MCM"
+key:
+  m: escr:mithriline_dust
+  c: escr:mithriline_crystal_gem
+  e: escr:emerald_plate
+  f: minecraft:furnace
+  M: escr:mithriline_ingot
+  C: escr:heating_rod
+result:
+  id: escr:mithriline_furnace
+  count: 1

@@ -1,0 +1,9 @@
+type: escr:radiating_chamber
+input: minecraft:glass
+secondary: minecraft:iron_ingot
+time: 10
+mru: 1
+ignore_balance: true
+result:
+  id: escr:fortified_glass
+  count: 4

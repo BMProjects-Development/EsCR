@@ -1,0 +1,7 @@
+type: escr:magic_table
+catalyst: escr:fortified_stone
+time: 50
+mru: 10
+result:
+  count: 1
+  id: escr:fortified_plate

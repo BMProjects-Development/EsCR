@@ -1,0 +1,4 @@
+destroy_time: 3
+explosion_resistance: 3
+no_occlusion: true
+no_loot_table: true

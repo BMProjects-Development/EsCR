@@ -1,0 +1,8 @@
+type: escr:mithriline_furnace
+espe: 32
+input:
+  fabric:type: &t escr:count
+  neoforge:ingredient_type: *t
+  base: minecraft:clay
+  count: 12
+result: minecraft:gunpowder

@@ -1,0 +1,8 @@
+﻿type: minecraft:block
+pools:
+  - rolls: 1
+    conditions:
+      - condition: minecraft:survives_explosion
+    entries:
+      - type: minecraft:item
+        name: escr:magical_inventory_manager_persistent_export_node

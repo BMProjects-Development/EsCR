@@ -1,0 +1,31 @@
+modLoader = "klf"
+loaderVersion = "[${klfVersion},)"
+license = "${modLicense}"
+
+[[mods]]
+modId = "${modId}"
+version = "${modVersion}"
+displayName = "${modName}"
+authors = "${modAuthors}"
+description = '''${modDesc}'''
+
+[[dependencies.${modId}]]
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforgeVersion},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${modId}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[${minecraftVersion},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${modId}]]
+modId = "escr"
+type = "required"
+versionRange = "[1,)"
+ordering = "AFTER"
+side = "BOTH"
