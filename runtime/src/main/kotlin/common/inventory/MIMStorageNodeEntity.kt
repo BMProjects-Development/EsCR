@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.inventory
 
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.inventory.InventoryEndpoint
 import com.algorithmlx.ecr.api.inventory.InventoryAccess
@@ -18,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState
 
 class MIMStorageNodeEntity(pos: BlockPos, state: BlockState): BlockEntity(
     BlockEntityTypeRegistry.mimStorageNode.get(), pos, state
-), BoundGemTarget, MIMStorageNodeProvider, BoundGemTooltipProvider {
+), Machine, BoundGemTarget, MIMStorageNodeProvider, BoundGemTooltipProvider {
     override fun endpoints(): List<InventoryEndpoint> {
         val level = level ?: return emptyList()
         if (isRemoved || !level.isLoaded(blockPos) || level.getBlockEntity(blockPos) !== this) return emptyList()

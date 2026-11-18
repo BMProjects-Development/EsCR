@@ -1,5 +1,7 @@
 package com.algorithmlx.ecr.common.block.entity
 
+import net.minecraft.server.level.ServerLevel
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
 import com.algorithmlx.ecr.api.mru.loadMRUData
@@ -21,7 +23,9 @@ import net.minecraft.world.level.storage.ValueOutput
 
 class ColdDistillerEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(
     BlockEntityTypeRegistry.coldDistiller.get(), worldPosition, blockState
-), MRUDevice {
+), Machine, MRUDevice {
+    override fun serverTick(level: ServerLevel) = onTick(level, blockPos, this)
+
     var mruGenerationRemainder = 0F
     var destroyTime = 0
 

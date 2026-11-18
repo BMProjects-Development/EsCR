@@ -1,8 +1,8 @@
 package com.algorithmlx.ecr.common.block
 
+import com.algorithmlx.ecr.common.machine.MachineBlock
 import com.algorithmlx.ecr.api.multiblock.MultiblockPlacement
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
-import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.enrichment.EnrichmentChamberControllerEntity
 import com.algorithmlx.ecr.init.ECRTags
 import com.algorithmlx.ecr.registry.BlockRegistry
@@ -14,27 +14,14 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.*
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityTicker
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.phys.BlockHitResult
 
-class EnrichmentChamberController(properties: Properties): Block(properties), EntityBlock {
+class EnrichmentChamberController(properties: Properties): MachineBlock(properties, ::EnrichmentChamberControllerEntity) {
     init {
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ACTIVE, false))
-    }
-
-    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = EnrichmentChamberControllerEntity(worldPosition, blockState)
-
-    override fun <T : BlockEntity> getTicker(
-        level: Level,
-        blockState: BlockState,
-        type: BlockEntityType<T>
-    ): BlockEntityTicker<T> = simpleTicker<T, EnrichmentChamberControllerEntity> { level, _, state, blockEntity ->
-        EnrichmentChamberControllerEntity.onTick(level, state, blockEntity)
     }
 
     override fun useWithoutItem(
@@ -63,7 +50,6 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
 
         @JvmField val FACING = HorizontalDirectionalBlock.FACING
         @JvmField val ACTIVE = BooleanProperty.create("active")
-
 
         @JvmStatic
         fun findPlacement(level: Level, pos: BlockPos, state: BlockState): MultiblockPlacement? {

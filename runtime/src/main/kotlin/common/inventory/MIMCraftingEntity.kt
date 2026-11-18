@@ -85,9 +85,8 @@ class MIMCraftingEntity(pos: BlockPos, state: BlockState): MIMModuleEntity(
         request.progress?.work?.mruPerTick ?: 0
     )
 
-    override fun serverTick() {
-        super.serverTick()
-        val level = level as? ServerLevel ?: return
+    override fun serverTick(level: ServerLevel) {
+        super.serverTick(level)
         val core = parent() ?: return
         if (requests.isEmpty()) return
         val network = core.network()
@@ -174,7 +173,7 @@ class MIMCraftingEntity(pos: BlockPos, state: BlockState): MIMModuleEntity(
 
     override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag {
         val output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries)
-        saveDeviceProperties(output)
+        saveContainerProperties(output)
         return output.buildResult()
     }
 

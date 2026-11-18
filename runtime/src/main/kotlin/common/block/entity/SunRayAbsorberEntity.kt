@@ -1,5 +1,7 @@
 package com.algorithmlx.ecr.common.block.entity
 
+import net.minecraft.server.level.ServerLevel
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.block.entity.SynchronizedBlockEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -17,7 +19,9 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class SunRayAbsorberEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.sunAbsorber.get(), worldPosition, blockState), MRUDevice {
+class SunRayAbsorberEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.sunAbsorber.get(), worldPosition, blockState), Machine, MRUDevice {
+    override fun serverTick(level: ServerLevel) = onTick(level, blockPos, this)
+
     var beamTicks: Int = 0
         private set
 

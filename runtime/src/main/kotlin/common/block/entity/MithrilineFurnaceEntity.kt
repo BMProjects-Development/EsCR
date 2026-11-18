@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import com.algorithmlx.ecr.common.machine.MachineEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
 import com.algorithmlx.ecr.api.mru.loadMRUData
@@ -19,10 +19,8 @@ import com.algorithmlx.ecr.common.menu.MithrilineFurnaceMenu
 import com.algorithmlx.ecr.registry.*
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.NonNullList
 import net.minecraft.network.chat.Component
-import net.minecraft.world.ContainerHelper
-import net.minecraft.world.WorldlyContainer
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerData
@@ -40,9 +38,44 @@ import kotlin.math.floor
 class MithrilineFurnaceEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.mithrilineFurnace.get(), worldPosition, blockState), MRUDevice, WorldlyContainer {
-    @all:JvmName("items")
-    private var items = NonNullList.withSize(2, ItemStack.EMPTY)
+): MachineEntity(BlockEntityTypeRegistry.mithrilineFurnace.get(), worldPosition, blockState, 2, synchronize = true, hasMenu = true), MRUDevice {
+    override fun clientTick(level: Level) {
+        updateStructure(level)
+        val system = ClientParticleSystems.system(level)
+        val activeId = "${ECRModIDs.MITHRILINE_FURNACE}/active".ecPrefix
+        val activeLeftId = "${ECRModIDs.MITHRILINE_FURNACE}/active_left".ecPrefix
+
+        processRotation()
+        if (snowstormEmitters.isEmpty() && structureIsValid) {
+            val active = BedrockParticles[activeId] ?: return
+            val activeLeft = BedrockParticles[activeLeftId] ?: return
+
+            snowstormEmitters += system.spawn(active, transform = snowstormTransform)
+            snowstormEmitters += system.spawn(activeLeft, transform = snowstormTransform)
+        }
+        else if (!structureIsValid && snowstormEmitters.isNotEmpty()) {
+            snowstormEmitters.forEach { it.stopLoop() }
+            snowstormEmitters.clear()
+        }
+    }
+
+    override fun serverTick(level: ServerLevel) {
+        updateStructure(level)
+        if (structureIsValid) {
+            generateESPE(level, blockPos)
+            processRecipeIfPresent(level)
+        }
+        else
+            resetProgress()
+    }
+
+    private fun updateStructure(level: Level) {
+        val valid = hasValidStructure(level, blockPos)
+        if (structureIsValid == valid) return
+        structureIsValid = valid
+        setChanged()
+    }
+
     private val containerData: ContainerData = object: ContainerData {
         override fun get(index: Int): Int = when (index) {
             0 -> this@MithrilineFurnaceEntity.craftProgress
@@ -79,7 +112,6 @@ class MithrilineFurnaceEntity(
     }
 
     override fun saveAdditional(output: ValueOutput) {
-        ContainerHelper.saveAllItems(output, this.items)
         output.putBoolean("structure_valid", structureIsValid)
         output.putBoolean("slow_generation", this.slownessGeneration)
         output.putInt("progress", this.craftProgress)
@@ -90,7 +122,6 @@ class MithrilineFurnaceEntity(
     }
 
     override fun loadAdditional(input: ValueInput) {
-        ContainerHelper.loadAllItems(input, this.items)
         structureIsValid = input.getBooleanOr("structure_valid", false)
         slownessGeneration = input.getBooleanOr("slow_generation", false)
         craftProgress = input.getIntOr("progress", 0)
@@ -102,18 +133,10 @@ class MithrilineFurnaceEntity(
 
     override fun getDefaultName(): Component = Component.empty()
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
     override fun createMenu(
         containerId: Int,
         inventory: Inventory
     ): AbstractContainerMenu = MithrilineFurnaceMenu(containerId, inventory, this, this, ContainerLevelAccess.create(this.level!!, this.blockPos), containerData)
-
-    override fun getContainerSize(): Int = this.items.size
 
     override val mruStorage: MRUStorageContainer = MRUStorageContainer(10000, MRUTypeRegistry.espe)
     override val balance = MRUBalanceContainer { setChanged() }
@@ -121,54 +144,13 @@ class MithrilineFurnaceEntity(
 
     override fun getSlotsForFace(direction: Direction): IntArray = intArrayOf(0, 1)
 
-    override fun canPlaceItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction?): Boolean = this.canPlaceItem(slot, itemStack)
+    override fun canTakeItemThroughFace(slot: Int, stack: ItemStack, direction: Direction): Boolean = slot == 0
 
-    override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean = slot == 0
-
-    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = slot != 1 && super<SynchronizedContainerBlockEntity>.canPlaceItem(slot, itemStack)
+    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = slot != 1 && super.canPlaceItem(slot, itemStack)
 
     companion object {
         @JvmStatic
         fun hasValidStructure(level: Level, pos: BlockPos): Boolean = MultiblockRegistry.mithrilineFurnace.findPlacementAtCenter(level, pos) != null
-
-        @JvmStatic
-        fun onTick(level: Level, pos: BlockPos, be: MithrilineFurnaceEntity) {
-            val oldValid = be.structureIsValid
-            val newValid = hasValidStructure(level, pos)
-
-            if (oldValid != newValid) {
-                be.structureIsValid = newValid
-                be.setChanged()
-            }
-
-            if (level.isClientSide) {
-                val system = ClientParticleSystems.system(level)
-                val activeId = "${ECRModIDs.MITHRILINE_FURNACE}/active".ecPrefix
-                val activeLeftId = "${ECRModIDs.MITHRILINE_FURNACE}/active_left".ecPrefix
-
-                be.processRotation()
-                if (be.snowstormEmitters.isEmpty() && be.structureIsValid) {
-                    val active = BedrockParticles[activeId] ?: return
-                    val activeLeft = BedrockParticles[activeLeftId] ?: return
-
-                    be.snowstormEmitters += system.spawn(active, transform = be.snowstormTransform)
-                    be.snowstormEmitters += system.spawn(activeLeft, transform = be.snowstormTransform)
-                }
-                else if (!be.structureIsValid && be.snowstormEmitters.isNotEmpty()) {
-                    be.snowstormEmitters.forEach { it.stopLoop() }
-                    be.snowstormEmitters.clear()
-                }
-
-                return
-            }
-
-            if (be.structureIsValid) {
-                be.generateESPE(level, pos)
-                be.processRecipeIfPresent(level)
-            }
-            else
-                be.resetProgress()
-        }
 
         @JvmStatic
         private fun MithrilineFurnaceEntity.generateESPE(level: Level, pos: BlockPos) {

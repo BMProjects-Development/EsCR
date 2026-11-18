@@ -1,5 +1,7 @@
 package com.algorithmlx.ecr.common.block.entity.enrichment
 
+import net.minecraft.server.level.ServerLevel
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.block.entity.SynchronizedBlockEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -32,7 +34,9 @@ import net.minecraft.world.phys.AABB
 
 class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(
     BlockEntityTypeRegistry.enrichmentChamberController.get(), worldPosition, blockState
-), MRUDevice, MenuProvider {
+), Machine, MRUDevice, MenuProvider {
+    override fun serverTick(level: ServerLevel) = onTick(level, blockState, this)
+
     private var mutableMRUStorage = ExtremeMRUStorageContainer(0, MRUTypeRegistry.radiationUnit) {
         this.setChanged()
     }

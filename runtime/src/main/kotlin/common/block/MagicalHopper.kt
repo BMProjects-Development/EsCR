@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
-class MagicalHopper(properties: Properties): MachineBlock(properties, ::MagicalHopperEntity) {
+class MagicalHopper(properties: Properties): MachineBlock(properties, ::MagicalHopperEntity, dropsSelf = true) {
     init { registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN)) }
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) { builder.add(FACING) }

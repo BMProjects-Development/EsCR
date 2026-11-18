@@ -1,12 +1,12 @@
 package com.algorithmlx.ecr.common.block
 
+import com.algorithmlx.ecr.common.machine.MachineBlock
 import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblockControllerBlock
 import com.algorithmlx.ecr.api.multiblock.assembled.AssembledMultiblocks
 import com.algorithmlx.ecr.api.block.FullBlockParticles
 import com.algorithmlx.ecr.api.multiblock.MultiblockDefinitions
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
 import com.algorithmlx.ecr.api.utils.ecRL
-import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.RayTowerEntity
 import com.algorithmlx.ecr.init.ECRModIDs
 import net.minecraft.core.BlockPos
@@ -19,11 +19,7 @@ import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Explosion
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.RenderShape
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityTicker
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
@@ -34,7 +30,7 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 import java.util.function.BiConsumer
 
-class RayTower(properties: Properties): Block(properties), EntityBlock, AssembledMultiblockControllerBlock, FullBlockParticles {
+class RayTower(properties: Properties): MachineBlock(properties, ::RayTowerEntity), AssembledMultiblockControllerBlock, FullBlockParticles {
     init {
         registerDefaultState(stateDefinition.any().setValue(ASSEMBLED, false))
     }
@@ -44,16 +40,6 @@ class RayTower(properties: Properties): Block(properties), EntityBlock, Assemble
     }
 
     override fun assembledState(originalState: BlockState, facing: Direction): BlockState = originalState.setValue(ASSEMBLED, true)
-
-    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = RayTowerEntity(worldPosition, blockState)
-
-    override fun <T : BlockEntity> getTicker(
-        level: Level,
-        blockState: BlockState,
-        type: BlockEntityType<T>
-    ): BlockEntityTicker<T> = simpleTicker<T, RayTowerEntity> { level, blockPos, _, blockEntity ->
-        RayTowerEntity.onTick(level, blockPos, blockEntity)
-    }
 
     override fun useWithoutItem(
         state: BlockState,

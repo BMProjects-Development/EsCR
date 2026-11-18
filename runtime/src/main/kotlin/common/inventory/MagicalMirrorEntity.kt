@@ -1,5 +1,7 @@
 package com.algorithmlx.ecr.common.inventory
 
+import net.minecraft.server.level.ServerLevel
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.inventory.InventoryEndpoint
 import com.algorithmlx.ecr.api.inventory.InventoryTransfer
 import com.algorithmlx.ecr.api.inventory.InventoryAccess
@@ -16,7 +18,7 @@ import kotlin.jvm.optionals.getOrNull
 class MagicalMirrorEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-): BlockEntity(BlockEntityTypeRegistry.magicalMirror.get(), worldPosition, blockState) {
+): BlockEntity(BlockEntityTypeRegistry.magicalMirror.get(), worldPosition, blockState), Machine {
     var destination: BlockPos? = null
         private set
     var destinationSide: Direction = Direction.UP
@@ -43,9 +45,7 @@ class MagicalMirrorEntity(
         setChanged()
     }
 
-    fun serverTick() {
-        val level = level ?: return
-        if (level.isClientSide) return
+    override fun serverTick(level: ServerLevel) {
         val destination = destination ?: return
         val endpoints = endpoints(destination, destinationSide)
         if (endpoints == null || !InventoryTransfer.canMove(endpoints.first, endpoints.second)) {

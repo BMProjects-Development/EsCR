@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity
 
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.block.entity.SynchronizedBlockEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.MRUType
@@ -13,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class CreativeMRUSourceEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.creativeMRUSource.get(), worldPosition, blockState), MRUDevice {
+class CreativeMRUSourceEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.creativeMRUSource.get(), worldPosition, blockState), Machine, MRUDevice {
     override val mruStorage: IOMRUStorage = ImmutableMRUStorage()
     override val balance = MRUBalanceContainer { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.TRANSLATOR

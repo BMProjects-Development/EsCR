@@ -1,8 +1,8 @@
 package com.algorithmlx.ecr.common.block
 
+import com.algorithmlx.ecr.common.machine.MachineBlock
 import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
-import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.HeatGeneratorEntity
 import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
@@ -20,24 +20,16 @@ import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.LevelReader
 import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.EntityBlock
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityTicker
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.level.storage.loot.LootParams
 import net.minecraft.world.phys.BlockHitResult
 
-class HeatGenerator(properties: Properties): Block(properties), EntityBlock {
+class HeatGenerator(properties: Properties): MachineBlock(properties, ::HeatGeneratorEntity) {
     init {
         this.registerDefaultState(this.stateDefinition.any().setValue(IS_UPGRADED, false))
     }
-
-    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = HeatGeneratorEntity(worldPosition, blockState)
-
-    override fun <T : BlockEntity> getTicker(level: Level, blockState: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T> = simpleTicker<T, HeatGeneratorEntity> { tickLevel, pos, _, blockEntity -> HeatGeneratorEntity.onTick(tickLevel, pos, blockEntity) }
 
     override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult): InteractionResult {
         if (!player.isSecondaryUseActive) return checkAndOpenMenu<HeatGeneratorEntity>(player, level, pos)

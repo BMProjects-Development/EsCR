@@ -1,7 +1,7 @@
 package com.algorithmlx.ecr.common.block.entity
 
 import com.algorithmlx.ecr.api.ModId
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import com.algorithmlx.ecr.common.machine.MachineEntity
 import com.algorithmlx.ecr.api.block.structurePosition
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -20,14 +20,11 @@ import com.algorithmlx.ecr.registry.ItemRegistry
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.NonNullList
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.ContainerHelper
-import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
@@ -45,12 +42,13 @@ import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(
-    BlockEntityTypeRegistry.heatGenerator.get(), worldPosition, blockState
-), MRUDevice, WorldlyContainer {
+class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): MachineEntity(
+    BlockEntityTypeRegistry.heatGenerator.get(), worldPosition, blockState, SLOT_COUNT, synchronize = true, hasMenu = true
+), MRUDevice {
+    override fun serverTick(level: ServerLevel) = onTick(level, blockPos, this)
+
     private var upgraded = blockState.getValue(HeatGenerator.IS_UPGRADED)
     private var mutableMRUStorage = createMRUStorage(capacityFor(upgraded))
-    private var items: NonNullList<ItemStack> = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY)
     private var worldEffectTicks = 0
     private var fireEffectTicks = 0
     private var slagPending = false
@@ -109,7 +107,6 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         output.putInt(FIRE_EFFECT_TICKS_TAG, this.fireEffectTicks)
         output.putBoolean(SLAG_PENDING_TAG, this.slagPending)
         output.putBoolean(BALANCE_INITIALIZED_TAG, this.balanceInitialized)
-        ContainerHelper.saveAllItems(output, this.items)
         this.saveMRUData(output)
         super.saveAdditional(output)
     }
@@ -125,29 +122,18 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         this.fireEffectTicks = input.getIntOr(FIRE_EFFECT_TICKS_TAG, 0).coerceAtLeast(0)
         this.slagPending = input.getBooleanOr(SLAG_PENDING_TAG, false)
         this.balanceInitialized = input.getBooleanOr(BALANCE_INITIALIZED_TAG, false)
-        ContainerHelper.loadAllItems(input, this.items)
         this.loadMRUData(input)
         super.loadAdditional(input)
     }
 
     override fun getDefaultName(): Component = Component.translatable(if (this.isUpgraded) "block.$ModId.ultra_heat_generator" else "block.$ModId.heat_generator")
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
     override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu = HeatGeneratorMenu(containerId, inventory, this, this, ContainerLevelAccess.create(requireNotNull(this.level), this.blockPos), this.containerData)
-
-    override fun getContainerSize(): Int = this.items.size
 
     override fun getSlotsForFace(direction: Direction): IntArray = if (direction == Direction.DOWN) BOTTOM_SLOTS else INPUT_SLOTS
 
-    override fun canPlaceItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction?): Boolean = canPlaceItem(slot, itemStack)
-
-    override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean =
-        slot == OUTPUT_SLOT || slot == FUEL_SLOT && !itemStack.has(DataComponents.COOKING_FUEL)
+    override fun canTakeItemThroughFace(slot: Int, stack: ItemStack, direction: Direction): Boolean =
+        slot == OUTPUT_SLOT || slot == FUEL_SLOT && !stack.has(DataComponents.COOKING_FUEL)
 
     override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = slot == FUEL_SLOT && itemStack.has(DataComponents.COOKING_FUEL)
 

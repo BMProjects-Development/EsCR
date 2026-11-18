@@ -1,6 +1,7 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import net.minecraft.server.level.ServerLevel
+import com.algorithmlx.ecr.common.machine.MachineContainerEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
 import com.algorithmlx.ecr.api.mru.loadMRUData
@@ -17,9 +18,7 @@ import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import com.algorithmlx.ecr.registry.RecipeTypeRegistry
 import net.minecraft.core.BlockPos
-import net.minecraft.core.NonNullList
 import net.minecraft.network.chat.Component
-import net.minecraft.world.ContainerHelper
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerData
@@ -37,9 +36,9 @@ import kotlin.jvm.optionals.getOrNull
 class MagicTableBlockEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.magicTable.get(), worldPosition, blockState),
+): MachineContainerEntity(BlockEntityTypeRegistry.magicTable.get(), worldPosition, blockState, 8),
     MRUDevice {
-    private var items: NonNullList<ItemStack> = NonNullList.withSize(8, ItemStack.EMPTY)
+    override fun serverTick(level: ServerLevel) = onTick(level, this)
 
     private val containerData: ContainerData =
         object: ContainerData {
@@ -66,17 +65,10 @@ class MagicTableBlockEntity(
 
     override fun getDefaultName(): Component = Component.empty()
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
     override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu =
         MagicTableMenu(containerId, inventory, this, this, ContainerLevelAccess.create(this.level!!, this.blockPos), containerData)
 
     override fun saveAdditional(output: ValueOutput) {
-        ContainerHelper.saveAllItems(output, this.items)
         output.putInt("progress", this.progress)
         output.putInt("max_progress", this.maxProgress)
         this.saveMRUData(output)
@@ -84,14 +76,11 @@ class MagicTableBlockEntity(
     }
 
     override fun loadAdditional(input: ValueInput) {
-        ContainerHelper.loadAllItems(input, this.items)
         this.progress = input.getIntOr("progress", 0)
         this.maxProgress = input.getIntOr("max_progress", 0)
         this.loadMRUData(input)
         super.loadAdditional(input)
     }
-
-    override fun getContainerSize(): Int = this.items.size
 
     override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = if (slot == 5) false else super.canPlaceItem(slot, itemStack)
 

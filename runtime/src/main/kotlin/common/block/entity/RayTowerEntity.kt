@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import com.algorithmlx.ecr.common.machine.MachineContainerEntity
 import com.algorithmlx.ecr.api.chunk.ChunkLoadingManager
 import com.algorithmlx.ecr.api.geo.GeoAnimatable
 import com.algorithmlx.ecr.api.geo.GeoAnimationState
@@ -25,26 +25,24 @@ import com.algorithmlx.ecr.common.menu.RayTowerMenu
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.core.BlockPos
-import net.minecraft.core.NonNullList
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.Container
-import net.minecraft.world.ContainerHelper
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerLevelAccess
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class RayTowerEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.rayTower.get(), worldPosition, blockState), MRUDevice, AssembledMultiblockPartEntity, GeoAnimatable {
+class RayTowerEntity(worldPosition: BlockPos, blockState: BlockState): MachineContainerEntity(BlockEntityTypeRegistry.rayTower.get(), worldPosition, blockState, 1), MRUDevice, AssembledMultiblockPartEntity, GeoAnimatable {
+    override fun serverTick(level: ServerLevel) = onTick(level, blockPos, this)
+
     override var assembledMultiblockData: AssembledMultiblockPartData? = null
         private set
     override val geoAnimationState = GeoAnimationState()
     private val geoQuery = BlockEntityQuery(this)
-    private var items = NonNullList.withSize(1, ItemStack.EMPTY)
     private var isChunkLoaded: Boolean = false
 
     override val geoModel: GeoModel
@@ -59,32 +57,22 @@ class RayTowerEntity(worldPosition: BlockPos, blockState: BlockState): Synchroni
 
     override fun getDefaultName(): Component = Component.empty()
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
     override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu = RayTowerMenu(
         containerId, inventory, this, this,
         ContainerLevelAccess.create(this.level!!, this.blockPos)
     )
-
-    override fun getContainerSize(): Int = this.items.size
 
     override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = isAssembledMultiblock && super.canPlaceItem(slot, stack)
 
     override fun canTakeItem(target: Container, slot: Int, stack: ItemStack): Boolean = isAssembledMultiblock && super.canTakeItem(target, slot, stack)
 
     override fun saveAdditional(output: ValueOutput) {
-        ContainerHelper.saveAllItems(output, this.items)
         this.saveMRUData(output)
         AssembledMultiblockDataIO.write(output, assembledMultiblockData)
         super.saveAdditional(output)
     }
 
     override fun loadAdditional(input: ValueInput) {
-        ContainerHelper.loadAllItems(input, this.items)
         this.loadMRUData(input)
         assembledMultiblockData = AssembledMultiblockDataIO.read(input)
         super.loadAdditional(input)
@@ -127,21 +115,19 @@ class RayTowerEntity(worldPosition: BlockPos, blockState: BlockState): Synchroni
 
     companion object {
         @JvmStatic
-        fun onTick(level: Level, blockPos: BlockPos, be: RayTowerEntity) {
+        private fun onTick(level: ServerLevel, blockPos: BlockPos, be: RayTowerEntity) {
             AssembledMultiblocks.tick(level, blockPos)
-
-            val serverLevel = level as? ServerLevel ?: return
 
             if (!be.isAssembledMultiblock) {
                 if (be.isChunkLoaded) {
-                    ChunkLoadingManager.remove(serverLevel, blockPos)
+                    ChunkLoadingManager.remove(level, blockPos)
                     be.isChunkLoaded = false
                 }
                 return
             }
 
             if (!be.isChunkLoaded) {
-                ChunkLoadingManager.update(serverLevel, blockPos, 0)
+                ChunkLoadingManager.update(level, blockPos, 0)
                 be.isChunkLoaded = true
             }
 

@@ -1,19 +1,14 @@
 package com.algorithmlx.ecr.common.block
 
+import com.algorithmlx.ecr.common.machine.MachineBlock
 import com.algorithmlx.ecr.api.block.FullBlockParticles
 import com.algorithmlx.ecr.api.utils.checkAndOpenMenu
-import com.algorithmlx.ecr.api.utils.simpleTicker
 import com.algorithmlx.ecr.common.block.entity.MithrilineFurnaceEntity
 import net.minecraft.core.BlockPos
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.Block
-import net.minecraft.world.level.block.EntityBlock
-import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityTicker
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.shapes.BooleanOp
@@ -21,16 +16,7 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class MithrilineFurnace(properties: Properties): Block(properties), EntityBlock, FullBlockParticles {
-    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = MithrilineFurnaceEntity(worldPosition, blockState)
-
-    override fun <T : BlockEntity> getTicker(
-        level: Level,
-        blockState: BlockState,
-        type: BlockEntityType<T>
-    ): BlockEntityTicker<T> = simpleTicker<T, MithrilineFurnaceEntity> { level, pos, _, v ->
-        MithrilineFurnaceEntity.onTick(level, pos, v)
-    }
+class MithrilineFurnace(properties: Properties): MachineBlock(properties, ::MithrilineFurnaceEntity, Ticking.BOTH), FullBlockParticles {
 
     override fun useWithoutItem(
         state: BlockState,

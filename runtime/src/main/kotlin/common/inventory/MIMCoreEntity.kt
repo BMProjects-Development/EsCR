@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.inventory
 
+import net.minecraft.server.level.ServerLevel
 import com.algorithmlx.ecr.api.inventory.InventoryNetwork
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.mim.*
@@ -56,7 +57,7 @@ class MIMCoreEntity(pos: BlockPos, state: BlockState): MIMDeviceEntity(
 
     override fun getUpdateTag(registries: HolderLookup.Provider): CompoundTag {
         val output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries)
-        saveDeviceProperties(output)
+        saveContainerProperties(output)
         return output.buildResult()
     }
 
@@ -103,10 +104,9 @@ class MIMCoreEntity(pos: BlockPos, state: BlockState): MIMDeviceEntity(
 
     override fun craftingModules(): List<MIMCraftingProvider> = modules().filterIsInstance<MIMCraftingProvider>()
 
-    override fun serverTick() {
+    override fun serverTick(level: ServerLevel) {
         migratePowerLink()
-        super.serverTick()
-        val level = level ?: return
+        super.serverTick(level)
         val modules = modules()
         val context = MIMContext(this, level.gameTime % ECConfig.current.inventoryManager.operationTicks == 0L)
         modules.forEach { it.managerTick(context) }

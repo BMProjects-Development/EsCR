@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import com.algorithmlx.ecr.common.machine.MachineEntity
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -19,12 +19,9 @@ import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import com.algorithmlx.ecr.registry.RecipeTypeRegistry
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
-import net.minecraft.core.NonNullList
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.Identifier
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.ContainerHelper
-import net.minecraft.world.WorldlyContainer
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerLevelAccess
@@ -37,9 +34,8 @@ import net.minecraft.world.level.storage.ValueOutput
 class RadiatingChamberEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.radiatingChamber.get(), worldPosition, blockState), MRUDevice, WorldlyContainer {
-    @all:JvmName("items")
-    private var items = NonNullList.withSize(4, ItemStack.EMPTY)
+): MachineEntity(BlockEntityTypeRegistry.radiatingChamber.get(), worldPosition, blockState, 4, synchronize = true, hasMenu = true), MRUDevice {
+    override fun serverTick(level: ServerLevel) = onTick(level, blockPos, this)
 
     val recipe = CachedRecipe(RecipeTypeRegistry.radiatingChamber.get())
     var craftProgress = 0
@@ -51,7 +47,6 @@ class RadiatingChamberEntity(
     override val locator = MRUDevice.LocatorData(this, BOUND_GEM_SLOT)
 
     override fun saveAdditional(output: ValueOutput) {
-        ContainerHelper.saveAllItems(output, this.items)
         output.putInt("progress", this.craftProgress)
         output.putInt("max_progress", this.maxCraftProgress)
         this.activeRecipe?.let { output.putString("recipe", it.toString()) }
@@ -60,8 +55,6 @@ class RadiatingChamberEntity(
     }
 
     override fun loadAdditional(input: ValueInput) {
-        this.items = NonNullList.withSize(4, ItemStack.EMPTY)
-        ContainerHelper.loadAllItems(input, this.items)
         this.maxCraftProgress = input.getIntOr("max_progress", 0).coerceAtLeast(0)
         this.craftProgress = input.getIntOr("progress", 0).coerceIn(0, this.maxCraftProgress)
         this.activeRecipe = Identifier.tryParse(input.getStringOr("recipe", ""))
@@ -72,14 +65,6 @@ class RadiatingChamberEntity(
 
     override fun getDefaultName(): Component = BlockRegistry.radiatingChamber.get().name
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
-    override fun getContainerSize(): Int = this.items.size
-
     override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu =
         RadiatingChamberMenu(containerId, inventory, this, this, ContainerLevelAccess.create(this.level!!, this.blockPos))
 
@@ -89,9 +74,7 @@ class RadiatingChamberEntity(
         else -> intArrayOf(SECONDARY_SLOT)
     }
 
-    override fun canPlaceItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction?): Boolean = canPlaceItem(slot, itemStack)
-
-    override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean = slot == OUTPUT_SLOT
+    override fun canTakeItemThroughFace(slot: Int, stack: ItemStack, direction: Direction): Boolean = slot == OUTPUT_SLOT
 
     override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = when (slot) {
         BOUND_GEM_SLOT -> itemStack.item is BoundGem

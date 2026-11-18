@@ -1,6 +1,7 @@
 package com.algorithmlx.ecr.common.block.entity.enrichment
 
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import net.minecraft.server.level.ServerLevel
+import com.algorithmlx.ecr.common.machine.MachineContainerEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
 import com.algorithmlx.ecr.api.mru.balance.MutableMRUBalance
@@ -12,9 +13,7 @@ import com.algorithmlx.ecr.common.menu.EnrichmentChamberReceiverMenu
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import net.minecraft.core.BlockPos
-import net.minecraft.core.NonNullList
 import net.minecraft.network.chat.Component
-import net.minecraft.world.ContainerHelper
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerLevelAccess
@@ -24,12 +23,12 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class EnrichmentChamberReceiverEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.enrichmentChamberReceiver.get(), worldPosition, blockState), MRUDevice, EnrichmentChamber {
-    private var items = NonNullList.withSize(1, ItemStack.EMPTY)
+class EnrichmentChamberReceiverEntity(worldPosition: BlockPos, blockState: BlockState): MachineContainerEntity(BlockEntityTypeRegistry.enrichmentChamberReceiver.get(), worldPosition, blockState, 1), MRUDevice, EnrichmentChamber {
+    override fun serverTick(level: ServerLevel) = onTick(level, this)
+
     private var controllerPosition: BlockPos? = null
 
     override fun loadAdditional(input: ValueInput) {
-        ContainerHelper.loadAllItems(input, this.items)
 
         controllerPosition = null
         if (input.getBooleanOr(HAS_CONTROLLER_POSITION, false))
@@ -39,7 +38,6 @@ class EnrichmentChamberReceiverEntity(worldPosition: BlockPos, blockState: Block
     }
 
     override fun saveAdditional(output: ValueOutput) {
-        ContainerHelper.saveAllItems(output, this.items)
 
         val pos = controllerPosition
         output.putBoolean(HAS_CONTROLLER_POSITION, pos != null)
@@ -54,15 +52,8 @@ class EnrichmentChamberReceiverEntity(worldPosition: BlockPos, blockState: Block
 
     override fun getDefaultName(): Component = Component.empty()
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
     override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu = EnrichmentChamberReceiverMenu(containerId, inventory, this, ContainerLevelAccess.create(this.level!!, this.blockPos))
 
-    override fun getContainerSize(): Int = this.items.size
     private val disconnectedBalance = MRUBalanceContainer()
     private val controllerEntity: EnrichmentChamberControllerEntity?
         get() = controllerPosition

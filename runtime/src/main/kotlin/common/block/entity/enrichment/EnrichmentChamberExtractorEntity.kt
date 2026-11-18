@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity.enrichment
 
+import com.algorithmlx.ecr.common.machine.Machine
 import com.algorithmlx.ecr.api.block.entity.SynchronizedBlockEntity
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -13,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class EnrichmentChamberExtractorEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.enrichmentChamberExtractor.get(), worldPosition, blockState), MRUDevice, EnrichmentChamber {
+class EnrichmentChamberExtractorEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.enrichmentChamberExtractor.get(), worldPosition, blockState), Machine, MRUDevice, EnrichmentChamber {
     private var controllerPosition: BlockPos? = null
     private val disconnectedBalance = MRUBalanceContainer()
     private val controllerEntity: EnrichmentChamberControllerEntity?

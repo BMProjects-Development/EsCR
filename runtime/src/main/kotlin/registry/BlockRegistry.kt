@@ -27,16 +27,16 @@ import java.util.function.Supplier
 
 object BlockRegistry: RegistrationHandler(ModId) {
     val naturalFurnace = registerMachine(ECRModIDs.NATURAL_FURNACE, ::NaturalFurnace)
-    val enderGenerator = registerMachine(ECRModIDs.ENDER_GENERATOR, { MachineBlock(it, ::EnderGeneratorEntity) })
-    val magmaticSmeltery = registerMachine(ECRModIDs.MAGMATIC_SMELTERY, { MachineBlock(it, ::MagmaticSmelteryEntity) })
+    val enderGenerator = registerMachine(ECRModIDs.ENDER_GENERATOR, { MachineBlock(it, ::EnderGeneratorEntity, dropsSelf = true) })
+    val magmaticSmeltery = registerMachine(ECRModIDs.MAGMATIC_SMELTERY, { MachineBlock(it, ::MagmaticSmelteryEntity, dropsSelf = true) })
     val magmaticFurnace = registerMachine(ECRModIDs.MAGMATIC_FURNACE, { MagmaticFurnace(it) })
     val magicalMagmaticFurnace = registerMachine(ECRModIDs.MAGICAL_MAGMATIC_FURNACE, { MagmaticFurnace(it, MagmaticFurnace.Tier.MAGICAL) })
     val paleMagmaticFurnace = registerMachine(ECRModIDs.PALE_MAGMATIC_FURNACE, { MagmaticFurnace(it, MagmaticFurnace.Tier.PALE) })
     val voidMagmaticFurnace = registerMachine(ECRModIDs.VOID_MAGMATIC_FURNACE, { MagmaticFurnace(it, MagmaticFurnace.Tier.VOID) })
     val magicalBreeder = registerMachine(ECRModIDs.MAGICAL_BREEDER, { AnimalStation(it, AnimalStation.Operation.BREED) })
     val magicalShearingStation = registerMachine(ECRModIDs.MAGICAL_SHEARING_STATION, { AnimalStation(it, AnimalStation.Operation.SHEAR) })
-    val monsterHolding = registerMachine(ECRModIDs.MONSTER_HOLDING_DEVICE, { MachineBlock(it, ::MonsterHoldingEntity) })
-    val magicalChest = registerMachine(ECRModIDs.MAGICAL_CHEST, { MachineBlock(it, ::MagicalChestEntity) })
+    val monsterHolding = registerMachine(ECRModIDs.MONSTER_HOLDING_DEVICE, { MachineBlock(it, ::MonsterHoldingEntity, dropsSelf = true) })
+    val magicalChest = registerMachine(ECRModIDs.MAGICAL_CHEST, { MachineBlock(it, ::MagicalChestEntity, dropsSelf = true) })
     val magicalHopper = registerMachine(ECRModIDs.MAGICAL_HOPPER, ::MagicalHopper)
     val assembledMultiblockPart = register(
         ECRModIDs.ASSEMBLED_MULTIBLOCK_PART,

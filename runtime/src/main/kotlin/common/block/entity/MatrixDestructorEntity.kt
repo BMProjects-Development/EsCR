@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.common.block.entity
 
-import com.algorithmlx.ecr.api.block.entity.SynchronizedContainerBlockEntity
+import com.algorithmlx.ecr.common.machine.MachineContainerEntity
 import com.algorithmlx.ecr.api.item.SoulStoneLike
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.balance.MRUBalanceContainer
@@ -18,10 +18,8 @@ import com.algorithmlx.ecr.registry.MRUTypeRegistry
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.core.BlockPos
-import net.minecraft.core.NonNullList
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.world.ContainerHelper
 import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerLevelAccess
@@ -34,22 +32,16 @@ import kotlin.jvm.optionals.getOrElse
 
 class MatrixDestructorEntity(
     worldPosition: BlockPos, blockState: BlockState
-): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.matrixDestructor.get(), worldPosition, blockState), MRUDevice {
-    private var items: NonNullList<ItemStack> = NonNullList.withSize(1, ItemStack.EMPTY)
+): MachineContainerEntity(BlockEntityTypeRegistry.matrixDestructor.get(), worldPosition, blockState, 1), MRUDevice {
+    override fun serverTick(level: ServerLevel) = onTick(level, this)
+
     var progress = 0
     @JvmField
     var status = MatrixDestructorStatus.STOPPED
 
     override fun getDefaultName(): Component = Component.empty()
 
-    override fun getItems(): NonNullList<ItemStack> = this.items
-
-    override fun setItems(items: NonNullList<ItemStack>) {
-        this.items = items
-    }
-
     override fun saveAdditional(output: ValueOutput) {
-        ContainerHelper.saveAllItems(output, this.items)
         output.store("status", MatrixDestructorStatus.CODEC, this.status)
         output.putInt("progress", this.progress)
         this.saveMRUData(output)
@@ -57,8 +49,6 @@ class MatrixDestructorEntity(
     }
 
     override fun loadAdditional(input: ValueInput) {
-        this.items = NonNullList.withSize(this.containerSize, ItemStack.EMPTY)
-        ContainerHelper.loadAllItems(input, this.items)
         this.status = input.read("status", MatrixDestructorStatus.CODEC).getOrElse { MatrixDestructorStatus.STOPPED }
         this.progress = input.getIntOr("progress", 0)
         this.loadMRUData(input)
@@ -66,8 +56,6 @@ class MatrixDestructorEntity(
     }
 
     override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu = MatrixDestructorMenu(containerId, inventory, this, this, ContainerLevelAccess.create(this.level!!, this.blockPos))
-
-    override fun getContainerSize(): Int = this.items.size
 
     override val mruStorage: IOMRUStorage = MRUStorageContainer(10000, MRUTypeRegistry.radiationUnit) { setChanged() }
     override val balance = MRUBalanceContainer(initialUpperBalance = config.balanceProduced, initialLowerBalance = config.balanceProduced) { setChanged() }
