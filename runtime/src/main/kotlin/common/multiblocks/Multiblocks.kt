@@ -18,10 +18,7 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
 val RayTowerMultiblock =
-    assembledMultiblock(
-        "ray_tower".ecRL,
-        allowAssemblyFromAnyPart = true
-    ) {
+    assembledMultiblock("ray_tower".ecRL, allowAssemblyFromAnyPart = true) {
         fun shape(): VoxelShape {
             var shape = Shapes.empty()
 
@@ -75,7 +72,7 @@ val RayTowerMultiblock =
         )
     }
 
-object MithrilineFurnaceMultiblock : Multiblock(5, 5, 3, {
+object MithrilineFurnaceMultiblock: Multiblock(5, 5, 3, {
     val a = block(BlockRegistry.mithrilinePlating.get().defaultBlockState())
     val b = block(BlockRegistry.mithrilineFurnace.get().defaultBlockState())
 
@@ -100,42 +97,17 @@ object MithrilineFurnaceMultiblock : Multiblock(5, 5, 3, {
     )
 })
 
-object SoulStoneMultiblock : Multiblock(3, 3, 1, {
-    this.makeRecipeMB(
-        this.tag(BlockTags.SOUL_SPEED_BLOCKS),
-        this.block(Blocks.EMERALD_BLOCK.defaultBlockState())
-    )
-})
+object SoulStoneMultiblock: Multiblock(3, 3, 1, { this.makeRecipeMB(this.tag(BlockTags.SOUL_SPEED_BLOCKS), this.block(Blocks.EMERALD_BLOCK.defaultBlockState())) })
 
-object FlameCrystal : Multiblock(3, 3, 1, {
-    this.makeRecipeMB(
-        this.block(Blocks.LAVA.defaultBlockState()),
-        this.tag(BlockTags.INFINIBURN_NETHER)
-    )
-})
+object FlameCrystal: Multiblock(3, 3, 1, { this.makeRecipeMB(this.block(Blocks.LAVA.defaultBlockState()), this.tag(BlockTags.INFINIBURN_NETHER)) })
 
-object WaterCrystal : Multiblock(3, 3, 1, {
-    this.makeRecipeMB(
-        this.block(Blocks.WATER.defaultBlockState()),
-        this.tag(BlockTags.ICE)
-    )
-})
+object WaterCrystal: Multiblock(3, 3, 1, { this.makeRecipeMB(this.block(Blocks.WATER.defaultBlockState()), this.tag(BlockTags.ICE)) })
 
-object EarthCrystal : Multiblock(3, 3, 1, {
-    this.makeRecipeMB(
-        this.block(Blocks.MOSSY_COBBLESTONE.defaultBlockState()),
-        this.block(Blocks.MOSS_BLOCK.defaultBlockState())
-    )
-})
+object EarthCrystal: Multiblock(3, 3, 1, { this.makeRecipeMB(this.block(Blocks.MOSSY_COBBLESTONE.defaultBlockState()), this.block(Blocks.MOSS_BLOCK.defaultBlockState())) })
 
-object AirCrystal : Multiblock(3, 3, 1, {
-    this.makeRecipeMB(
-        this.block(Blocks.END_STONE_BRICKS.defaultBlockState()),
-        this.block(Blocks.PURPUR_BLOCK.defaultBlockState())
-    )
-})
+object AirCrystal: Multiblock(3, 3, 1, { this.makeRecipeMB(this.block(Blocks.END_STONE_BRICKS.defaultBlockState()), this.block(Blocks.PURPUR_BLOCK.defaultBlockState())) })
 
-object LightningCollector : Multiblock(11, 11, 4, {
+object LightningCollector: Multiblock(11, 11, 4, {
     val cutCopperSlabList = Blocks.CUT_COPPER_SLAB.asList().map { this.block(it.defaultBlockState()) }
     val copperBlockList = Blocks.COPPER_BLOCK.asList().map { this.block(it.defaultBlockState()) }
     val lightningRodList = Blocks.LIGHTNING_ROD.asList().map { this.block(it.defaultBlockState()) }
@@ -199,15 +171,9 @@ object LightningCollector : Multiblock(11, 11, 4, {
     )
 })
 
-object EnrichmentChamber : Multiblock(128, 128, 128, {
+object EnrichmentChamber: Multiblock(128, 128, 128, {
     val outerFrame = this.block(BlockRegistry.magicPlating.get().defaultBlockState())
-    val innerFrame = this.list(
-        this.tag(ECRTags.Blocks.ENRICHMENT_CHAMBER),
-        this.block(
-            BlockRegistry.enrichmentChamberController.get().defaultBlockState(),
-            ignoreTag = true
-        )
-    )
+    val innerFrame = this.list(this.tag(ECRTags.Blocks.ENRICHMENT_CHAMBER), this.block(BlockRegistry.enrichmentChamberController.get().defaultBlockState(), ignoreTag = true))
     val air = this.block(Blocks.AIR.defaultBlockState())
 
     this.scalablePattern(2..<64) {
@@ -219,7 +185,7 @@ object EnrichmentChamber : Multiblock(128, 128, 128, {
     }
 })
 
-object MagicalTeleporter : Multiblock(5, 5, 3, {
+object MagicalTeleporter: Multiblock(5, 5, 3, {
     val a = this.block(BlockRegistry.voidStone.get().defaultBlockState())
     val b = this.block(BlockRegistry.magicPlating.get().defaultBlockState())
     val c = this.block(BlockRegistry.magicalTeleporter.get().defaultBlockState(), ignoreTag = true)
@@ -245,7 +211,7 @@ object MagicalTeleporter : Multiblock(5, 5, 3, {
     )
 })
 
-object SunAbsorber : Multiblock(7, 7, 7, {
+object SunAbsorber: Multiblock(7, 7, 7, {
     val air = this.block(Blocks.AIR.defaultBlockState())
     val fortifiedStone = this.block(BlockRegistry.fortifiedStone.get().defaultBlockState())
     val fortifiedGlass = this.block(BlockRegistry.fortifiedGlass.get().defaultBlockState())
@@ -312,13 +278,6 @@ object SunAbsorber : Multiblock(7, 7, 7, {
     )
 })
 
-private fun Multiblock.makeRecipeMB(
-    left: MultiblockMatcher,
-    center: MultiblockMatcher
-) {
-    pattern(
-        null, left, null,
-        left, center, left,
-        null, left, null
-    )
+private fun Multiblock.makeRecipeMB(left: MultiblockMatcher, center: MultiblockMatcher) {
+    pattern(null, left, null, left, center, left, null, left, null)
 }

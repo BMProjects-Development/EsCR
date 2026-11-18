@@ -11,11 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-class SunRayAbsorber(properties: Properties) : Block(properties), EntityBlock {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = SunRayAbsorberEntity(worldPosition, blockState)
+class SunRayAbsorber(properties: Properties): Block(properties), EntityBlock {
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = SunRayAbsorberEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,

@@ -1,6 +1,8 @@
 package com.algorithmlx.ecr.init
 
 import com.algorithmlx.ecr.api.init.MultiblockMatcherTypes
+import com.algorithmlx.ecr.api.alloy.MagicalAlloys
+import com.algorithmlx.ecr.common.machine.MagicalAlloyItems
 import com.algorithmlx.ecr.registry.AttachmentRegistry
 import com.algorithmlx.ecr.registry.BlockEntityTypeRegistry
 import com.algorithmlx.ecr.registry.BlockRegistry
@@ -19,6 +21,7 @@ import com.algorithmlx.ecr.registry.ResearchSerializerRegistry
 
 object ECRInit {
     fun initRegistries() {
+        MagicalAlloys.itemFactory = MagicalAlloyItems
         BookTypeRegistry.init()
         DataComponentRegistry.init()
         MRUTypeRegistry.init()

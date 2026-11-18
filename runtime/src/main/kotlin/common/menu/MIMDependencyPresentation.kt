@@ -4,7 +4,7 @@ import com.algorithmlx.ecr.api.mim.MIMDependencyNode
 import com.algorithmlx.ecr.api.mim.MIMDependencyStatus
 import net.minecraft.world.item.ItemStack
 
-internal object MIMDependencyPresentation {
+object MIMDependencyPresentation {
     fun flatten(root: MIMDependencyNode, maximum: Int): List<MIMDependencyEntry> {
         val entries = mutableListOf<MIMDependencyEntry>()
         fun append(nodes: List<MIMDependencyNode>, parent: Int) {

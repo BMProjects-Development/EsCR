@@ -11,7 +11,5 @@ fun BlockEntity.syncForNearby() {
     val players = level.players()
     val pos = this.blockPos
 
-    players.filterIsInstance<ServerPlayer>()
-        .filter { hypot(it.x - (pos.x + 0.5), it.z - (pos.z + 0.5)) < 64 }
-        .forEach { it.connection.send(packet) }
+    players.filterIsInstance<ServerPlayer>().filter { hypot(it.x - (pos.x + 0.5), it.z - (pos.z + 0.5)) < 64 }.forEach { it.connection.send(packet) }
 }

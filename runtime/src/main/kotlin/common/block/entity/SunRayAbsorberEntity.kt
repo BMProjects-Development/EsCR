@@ -17,30 +17,15 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class SunRayAbsorberEntity(
-    worldPosition: BlockPos,
-    blockState: BlockState
-) : SynchronizedBlockEntity(
-    BlockEntityTypeRegistry.sunAbsorber.get(),
-    worldPosition,
-    blockState
-), MRUDevice {
+class SunRayAbsorberEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.sunAbsorber.get(), worldPosition, blockState), MRUDevice {
     var beamTicks: Int = 0
         private set
 
     var structureValid: Boolean = false
         private set
 
-    override val mruStorage: IOMRUStorage = MRUStorageContainer(
-        config.capacity,
-        MRUTypeRegistry.radiationUnit
-    ) { setChanged() }
-
-    override val balance = MRUBalanceContainer(
-        initialUpperBalance = config.balanceProduced,
-        initialLowerBalance = config.balanceProduced
-    ) { setChanged() }
-
+    override val mruStorage: IOMRUStorage = MRUStorageContainer(config.capacity, MRUTypeRegistry.radiationUnit) { setChanged() }
+    override val balance = MRUBalanceContainer(initialUpperBalance = config.balanceProduced, initialLowerBalance = config.balanceProduced) { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.TRANSLATOR
 
     override fun saveAdditional(output: ValueOutput) {
@@ -56,7 +41,6 @@ class SunRayAbsorberEntity(
     companion object {
         private const val PRISM_HEIGHT = 5
         private const val DAY_LENGTH = 24000L
-
         private val config get() = ECConfig.current.sunRayAbsorber
         private val controllerPosition = BlockPos(3, 1, 3)
 
@@ -66,11 +50,7 @@ class SunRayAbsorberEntity(
 
             blockEntity.balance.setBalance(config.balanceProduced, config.balanceProduced)
 
-            val structureValid = MultiblockRegistry.sunAbsorber.findPlacement(
-                level,
-                blockPos,
-                controllerPosition
-            ) != null
+            val structureValid = MultiblockRegistry.sunAbsorber.findPlacement(level, blockPos, controllerPosition) != null
 
             if (blockEntity.structureValid != structureValid) {
                 blockEntity.structureValid = structureValid

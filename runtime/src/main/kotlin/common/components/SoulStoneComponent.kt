@@ -9,11 +9,7 @@ import net.minecraft.network.codec.StreamCodec
 import java.util.UUID
 
 @JvmRecord
-data class SoulStoneComponent(
-    val owner: UUID,
-    val ownerName: String,
-    val legacyCapacity: Int? = null
-) {
+data class SoulStoneComponent(val owner: UUID, val ownerName: String, val legacyCapacity: Int? = null) {
     companion object {
         @JvmField
         val EMPTY = SoulStoneComponent(UUID(0, 0), "")
@@ -23,8 +19,7 @@ data class SoulStoneComponent(
             instance.group(
                 UUIDUtil.CODEC.fieldOf("owner").forGetter(SoulStoneComponent::owner),
                 Codec.STRING.fieldOf("owner_name").forGetter(SoulStoneComponent::ownerName),
-                Codec.INT.optionalFieldOf("capacity", -1)
-                    .forGetter { component -> component.legacyCapacity ?: -1 }
+                Codec.INT.optionalFieldOf("capacity", -1).forGetter { component -> component.legacyCapacity ?: -1 }
             ).apply(instance) { owner, ownerName, capacity ->
                 SoulStoneComponent(owner, ownerName, capacity.takeIf { it >= 0 })
             }

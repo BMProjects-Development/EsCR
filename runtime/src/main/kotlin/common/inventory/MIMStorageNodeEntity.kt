@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.inventory
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.inventory.InventoryEndpoint
 import com.algorithmlx.ecr.api.inventory.InventoryAccess
 import com.algorithmlx.ecr.api.item.BoundGemTarget
@@ -15,7 +16,7 @@ import net.minecraft.core.Direction
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
-class MIMStorageNodeEntity(pos: BlockPos, state: BlockState) : BlockEntity(
+class MIMStorageNodeEntity(pos: BlockPos, state: BlockState): BlockEntity(
     BlockEntityTypeRegistry.mimStorageNode.get(), pos, state
 ), BoundGemTarget, MIMStorageNodeProvider, BoundGemTooltipProvider {
     override fun endpoints(): List<InventoryEndpoint> {
@@ -29,8 +30,8 @@ class MIMStorageNodeEntity(pos: BlockPos, state: BlockState) : BlockEntity(
 
     override fun boundGemTooltip(): List<Component> = buildList {
         val endpoints = endpoints()
-        add(Component.translatable("tooltip.escr.mim.storage_node"))
-        add(Component.translatable("tooltip.escr.mim.inventories", endpoints.size, Direction.entries.size).withStyle(ChatFormatting.GRAY))
-        if (InventoryNetwork(endpoints).isFull()) add(Component.translatable("tooltip.escr.mim.full").withStyle(ChatFormatting.RED))
+        add(Component.translatable("tooltip.$ModId.mim.storage_node"))
+        add(Component.translatable("tooltip.$ModId.mim.inventories", endpoints.size, Direction.entries.size).withStyle(ChatFormatting.GRAY))
+        if (InventoryNetwork(endpoints).isFull()) add(Component.translatable("tooltip.$ModId.mim.full").withStyle(ChatFormatting.RED))
     }
 }

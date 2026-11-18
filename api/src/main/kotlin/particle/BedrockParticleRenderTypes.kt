@@ -16,9 +16,7 @@ import java.util.concurrent.ConcurrentHashMap
 object BedrockParticleRenderTypes {
     private val additivePipeline =
         RenderPipelinesAccessor.register(
-            RenderPipeline
-                .builder(RenderPipelinesAccessor.particleSnippet())
-                .withLocation("pipeline/bedrock_particle_additive".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.particleSnippet()).withLocation("pipeline/bedrock_particle_additive".ecRL)
                 .withColorTargetState(ColorTargetState(BlendFunction.ADDITIVE))
                 .build()
         )
@@ -26,10 +24,7 @@ object BedrockParticleRenderTypes {
 
     fun init() = Unit
 
-    internal fun get(
-        texture: Identifier,
-        material: BedrockParticleFile.Material
-    ): RenderType = cache.computeIfAbsent(Key(texture, material), ::create)
+    internal fun get(texture: Identifier, material: BedrockParticleFile.Material): RenderType = cache.computeIfAbsent(Key(texture, material), ::create)
 
     private fun create(key: Key): RenderType {
         val pipeline =
@@ -38,20 +33,10 @@ object BedrockParticleRenderTypes {
                 BedrockParticleFile.Material.Cutout -> RenderPipelines.OPAQUE_PARTICLE
                 BedrockParticleFile.Material.Blend -> RenderPipelines.TRANSLUCENT_PARTICLE
             }
-        val setup =
-            RenderSetup
-                .builder(pipeline)
-                .withTexture("Sampler0", key.texture)
-                .useLightmap()
+        val setup = RenderSetup.builder(pipeline).withTexture("Sampler0", key.texture).useLightmap()
         if (key.material.needsSorting) setup.sortOnUpload()
-        return RenderTypeAccessor.create(
-            "bedrock_particle_${key.material.name.lowercase()}",
-            setup.createRenderSetup()
-        )
+        return RenderTypeAccessor.create("bedrock_particle_${key.material.name.lowercase()}", setup.createRenderSetup())
     }
 
-    private data class Key(
-        val texture: Identifier,
-        val material: BedrockParticleFile.Material
-    )
+    private data class Key(val texture: Identifier, val material: BedrockParticleFile.Material)
 }

@@ -19,23 +19,16 @@ import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-class BedrockParticle(
-    val emitter: ParticleEmitter,
-    private val localSpace: Transform?
-) {
+class BedrockParticle(val emitter: ParticleEmitter, private val localSpace: Transform?) {
     private val components = emitter.effect.components
     private val curveVariables: CurveVariables = CurveVariables({ molang }, emitter.effect.curves)
-    private val variables: Variables = VariablesMap()
-        .fallbackBackTo(curveVariables)
-        .fallbackBackTo(emitter.context.variables)
+    private val variables: Variables = VariablesMap().fallbackBackTo(curveVariables).fallbackBackTo(emitter.context.variables)
     private val molang: MolangContext = MolangContext(emitter.sourceEntity, variables)
-
     private var firedCreationEvents = false
     private var firedExpirationEvents = false
     private var nextTimelineEvent: Map.Entry<Float, List<String>>? = null
     private var age: Float by variables.getOrPut("particle_age", 0f)
     private var lifetime: Float by variables.getOrPut("particle_lifetime", 0f)
-
     val position = Vector3f()
     val velocity = Vector3f()
     val direction = Vector3f()
@@ -78,11 +71,7 @@ class BedrockParticle(
         }
 
         components.emitterShapeBox?.let { config ->
-            val point = Vector3f(
-                random.nextFloat() * 2f - 1f,
-                random.nextFloat() * 2f - 1f,
-                random.nextFloat() * 2f - 1f
-            )
+            val point = Vector3f(random.nextFloat() * 2f - 1f, random.nextFloat() * 2f - 1f, random.nextFloat() * 2f - 1f)
             if (config.surfaceOnly) {
                 val side = random.nextInt(6)
                 val value = if (side >= 3) 1f else -1f
@@ -185,8 +174,7 @@ class BedrockParticle(
         }
 
         components.particleMotionDynamic?.let {
-            val acceleration = it.linearAcceleration.eval(molang)
-                .add(Vector3f(velocity).mul(-it.linearDragCoefficient.eval(molang)))
+            val acceleration = it.linearAcceleration.eval(molang).add(Vector3f(velocity).mul(-it.linearDragCoefficient.eval(molang)))
             if (!move(dt, acceleration)) return false
 
             var rotationalAcceleration = it.rotationAcceleration.eval(molang)
@@ -249,9 +237,7 @@ class BedrockParticle(
         else 0f
         val velocityBeforeHit = Vector3f(velocity).fma(preDt, acceleration)
         val velocityAfterHit = reflect(velocityBeforeHit, surfaceNormal)
-        velocityAfterHit.add(
-            Vector3f(surfaceNormal).mul((collisionConfig.coefficientOfRestitution - 1f) * velocityAfterHit.dot(surfaceNormal))
-        )
+        velocityAfterHit.add(Vector3f(surfaceNormal).mul((collisionConfig.coefficientOfRestitution - 1f) * velocityAfterHit.dot(surfaceNormal)))
         val positionAtHit = Vector3f(position).add(maxOffset)
         position.set(positionAtHit)
         velocity.set(velocityAfterHit)
@@ -259,16 +245,13 @@ class BedrockParticle(
         val postDt = dt - preDt
         if (collisionConfig.events.isNotEmpty()) {
             val impactSpeed = (-velocityBeforeHit.dot(surfaceNormal)).coerceAtLeast(0f)
-            collisionConfig.events.forEach {
-                if (impactSpeed >= it.minSpeed) emitter.fire(postDt, listOf(it.event), this)
-            }
+            collisionConfig.events.forEach { if (impactSpeed >= it.minSpeed) emitter.fire(postDt, listOf(it.event), this) }
         }
 
         val postOffset = Vector3f(velocityAfterHit).add(Vector3f(acceleration).mul(postDt * 0.5f)).mul(postDt)
         if (Vector3f(positionAtHit).add(postOffset).dot(surfaceNormal) > positionAtHit.dot(surfaceNormal))
             return move(postDt, acceleration, iteration + 1, sliding)
-        val accelerationInPlane = Vector3f(acceleration)
-            .add(Vector3f(surfaceNormal).mul(-acceleration.dot(surfaceNormal)))
+        val accelerationInPlane = Vector3f(acceleration).add(Vector3f(surfaceNormal).mul(-acceleration.dot(surfaceNormal)))
         return move(postDt, accelerationInPlane, iteration + 1, true)
     }
 
@@ -328,8 +311,7 @@ class BedrockParticle(
         else LightCoordsUtil.FULL_BRIGHT
         val flip = !emitter.effect.material.backfaceCulling &&
             cameraFacing.dot(Vector3f(0f, 0f, -1f).rotate(rotation)) > 0f
-        val distance = Vector3f(cameraPosition).sub(worldPosition)
-            .dot(Vector3f(0f, 0f, -1f).rotate(rotation))
+        val distance = Vector3f(cameraPosition).sub(worldPosition).dot(Vector3f(0f, 0f, -1f).rotate(rotation))
 
         return ParticleQuad(
             position = worldPosition,
@@ -377,25 +359,19 @@ class BedrockParticle(
                 lookAt(target, Vector3f(particleDirection).cross(target))
             }
             ParticleComponents.ParticleBillboard.FacingCameraMode.DIRECTION_X ->
-                lookAt(computedDirection(), Vector3f(up).rotate(localRotation))
-                    .mul(Quaternionf().rotationY(-PI.toFloat() / 2f))
+                lookAt(computedDirection(), Vector3f(up).rotate(localRotation)).mul(Quaternionf().rotationY(-PI.toFloat() / 2f))
             ParticleComponents.ParticleBillboard.FacingCameraMode.DIRECTION_Y ->
-                lookAt(computedDirection(), Vector3f(up).rotate(localRotation))
-                    .mul(Quaternionf().rotationX(-PI.toFloat() / 2f))
-                    .mul(Quaternionf().rotationY(PI.toFloat()))
+                lookAt(computedDirection(), Vector3f(up).rotate(localRotation)).mul(Quaternionf().rotationX(-PI.toFloat() / 2f)).mul(Quaternionf().rotationY(PI.toFloat()))
             ParticleComponents.ParticleBillboard.FacingCameraMode.DIRECTION_Z ->
                 lookAt(computedDirection(), Vector3f(up).rotate(localRotation))
             ParticleComponents.ParticleBillboard.FacingCameraMode.EMITTER_TRANSFORM_XY ->
                 Quaternionf(localSpace?.rotation ?: emitterRotationOnEmit).mul(Quaternionf().rotationY(PI.toFloat()))
             ParticleComponents.ParticleBillboard.FacingCameraMode.EMITTER_TRANSFORM_XZ ->
-                Quaternionf(localSpace?.rotation ?: emitterRotationOnEmit)
-                    .mul(Quaternionf().rotationY(PI.toFloat()))
-                    .mul(Quaternionf().rotationX(PI.toFloat() / 2f))
+                Quaternionf(localSpace?.rotation ?: emitterRotationOnEmit).mul(Quaternionf().rotationY(PI.toFloat())).mul(Quaternionf().rotationX(PI.toFloat() / 2f))
             ParticleComponents.ParticleBillboard.FacingCameraMode.EMITTER_TRANSFORM_YZ ->
                 Quaternionf(localSpace?.rotation ?: emitterRotationOnEmit).mul(Quaternionf().rotationY(-PI.toFloat() / 2f))
         }
-        if (renderRotationAngle != 0f)
-            result.mul(Quaternionf().rotationZ(Math.toRadians(-renderRotationAngle.toDouble()).toFloat()))
+        if (renderRotationAngle != 0f) result.mul(Quaternionf().rotationZ(Math.toRadians(-renderRotationAngle.toDouble()).toFloat()))
         return result
     }
 
@@ -419,10 +395,7 @@ internal data class ParticleQuad(
     fun render(pose: PoseStack.Pose, consumer: VertexConsumer) {
         fun vertex(x: Float, y: Float, u: Float, v: Float) {
             val point = Vector3f(x, y, 0f).rotate(rotation).add(position)
-            consumer.addVertex(pose, point)
-                .setUv(u, v)
-                .setColor(color)
-                .setLight(light)
+            consumer.addVertex(pose, point).setUv(u, v).setColor(color).setLight(light)
         }
         if (!flip) {
             vertex(-size.x, -size.y, maxUv.x, maxUv.y)
@@ -438,5 +411,4 @@ internal data class ParticleQuad(
     }
 }
 
-private fun Pair<FloatExpr, FloatExpr>.eval(context: MolangContext) =
-    Vector2f(first.eval(context), second.eval(context))
+private fun Pair<FloatExpr, FloatExpr>.eval(context: MolangContext) = Vector2f(first.eval(context), second.eval(context))

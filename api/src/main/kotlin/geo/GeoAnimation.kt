@@ -35,11 +35,7 @@ class GeoAnimationState {
     private val playbacks = LinkedHashMap<String, MutablePlayback>()
 
     @Synchronized
-    fun play(
-        animation: String,
-        type: AnimationType = AnimationType.PLAY_ONCE,
-        nowSeconds: Double = Double.NaN
-    ) = play(
+    fun play(animation: String, type: AnimationType = AnimationType.PLAY_ONCE, nowSeconds: Double = Double.NaN) = play(
         MAIN_LAYER,
         animation,
         nowSeconds = nowSeconds,
@@ -53,10 +49,7 @@ class GeoAnimationState {
     )
 
     @Synchronized
-    fun play(
-        animation: String,
-        nowSeconds: Double
-    ) = play(animation, AnimationType.PLAY_ONCE, nowSeconds)
+    fun play(animation: String, nowSeconds: Double) = play(animation, AnimationType.PLAY_ONCE, nowSeconds)
 
     @Synchronized
     fun play(
@@ -78,14 +71,7 @@ class GeoAnimationState {
         if (!restart && current?.animation == animation) return
 
         playbacks[layer] =
-            MutablePlayback(
-                animation,
-                nowSeconds.takeIf(Double::isFinite),
-                speed,
-                weight,
-                loop,
-                blend
-            )
+            MutablePlayback(animation, nowSeconds.takeIf(Double::isFinite), speed, weight, loop, blend)
     }
 
     @Synchronized
@@ -108,10 +94,7 @@ class GeoAnimationState {
     }
 
     @Synchronized
-    fun isPlaying(
-        layer: String,
-        animation: String? = null
-    ): Boolean = playbacks[layer]?.let { animation == null || it.animation == animation } == true
+    fun isPlaying(layer: String, animation: String? = null): Boolean = playbacks[layer]?.let { animation == null || it.animation == animation } == true
 
     @Synchronized
     internal fun removeIfCurrent(playback: GeoAnimationPlayback): Boolean {
@@ -129,15 +112,7 @@ class GeoAnimationState {
     fun snapshot(nowSeconds: Double): List<GeoAnimationPlayback> =
         playbacks.map { (layer, playback) ->
             val start = playback.startTimeSeconds ?: nowSeconds.also { playback.startTimeSeconds = it }
-            GeoAnimationPlayback(
-                layer,
-                playback.animation,
-                start,
-                playback.speed,
-                playback.weight,
-                playback.loop,
-                playback.blend
-            )
+            GeoAnimationPlayback(layer, playback.animation, start, playback.speed, playback.weight, playback.loop, playback.blend)
         }
 
     private data class MutablePlayback(

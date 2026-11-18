@@ -15,7 +15,7 @@ import java.util.function.Consumer
 
 data class BedrockGeoItemRenderArgument(val data: BedrockGeoRenderData?)
 
-object BedrockGeoItemRenderer : SpecialModelRenderer<BedrockGeoItemRenderArgument> {
+object BedrockGeoItemRenderer: SpecialModelRenderer<BedrockGeoItemRenderArgument> {
     @JvmField
     val ID: Identifier = "bedrock_geo".ecRL
 
@@ -25,12 +25,7 @@ object BedrockGeoItemRenderer : SpecialModelRenderer<BedrockGeoItemRenderArgumen
         val now = ClientGeoAnimations.clientTimeSeconds(partialTick)
         val molang = provider.geoMolangContext(stack, partialTick)
         return BedrockGeoItemRenderArgument(
-            BedrockGeoRenderEngine.extract(
-                provider.geoModel(stack),
-                ClientGeoAnimations.snapshot(provider.geoAnimationState(stack), molang, now),
-                molang,
-                now
-            )
+            BedrockGeoRenderEngine.extract(provider.geoModel(stack), ClientGeoAnimations.snapshot(provider.geoAnimationState(stack), molang, now), molang, now)
         )
     }
 
@@ -52,7 +47,7 @@ object BedrockGeoItemRenderer : SpecialModelRenderer<BedrockGeoItemRenderArgumen
         output.accept(Vector3f(0.5F, 1F, 0.5F))
     }
 
-    object Unbaked : SpecialModelRenderer.Unbaked<BedrockGeoItemRenderArgument> {
+    object Unbaked: SpecialModelRenderer.Unbaked<BedrockGeoItemRenderArgument> {
         @JvmField
         val CODEC: MapCodec<Unbaked> = MapCodec.unit(Unbaked)
 

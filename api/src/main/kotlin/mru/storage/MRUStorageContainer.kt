@@ -4,11 +4,7 @@ import com.algorithmlx.ecr.api.mru.MRUType
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-data class ExtremeMRUStorageContainer(
-    override val mruCapacity: Int,
-    override val mruType: MRUType,
-    val onChange: (Int) -> Unit = {}
-) : IOMRUStorage {
+data class ExtremeMRUStorageContainer(override val mruCapacity: Int, override val mruType: MRUType, val onChange: (Int) -> Unit = {}): IOMRUStorage {
     private var mutableMRU = 0
 
     override val mru: Int
@@ -57,11 +53,7 @@ data class ExtremeMRUStorageContainer(
     }
 }
 
-data class MRUStorageContainer(
-    override val mruCapacity: Int,
-    override val mruType: MRUType,
-    val onChange: (Int) -> Unit = {}
-) : IOMRUStorage {
+data class MRUStorageContainer(override val mruCapacity: Int, override val mruType: MRUType, val onChange: (Int) -> Unit = {}): IOMRUStorage {
     private var mutableMRU = 0
 
     override val mru: Int

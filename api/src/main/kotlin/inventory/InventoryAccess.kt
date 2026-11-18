@@ -12,14 +12,8 @@ import net.minecraft.world.level.block.ChestBlock
 import net.minecraft.world.level.block.entity.HopperBlockEntity
 import net.minecraft.world.level.block.state.properties.ChestType
 
-class InventoryEndpoint(
-    val container: Container,
-    val side: Direction? = null,
-    val identities: Set<Container> = setOf(container)
-) {
-    fun slots(): IntArray = (0 until container.containerSize).filter { slot ->
-        InventorySlot.path(container, slot).all(::accessible)
-    }.toIntArray()
+class InventoryEndpoint(val container: Container, val side: Direction? = null, val identities: Set<Container> = setOf(container)) {
+    fun slots(): IntArray = (0 until container.containerSize).filter { slot -> InventorySlot.path(container, slot).all(::accessible) }.toIntArray()
 
     fun canInsert(slot: Int, stack: ItemStack): Boolean = InventorySlot.path(container, slot).all { view ->
         accessible(view) && view.container.canPlaceItem(view.index, stack) &&
@@ -35,9 +29,7 @@ class InventoryEndpoint(
     internal fun physicalSlot(slot: Int): InventorySlot = InventorySlot.path(container, slot).last()
 
     internal fun maxStackSize(slot: Int, stack: ItemStack): Int =
-        InventorySlot.path(container, slot).minOf { view ->
-            (view.container as? PlatformItemContainer)?.capacity(view.index, stack) ?: view.container.getMaxStackSize(stack)
-        }
+        InventorySlot.path(container, slot).minOf { view -> (view.container as? PlatformItemContainer)?.capacity(view.index, stack) ?: view.container.getMaxStackSize(stack) }
 
     internal fun totalCapacity(slot: Int, stack: ItemStack): Long =
         InventorySlot.path(container, slot).minOf { view ->
@@ -67,9 +59,7 @@ object InventoryAccess {
     }
 
     fun overlaps(first: InventoryEndpoint, second: InventoryEndpoint): Boolean =
-        containers(first).any { a -> containers(second).any { b ->
-            a === b || a is PlatformItemContainer && b is PlatformItemContainer && a.storageIdentity == b.storageIdentity
-        } }
+        containers(first).any { a -> containers(second).any { b -> a === b || a is PlatformItemContainer && b is PlatformItemContainer && a.storageIdentity == b.storageIdentity } }
 
     private fun containers(endpoint: InventoryEndpoint): List<Container> =
         InventorySlot.containers(endpoint.container) + endpoint.identities.flatMap { InventorySlot.containers(it) }

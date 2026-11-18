@@ -24,16 +24,10 @@ class ParticleSystem(
     private val emitters = mutableListOf<ParticleEmitter>()
     private val pendingEmitters = mutableListOf<ParticleEmitter>()
     private var updating = false
-
     internal val billboardRenderPasses = linkedMapOf<ParticleEffect.RenderPass, MutableSet<BedrockParticle>>()
 
     companion object {
-        fun create(level: Level) = ParticleSystem(
-            level,
-            Random(),
-            LevelCollisionProvider(level),
-            LevelLightProvider(level)
-        )
+        fun create(level: Level) = ParticleSystem(level, Random(), LevelCollisionProvider(level), LevelLightProvider(level))
     }
 
     fun remove(identifier: String) {
@@ -51,20 +45,8 @@ class ParticleSystem(
         transform: Transform = Transform.Zero
     ) = spawn(ParticleEffect.fromFile(effect), query, transform)
 
-    fun spawn(
-        effect: ParticleEffect,
-        query: Query = Query.EMPTY,
-        transform: Transform = Transform.Zero
-    ): ParticleEmitter {
-        val emitter = ParticleEmitter(
-            this,
-            effect,
-            query,
-            transform.position,
-            transform.rotation,
-            transform.velocity,
-            transform
-        )
+    fun spawn(effect: ParticleEffect, query: Query = Query.EMPTY, transform: Transform = Transform.Zero): ParticleEmitter {
+        val emitter = ParticleEmitter(this, effect, query, transform.position, transform.rotation, transform.velocity, transform)
         addEmitter(emitter)
         emitter.startLoop(0f)
         emitter.update(0f)
@@ -113,37 +95,22 @@ class ParticleSystem(
         poseStack.pushPose()
         poseStack.translate(-camera.pos.x, -camera.pos.y, -camera.pos.z)
         try {
-            billboardRenderPasses.entries
-                .sortedBy { it.key.material.needsSorting }
+            billboardRenderPasses.entries.sortedBy { it.key.material.needsSorting }
                 .forEach { (renderPass, particles) ->
                     var quads = particles.asSequence()
                         .mapNotNull { particle ->
                             val worldPosition = particle.interpolatedGlobalPosition(renderProgress)
                             if (worldPosition.distanceSquared(cameraPosition) > renderDistanceSquare) return@mapNotNull null
-                            if (!camera.cullFrustum.pointInFrustum(
-                                    worldPosition.x.toDouble(),
-                                    worldPosition.y.toDouble(),
-                                    worldPosition.z.toDouble()
-                                ))
+                            if (!camera.cullFrustum.pointInFrustum(worldPosition.x.toDouble(), worldPosition.y.toDouble(), worldPosition.z.toDouble()))
                                 return@mapNotNull null
 
-                            particle.extractBillboard(
-                                worldPosition,
-                                renderProgress,
-                                cameraPosition,
-                                cameraRotation,
-                                cameraFacing,
-                                cameraUuid,
-                                firstPerson
-                            )
+                            particle.extractBillboard(worldPosition, renderProgress, cameraPosition, cameraRotation, cameraFacing, cameraUuid, firstPerson)
                         }
                         .toList()
                     if (renderPass.material.needsSorting) quads = quads.sortedByDescending(ParticleQuad::distance)
                     if (quads.isEmpty()) return@forEach
 
-                    collector.submitCustomGeometry(poseStack, renderPass.renderType) { pose, consumer ->
-                        quads.forEach { it.render(pose, consumer) }
-                    }
+                    collector.submitCustomGeometry(poseStack, renderPass.renderType) { pose, consumer -> quads.forEach { it.render(pose, consumer) } }
                 }
         } finally {
             poseStack.popPose()
@@ -153,10 +120,7 @@ class ParticleSystem(
     fun isEmpty() = emitters.isEmpty() && pendingEmitters.isEmpty()
     fun hasAnythingToRender() = billboardRenderPasses.isNotEmpty()
 
-    private inline fun removeMatching(
-        source: MutableList<ParticleEmitter>,
-        predicate: (ParticleEmitter) -> Boolean
-    ) {
+    private inline fun removeMatching(source: MutableList<ParticleEmitter>, predicate: (ParticleEmitter) -> Boolean) {
         val iterator = source.iterator()
         while (iterator.hasNext()) {
             val emitter = iterator.next()

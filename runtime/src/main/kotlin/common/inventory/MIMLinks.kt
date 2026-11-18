@@ -16,8 +16,7 @@ object MIMLinks {
         return level.getBlockEntity(pos)?.takeUnless { it.isRemoved }
     }
 
-    fun resolveMRU(level: Level, stack: ItemStack): MRUDevice? =
-        resolvePosition(level, stack)?.let(level::resolveMRUDevice)
+    fun resolveMRU(level: Level, stack: ItemStack): MRUDevice? = resolvePosition(level, stack)?.let(level::resolveMRUDevice)
 
     fun resolvePosition(level: Level, stack: ItemStack): BlockPos? {
         val gem = stack.item as? BoundGem ?: return null

@@ -22,11 +22,8 @@ interface ResearchTask {
     fun consume(player: ServerPlayer) = Unit
 }
 
-interface OwnerAwareResearchTask : ResearchTask {
-    fun progress(
-        player: ServerPlayer,
-        owner: Identifier
-    ): ResearchTaskProgress
+interface OwnerAwareResearchTask: ResearchTask {
+    fun progress(player: ServerPlayer, owner: Identifier): ResearchTaskProgress
 }
 
 fun ResearchTask.progress(
@@ -42,10 +39,7 @@ interface ResearchTaskSerializer<T : ResearchTask> {
     fun encode(value: T): JsonObject
 }
 
-data class ResearchTaskProgress(
-    val current: Int,
-    val required: Int
-) {
+data class ResearchTaskProgress(val current: Int, val required: Int) {
     val complete: Boolean get() = current >= required
 }
 
@@ -54,7 +48,7 @@ data class ItemResearchTask(
     val count: Int,
     val consumeItems: Boolean = false,
     val components: JsonObject = JsonObject(emptyMap())
-) : ResearchTask {
+): ResearchTask {
     override val type: Identifier = ResearchIds.ITEM_TASK
 
     override fun progress(player: ServerPlayer): ResearchTaskProgress {
@@ -78,24 +72,15 @@ data class ItemResearchTask(
         }
     }
 
-    fun createStack(
-        player: ServerPlayer,
-        stackCount: Int = count
-    ): ItemStack = createStack(player.registryAccess(), stackCount)
+    fun createStack(player: ServerPlayer, stackCount: Int = count): ItemStack = createStack(player.registryAccess(), stackCount)
 
-    fun createStack(
-        provider: HolderLookup.Provider,
-        stackCount: Int = count
-    ): ItemStack {
+    fun createStack(provider: HolderLookup.Provider, stackCount: Int = count): ItemStack {
         val amount = stackCount.coerceAtLeast(1)
         val stack = ItemParser(provider).parse(StringReader(item)).createItemStack(amount)
         if (components.isEmpty()) return stack
 
         val itemId = BuiltInRegistries.ITEM.getKey(stack.item)
-        val componentStack =
-            ItemParser(provider)
-                .parse(StringReader(componentItemDefinition(itemId.toString())))
-                .createItemStack(amount)
+        val componentStack = ItemParser(provider).parse(StringReader(componentItemDefinition(itemId.toString()))).createItemStack(amount)
         stack.applyComponentsAndValidate(componentStack.componentsPatch)
         return stack
     }
@@ -119,9 +104,7 @@ data class ItemResearchTask(
         }
 }
 
-data class CraftingResearchTask(
-    val recipe: Identifier
-) : ResearchTask {
+data class CraftingResearchTask(val recipe: Identifier): ResearchTask {
     override val type: Identifier = ResearchIds.RECIPE_TASK
 
     override fun progress(player: ServerPlayer): ResearchTaskProgress {
@@ -130,28 +113,19 @@ data class CraftingResearchTask(
     }
 }
 
-data class OpenResearchTask(
-    val research: Identifier? = null
-) : OwnerAwareResearchTask {
+data class OpenResearchTask(val research: Identifier? = null): OwnerAwareResearchTask {
     override val type: Identifier = ResearchIds.OPEN_TASK
 
     override fun progress(player: ServerPlayer): ResearchTaskProgress = ResearchTaskProgress(0, 1)
 
-    override fun progress(
-        player: ServerPlayer,
-        owner: Identifier
-    ): ResearchTaskProgress {
+    override fun progress(player: ServerPlayer, owner: Identifier): ResearchTaskProgress {
         val target = research ?: owner
         val data = ResearchProgress.data(player)
         return ResearchTaskProgress(if (target in data.opened || target in data.unlocked) 1 else 0, 1)
     }
 }
 
-data class ExperienceResearchTask(
-    val amount: Int,
-    val levels: Boolean = false,
-    val consumeExperience: Boolean = false
-) : ResearchTask {
+data class ExperienceResearchTask(val amount: Int, val levels: Boolean = false, val consumeExperience: Boolean = false): ResearchTask {
     override val type: Identifier = ResearchIds.EXPERIENCE_TASK
 
     override fun progress(player: ServerPlayer): ResearchTaskProgress {
@@ -165,9 +139,7 @@ data class ExperienceResearchTask(
     }
 }
 
-data class TravelToDimensionResearchTask(
-    val dimension: Identifier
-) : ResearchTask {
+data class TravelToDimensionResearchTask(val dimension: Identifier): ResearchTask {
     override val type: Identifier = ResearchIds.TRAVEL_TO_DIMENSION
 
     override fun progress(player: ServerPlayer): ResearchTaskProgress {
@@ -176,10 +148,7 @@ data class TravelToDimensionResearchTask(
     }
 }
 
-data class TravelToStructureResearchTask(
-    val structure: Identifier?,
-    val tag: Identifier?
-) : ResearchTask {
+data class TravelToStructureResearchTask(val structure: Identifier?, val tag: Identifier?): ResearchTask {
     init {
         require((structure == null) xor (tag == null)) {
             "Structure id or Structure tag is required."

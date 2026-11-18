@@ -9,19 +9,14 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.display.SlotDisplay
 import kotlin.jvm.optionals.getOrElse
 
-object MagicTableRenderer : BookRecipeRenderer<MagicTableRecipe> {
+object MagicTableRenderer: BookRecipeRenderer<MagicTableRecipe> {
     private const val SLOT_SIZE = 32
     private const val ITEM_SIZE = SLOT_SIZE / 2
-
     private const val ELEMENT_GAP = 8
     private const val TEXT_GAP = ELEMENT_GAP / 2
-
     private const val CONTENT_HEIGHT = 96
 
-    override fun build(
-        recipe: MagicTableRecipe,
-        builder: BookRecipeRenderBuilder
-    ) {
+    override fun build(recipe: MagicTableRecipe, builder: BookRecipeRenderBuilder) {
         val display = recipe.display().filterIsInstance<MagicTableRecipe.Display>().firstOrNull() ?: return
 
         val table = ItemStack(BlockRegistry.magicTable.get())
@@ -47,12 +42,7 @@ object MagicTableRenderer : BookRecipeRenderer<MagicTableRecipe> {
                 val index = y * 2 + x
                 val currentDisplay = inputs[index]
 
-                builder.slot(
-                    currentDisplay,
-                    BookRecipeSlotType.INPUT,
-                    centerX + (x * 2 - 1) * SLOT_SIZE,
-                    centerY + (y * 2 - 1) * SLOT_SIZE
-                )
+                builder.slot(currentDisplay, BookRecipeSlotType.INPUT, centerX + (x * 2 - 1) * SLOT_SIZE, centerY + (y * 2 - 1) * SLOT_SIZE)
             }
         }
 

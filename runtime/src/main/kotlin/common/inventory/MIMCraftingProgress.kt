@@ -6,7 +6,7 @@ import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
 import net.minecraft.world.item.ItemStack
 
-internal class MIMCraftingProgress(
+class MIMCraftingProgress(
     inputs: List<ItemStack>, outputs: List<ItemStack>, val work: MIMCraftingWork,
     var completed: Int = 0, var partialMRU: Int = 0
 ) {
@@ -19,8 +19,7 @@ internal class MIMCraftingProgress(
         require(completed in 0..work.ticks && partialMRU >= 0 && (partialMRU == 0 || partialMRU < work.mruPerTick))
     }
 
-    fun matches(inputs: List<ItemStack>, outputs: List<ItemStack>, work: MIMCraftingWork): Boolean =
-        this.work == work && same(this.inputs, inputs) && same(this.outputs, outputs)
+    fun matches(inputs: List<ItemStack>, outputs: List<ItemStack>, work: MIMCraftingWork): Boolean = this.work == work && same(this.inputs, inputs) && same(this.outputs, outputs)
 
     fun advance(storage: ModifiableMRUStorage, tick: Long): Boolean {
         if (complete || tick == lastTick) return false
@@ -38,8 +37,7 @@ internal class MIMCraftingProgress(
         return true
     }
 
-    private fun same(first: List<ItemStack>, second: List<ItemStack>): Boolean =
-        first.size == second.size && first.indices.all { ItemStack.matches(first[it], second[it]) }
+    private fun same(first: List<ItemStack>, second: List<ItemStack>): Boolean = first.size == second.size && first.indices.all { ItemStack.matches(first[it], second[it]) }
 
     companion object {
         val CODEC: Codec<MIMCraftingProgress> = RecordCodecBuilder.create { instance ->

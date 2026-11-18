@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredHolder
 import net.neoforged.neoforge.registries.RegisterEvent
 import java.util.function.Supplier
 
-class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
+class NeoForgeRegistrationPlatform(bus: IEventBus): RegistrationPlatform {
     private val registrations = mutableListOf<PendingRegistration>()
     private val registrationKeys = mutableSetOf<RegistrationKey>()
     private var registrationStarted = false
@@ -18,11 +18,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
         bus.addListener(::onRegister)
     }
 
-    override fun <R : Any, T : R> register(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): Supplier<T> = synchronized(this) {
+    override fun <R : Any, T : R> register(id: Identifier, registry: Registry<R>, factory: Supplier<T>): Supplier<T> = synchronized(this) {
         declare(id, registry, factory)
     }
 
@@ -35,11 +31,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
         PlatformRegistryHolder(holder, holder)
     }
 
-    private fun <R : Any, T : R> declare(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): DeferredHolder<R, T> {
+    private fun <R : Any, T : R> declare(id: Identifier, registry: Registry<R>, factory: Supplier<T>): DeferredHolder<R, T> {
         check(!registrationStarted) { "Cannot declare $id after NeoForge registry events have started" }
 
         val key = RegistrationKey(registry.key().identifier(), id)
@@ -71,7 +63,7 @@ class NeoForgeRegistrationPlatform(bus: IEventBus) : RegistrationPlatform {
         private val id: Identifier,
         private val registry: Registry<R>,
         private val factory: Supplier<T>
-    ) : PendingRegistration {
+    ): PendingRegistration {
         override val registryKey: Identifier = registry.key().identifier()
 
         override fun register(event: RegisterEvent) {

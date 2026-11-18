@@ -7,7 +7,7 @@ import net.minecraft.resources.Identifier
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener
 
-object BedrockParticles : ResourceManagerReloadListener {
+object BedrockParticles: ResourceManagerReloadListener {
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
@@ -20,21 +20,13 @@ object BedrockParticles : ResourceManagerReloadListener {
         val loadedFiles = linkedMapOf<Identifier, BedrockParticleFile>()
         resourceManager.listResources("particles") { it.path.endsWith(".bedrock.json") }
             .forEach { (location, resource) ->
-                runCatching {
-                    resource.openAsReader().use { json.decodeFromString<BedrockParticleFile>(it.readText()) }
-                }.onSuccess { loadedFiles[location] = it }
+                runCatching { resource.openAsReader().use { json.decodeFromString<BedrockParticleFile>(it.readText()) } }.onSuccess { loadedFiles[location] = it }
                     .onFailure { LOGGER.warn("Unable to load Bedrock particle {}", location, it) }
             }
 
-        val loadedEffects = loadedFiles.values
-            .map(ParticleEffect::fromFile)
-            .associateByTo(linkedMapOf()) { it.identifier }
+        val loadedEffects = loadedFiles.values.map(ParticleEffect::fromFile).associateByTo(linkedMapOf()) { it.identifier }
         loadedEffects.values.forEach { effect ->
-            effect.events.values
-                .asSequence()
-                .flatMap(::referencedParticleNames)
-                .distinct()
-                .forEach { name -> loadedEffects[name]?.let { effect.referencedEffects[name] = it } }
+            effect.events.values.asSequence().flatMap(::referencedParticleNames).distinct().forEach { name -> loadedEffects[name]?.let { effect.referencedEffects[name] = it } }
         }
 
         synchronized(this) {

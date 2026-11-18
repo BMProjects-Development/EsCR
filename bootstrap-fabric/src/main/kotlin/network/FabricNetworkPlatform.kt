@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerPlayer
 
-object FabricNetworkPlatform : NetworkPlatform {
+object FabricNetworkPlatform: NetworkPlatform {
     override fun install(registry: PacketRegistry) {
         registry.packets.forEach { packet ->
             when (packet) {
@@ -20,8 +20,7 @@ object FabricNetworkPlatform : NetworkPlatform {
         }
     }
 
-    override fun sendToPlayer(player: ServerPlayer, payload: CustomPacketPayload) =
-        ServerPlayNetworking.send(player, payload)
+    override fun sendToPlayer(player: ServerPlayer, payload: CustomPacketPayload) = ServerPlayNetworking.send(player, payload)
 
     private fun <P : CustomPacketPayload> registerClientbound(packet: ClientboundPacket<P>) {
         val size = packet.maxPayloadSize
@@ -33,8 +32,6 @@ object FabricNetworkPlatform : NetworkPlatform {
         val size = packet.maxPayloadSize
         if (size == null) PayloadTypeRegistry.serverboundPlay().register(packet.type, packet.codec)
         else PayloadTypeRegistry.serverboundPlay().registerLarge(packet.type, packet.codec, size.bytes)
-        ServerPlayNetworking.registerGlobalReceiver(packet.type) { payload, context ->
-            context.server().execute { packet.handler(ServerPacketContext(context.player()), payload) }
-        }
+        ServerPlayNetworking.registerGlobalReceiver(packet.type) { payload, context -> context.server().execute { packet.handler(ServerPacketContext(context.player()), payload) } }
     }
 }

@@ -34,7 +34,7 @@ abstract class MIMDeviceEntity(
     size: Int,
     capacity: Int = 0,
     protected val energySlot: Int = -1
-) : SynchronizedContainerBlockEntity(type, pos, state), MRUDevice {
+): SynchronizedContainerBlockEntity(type, pos, state), MRUDevice {
     abstract val menuKind: MIMMenuKind
     private var inventory = NonNullList.withSize(size, ItemStack.EMPTY)
     private val pendingItems = mutableListOf<ItemStack>()
@@ -56,8 +56,7 @@ abstract class MIMDeviceEntity(
         }
         return MIMMenu(containerId, inventory, this)
     }
-    override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean =
-        slot == energySlot && stack.item is BoundGem && stack.item !is InventoryGemItem && MIMLinks.isBound(stack)
+    override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = slot == energySlot && stack.item is BoundGem && stack.item !is InventoryGemItem && MIMLinks.isBound(stack)
 
     open fun serverTick() { level?.let { processReceive(it) } }
 

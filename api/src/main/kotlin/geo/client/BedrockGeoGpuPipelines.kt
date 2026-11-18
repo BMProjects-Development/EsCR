@@ -16,27 +16,16 @@ import com.mojang.renderpearl.api.vertex.VertexFormat
 object BedrockGeoGpuPipelines {
     @JvmField
     val VERTEX_FORMAT: VertexFormat =
-        VertexFormat
-            .builder(0)
-            .addAttribute("Position", GpuFormat.RGB32_FLOAT)
-            .addAttribute("UV0", GpuFormat.RG32_FLOAT)
-            .addAttribute("Normal", GpuFormat.RGB32_FLOAT)
+        VertexFormat.builder(0).addAttribute("Position", GpuFormat.RGB32_FLOAT).addAttribute("UV0", GpuFormat.RG32_FLOAT).addAttribute("Normal", GpuFormat.RGB32_FLOAT)
             .addAttribute("BoneIndex", GpuFormat.R32_SINT)
             .build()
 
     private val geoBindings =
-        BindGroupLayout
-            .builder()
-            .withUniform("GeoInfo", UniformType.UNIFORM_BUFFER)
-            .withUniform("GeoMatrices", UniformType.TEXEL_BUFFER, GpuFormat.RGBA32_FLOAT)
-            .build()
+        BindGroupLayout.builder().withUniform("GeoInfo", UniformType.UNIFORM_BUFFER).withUniform("GeoMatrices", UniformType.TEXEL_BUFFER, GpuFormat.RGBA32_FLOAT).build()
 
     private val solid =
         register(
-            RenderPipeline
-                .builder(RenderPipelinesAccessor.entitySnippet())
-                .withLocation("pipeline/bedrock_geo_solid".ecRL)
-                .withVertexShader("core/bedrock_geo".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.entitySnippet()).withLocation("pipeline/bedrock_geo_solid".ecRL).withVertexShader("core/bedrock_geo".ecRL)
                 .withBindGroupLayout(geoBindings)
                 .withBindGroupLayout(net.minecraft.client.renderer.BindGroupLayouts.SAMPLER1)
                 .withColorTargetState(ColorTargetState.DEFAULT)
@@ -47,10 +36,7 @@ object BedrockGeoGpuPipelines {
 
     private val cutout =
         register(
-            RenderPipeline
-                .builder(RenderPipelinesAccessor.entitySnippet())
-                .withLocation("pipeline/bedrock_geo_cutout".ecRL)
-                .withVertexShader("core/bedrock_geo".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.entitySnippet()).withLocation("pipeline/bedrock_geo_cutout".ecRL).withVertexShader("core/bedrock_geo".ecRL)
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                 .withBindGroupLayout(geoBindings)
                 .withBindGroupLayout(net.minecraft.client.renderer.BindGroupLayouts.SAMPLER1)
@@ -62,10 +48,7 @@ object BedrockGeoGpuPipelines {
 
     private val translucent =
         register(
-            RenderPipeline
-                .builder(RenderPipelinesAccessor.entitySnippet())
-                .withLocation("pipeline/bedrock_geo_translucent".ecRL)
-                .withVertexShader("core/bedrock_geo".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.entitySnippet()).withLocation("pipeline/bedrock_geo_translucent".ecRL).withVertexShader("core/bedrock_geo".ecRL)
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                 .withShaderDefine("PER_FACE_LIGHTING")
                 .withBindGroupLayout(geoBindings)
@@ -79,10 +62,7 @@ object BedrockGeoGpuPipelines {
 
     private val additive =
         register(
-            RenderPipeline
-                .builder(RenderPipelinesAccessor.entityEmissiveSnippet())
-                .withLocation("pipeline/bedrock_geo_additive".ecRL)
-                .withVertexShader("core/bedrock_geo".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.entityEmissiveSnippet()).withLocation("pipeline/bedrock_geo_additive".ecRL).withVertexShader("core/bedrock_geo".ecRL)
                 .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                 .withShaderDefine("EMISSIVE")
                 .withShaderDefine("NO_OVERLAY")

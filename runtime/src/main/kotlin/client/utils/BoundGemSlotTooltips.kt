@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.utils
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.item.BoundGem
 import com.algorithmlx.ecr.api.network.sendToServer
 import com.algorithmlx.ecr.network.MenuBoundGemTooltipRequest
@@ -54,7 +55,7 @@ object BoundGemSlotTooltips {
             addAll(entry.lines)
             val coordinates = (stack.item as BoundGem).getBoundPos(stack)
             if (Minecraft.getInstance().hasShiftDown() && coordinates != null)
-                add(1.coerceAtMost(size), Component.translatable("tooltip.escr.bound_gem.coordinates", coordinates.x, coordinates.y, coordinates.z).withStyle(ChatFormatting.GRAY))
+                add(1.coerceAtMost(size), Component.translatable("tooltip.$ModId.bound_gem.coordinates", coordinates.x, coordinates.y, coordinates.z).withStyle(ChatFormatting.GRAY))
         }
     }
 

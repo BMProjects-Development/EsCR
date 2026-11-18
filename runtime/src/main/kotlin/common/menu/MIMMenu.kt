@@ -40,7 +40,7 @@ class MIMMenu private constructor(
     val device: MIMDeviceEntity?,
     val kind: MIMMenuKind,
     private val devicePos: BlockPos
-) : AbstractMenu(MenuTypeRegistry.mim, containerId, ContainerLevelAccess.NULL), BoundGemSlotContext {
+): AbstractMenu(MenuTypeRegistry.mim, containerId, ContainerLevelAccess.NULL), BoundGemSlotContext {
     constructor(containerId: Int, inventory: Inventory, device: MIMDeviceEntity) : this(
         containerId, inventory,
         if (device is MIMExpandableContainer) MIMInventoryWindow(
@@ -74,7 +74,7 @@ class MIMMenu private constructor(
         this[VISIBLE_ROWS] = MIMTerminalLayout.MIN_ROWS
         this[AVAILABLE_SLOTS] = configurationLayout?.let { minOf(deviceSlots, it.rows * it.columns) } ?: deviceSlots
     }
-    private val data = object : ContainerData {
+    private val data = object: ContainerData {
         override fun get(index: Int): Int = values[index]
         override fun set(index: Int, value: Int) { values[index] = value }
         override fun getCount(): Int = values.size
@@ -85,7 +85,7 @@ class MIMMenu private constructor(
         container.startOpen(inventory.player)
         if (isTerminal)
             repeat(PAGE_SIZE) { index ->
-                addSlot(object : Slot(display, index, MIMTerminalLayout.GRID_X + index % 9 * 18, MIMTerminalLayout.GRID_Y + index / 9 * 18) {
+                addSlot(object: Slot(display, index, MIMTerminalLayout.GRID_X + index % 9 * 18, MIMTerminalLayout.GRID_Y + index / 9 * 18) {
                     override fun mayPlace(stack: ItemStack): Boolean = false
                     override fun mayPickup(player: Player): Boolean = false
                     override fun isFake(): Boolean = true
@@ -95,9 +95,7 @@ class MIMMenu private constructor(
         repeat(deviceSlots) { index ->
             val x = configurationLayout!!.slotX(index)
             val y = configurationLayout.slotY(index, 0)
-            addSlot(VanillaSpecialSlot(container, index, x, y, { stack ->
-                canPlaceConfiguration(index, stack)
-            }, stackSize = 1))
+            addSlot(VanillaSpecialSlot(container, index, x, y, { stack -> canPlaceConfiguration(index, stack) }, stackSize = 1))
         }
         inventory.make(if (isTerminal) MIMTerminalLayout.PLAYER_X else 8, playerY)
         addDataSlots(data)
@@ -131,9 +129,7 @@ class MIMMenu private constructor(
 
     fun count(index: Int): Long {
         if (index !in 0..<PAGE_SIZE) return 0
-        return (0..3).fold(0L) { result, part ->
-            result or ((values[HEADER_SIZE + index * 5 + part].toLong() and 0xFFFF) shl (part * 16))
-        }
+        return (0..3).fold(0L) { result, part -> result or ((values[HEADER_SIZE + index * 5 + part].toLong() and 0xFFFF) shl (part * 16)) }
     }
 
     fun canCraft(index: Int): Boolean = index in 0..<PAGE_SIZE && values[HEADER_SIZE + index * 5 + 4] != 0
@@ -206,9 +202,7 @@ class MIMMenu private constructor(
         writeInt(4, core?.power?.mru ?: 0)
         writeInt(6, core?.power?.mruCapacity ?: 0)
         val craftingModules = core?.craftingModules().orEmpty()
-        val activity = craftingModules.mapNotNull { it.activity }.let { activities ->
-            activities.firstOrNull { it.state == MIMCraftingState.WORKING } ?: activities.firstOrNull()
-        }
+        val activity = craftingModules.mapNotNull { it.activity }.let { activities -> activities.firstOrNull { it.state == MIMCraftingState.WORKING } ?: activities.firstOrNull() }
         writeInt(ACTIVE_COMPLETED, activity?.completed ?: 0)
         writeInt(ACTIVE_TICKS, activity?.ticks ?: 0)
         writeInt(ACTIVE_MRU, activity?.mruPerTick ?: 0)
@@ -221,10 +215,7 @@ class MIMMenu private constructor(
         if (!hasRecipes) values[MODE] = 0
         val available = mutableListOf<Entry>()
         if (isStorageAvailable && isCraftingMode) {
-            patterns.forEach { pattern ->
-                if (available.none { ItemStack.isSameItemSameComponents(it.stack, pattern) })
-                    available += Entry(pattern.copyWithCount(1), 0, true)
-            }
+            patterns.forEach { pattern -> if (available.none { ItemStack.isSameItemSameComponents(it.stack, pattern) }) available += Entry(pattern.copyWithCount(1), 0, true) }
         } else if (isStorageAvailable) {
             core?.network()?.snapshot()?.forEach { available += Entry(it.stack.copyWithCount(1), it.count, false) }
         }
@@ -289,8 +280,7 @@ class MIMMenu private constructor(
         if (result.isEmpty) return
         if (intoInventory) {
             inventory.add(result)
-            if (!result.isEmpty)
-                if (carried.isEmpty) carried = result else inventory.player.drop(result, false, Prediction.SERVER_ONLY)
+            if (!result.isEmpty) if (carried.isEmpty) carried = result else inventory.player.drop(result, false, Prediction.SERVER_ONLY)
         }
         else
             carried = result
@@ -397,8 +387,7 @@ class MIMMenu private constructor(
         return original
     }
 
-    override fun canTakeItemForPickAll(stack: ItemStack, slot: Slot): Boolean =
-        slot.isActive && slot.container !== display && super.canTakeItemForPickAll(stack, slot)
+    override fun canTakeItemForPickAll(stack: ItemStack, slot: Slot): Boolean = slot.isActive && slot.container !== display && super.canTakeItemForPickAll(stack, slot)
 
     override fun canDragTo(slot: Slot): Boolean = slot.isActive && slot.container !== display && super.canDragTo(slot)
 
@@ -445,7 +434,7 @@ class MIMMenu private constructor(
     }
 }
 
-data class MIMSearchPayload(val containerId: Int, val search: String) : CustomPacketPayload {
+data class MIMSearchPayload(val containerId: Int, val search: String): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {

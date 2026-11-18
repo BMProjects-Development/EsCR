@@ -13,34 +13,15 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
 import java.util.Locale
 
-class RadiatingChamberScreen(
-    menu: RadiatingChamberMenu,
-    inv: Inventory,
-    title: Component
-): AbstractContainerScreen<RadiatingChamberMenu>(menu, inv, title) {
+class RadiatingChamberScreen(menu: RadiatingChamberMenu, inv: Inventory, title: Component): AbstractContainerScreen<RadiatingChamberMenu>(menu, inv, title) {
     private val mruAnimation = MRULineAnimation()
 
     override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.extractBackground(graphics, mouseX, mouseY, deltaTicks)
-        graphics.blit(
-            RenderPipelines.GUI_TEXTURED,
-            TEXTURE,
-            this.leftPos, this.topPos,
-            0F, 0F,
-            this.imageWidth, this.imageHeight,
-            256, 256
-        )
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256)
 
         val be = this.menu.blockEntity as? RadiatingChamberEntity ?: return
-        drawMRULine(
-            graphics, be.mruStorage,
-            26, 12,
-            this.leftPos, this.topPos,
-            124, 8,
-            mouseX, mouseY,
-            animation = this.mruAnimation,
-            deltaTicks = deltaTicks
-        )
+        drawMRULine(graphics, be.mruStorage, 26, 12, this.leftPos, this.topPos, 124, 8, mouseX, mouseY, animation = this.mruAnimation, deltaTicks = deltaTicks)
 
         drawBalance(graphics, "upper_balance", be.balance.upperBalance, 30)
         drawBalance(graphics, "lower_balance", be.balance.lowerBalance, 66)
@@ -55,7 +36,6 @@ class RadiatingChamberScreen(
 
     companion object {
         private const val TEXT_COLOR = 0xFF404040.toInt()
-
         private val TEXTURE = ECRModIDs.guiLocation(ECRModIDs.RADIATING_CHAMBER)
     }
 }

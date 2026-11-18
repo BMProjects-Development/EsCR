@@ -28,13 +28,9 @@ sealed interface BookRecipeRenderElement {
 }
 
 sealed interface BookRecipeSlotContent {
-    data class Stacks(
-        val stacks: List<ItemStack>
-    ) : BookRecipeSlotContent
+    data class Stacks(val stacks: List<ItemStack>): BookRecipeSlotContent
 
-    data class Display(
-        val display: SlotDisplay
-    ) : BookRecipeSlotContent
+    data class Display(val display: SlotDisplay): BookRecipeSlotContent
 }
 
 class BookRecipeSlot internal constructor(
@@ -42,7 +38,7 @@ class BookRecipeSlot internal constructor(
     val slotType: BookRecipeSlotType,
     val x: Int,
     val y: Int
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     private val tooltipAdditions = mutableListOf<Component>()
     val additions: List<Component> get() = tooltipAdditions
 
@@ -62,28 +58,16 @@ data class BookRecipeSprite(
     val y: Int,
     val width: Int,
     val height: Int
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     override fun render(context: BookElementRenderContext) {
-        context.graphics.blitSprite(
-            RenderPipelines.GUI_TEXTURED,
-            this.sprite,
-            context.x + this.x,
-            context.y + this.y,
-            this.width,
-            this.height
-        )
+        context.graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.sprite, context.x + this.x, context.y + this.y, this.width, this.height)
     }
 }
 
-data class BookRecipeItemSprite(
-    val item: ItemStack,
-    val x: Int,
-    val y: Int
-) : BookRecipeRenderElement {
+data class BookRecipeItemSprite(val item: ItemStack, val x: Int, val y: Int): BookRecipeRenderElement {
     override fun render(context: BookElementRenderContext) {
         context.graphics.item(item, context.x + this.x, context.y + this.y)
-        if (item.count > 1)
-            context.graphics.itemDecorations(context.mc.font, this.item, context.x + this.x, context.y + this.y)
+        if (item.count > 1) context.graphics.itemDecorations(context.mc.font, this.item, context.x + this.x, context.y + this.y)
     }
 }
 
@@ -92,7 +76,7 @@ data class BookRecipeTooltip(
     val x: Int,
     val y: Int,
     val size: Int
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     override fun render(context: BookElementRenderContext): Unit = throw AssertionError("Used default render")
 }
 
@@ -102,16 +86,9 @@ data class BookRecipeText(
     val y: Int,
     val color: Int,
     val shadow: Boolean
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     override fun render(context: BookElementRenderContext) {
-        context.graphics.text(
-            context.mc.font,
-            this.text,
-            context.x + this.x,
-            context.y + this.y,
-            this.color,
-            this.shadow
-        )
+        context.graphics.text(context.mc.font, this.text, context.x + this.x, context.y + this.y, this.color, this.shadow)
     }
 }
 
@@ -123,19 +100,13 @@ data class BookRecipeLink(
     val color: Int,
     val hoverColor: Int,
     val shadow: Boolean
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     override fun render(context: BookElementRenderContext) {
         val font = context.mc.font
         val color = this.color
         context.graphics.text(font, this.text, context.x + this.x, context.y + this.y, color, this.shadow)
         val underlineY = context.y + this.y + font.lineHeight - 1
-        context.graphics.fill(
-            context.x + this.x,
-            underlineY,
-            context.x + this.x + font.width(this.text),
-            underlineY + 1,
-            color
-        )
+        context.graphics.fill(context.x + this.x, underlineY, context.x + this.x + font.width(this.text), underlineY + 1, color)
     }
 }
 
@@ -147,22 +118,9 @@ data class BookRecipeMRULine(
     val height: Int,
     val color: Int,
     val hoverColor: Int
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     override fun render(context: BookElementRenderContext) {
-        drawMRULine(
-            context.graphics,
-            mruStorage,
-            x,
-            y,
-            context.x,
-            context.y,
-            width,
-            height,
-            context.mouseX,
-            context.mouseY,
-            colorIn = color,
-            colorOut = hoverColor
-        )
+        drawMRULine(context.graphics, mruStorage, x, y, context.x, context.y, width, height, context.mouseX, context.mouseY, colorIn = color, colorOut = hoverColor)
     }
 }
 
@@ -176,7 +134,7 @@ data class BookRecipeMultiblock(
     val rotationX: Float,
     val rotationY: Float,
     val layer: Int
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     init {
         require(width > 0 && height > 0)
     }
@@ -195,7 +153,7 @@ data class BookRecipeAssembledMultiblock(
     val rotationX: Float,
     val rotationY: Float,
     val layer: Int
-) : BookRecipeRenderElement {
+): BookRecipeRenderElement {
     init {
         require(width > 0 && height > 0)
     }
@@ -203,11 +161,7 @@ data class BookRecipeAssembledMultiblock(
     override fun render(context: BookElementRenderContext): Unit = throw AssertionError("Used default render")
 }
 
-class BookRecipeRenderBuilder private constructor(
-    private val renderContext: BookElementRenderContext?,
-    val width: Int,
-    val research: Identifier?
-) {
+class BookRecipeRenderBuilder private constructor(private val renderContext: BookElementRenderContext?, val width: Int, val research: Identifier?) {
     constructor(context: BookElementRenderContext) : this(context, context.width, context.research)
 
     val context: BookElementRenderContext
@@ -218,10 +172,7 @@ class BookRecipeRenderBuilder private constructor(
     var contentHeight: Int = 0
         private set
 
-    private fun include(
-        y: Int,
-        height: Int
-    ) {
+    private fun include(y: Int, height: Int) {
         contentHeight = max(contentHeight, y + height)
     }
 
@@ -245,13 +196,7 @@ class BookRecipeRenderBuilder private constructor(
         x: Int,
         y: Int
     ): BookRecipeSlot {
-        val slot =
-            BookRecipeSlot(
-                BookRecipeSlotContent.Stacks(stacks.filterNot(ItemStack::isEmpty).map(ItemStack::copy)),
-                slotType,
-                x,
-                y
-            )
+        val slot = BookRecipeSlot(BookRecipeSlotContent.Stacks(stacks.filterNot(ItemStack::isEmpty).map(ItemStack::copy)), slotType, x, y)
         include(y, SLOT_SIZE)
         elements += slot
         return slot
@@ -281,11 +226,7 @@ class BookRecipeRenderBuilder private constructor(
             elements += it
         }
 
-    fun item(
-        item: ItemStack,
-        x: Int,
-        y: Int
-    ): BookRecipeItemSprite =
+    fun item(item: ItemStack, x: Int, y: Int): BookRecipeItemSprite =
         BookRecipeItemSprite(item, x, y).also {
             include(y, ITEM_SIZE)
             elements += it
@@ -355,16 +296,7 @@ class BookRecipeRenderBuilder private constructor(
         color: Int = 0xFF2F67B1.toInt(),
         hoverColor: Int = 0xFF1B4F91.toInt(),
         shadow: Boolean = false
-    ): BookRecipeLink =
-        link(
-            text,
-            requireNotNull(BookResearchLink.parse(target, research)) { "Invalid research link: $target" },
-            x,
-            y,
-            color,
-            hoverColor,
-            shadow
-        )
+    ): BookRecipeLink = link(text, requireNotNull(BookResearchLink.parse(target, research)) { "Invalid research link: $target" }, x, y, color, hoverColor, shadow)
 
     @JvmOverloads
     fun link(
@@ -388,23 +320,11 @@ class BookRecipeRenderBuilder private constructor(
         shadow: Boolean = false
     ): BookRecipeLink = link(Component.literal(text), target, x, y, color, hoverColor, shadow)
 
-    fun multiblock(
-        multiblock: Identifier,
-        width: Int,
-        height: Int
-    ): BookRecipeMultiblock = multiblock(multiblock, 0, 0, width, height)
+    fun multiblock(multiblock: Identifier, width: Int, height: Int): BookRecipeMultiblock = multiblock(multiblock, 0, 0, width, height)
 
-    fun multiblock(
-        multiblock: String,
-        width: Int,
-        height: Int
-    ): BookRecipeMultiblock = multiblock(Identifier.parse(multiblock), width, height)
+    fun multiblock(multiblock: String, width: Int, height: Int): BookRecipeMultiblock = multiblock(Identifier.parse(multiblock), width, height)
 
-    fun multiblock(
-        multiblock: Multiblock,
-        width: Int,
-        height: Int
-    ): BookRecipeMultiblock = multiblock(multiblock.id(), width, height)
+    fun multiblock(multiblock: Multiblock, width: Int, height: Int): BookRecipeMultiblock = multiblock(multiblock.id(), width, height)
 
     @JvmOverloads
     fun multiblock(
@@ -418,17 +338,7 @@ class BookRecipeRenderBuilder private constructor(
         rotationY: Float = -30F,
         layer: Int = Int.MAX_VALUE
     ): BookRecipeMultiblock =
-        BookRecipeMultiblock(
-            multiblock,
-            x,
-            y,
-            width,
-            height,
-            scale,
-            rotationX,
-            rotationY,
-            layer
-        ).also {
+        BookRecipeMultiblock(multiblock, x, y, width, height, scale, rotationX, rotationY, layer).also {
             include(y, height)
             elements += it
         }
@@ -444,18 +354,7 @@ class BookRecipeRenderBuilder private constructor(
         rotationX: Float = 25F,
         rotationY: Float = -30F,
         layer: Int = Int.MAX_VALUE
-    ): BookRecipeMultiblock =
-        multiblock(
-            Identifier.parse(multiblock),
-            x,
-            y,
-            width,
-            height,
-            scale,
-            rotationX,
-            rotationY,
-            layer
-        )
+    ): BookRecipeMultiblock = multiblock(Identifier.parse(multiblock), x, y, width, height, scale, rotationX, rotationY, layer)
 
     @JvmOverloads
     fun multiblock(
@@ -468,18 +367,7 @@ class BookRecipeRenderBuilder private constructor(
         rotationX: Float = 25F,
         rotationY: Float = -30F,
         layer: Int = Int.MAX_VALUE
-    ): BookRecipeMultiblock =
-        multiblock(
-            multiblock.id(),
-            x,
-            y,
-            width,
-            height,
-            scale,
-            rotationX,
-            rotationY,
-            layer
-        )
+    ): BookRecipeMultiblock = multiblock(multiblock.id(), x, y, width, height, scale, rotationX, rotationY, layer)
 
     fun assembledMultiblock(
         multiblock: Identifier,
@@ -512,18 +400,7 @@ class BookRecipeRenderBuilder private constructor(
         rotationY: Float = -30F,
         layer: Int = Int.MAX_VALUE
     ): BookRecipeAssembledMultiblock =
-        BookRecipeAssembledMultiblock(
-            multiblock,
-            x,
-            y,
-            width,
-            height,
-            assembled,
-            scale,
-            rotationX,
-            rotationY,
-            layer
-        ).also {
+        BookRecipeAssembledMultiblock(multiblock, x, y, width, height, assembled, scale, rotationX, rotationY, layer).also {
             include(y, height)
             elements += it
         }
@@ -540,19 +417,7 @@ class BookRecipeRenderBuilder private constructor(
         rotationX: Float = 25F,
         rotationY: Float = -30F,
         layer: Int = Int.MAX_VALUE
-    ): BookRecipeAssembledMultiblock =
-        assembledMultiblock(
-            Identifier.parse(multiblock),
-            x,
-            y,
-            width,
-            height,
-            assembled,
-            scale,
-            rotationX,
-            rotationY,
-            layer
-        )
+    ): BookRecipeAssembledMultiblock = assembledMultiblock(Identifier.parse(multiblock), x, y, width, height, assembled, scale, rotationX, rotationY, layer)
 
     @JvmOverloads
     fun assembledMultiblock(
@@ -566,19 +431,7 @@ class BookRecipeRenderBuilder private constructor(
         rotationX: Float = 25F,
         rotationY: Float = -30F,
         layer: Int = Int.MAX_VALUE
-    ): BookRecipeAssembledMultiblock =
-        assembledMultiblock(
-            multiblock.id,
-            x,
-            y,
-            width,
-            height,
-            assembled,
-            scale,
-            rotationX,
-            rotationY,
-            layer
-        )
+    ): BookRecipeAssembledMultiblock = assembledMultiblock(multiblock.id, x, y, width, height, assembled, scale, rotationX, rotationY, layer)
 
     @JvmOverloads
     fun mruLine(
@@ -598,20 +451,14 @@ class BookRecipeRenderBuilder private constructor(
         private const val ITEM_SIZE = 16
         private const val MEASURE_CONTEXT_ERROR = "Render context is not available while measuring a recipe"
 
-        fun measure(
-            width: Int,
-            research: Identifier?
-        ): BookRecipeRenderBuilder = BookRecipeRenderBuilder(null, width, research)
+        fun measure(width: Int, research: Identifier?): BookRecipeRenderBuilder = BookRecipeRenderBuilder(null, width, research)
 
         fun isMeasureContextError(error: IllegalStateException): Boolean = error.message == MEASURE_CONTEXT_ERROR
     }
 }
 
 fun interface BookRecipeRenderer<T : Recipe<*>> {
-    fun build(
-        recipe: T,
-        builder: BookRecipeRenderBuilder
-    )
+    fun build(recipe: T, builder: BookRecipeRenderBuilder)
 
     fun width(recipe: T): Int = 160
 
@@ -623,35 +470,22 @@ object BookRecipeRenderers {
     private val typeRenderers = ConcurrentHashMap<RecipeType<*>, BookRecipeRenderer<out Recipe<*>>>()
 
     @JvmStatic
-    fun <T : Recipe<*>> register(
-        recipe: Identifier,
-        renderer: BookRecipeRenderer<T>
-    ) {
+    fun <T : Recipe<*>> register(recipe: Identifier, renderer: BookRecipeRenderer<T>) {
         check(recipeRenderers.putIfAbsent(recipe, renderer) == null) { "Duplicate recipe renderer: $recipe" }
     }
 
     @JvmStatic
-    fun <T : Recipe<*>> register(
-        type: RecipeType<T>,
-        renderer: BookRecipeRenderer<T>
-    ) {
+    fun <T : Recipe<*>> register(type: RecipeType<T>, renderer: BookRecipeRenderer<T>) {
         check(typeRenderers.putIfAbsent(type, renderer) == null) { "Duplicate recipe type renderer: $type" }
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun renderer(
-        recipeId: Identifier,
-        recipe: Recipe<*>
-    ) = (
+    private fun renderer(recipeId: Identifier, recipe: Recipe<*>) = (
         recipeRenderers[recipeId]
             ?: typeRenderers[recipe.type]
     ) as? BookRecipeRenderer<Recipe<*>>
 
-    fun build(
-        recipeId: Identifier,
-        recipe: Recipe<*>,
-        context: BookElementRenderContext
-    ): BookRecipeRenderBuilder? {
+    fun build(recipeId: Identifier, recipe: Recipe<*>, context: BookElementRenderContext): BookRecipeRenderBuilder? {
         val renderer = renderer(recipeId, recipe) ?: return null
         return BookRecipeRenderBuilder(context).also { renderer.build(recipe, it) }
     }
@@ -664,28 +498,16 @@ object BookRecipeRenderers {
     ): Int? {
         val renderer = renderer(recipeId, recipe) ?: return null
         return try {
-            BookRecipeRenderBuilder
-                .measure(width, research)
-                .also { renderer.build(recipe, it) }
-                .contentHeight
+            BookRecipeRenderBuilder.measure(width, research).also { renderer.build(recipe, it) }.contentHeight
         } catch (error: IllegalStateException) {
             if (BookRecipeRenderBuilder.isMeasureContextError(error)) null else throw error
         }
     }
 
-    fun width(
-        recipeId: Identifier,
-        recipe: Recipe<*>
-    ): Int? = renderer(recipeId, recipe)?.width(recipe)
+    fun width(recipeId: Identifier, recipe: Recipe<*>): Int? = renderer(recipeId, recipe)?.width(recipe)
 
-    fun height(
-        recipeId: Identifier,
-        recipe: Recipe<*>
-    ): Int? = renderer(recipeId, recipe)?.height(recipe)
+    fun height(recipeId: Identifier, recipe: Recipe<*>): Int? = renderer(recipeId, recipe)?.height(recipe)
 
     @JvmStatic
-    fun hasRenderer(
-        recipeId: Identifier,
-        recipe: Recipe<*>
-    ): Boolean = recipeRenderers.containsKey(recipeId) || typeRenderers.containsKey(recipe.type)
+    fun hasRenderer(recipeId: Identifier, recipe: Recipe<*>): Boolean = recipeRenderers.containsKey(recipeId) || typeRenderers.containsKey(recipe.type)
 }

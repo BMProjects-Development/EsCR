@@ -9,7 +9,7 @@ import net.minecraft.client.input.MouseButtonEvent
 import kotlin.math.roundToInt
 import com.algorithmlx.ecr.common.menu.MIMMenu
 
-interface MIMFloatingWindow : ContainerEventHandler, Renderable, NarratableEntry {
+interface MIMFloatingWindow: ContainerEventHandler, Renderable, NarratableEntry {
     val x: Int
     val y: Int
     val windowWidth: Int
@@ -23,7 +23,7 @@ interface MIMFloatingWindow : ContainerEventHandler, Renderable, NarratableEntry
     fun extractTooltip(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int): Boolean
 }
 
-internal class MIMWindowFrame(
+class MIMWindowFrame(
     private val width: Int, private val height: Int, private val titleHeight: Int, private val moved: () -> Unit
 ) {
     var x = 0

@@ -13,14 +13,14 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.HorizontalDirectionalBlock
 import net.minecraft.world.phys.Vec3
 
-open class GeoBlockEntityRenderState : BlockEntityRenderState() {
+open class GeoBlockEntityRenderState: BlockEntityRenderState() {
     var geo: BedrockGeoRenderData? = null
     var modelYRotation = 0F
 }
 
 open class GeoBlockEntityRenderer<T>(
     @Suppress("UNUSED_PARAMETER") context: BlockEntityRendererProvider.Context
-) : BlockEntityRenderer<T, GeoBlockEntityRenderState>
+): BlockEntityRenderer<T, GeoBlockEntityRenderState>
     where T : BlockEntity, T : GeoAnimatable {
 
     override fun createRenderState() = GeoBlockEntityRenderState()
@@ -37,16 +37,9 @@ open class GeoBlockEntityRenderer<T>(
         val now = ClientGeoAnimations.clientTimeSeconds(partialTick)
         val molang = blockEntity.geoMolangContext(partialTick)
         val model = blockEntity.geoModel
-        state.geo = BedrockGeoRenderEngine.extract(
-            model,
-            ClientGeoAnimations.snapshot(blockEntity.geoAnimationState, molang, now),
-            molang,
-            now
-        )
+        state.geo = BedrockGeoRenderEngine.extract(model, ClientGeoAnimations.snapshot(blockEntity.geoAnimationState, molang, now), molang, now)
         if (model.blockRotation.enabled) {
-            val facing = blockEntity.blockState
-                .getOptionalValue(HorizontalDirectionalBlock.FACING)
-                .orElse(null)
+            val facing = blockEntity.blockState.getOptionalValue(HorizontalDirectionalBlock.FACING).orElse(null)
                 ?.let { direction -> if (model.blockRotation.opposite) direction.opposite else direction }
             state.modelYRotation = facing?.let(BedrockGeoRenderEngine::horizontalRotationDegrees) ?: 0F
         }

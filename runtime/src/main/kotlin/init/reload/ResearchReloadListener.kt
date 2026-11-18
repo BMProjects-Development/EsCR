@@ -10,9 +10,7 @@ import net.minecraft.resources.Identifier
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener
 
-class ResearchReloadListener(
-    private val afterReload: () -> Unit = {}
-) : ResourceManagerReloadListener {
+class ResearchReloadListener(private val afterReload: () -> Unit = {}): ResourceManagerReloadListener {
     override fun onResourceManagerReload(resourceManager: ResourceManager) {
         val categories = read(resourceManager, FileToIdConverter.json("research/categories"), ResearchJson::decodeCategory)
         val icons = readMap(resourceManager, FileToIdConverter.json("research/icons"), ResearchJson::decodeTaskIcons)

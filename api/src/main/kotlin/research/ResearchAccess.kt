@@ -26,10 +26,7 @@ fun interface ResearchRestrictionProvider<T : Any> {
 }
 
 object ResearchAccess {
-    private data class ProviderEntry<T : Any>(
-        val type: Class<T>,
-        val provider: ResearchRestrictionProvider<T>
-    )
+    private data class ProviderEntry<T : Any>(val type: Class<T>, val provider: ResearchRestrictionProvider<T>)
 
     private val providers = CopyOnWriteArrayList<ProviderEntry<out Any>>()
 
@@ -72,8 +69,7 @@ object ResearchAccess {
         action: ResearchAction,
         output: MutableSet<Identifier>
     ) {
-        if (entry.type.isInstance(target))
-            output += (entry.provider as ResearchRestrictionProvider<Any>).requirements(target, action)
+        if (entry.type.isInstance(target)) output += (entry.provider as ResearchRestrictionProvider<Any>).requirements(target, action)
     }
 
     private fun normalize(target: Any, action: ResearchAction): List<Any> = when (target) {

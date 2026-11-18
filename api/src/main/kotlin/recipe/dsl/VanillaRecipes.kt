@@ -30,12 +30,7 @@ data class ShapedRecipeSpec(
 ): RecipeSpec {
     override fun bake(registries: HolderLookup.Provider): RecipeHolder<*> {
         val resolved = keys.mapValues { (_, ingredient) -> ingredient.resolve(registries) }
-        val recipe = ShapedRecipe(
-            Recipe.CommonInfo(showNotification),
-            CraftingRecipe.CraftingBookInfo(category, group),
-            ShapedRecipePattern.of(resolved, pattern),
-            result.template
-        )
+        val recipe = ShapedRecipe(Recipe.CommonInfo(showNotification), CraftingRecipe.CraftingBookInfo(category, group), ShapedRecipePattern.of(resolved, pattern), result.template)
         return holder(id, recipe)
     }
 }
@@ -47,7 +42,7 @@ data class ShapelessRecipeSpec(
     val category: CraftingBookCategory,
     val group: String,
     val showNotification: Boolean
-) : RecipeSpec {
+): RecipeSpec {
     override fun bake(registries: HolderLookup.Provider): RecipeHolder<*> {
         val recipe = ShapelessRecipe(
             Recipe.CommonInfo(showNotification),
@@ -69,7 +64,7 @@ data class CookingRecipeSpec(
     val category: CookingBookCategory,
     val group: String,
     val showNotification: Boolean
-) : RecipeSpec {
+): RecipeSpec {
     override fun bake(registries: HolderLookup.Provider): RecipeHolder<*> {
         val common = Recipe.CommonInfo(showNotification)
         val book = AbstractCookingRecipe.CookingBookInfo(category, group)
@@ -95,7 +90,7 @@ data class StonecutterRecipeSpec(
     val input: IngredientSpec,
     val result: RecipeResult,
     val showNotification: Boolean
-) : RecipeSpec {
+): RecipeSpec {
     override fun bake(registries: HolderLookup.Provider): RecipeHolder<*> = holder(
         id,
         StonecutterRecipe(Recipe.CommonInfo(showNotification), input.resolve(registries), result.template)
@@ -109,7 +104,7 @@ data class SmithingTransformRecipeSpec(
     val addition: IngredientSpec?,
     val result: RecipeResult,
     val showNotification: Boolean
-) : RecipeSpec {
+): RecipeSpec {
     override fun bake(registries: HolderLookup.Provider): RecipeHolder<*> = holder(
         id,
         SmithingTransformRecipe(

@@ -29,8 +29,7 @@ object AssembledMultiblockDataIO {
     }
 
     @JvmStatic
-    fun read(input: ValueInput): AssembledMultiblockPartData? =
-        input.child(DATA_TAG).flatMap(::readPartData).orElse(null)
+    fun read(input: ValueInput): AssembledMultiblockPartData? = input.child(DATA_TAG).flatMap(::readPartData).orElse(null)
 
     private fun writePartData(output: ValueOutput, data: AssembledMultiblockPartData) {
         output.putString(INSTANCE_TAG, data.instanceId.toString())
@@ -64,10 +63,7 @@ object AssembledMultiblockDataIO {
                     snapshot.facing == facing
             }
         )
-    }.fold(
-        onSuccess = { Optional.of(it) },
-        onFailure = { Optional.empty() }
-    )
+    }.fold(onSuccess = { Optional.of(it) }, onFailure = { Optional.empty() })
 
     private fun writeSnapshot(output: ValueOutput, snapshot: AssembledMultiblockSnapshot) {
         output.putString(INSTANCE_TAG, snapshot.instanceId.toString())
@@ -85,14 +81,9 @@ object AssembledMultiblockDataIO {
             input.read(DEFINITION_TAG, Identifier.CODEC).orElseThrow(),
             input.read(CONTROLLER_TAG, BlockPos.CODEC).orElseThrow(),
             input.read(FACING_TAG, Direction.CODEC).orElseThrow(),
-            input.childrenListOrEmpty(PARTS_TAG).mapNotNull { partInput ->
-                readOriginal(partInput).orElse(null)
-            }
+            input.childrenListOrEmpty(PARTS_TAG).mapNotNull { partInput -> readOriginal(partInput).orElse(null) }
         )
-    }.fold(
-        onSuccess = { Optional.of(it) },
-        onFailure = { Optional.empty() }
-    )
+    }.fold(onSuccess = { Optional.of(it) }, onFailure = { Optional.empty() })
 
     private fun writeOriginal(output: ValueOutput, original: OriginalBlockSnapshot) {
         output.store(POSITION_TAG, BlockPos.CODEC, original.position)

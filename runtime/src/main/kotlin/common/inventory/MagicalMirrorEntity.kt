@@ -16,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
 class MagicalMirrorEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-) : BlockEntity(BlockEntityTypeRegistry.magicalMirror.get(), worldPosition, blockState) {
+): BlockEntity(BlockEntityTypeRegistry.magicalMirror.get(), worldPosition, blockState) {
     var destination: BlockPos? = null
         private set
     var destinationSide: Direction = Direction.UP
@@ -65,8 +65,7 @@ class MagicalMirrorEntity(
     private fun endpoints(destination: BlockPos, side: Direction): Pair<InventoryEndpoint, InventoryEndpoint>? {
         val level = level ?: return null
         val range = ECConfig.current.magicalMirror.range.coerceAtLeast(0.0)
-        if (destination == blockPos || destination == blockPos.below() || !(blockPos.distSqr(destination) <= range * range))
-            return null
+        if (destination == blockPos || destination == blockPos.below() || !(blockPos.distSqr(destination) <= range * range)) return null
         if (!level.isLoaded(blockPos.below()) || !level.isLoaded(destination)) return null
 
         val source = InventoryAccess.resolve(level, blockPos.below(), Direction.UP) ?: return null

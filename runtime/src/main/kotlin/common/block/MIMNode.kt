@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 
-class MIMNode(properties: Properties, factory: (BlockPos, BlockState) -> MIMNodeEntity) : MIMBlock(properties, factory) {
+class MIMNode(properties: Properties, factory: (BlockPos, BlockState) -> MIMNodeEntity): MIMBlock(properties, factory) {
     init { registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN)) }
     override fun getStateForPlacement(context: BlockPlaceContext): BlockState = defaultBlockState().setValue(FACING, context.clickedFace.opposite)
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) { builder.add(FACING) }

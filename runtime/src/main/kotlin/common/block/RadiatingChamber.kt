@@ -17,10 +17,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
 class RadiatingChamber(properties: Properties): Block(properties), EntityBlock, FullBlockParticles {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = RadiatingChamberEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = RadiatingChamberEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,

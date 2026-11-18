@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.widget.mim
 
+import com.algorithmlx.ecr.api.ModId
 import com.mojang.blaze3d.platform.InputConstants
 import com.algorithmlx.ecr.client.utils.MIMGuiTextures
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -11,10 +12,10 @@ import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import kotlin.math.roundToInt
 
-internal class MIMScrollBar(
+class MIMScrollBar(
     initialX: Int, initialY: Int, initialHeight: Int, private val onScroll: (Int) -> Unit,
     private val skin: MIMGuiTextures.ScrollThumb = MIMGuiTextures.TERMINAL_SCROLLBAR
-) : AbstractWidget(initialX, initialY, WIDTH, initialHeight, Component.translatable("screen.escr.mim.scroll")) {
+): AbstractWidget(initialX, initialY, WIDTH, initialHeight, Component.translatable("screen.$ModId.mim.scroll")) {
     private var row = 0
     private var maxRow = 0
     private var visibleRows = 1
@@ -67,7 +68,7 @@ internal class MIMScrollBar(
 
     override fun updateWidgetNarration(output: NarrationElementOutput) {
         output.add(NarratedElementType.TITLE, message)
-        output.add(NarratedElementType.POSITION, Component.translatable("screen.escr.mim.scroll.position", row + 1, maxRow + 1))
+        output.add(NarratedElementType.POSITION, Component.translatable("screen.$ModId.mim.scroll.position", row + 1, maxRow + 1))
     }
 
     private fun scrollTo(mouseY: Double) {

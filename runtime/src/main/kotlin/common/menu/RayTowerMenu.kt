@@ -22,7 +22,7 @@ class RayTowerMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess
-) : AbstractMenu(MenuTypeRegistry.rayTower, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.rayTower, containerId, access) {
     constructor(containerId: Int, inv: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inv,
@@ -42,10 +42,7 @@ class RayTowerMenu(
         inv.make()
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        slotIndex: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, slotIndex: Int): ItemStack {
         val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
         val stack = slot.item.takeIf { it.count > 0 } ?: return ItemStack.EMPTY
 

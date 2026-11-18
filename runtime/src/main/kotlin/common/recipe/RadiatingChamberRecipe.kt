@@ -36,7 +36,7 @@ class RadiatingChamberRecipe(
     val result: ItemStackTemplate,
     val balance: BalanceRange,
     val ignoreBalance: Boolean
-) : Recipe<RadiatingChamberRecipe.Input> {
+): Recipe<RadiatingChamberRecipe.Input> {
     init {
         require(time > 0) { "Radiating chamber processing time must be positive" }
         require(mruPerTick > 0) { "Radiating chamber MRU usage must be positive" }
@@ -78,11 +78,7 @@ class RadiatingChamberRecipe(
         )
     )
 
-    class Input(
-        val primary: ItemStack,
-        val secondary: ItemStack,
-        val balance: MRUBalance
-    ) : RecipeInput {
+    class Input(val primary: ItemStack, val secondary: ItemStack, val balance: MRUBalance): RecipeInput {
         override fun getItem(index: Int): ItemStack = when (index) {
             0 -> primary
             1 -> secondary
@@ -92,10 +88,7 @@ class RadiatingChamberRecipe(
         override fun size(): Int = 2
     }
 
-    data class BalanceRange(
-        val min: Optional<Double> = Optional.empty(),
-        val max: Optional<Double> = Optional.empty()
-    ) {
+    data class BalanceRange(val min: Optional<Double> = Optional.empty(), val max: Optional<Double> = Optional.empty()) {
         init {
             require(min.isEmpty || min.get().isFinite() && min.get() in 0.0..2.0) { "Minimum balance must be between 0 and 2" }
             require(max.isEmpty || max.get().isFinite() && max.get() in 0.0..2.0) { "Maximum balance must be between 0 and 2" }
@@ -124,7 +117,7 @@ class RadiatingChamberRecipe(
         val secondary: SlotDisplay,
         private val resultDisplay: SlotDisplay,
         private val station: SlotDisplay
-    ) : RecipeDisplay {
+    ): RecipeDisplay {
         override fun result(): SlotDisplay = resultDisplay
 
         override fun craftingStation(): SlotDisplay = station

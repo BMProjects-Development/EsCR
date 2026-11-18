@@ -99,9 +99,7 @@ object ResearchJson {
                 TaskLevelDto(
                     level.id,
                     level.tasks.map { definition ->
-                        ResearchSerializers.encodeTask(definition.task)
-                            .with("type", JsonPrimitive(definition.task.type.toString()))
-                            .with("id", JsonPrimitive(definition.id))
+                        ResearchSerializers.encodeTask(definition.task).with("type", JsonPrimitive(definition.task.type.toString())).with("id", JsonPrimitive(definition.id))
                             .withOptional("title", definition.title?.toJsonElement())
                             .with("hidden", JsonPrimitive(definition.hidden))
                     }
@@ -118,10 +116,7 @@ object ResearchJson {
     ).jsonObject
 
     fun encodeCatalog(categories: Collection<BookCategory>, entries: Collection<BookEntry>): String = researchJson.encodeToString(
-        CatalogDto(
-            categories.associate { it.id.toString() to encodeCategory(it) },
-            entries.associate { it.id.toString() to encodeEntry(it) }
-        )
+        CatalogDto(categories.associate { it.id.toString() to encodeCategory(it) }, entries.associate { it.id.toString() to encodeEntry(it) })
     )
 
     fun decodeCatalog(json: String): Pair<List<BookCategory>, List<BookEntry>> {
@@ -156,12 +151,7 @@ object ResearchJson {
                 level.tasks.mapIndexed { taskIndex, task ->
                     val taskId = task["id"]?.jsonPrimitive?.content ?: "task_${levelIndex}_$taskIndex"
                     val decoded = ResearchSerializers.decodeTask(task.typeIdentifier(), task)
-                    ResearchTaskDefinition(
-                        taskId,
-                        decoded,
-                        task["title"]?.toBookText(),
-                        task["hidden"]?.jsonPrimitive?.booleanOrNull ?: (decoded is OpenResearchTask)
-                    )
+                    ResearchTaskDefinition(taskId, decoded, task["title"]?.toBookText(), task["hidden"]?.jsonPrimitive?.booleanOrNull ?: (decoded is OpenResearchTask))
                 }
             )
         }
@@ -176,8 +166,7 @@ object ResearchJson {
             ?: BookElementAlign.LEFT
     )
 
-    internal fun encodeElementSpec(spec: BookElementSpec): JsonObject = ResearchSerializers.encodeElement(spec.content)
-        .with("type", JsonPrimitive(spec.content.type.toString()))
+    internal fun encodeElementSpec(spec: BookElementSpec): JsonObject = ResearchSerializers.encodeElement(spec.content).with("type", JsonPrimitive(spec.content.type.toString()))
         .let { value -> spec.width?.let { value.with("width", JsonPrimitive(it)) } ?: value }
         .let { value -> spec.height?.let { value.with("height", JsonPrimitive(it)) } ?: value }
         .let { value ->
@@ -190,8 +179,7 @@ object ResearchJson {
         return Identifier.parse(if (':' in value) value else "$ModId:$value")
     }
 
-    private fun parseReference(value: String, owner: Identifier): Identifier =
-        Identifier.parse(if (':' in value) value else "${owner.namespace}:$value")
+    private fun parseReference(value: String, owner: Identifier): Identifier = Identifier.parse(if (':' in value) value else "${owner.namespace}:$value")
 
     private fun decodeEntryLink(value: JsonElement, owner: Identifier): BookEntryLink {
         if (value is JsonPrimitive && value.isString) return decodeEntryLink(value.content, owner)
@@ -225,8 +213,7 @@ object ResearchJson {
     private fun decodeEntryLink(value: String, owner: Identifier): BookEntryLink {
         val source = value.trim()
         require(source.isNotEmpty()) { "Research link must not be blank" }
-        if (source.startsWith("category://"))
-            return BookEntryLink.Category(parseReference(source.removePrefix("category://"), owner))
+        if (source.startsWith("category://")) return BookEntryLink.Category(parseReference(source.removePrefix("category://"), owner))
         val parsed =
             BookResearchLink.parse(source.replaceFirst("page://", "research://"), owner)
                 ?: error("Invalid research link '$value'")
@@ -275,16 +262,11 @@ object ResearchJson {
         is JsonPrimitive -> BookShader(Identifier.parse(content))
         else -> researchJson.decodeFromJsonElement<ShaderDto>(this).let {
             val vertex = Identifier.parse(it.vertex ?: it.fragment ?: error("Shader requires vertex or fragment"))
-            BookShader(
-                vertex,
-                Identifier.parse(it.fragment ?: it.vertex ?: error("Shader requires vertex or fragment"))
-            )
+            BookShader(vertex, Identifier.parse(it.fragment ?: it.vertex ?: error("Shader requires vertex or fragment")))
         }
     }
 
-    private fun BookShader.toJsonElement(): JsonElement = researchJson.encodeToJsonElement(
-        ShaderDto(vertex.toString(), fragment.toString())
-    )
+    private fun BookShader.toJsonElement(): JsonElement = researchJson.encodeToJsonElement(ShaderDto(vertex.toString(), fragment.toString()))
 
     private fun JsonElement.toColor(): Int = when (this) {
         is JsonPrimitive -> {
@@ -301,15 +283,11 @@ object ResearchJson {
     }
 
     private fun JsonObject.with(name: String, value: JsonElement): JsonObject = JsonObject(this + (name to value))
-    private fun JsonObject.withOptional(name: String, value: JsonElement?): JsonObject =
-        value?.let { with(name, it) } ?: this
+    private fun JsonObject.withOptional(name: String, value: JsonElement?): JsonObject = value?.let { with(name, it) } ?: this
 }
 
 @Serializable
-private data class CatalogDto(
-    val categories: Map<String, JsonObject>,
-    val entries: Map<String, JsonObject>
-)
+private data class CatalogDto(val categories: Map<String, JsonObject>, val entries: Map<String, JsonObject>)
 
 @Serializable
 private data class CategoryDto(
@@ -358,10 +336,7 @@ private data class PositionDto(val x: Int = 0, val y: Int = 0)
 private data class PageDto(val elements: List<JsonObject> = emptyList())
 
 @Serializable
-private data class TaskLevelDto(
-    val id: String,
-    val tasks: List<JsonObject>
-)
+private data class TaskLevelDto(val id: String, val tasks: List<JsonObject>)
 
 @Serializable
 private data class FrameDto(
@@ -380,8 +355,7 @@ private data class LockDto(val type: String, val id: String, val actions: Set<St
     fun toModel() = ResearchLock(
         ResearchTargetType.valueOf(type.uppercase()),
         Identifier.parse(id),
-        actions.mapTo(LinkedHashSet()) { ResearchAction.valueOf(it.uppercase()) }
-            .ifEmpty { setOf(ResearchAction.USE, ResearchAction.INTERACT) }
+        actions.mapTo(LinkedHashSet()) { ResearchAction.valueOf(it.uppercase()) }.ifEmpty { setOf(ResearchAction.USE, ResearchAction.INTERACT) }
     )
 }
 

@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack
 class MIMInventoryWindow(
     private val source: Container, private val size: Int, private val columns: Int = MIMTerminalLayout.COLUMNS,
     private val fixedSlots: Int = 0
-) : Container {
+): Container {
     var row = 0
         private set
     val firstSlot: Int get() = fixedSlots + row * columns

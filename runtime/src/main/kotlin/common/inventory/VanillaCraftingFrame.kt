@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.crafting.CraftingInput
 
-internal object VanillaCraftingFrame : MIMFrameProvider {
+object VanillaCraftingFrame: MIMFrameProvider {
     override fun patterns(level: ServerLevel, frame: ItemStack): List<MIMCraftingPattern> {
         val encoded = frame[DataComponentRegistry.craftingFrame.get()] ?: return emptyList()
         val recipe = encoded.recipe(level)?.value() ?: return emptyList()

@@ -24,18 +24,15 @@ interface BookElementSerializer<T : BookElement> {
     fun encode(value: T): JsonObject
 }
 
-data object SpaceBookElement : BookElement {
+data object SpaceBookElement: BookElement {
     override val type: Identifier = ResearchIds.SPACE
 }
 
-data object VerticalSpaceBookElement : BookElement {
+data object VerticalSpaceBookElement: BookElement {
     override val type: Identifier = ResearchIds.VERTICAL_SPACE
 }
 
-data class TaskListBookElement(
-    val research: Identifier,
-    val level: Int
-) : BookElement {
+data class TaskListBookElement(val research: Identifier, val level: Int): BookElement {
     override val type: Identifier = ResearchIds.TASK_LIST
 }
 
@@ -46,22 +43,15 @@ data class TextBookElement(
     val shadow: Boolean = false,
     val requirement: BookTextRequirement? = null,
     val variants: List<BookTextVariant> = emptyList()
-) : BookElement {
+): BookElement {
     override val type: Identifier = ResearchIds.TEXT
 }
 
-data class BookTextVariant(
-    val text: BookText,
-    val requirement: BookTextRequirement? = null
-)
+data class BookTextVariant(val text: BookText, val requirement: BookTextRequirement? = null)
 
 typealias BookTextRequirement = ResearchRequirement
 
-data class ItemBookElement(
-    val item: Identifier,
-    var count: Int = 1,
-    val tooltip: Boolean = false
-) : BookElement {
+data class ItemBookElement(val item: Identifier, var count: Int = 1, val tooltip: Boolean = false): BookElement {
     override val type: Identifier = ResearchIds.ITEM
 
     init {
@@ -69,15 +59,11 @@ data class ItemBookElement(
     }
 }
 
-data class BlockBookElement(
-    val block: Identifier
-) : BookElement {
+data class BlockBookElement(val block: Identifier): BookElement {
     override val type: Identifier = ResearchIds.BLOCK
 }
 
-data class GroupBookElement(
-    val elements: List<BookElementSpec>
-) : BookElement {
+data class GroupBookElement(val elements: List<BookElementSpec>): BookElement {
     override val type: Identifier = ResearchIds.GROUP
 }
 
@@ -87,7 +73,7 @@ data class MultiblockBookElement(
     val rotationX: Float = 25F,
     val rotationY: Float = -30F,
     val layer: Int = Int.MAX_VALUE
-) : BookElement {
+): BookElement {
     override val type: Identifier = ResearchIds.MULTIBLOCK
 }
 
@@ -98,17 +84,14 @@ data class BookMultiblockElement(
     val rotationX: Float = 25F,
     val rotationY: Float = -30F,
     val layer: Int = Int.MAX_VALUE
-) : BookElement {
+): BookElement {
     override val type: Identifier = ResearchIds.BOOK_MULTIBLOCK
 
     val multiblock: Multiblock =
         MultiblockDataReloadListener().decodeMultiblock(
             JsonParser.parseString(
                 buildJsonObject {
-                    put(
-                        "pattern",
-                        JsonArray(pattern.map { rows -> JsonArray(rows.map(::JsonPrimitive)) })
-                    )
+                    put("pattern", JsonArray(pattern.map { rows -> JsonArray(rows.map(::JsonPrimitive)) }))
                     put("keys", key)
                 }.toString()
             ).asJsonObject
@@ -122,12 +105,10 @@ data class AssembledMultiblockBookElement(
     val rotationX: Float = 25F,
     val rotationY: Float = -30F,
     val layer: Int = Int.MAX_VALUE
-) : BookElement {
+): BookElement {
     override val type: Identifier = ResearchIds.ASSEMBLED_MULTIBLOCK
 }
 
-data class CraftingBookElement(
-    val recipe: Identifier
-) : BookElement {
+data class CraftingBookElement(val recipe: Identifier): BookElement {
     override val type: Identifier = ResearchIds.RECIPE
 }

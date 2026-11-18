@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.menu
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.container.AbstractMenu
 import com.algorithmlx.ecr.common.inventory.MIMFilterComponent
 import com.algorithmlx.ecr.common.inventory.MIMFilterItem
@@ -21,11 +22,9 @@ class MIMFilterMenu private constructor(
     private val inventory: Inventory,
     private val filterSlot: Int,
     private val filter: ItemStack
-) : AbstractMenu(MenuTypeRegistry.mimFilter, containerId, ContainerLevelAccess.NULL) {
+): AbstractMenu(MenuTypeRegistry.mimFilter, containerId, ContainerLevelAccess.NULL) {
     constructor(containerId: Int, inventory: Inventory) : this(containerId, inventory, -1, ItemStack.EMPTY)
-    constructor(containerId: Int, inventory: Inventory, filterSlot: Int) : this(
-        containerId, inventory, filterSlot, inventory.getItem(filterSlot)
-    )
+    constructor(containerId: Int, inventory: Inventory, filterSlot: Int) : this(containerId, inventory, filterSlot, inventory.getItem(filterSlot))
 
     private val ghosts = SimpleContainer(MIMFilterComponent.SIZE)
     private val data = SimpleContainerData(6)
@@ -46,7 +45,7 @@ class MIMFilterMenu private constructor(
         data.set(TAGS, if (advanced && component.commonTags) 1 else 0)
         component.samples.forEachIndexed { index, stack -> ghosts.setItem(index, stack) }
         repeat(MIMFilterComponent.SIZE) { index ->
-            addSlot(object : Slot(ghosts, index, GRID_X + index * 18, GRID_Y) {
+            addSlot(object: Slot(ghosts, index, GRID_X + index * 18, GRID_Y) {
                 override fun mayPlace(stack: ItemStack): Boolean = false
                 override fun mayPickup(player: Player): Boolean = false
                 override fun remove(amount: Int): ItemStack = ItemStack.EMPTY
@@ -88,9 +87,7 @@ class MIMFilterMenu private constructor(
             ghosts.setItem(index, previous)
             if (!inventory.player.level().isClientSide) {
                 val config = ECConfig.current.inventoryManager
-                inventory.player.sendOverlayMessage(Component.translatable(
-                    "message.escr.mim.filter_limit", config.filterMaxNodes, config.filterMaxDepth
-                ))
+                inventory.player.sendOverlayMessage(Component.translatable("message.$ModId.mim.filter_limit", config.filterMaxNodes, config.filterMaxDepth))
             }
             return
         }
@@ -111,9 +108,7 @@ class MIMFilterMenu private constructor(
 
     private fun toggle(index: Int) { data.set(index, if (data.get(index) == 0) 1 else 0) }
 
-    private fun component(): MIMFilterComponent = MIMFilterComponent(
-        (0..<MIMFilterComponent.SIZE).map(ghosts::getItem), blacklist, ignoreComponents, ignoreDamage, commonTags
-    )
+    private fun component(): MIMFilterComponent = MIMFilterComponent((0..<MIMFilterComponent.SIZE).map(ghosts::getItem), blacklist, ignoreComponents, ignoreDamage, commonTags)
 
     private fun save() {
         if (inventory.player.level().isClientSide || !stillValid(inventory.player)) return
@@ -130,7 +125,7 @@ class MIMFilterMenu private constructor(
     override fun canTakeItemForPickAll(stack: ItemStack, slot: Slot): Boolean =
         slot.container !== ghosts && slot.containerSlot != lockedSlot && super.canTakeItemForPickAll(stack, slot)
 
-    private inner class PlayerSlot(index: Int, x: Int, y: Int) : Slot(inventory, index, x, y) {
+    private inner class PlayerSlot(index: Int, x: Int, y: Int): Slot(inventory, index, x, y) {
         override fun mayPlace(stack: ItemStack): Boolean = containerSlot != lockedSlot
         override fun mayPickup(player: Player): Boolean = containerSlot != lockedSlot
     }

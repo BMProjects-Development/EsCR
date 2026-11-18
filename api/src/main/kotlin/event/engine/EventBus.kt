@@ -38,17 +38,12 @@ class EventBus {
     operator fun <E : Event> invoke(event: E): E = post(event)
 
     fun <E : Event> post(event: E): E {
-        eventHierarchy(event::class)
-            .flatMap { type -> listeners[type].orEmpty().asSequence() }
-            .sortedWith(LISTENER_ORDER)
-            .forEach { registered -> registered.dispatch(event) }
+        eventHierarchy(event::class).flatMap { type -> listeners[type].orEmpty().asSequence() }.sortedWith(LISTENER_ORDER).forEach { registered -> registered.dispatch(event) }
         return event
     }
 
     fun <E : Event> post(priority: EventPriority, event: E): E {
-        eventHierarchy(event::class)
-            .flatMap { type -> listeners[type].orEmpty().asSequence() }
-            .filter { registered -> registered.priority == priority }
+        eventHierarchy(event::class).flatMap { type -> listeners[type].orEmpty().asSequence() }.filter { registered -> registered.priority == priority }
             .sortedBy(RegisteredListener<*>::sequence)
             .forEach { registered -> registered.dispatch(event) }
         return event

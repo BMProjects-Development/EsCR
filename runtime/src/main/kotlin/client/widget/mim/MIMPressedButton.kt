@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component
 
 abstract class MIMPressedButton(
     x: Int, y: Int, width: Int, height: Int, label: Component, action: () -> Unit
-) : Button(x, y, width, height, label, { action() }, DEFAULT_NARRATION) {
+): Button(x, y, width, height, label, { action() }, DEFAULT_NARRATION) {
     private var heldMouse: Int? = null
     private var heldKey: Int? = null
     val isPressed: Boolean get() = visible && active && (heldMouse != null || heldKey != null)

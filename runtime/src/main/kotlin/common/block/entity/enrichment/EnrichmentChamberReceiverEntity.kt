@@ -24,14 +24,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class EnrichmentChamberReceiverEntity(
-    worldPosition: BlockPos,
-    blockState: BlockState
-): SynchronizedContainerBlockEntity(
-    BlockEntityTypeRegistry.enrichmentChamberReceiver.get(),
-    worldPosition,
-    blockState
-), MRUDevice, EnrichmentChamber {
+class EnrichmentChamberReceiverEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.enrichmentChamberReceiver.get(), worldPosition, blockState), MRUDevice, EnrichmentChamber {
     private var items = NonNullList.withSize(1, ItemStack.EMPTY)
     private var controllerPosition: BlockPos? = null
 
@@ -40,11 +33,7 @@ class EnrichmentChamberReceiverEntity(
 
         controllerPosition = null
         if (input.getBooleanOr(HAS_CONTROLLER_POSITION, false))
-            this.controllerPosition = BlockPos(
-                input.getIntOr(CONTROLLER_X, 0),
-                input.getIntOr(CONTROLLER_Y, 0),
-                input.getIntOr(CONTROLLER_Z, 0)
-            )
+            this.controllerPosition = BlockPos(input.getIntOr(CONTROLLER_X, 0), input.getIntOr(CONTROLLER_Y, 0), input.getIntOr(CONTROLLER_Z, 0))
 
         super.loadAdditional(input)
     }
@@ -71,13 +60,7 @@ class EnrichmentChamberReceiverEntity(
         this.items = items
     }
 
-    override fun createMenu(
-        containerId: Int,
-        inventory: Inventory
-    ): AbstractContainerMenu = EnrichmentChamberReceiverMenu(
-        containerId, inventory, this,
-        ContainerLevelAccess.create(this.level!!, this.blockPos)
-    )
+    override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu = EnrichmentChamberReceiverMenu(containerId, inventory, this, ContainerLevelAccess.create(this.level!!, this.blockPos))
 
     override fun getContainerSize(): Int = this.items.size
     private val disconnectedBalance = MRUBalanceContainer()
@@ -85,9 +68,7 @@ class EnrichmentChamberReceiverEntity(
         get() = controllerPosition
             ?.let { level?.getBlockEntity(it) as? EnrichmentChamberControllerEntity }
 
-    override val mruStorage: IOMRUStorage field = SynchronizedMRUStorageContainer(
-        MRUTypeRegistry.radiationUnit
-    ) {
+    override val mruStorage: IOMRUStorage field = SynchronizedMRUStorageContainer(MRUTypeRegistry.radiationUnit) {
         controllerEntity?.mruStorage
     }
     override val balance: MutableMRUBalance

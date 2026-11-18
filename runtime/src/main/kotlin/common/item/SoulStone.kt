@@ -11,14 +11,7 @@ import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 
-class SoulStone(
-    properties: Properties
-) : Item(
-        properties.component(
-            DataComponentRegistry.soulStone.get(),
-            SoulStoneComponent.EMPTY
-        )
-    ),
+class SoulStone(properties: Properties): Item(properties.component(DataComponentRegistry.soulStone.get(), SoulStoneComponent.EMPTY)),
     SoulStoneLike,
     ModifiableSizeItem {
     override fun inventoryTick(
@@ -45,10 +38,7 @@ class SoulStone(
     override val receiveCount: Int = 1
     override val extractCount: Int = 10
 
-    override fun maxStackSize(
-        itemStack: ItemStack,
-        originalSize: Int
-    ): Int {
+    override fun maxStackSize(itemStack: ItemStack, originalSize: Int): Int {
         if (itemStack.has(DataComponentRegistry.soulStone.get()) &&
             itemStack[DataComponentRegistry.soulStone.get()] != SoulStoneComponent.EMPTY)
             return 1

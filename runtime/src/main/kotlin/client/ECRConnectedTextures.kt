@@ -1,7 +1,7 @@
 package com.algorithmlx.ecr.client
 
 import com.algorithmlx.ecr.api.client.texture.ConnectedTexture
-import com.algorithmlx.ecr.api.client.texture.ConnectedTextures
+import com.algorithmlx.ecr.api.escrAPI
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.init.ECRModIDs
 
@@ -16,13 +16,6 @@ object ECRConnectedTextures {
     }
 
     private fun register(block: String, texSize: Int = 20) {
-        ConnectedTextures.register(
-            block = block.ecRL,
-            texture = ConnectedTexture.fromMap(
-                source = "block/$block/base".ecRL,
-                map = "block/$block/map".ecRL,
-                textureSize = texSize
-            )
-        )
+        escrAPI { client { connectedTexture(block, ConnectedTexture.fromMap(source = "block/$block/base".ecRL, map = "block/$block/map".ecRL, textureSize = texSize)) } }
     }
 }

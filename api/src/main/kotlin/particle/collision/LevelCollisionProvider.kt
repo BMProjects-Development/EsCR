@@ -6,12 +6,9 @@ import net.minecraft.world.phys.AABB
 import org.joml.Vector3f
 import kotlin.math.abs
 
-class LevelCollisionProvider(private val level: Level) : CollisionProvider {
+class LevelCollisionProvider(private val level: Level): CollisionProvider {
     override fun query(pos: Vector3f, size: Float, offset: Vector3f): Pair<Vector3f, Vector3f>? = query(
-        AABB(
-            (pos.x - size).toDouble(), (pos.y - size).toDouble(), (pos.z - size).toDouble(),
-            (pos.x + size).toDouble(), (pos.y + size).toDouble(), (pos.z + size).toDouble()
-        ),
+        AABB((pos.x - size).toDouble(), (pos.y - size).toDouble(), (pos.z - size).toDouble(), (pos.x + size).toDouble(), (pos.y + size).toDouble(), (pos.z + size).toDouble()),
         offset
     )
 
@@ -114,8 +111,7 @@ class LevelCollisionProvider(private val level: Level) : CollisionProvider {
         }
     }
 
-    private fun fraction(value: Double, offset: Float) =
-        if (offset == 0f) Float.POSITIVE_INFINITY else value.toFloat() / offset
+    private fun fraction(value: Double, offset: Float) = if (offset == 0f) Float.POSITIVE_INFINITY else value.toFloat() / offset
 
     private enum class Axis {
         X, Y, Z;

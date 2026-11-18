@@ -32,38 +32,29 @@ import net.minecraft.util.FormattedCharSequence
 import net.minecraft.world.item.ItemStack
 import kotlin.math.*
 
-class ResearchBookScreen(
-    private val bookType: BookType? = null
-) : Screen(Component.translatable("screen.$ModId.research_book")) {
+class ResearchBookScreen(private val bookType: BookType? = null): Screen(Component.translatable("screen.$ModId.research_book")) {
     private val bookTexture = "textures/gui/book/book.png".ecRL
     private val arrowLeft = "textures/gui/book/arrow_left.png".ecRL
     private val arrowLeftSelected = "textures/gui/book/arrow_left_selected.png".ecRL
     private val arrowRight = "textures/gui/book/arrow_right.png".ecRL
     private val arrowRightSelected = "textures/gui/book/arrow_right_selected.png".ecRL
-
     private var selectedCategory: Identifier? = null
     private var selectedEntry: BookEntry? = null
     private var spreads = listOf(BookSpread(emptyList()))
     private var spreadIndex = 0
     private var contentRevision = -1L
-
     private var panX = 0f
     private var panY = 0f
     private var targetPanX = 0f
     private var targetPanY = 0f
-
     private var zoom = 1f
     private var targetZoom = 1f
-
     private var categoryScroll = 0f
     private var targetCategoryScroll = 0f
-
     private val bookmarks = BookBookmarkController()
-
     private var draggingGraph = false
     private var draggingCategorySlider = false
     private var partialTick = 0f
-
     private var lastFrameNanos = -1L
     private var frameDt = 0f
 
@@ -195,8 +186,7 @@ class ResearchBookScreen(
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, scrollX: Double, scrollY: Double): Boolean {
-        if (selectedEntry != null)
-            return MultiblockBookPreviewController.mouseScrolled(mouseX.toInt(), mouseY.toInt(), scrollY)
+        if (selectedEntry != null) return MultiblockBookPreviewController.mouseScrolled(mouseX.toInt(), mouseY.toInt(), scrollY)
         val shift = isShiftDown()
 
         if (bookmarks.scrollGlobal(mouseX.toInt(), mouseY.toInt(), scrollY, width, height)) return true
@@ -241,9 +231,7 @@ class ResearchBookScreen(
         super.removed()
     }
 
-    private fun isShiftDown(): Boolean = InputConstants.isKeyDown(
-        InputConstants.KEY_LSHIFT
-    ) || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT)
+    private fun isShiftDown(): Boolean = InputConstants.isKeyDown(InputConstants.KEY_LSHIFT) || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT)
 
     private fun frameDelta(): Float {
         val now = System.nanoTime()
@@ -260,14 +248,7 @@ class ResearchBookScreen(
     }
 
     private fun renderSpace(graphics: GuiGraphicsExtractor) {
-        graphics.fill(
-            BookRenderPipelines.forCategory(selectedCategory()),
-            0,
-            0,
-            width,
-            height,
-            ResearchBookConfigValues.spaceColor(panX, panY, zoom)
-        )
+        graphics.fill(BookRenderPipelines.forCategory(selectedCategory()), 0, 0, width, height, ResearchBookConfigValues.spaceColor(panX, panY, zoom))
     }
 
     private fun renderGraph(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
@@ -307,10 +288,7 @@ class ResearchBookScreen(
                 if (available) graphics.requestCursor(CursorTypes.POINTING_HAND)
                 graphics.setComponentTooltipForNextFrame(
                     Minecraft.getInstance().font,
-                    listOf(
-                        category.title.component(category.titleShadow),
-                        categoryProgress(category)
-                    ),
+                    listOf(category.title.component(category.titleShadow), categoryProgress(category)),
                     mouseX,
                     mouseY.coerceAtLeast(CATEGORY_HEIGHT + 4)
                 )
@@ -342,16 +320,14 @@ class ResearchBookScreen(
         graphics.pose().translate(point.first, point.second)
         graphics.pose().scale(zoom, zoom)
 
-        if (frame != null)
-            graphics.blit(RenderPipelines.GUI_TEXTURED, frame.texture, 0, 0, 0f, 0f, frame.width, frame.height, frame.width, frame.height)
+        if (frame != null) graphics.blit(RenderPipelines.GUI_TEXTURED, frame.texture, 0, 0, 0f, 0f, frame.width, frame.height, frame.width, frame.height)
 
         val iconX = frame?.itemX ?: 0
         val iconY = frame?.itemY ?: 0
         renderIcon(graphics, node.entry.icon, iconX, iconY, frame?.itemSize ?: 16)
         if (available && !ClientResearchState.has(node.entry.id)) renderAvailablePulse(graphics, node.entry)
 
-        if (!available || !ClientResearchState.has(node.entry.id))
-            graphics.fill(0, 0, nodeWidth(node.entry), nodeHeight(node.entry), 0x78000000)
+        if (!available || !ClientResearchState.has(node.entry.id)) graphics.fill(0, 0, nodeWidth(node.entry), nodeHeight(node.entry), 0x78000000)
 
         graphics.pose().popMatrix()
     }
@@ -380,12 +356,8 @@ class ResearchBookScreen(
 
         val components = mutableListOf<ClientTooltipComponent>()
         components += ClientTooltipComponent.create(entry.title.component(entry.titleShadow).visualOrderText)
-        font.split(description, (NODE_TOOLTIP_DESCRIPTION_WIDTH / NODE_TOOLTIP_DESCRIPTION_SCALE).toInt()).forEach { line ->
-            components += SmallTextTooltipComponent(line)
-        }
-        nodeTooltip(entry, includeTitle = false).forEach { line ->
-            components += ClientTooltipComponent.create(line.visualOrderText)
-        }
+        font.split(description, (NODE_TOOLTIP_DESCRIPTION_WIDTH / NODE_TOOLTIP_DESCRIPTION_SCALE).toInt()).forEach { line -> components += SmallTextTooltipComponent(line) }
+        nodeTooltip(entry, includeTitle = false).forEach { line -> components += ClientTooltipComponent.create(line.visualOrderText) }
 
         graphics.tooltip(font, components, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null, false)
     }
@@ -403,7 +375,7 @@ class ResearchBookScreen(
         }
     }
 
-    private class SmallTextTooltipComponent(private val line: FormattedCharSequence) : ClientTooltipComponent {
+    private class SmallTextTooltipComponent(private val line: FormattedCharSequence): ClientTooltipComponent {
         override fun getHeight(font: Font): Int = (font.lineHeight * NODE_TOOLTIP_DESCRIPTION_SCALE).roundToInt().coerceAtLeast(1)
 
         override fun getWidth(font: Font): Int = (font.width(line) * NODE_TOOLTIP_DESCRIPTION_SCALE).roundToInt().coerceAtLeast(1)
@@ -439,10 +411,7 @@ class ResearchBookScreen(
         return MissingRequirements(visible, hidden)
     }
 
-    private fun researchRequirementComponent(
-        research: Identifier,
-        taskId: String?
-    ): Component {
+    private fun researchRequirementComponent(research: Identifier, taskId: String?): Component {
         val entry = ResearchCatalog.snapshot().entries[research]
         val title = entry?.title?.component(entry.titleShadow) ?: Component.literal(research.toString())
         return if (taskId == null)
@@ -543,8 +512,7 @@ class ResearchBookScreen(
 
         graphics.pose().popMatrix()
         renderTaskLevels(graphics, entry)
-        if (bookmarkHovered && ClientResearchState.has(entry.id))
-            renderBookmarkTooltip(graphics, entry, spreadIndex, spreads.size, mouseX, mouseY)
+        if (bookmarkHovered && ClientResearchState.has(entry.id)) renderBookmarkTooltip(graphics, entry, spreadIndex, spreads.size, mouseX, mouseY)
     }
 
     private fun renderBookmarkTooltip(
@@ -558,18 +526,13 @@ class ResearchBookScreen(
         val font = Minecraft.getInstance().font
         val title = entry.title.component(entry.titleShadow)
 
-        val page = Component.translatable("screen.$ModId.research_book.page", spread + 1, spreadCount.coerceAtLeast(1))
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)
+        val page = Component.translatable("screen.$ModId.research_book.page", spread + 1, spreadCount.coerceAtLeast(1)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC)
         graphics.setComponentTooltipForNextFrame(font, listOf(title, page), mouseX, mouseY)
     }
 
     private fun bookTransform(): BookTransform {
         val finalScale = min((width - 40f) / BOOK_WIDTH, (height - 40f) / BOOK_HEIGHT).coerceAtMost(1f)
-        return BookTransform(
-            ((width - BOOK_WIDTH * finalScale) / 2f).toInt(),
-            ((height - BOOK_HEIGHT * finalScale) / 2f).toInt(),
-            finalScale
-        )
+        return BookTransform(((width - BOOK_WIDTH * finalScale) / 2f).toInt(), ((height - BOOK_HEIGHT * finalScale) / 2f).toInt(), finalScale)
     }
 
     private fun pageScissor(transform: BookTransform, elementX: Int): ScreenRectangle {
@@ -583,46 +546,19 @@ class ResearchBookScreen(
         val right = transform.x + ((pageX + PAGE_WIDTH) * scale).roundToInt()
         val bottom = transform.y + ((PAGE_TOP + PAGE_HEIGHT) * scale).roundToInt()
 
-        return ScreenRectangle(
-            left,
-            top,
-            (right - left).coerceAtLeast(1),
-            (bottom - top).coerceAtLeast(1)
-        )
+        return ScreenRectangle(left, top, (right - left).coerceAtLeast(1), (bottom - top).coerceAtLeast(1))
     }
 
     private fun renderPageArrows(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
         if (spreadIndex > 0) {
             val leftHovered = mouseX in LEFT_ARROW_X until LEFT_ARROW_X + 27 && mouseY in ARROW_Y until ARROW_Y + 23
             if (leftHovered) graphics.requestCursor(CursorTypes.POINTING_HAND)
-            graphics.blit(
-                RenderPipelines.GUI_TEXTURED,
-                if (leftHovered) arrowLeftSelected else arrowLeft,
-                LEFT_ARROW_X,
-                ARROW_Y,
-                0f,
-                0f,
-                27,
-                23,
-                27,
-                23
-            )
+            graphics.blit(RenderPipelines.GUI_TEXTURED, if (leftHovered) arrowLeftSelected else arrowLeft, LEFT_ARROW_X, ARROW_Y, 0f, 0f, 27, 23, 27, 23)
         }
         if (spreadIndex < spreads.lastIndex) {
             val rightHovered = mouseX in RIGHT_ARROW_X until RIGHT_ARROW_X + 27 && mouseY in ARROW_Y until ARROW_Y + 23
             if (rightHovered) graphics.requestCursor(CursorTypes.POINTING_HAND)
-            graphics.blit(
-                RenderPipelines.GUI_TEXTURED,
-                if (rightHovered) arrowRightSelected else arrowRight,
-                RIGHT_ARROW_X,
-                ARROW_Y,
-                0f,
-                0f,
-                27,
-                23,
-                27,
-                23
-            )
+            graphics.blit(RenderPipelines.GUI_TEXTURED, if (rightHovered) arrowRightSelected else arrowRight, RIGHT_ARROW_X, ARROW_Y, 0f, 0f, 27, 23, 27, 23)
         }
     }
 
@@ -681,20 +617,8 @@ class ResearchBookScreen(
         if (hovered) graphics.requestCursor(CursorTypes.POINTING_HAND)
         val border = if (enabled) 0xFFB7D3EA.toInt() else 0xFF686D76.toInt()
         val textColor = if (enabled) 0xFFFFFFFF.toInt() else 0xFF9A9DA3.toInt()
-        graphics.fill(
-            COMPLETE_BUTTON_X,
-            COMPLETE_BUTTON_Y,
-            COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH,
-            COMPLETE_BUTTON_Y + COMPLETE_BUTTON_HEIGHT,
-            background
-        )
-        graphics.outline(
-            COMPLETE_BUTTON_X,
-            COMPLETE_BUTTON_Y,
-            COMPLETE_BUTTON_WIDTH,
-            COMPLETE_BUTTON_HEIGHT,
-            border
-        )
+        graphics.fill(COMPLETE_BUTTON_X, COMPLETE_BUTTON_Y, COMPLETE_BUTTON_X + COMPLETE_BUTTON_WIDTH, COMPLETE_BUTTON_Y + COMPLETE_BUTTON_HEIGHT, background)
+        graphics.outline(COMPLETE_BUTTON_X, COMPLETE_BUTTON_Y, COMPLETE_BUTTON_WIDTH, COMPLETE_BUTTON_HEIGHT, border)
         val font = Minecraft.getInstance().font
         val labelKey = if (hasFinalTaskLevel(entry)) "complete_research" else "complete_task"
         val label = Component.translatable("screen.$ModId.$labelKey")
@@ -718,17 +642,14 @@ class ResearchBookScreen(
         return active.isNotEmpty() && active.all { it.second.complete }
     }
 
-    private fun hasFinalTaskLevel(entry: BookEntry): Boolean =
-        entry.taskLevels.isEmpty() || ClientResearchState.completedTaskLevels(entry.id) >= entry.taskLevels.lastIndex
+    private fun hasFinalTaskLevel(entry: BookEntry): Boolean = entry.taskLevels.isEmpty() || ClientResearchState.completedTaskLevels(entry.id) >= entry.taskLevels.lastIndex
 
     private fun activeTaskProgress(entry: BookEntry): List<Pair<ResearchTaskDefinition, ResearchTaskProgress>> {
         val levelIndex = ClientResearchState.completedTaskLevels(entry.id)
         val level = entry.taskLevels.getOrNull(levelIndex) ?: return emptyList()
         val offset = entry.taskLevels.take(levelIndex).sumOf { it.tasks.size }
         val progress = ClientResearchState.taskProgress(entry.id)
-        return level.tasks.mapIndexedNotNull { index, definition ->
-            progress.getOrNull(offset + index)?.let { definition to it }
-        }
+        return level.tasks.mapIndexedNotNull { index, definition -> progress.getOrNull(offset + index)?.let { definition to it } }
     }
 
     private fun renderTaskLevels(graphics: GuiGraphicsExtractor, entry: BookEntry) {
@@ -787,18 +708,14 @@ class ResearchBookScreen(
         return mouseX >= point.first && mouseX < point.first + w && mouseY >= point.second && mouseY < point.second + h
     }
 
-    private fun nodePoint(node: ResolvedBookEntry): Pair<Float, Float> =
-        width / 2f + (node.position.x + panX) * zoom to GRAPH_TOP + (node.position.y + panY) * zoom
+    private fun nodePoint(node: ResolvedBookEntry): Pair<Float, Float> = width / 2f + (node.position.x + panX) * zoom to GRAPH_TOP + (node.position.y + panY) * zoom
 
     private fun nodeCenter(node: ResolvedBookEntry): Pair<Int, Int> {
         val point = nodePoint(node)
         return (point.first + nodeWidth(node.entry) * zoom / 2f).toInt() to (point.second + nodeHeight(node.entry) * zoom / 2f).toInt()
     }
 
-    private fun visibleNodes(): List<ResolvedBookEntry> = selectedCategory
-        ?.let(ResearchCatalog.snapshot()::entriesIn)
-        .orEmpty()
-        .filter { isVisible(it.entry) }
+    private fun visibleNodes(): List<ResolvedBookEntry> = selectedCategory?.let(ResearchCatalog.snapshot()::entriesIn).orEmpty().filter { isVisible(it.entry) }
 
     private fun isAvailable(entry: BookEntry): Boolean = isAvailable(entry, LinkedHashSet())
 
@@ -824,9 +741,7 @@ class ResearchBookScreen(
 
     private fun bookTypeId(type: BookType): Identifier? =
         ECRegistries.BOOK_TYPES.getKey(type)
-            ?: ECRegistries.BOOK_TYPES
-                .entrySet()
-                .firstOrNull { it.value == type }
+            ?: ECRegistries.BOOK_TYPES.entrySet().firstOrNull { it.value == type }
                 ?.key
                 ?.identifier()
 
@@ -884,20 +799,13 @@ class ResearchBookScreen(
         constrainPan()
     }
 
-    private fun categories(): List<BookCategory> = ResearchCatalog.snapshot()
-        .categories.values
-        .sortedWith(compareBy<BookCategory> { it.order }.thenBy { it.id.toString() })
+    private fun categories(): List<BookCategory> = ResearchCatalog.snapshot().categories.values.sortedWith(compareBy<BookCategory> { it.order }.thenBy { it.id.toString() })
 
     private fun categoryProgress(category: BookCategory): Component {
-        val entries = ResearchCatalog.snapshot()
-            .entriesIn(category.id)
-            .map(ResolvedBookEntry::entry)
-            .filter { it.link == null }
+        val entries = ResearchCatalog.snapshot().entriesIn(category.id).map(ResolvedBookEntry::entry).filter { it.link == null }
         val researched = entries.count { ClientResearchState.has(it.id) }
         val percent = if (entries.isEmpty()) 0 else (researched * 100.0 / entries.size).roundToInt()
-        return Component
-            .translatable("screen.$ModId.research_book.category.progress", percent)
-            .withStyle(ChatFormatting.GRAY)
+        return Component.translatable("screen.$ModId.research_book.category.progress", percent).withStyle(ChatFormatting.GRAY)
     }
 
     private fun hasCategoryOverflow(): Boolean = categories().size * TAB_WIDTH > width
@@ -942,31 +850,14 @@ class ResearchBookScreen(
     }
 
     private fun saveViewState() {
-        val state =
-            bookmarks.appendTo(
-                BookViewState(
-                    selectedCategory,
-                    selectedEntry?.id,
-                    spreadIndex,
-                    targetPanX,
-                    targetPanY,
-                    targetZoom
-                )
-            )
+        val state = bookmarks.appendTo(BookViewState(selectedCategory, selectedEntry?.id, spreadIndex, targetPanX, targetPanY, targetZoom))
         ClientResearchState.updateLocalView(state)
         ResearchNetwork.updateView(state)
     }
 
-    private data class BookTransform(
-        val x: Int,
-        val y: Int,
-        val scale: Float
-    )
+    private data class BookTransform(val x: Int, val y: Int, val scale: Float)
 
-    private data class MissingRequirements(
-        val visible: List<Component>,
-        val hidden: Int
-    )
+    private data class MissingRequirements(val visible: List<Component>, val hidden: Int)
 
     companion object {
         private const val CATEGORY_HEIGHT = 16
@@ -981,9 +872,7 @@ class ResearchBookScreen(
         private const val PAGE_HEIGHT = 204
         private const val TITLE_X = FIRST_PAGE_X
         private const val TITLE_Y = 13
-
         private const val BOOKMARK_Y = BookBookmarkController.BOOKMARK_Y
-
         private const val LEFT_ARROW_X = 4
         private const val RIGHT_ARROW_X = 481
         private const val ARROW_Y = 240
@@ -991,7 +880,6 @@ class ResearchBookScreen(
         private const val COMPLETE_BUTTON_HEIGHT = 18
         private const val COMPLETE_BUTTON_X = (BOOK_WIDTH - COMPLETE_BUTTON_WIDTH) / 2
         private const val COMPLETE_BUTTON_Y = BOOK_HEIGHT + 2
-
         private const val PAN_HALF_LIFE = 0.06f
         private const val ZOOM_HALF_LIFE = 0.12f
         private const val SCROLL_HALF_LIFE = 0.12f

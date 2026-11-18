@@ -11,9 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerPlayer
 import java.util.UUID
 
-data class SoulStoneTooltipRequestPayload(
-    val owner: UUID
-) : CustomPacketPayload {
+data class SoulStoneTooltipRequestPayload(val owner: UUID): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -29,10 +27,7 @@ data class SoulStoneTooltipRequestPayload(
     }
 }
 
-data class SoulStoneTooltipResponsePayload(
-    val owner: UUID,
-    val mru: Int?
-) : CustomPacketPayload {
+data class SoulStoneTooltipResponsePayload(val owner: UUID, val mru: Int?): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -48,10 +43,7 @@ data class SoulStoneTooltipResponsePayload(
                     value.mru?.let(buffer::writeVarInt)
                 },
                 { buffer ->
-                    SoulStoneTooltipResponsePayload(
-                        UUIDUtil.STREAM_CODEC.decode(buffer),
-                        if (buffer.readBoolean()) buffer.readVarInt() else null
-                    )
+                    SoulStoneTooltipResponsePayload(UUIDUtil.STREAM_CODEC.decode(buffer), if (buffer.readBoolean()) buffer.readVarInt() else null)
                 }
             )
     }
@@ -61,7 +53,6 @@ object SoulStoneTooltipNetwork {
     private const val CACHE_TTL_MS = 1000L
     private const val REQUEST_THROTTLE_MS = 250L
     private const val MAX_CACHE_SIZE = 128
-
     private val cache = LinkedHashMap<UUID, CachedMatrix>()
     private val pendingRequests = mutableMapOf<UUID, Long>()
 
@@ -81,15 +72,8 @@ object SoulStoneTooltipNetwork {
     }
 
     @JvmStatic
-    fun handleRequest(
-        requester: ServerPlayer,
-        payload: SoulStoneTooltipRequestPayload
-    ) {
-        val owner =
-            requester
-                .level()
-                .server.playerList
-                .getPlayer(payload.owner)
+    fun handleRequest(requester: ServerPlayer, payload: SoulStoneTooltipRequestPayload) {
+        val owner = requester.level().server.playerList.getPlayer(payload.owner)
         val mru = owner?.playerMatrix?.mru
         Network.sendTo(requester, SoulStoneTooltipResponsePayload(payload.owner, mru))
     }
@@ -100,10 +84,7 @@ object SoulStoneTooltipNetwork {
         pendingRequests.clear()
     }
 
-    private fun request(
-        owner: UUID,
-        now: Long
-    ) {
+    private fun request(owner: UUID, now: Long) {
         val lastRequestAt = pendingRequests[owner]
         if (lastRequestAt != null && now - lastRequestAt < REQUEST_THROTTLE_MS) return
 
@@ -120,8 +101,5 @@ object SoulStoneTooltipNetwork {
         }
     }
 
-    private data class CachedMatrix(
-        val mru: Int?,
-        val updatedAt: Long
-    )
+    private data class CachedMatrix(val mru: Int?, val updatedAt: Long)
 }

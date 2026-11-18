@@ -48,8 +48,7 @@ class MIMCraftingPlanner(
             for (pattern in candidates) {
                 restore(starting)
                 val result = produce(pattern, amount, 0, emptySet(), 0)
-                if (result.status == MIMDependencyStatus.CRAFTABLE)
-                    return MIMCraftingPlan(result, steps.toList(), true)
+                if (result.status == MIMDependencyStatus.CRAFTABLE) return MIMCraftingPlan(result, steps.toList(), true)
                 failure = prefer(failure, result)
             }
             return MIMCraftingPlan(failure ?: MIMDependencyNode(target, amount, 0, 0, MIMDependencyStatus.MISSING), emptyList(), false)
@@ -58,8 +57,7 @@ class MIMCraftingPlanner(
         private fun ingredient(
             template: ItemStack, amount: Long, accepts: (ItemStack) -> Boolean, path: Set<Key>, depth: Int
         ): MIMDependencyNode {
-            if (++nodes > maxNodes || depth > maxDepth)
-                return MIMDependencyNode(template, amount, 0, 0, MIMDependencyStatus.LIMIT)
+            if (++nodes > maxNodes || depth > maxDepth) return MIMDependencyNode(template, amount, 0, 0, MIMDependencyStatus.LIMIT)
             val supplied = consume(template, amount, template.count, accepts)
             if (supplied == amount) return MIMDependencyNode(template, amount, supplied, 0, MIMDependencyStatus.STORED)
             val starting = snapshot()

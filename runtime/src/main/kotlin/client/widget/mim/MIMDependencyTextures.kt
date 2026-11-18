@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 
-internal object MIMDependencyTextures {
+object MIMDependencyTextures {
     private const val TEXTURE_SIZE = 512
     private val TEXTURE = ECRModIDs.guiLocation("mim/dependency_tree")
     val PANEL = Region(0, 0, 256, 256)
@@ -44,8 +44,7 @@ internal object MIMDependencyTextures {
 
     class Region(val u: Int, val v: Int, val width: Int, val height: Int) {
         fun draw(graphics: GuiGraphicsExtractor, x: Int, y: Int, width: Int = this.width, height: Int = this.height) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, u.toFloat(), v.toFloat(),
-                width, height, this.width, this.height, TEXTURE_SIZE, TEXTURE_SIZE)
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, u.toFloat(), v.toFloat(), width, height, this.width, this.height, TEXTURE_SIZE, TEXTURE_SIZE)
         }
 
         fun frame(graphics: GuiGraphicsExtractor, x: Int, y: Int, width: Int) {
@@ -56,8 +55,7 @@ internal object MIMDependencyTextures {
         }
 
         private fun drawPart(graphics: GuiGraphicsExtractor, x: Int, y: Int, source: Int, width: Int, sourceWidth: Int) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, source.toFloat(), v.toFloat(),
-                width, height, sourceWidth, height, TEXTURE_SIZE, TEXTURE_SIZE)
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, source.toFloat(), v.toFloat(), width, height, sourceWidth, height, TEXTURE_SIZE, TEXTURE_SIZE)
         }
     }
 
@@ -69,12 +67,12 @@ internal object MIMDependencyTextures {
     }
 }
 
-internal class MIMDependencyButton(
+class MIMDependencyButton(
     private val font: Font, label: Component,
     private val normal: MIMDependencyTextures.Region, private val pressed: MIMDependencyTextures.Region,
     private val hovered: MIMDependencyTextures.Region, private val showLabel: Boolean = true,
     action: () -> Unit
-) : MIMPressedButton(0, 0, normal.width, normal.height, label, action) {
+): MIMPressedButton(0, 0, normal.width, normal.height, label, action) {
     var textScale = 1f
 
     override fun extractContents(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
@@ -90,8 +88,7 @@ internal class MIMDependencyButton(
         graphics.pose().pushMatrix()
         graphics.pose().translate(x + width / 2f, y + height / 2f)
         graphics.pose().scale(scale, scale)
-        graphics.text(font, message, -font.width(message) / 2, -font.lineHeight / 2,
-            if (active) MIMGuiTextures.TEXT else 0xFF8B8B8B.toInt(), false)
+        graphics.text(font, message, -font.width(message) / 2, -font.lineHeight / 2, if (active) MIMGuiTextures.TEXT else 0xFF8B8B8B.toInt(), false)
         graphics.pose().popMatrix()
     }
 }

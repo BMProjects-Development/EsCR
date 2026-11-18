@@ -54,8 +54,7 @@ class MIMMenuKind private constructor(
 
         fun resolve(id: Identifier): MIMMenuKind = Registry.kinds[id] ?: throw DecoderException("Unknown MIM menu kind: $id")
 
-        private fun boundGem(stack: ItemStack): Boolean =
-            stack.item is BoundGem && stack.item !is InventoryGemItem && MIMLinks.isBound(stack)
+        private fun boundGem(stack: ItemStack): Boolean = stack.item is BoundGem && stack.item !is InventoryGemItem && MIMLinks.isBound(stack)
 
         private object Registry {
             val kinds = linkedMapOf<Identifier, MIMMenuKind>()

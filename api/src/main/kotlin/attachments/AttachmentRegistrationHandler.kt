@@ -68,7 +68,7 @@ open class AttachmentRegistrationHandler(val namespace: String) {
         private val id: Identifier,
         private val specification: AttachmentSpecification<T>,
         private val attachment: Attachment<T>
-    ) : PendingAttachment {
+    ): PendingAttachment {
         override fun submit(platform: AttachmentPlatform) {
             attachment.bind(platform.register(id, specification))
         }

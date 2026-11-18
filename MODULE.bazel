@@ -37,6 +37,7 @@ git_override(
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "maven",
+    fetch_sources = True,
     lock_file = "//tools/build:maven.lock.json",
     fail_on_missing_checksum = False,
     known_contributing_modules = ["protobuf"],
@@ -65,6 +66,7 @@ maven.install(
 )
 maven.install(
     name = "fabric_maven",
+    fetch_sources = True,
     lock_file = "//tools/build:fabric_maven.lock.json",
     fail_on_missing_checksum = False,
     artifacts = [
@@ -87,6 +89,7 @@ maven.install(
 )
 maven.install(
     name = "neoforge_maven",
+    fetch_sources = True,
     lock_file = "//tools/build:neoforge_maven.lock.json",
     fail_on_missing_checksum = False,
     excluded_artifacts = ["net.neoforged:minecraft-dependencies", "net.neoforged:neoform", "net.neoforged.fancymodloader:junit-fml"],
@@ -107,6 +110,7 @@ maven.install(
 )
 maven.install(
     name = "additions_maven",
+    fetch_sources = True,
     lock_file = "//tools/build:additions_maven.lock.json",
     fail_on_missing_checksum = False,
     artifacts = [

@@ -25,10 +25,7 @@ class EnrichmentChamberControllerMenu(
         inv.make()
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        slotIndex: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, slotIndex: Int): ItemStack {
         val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
         val stack = slot.item.takeIf { it.count > 0 } ?: return ItemStack.EMPTY
 
@@ -48,6 +45,5 @@ class EnrichmentChamberControllerMenu(
         return if (stack.count == copy.count) ItemStack.EMPTY else copy
     }
 
-    override fun stillValid(player: Player): Boolean =
-        stillValid(access, player, BlockRegistry.enrichmentChamberController.get())
+    override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.enrichmentChamberController.get())
 }

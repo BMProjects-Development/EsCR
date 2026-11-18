@@ -34,10 +34,7 @@ data class GeoModel(
     }
 }
 
-data class GeoBlockRotation(
-    val enabled: Boolean = true,
-    val opposite: Boolean = false
-) {
+data class GeoBlockRotation(val enabled: Boolean = true, val opposite: Boolean = false) {
     companion object {
         @JvmField
         val NONE = GeoBlockRotation(enabled = false)
@@ -74,14 +71,12 @@ interface GeoItemProvider {
 
     fun geoAnimationState(stack: ItemStack): GeoAnimationState = GeoItemAnimationStates[stack]
 
-    fun geoMolangContext(stack: ItemStack, partialTick: Float): MolangContext =
-        MolangContext.EMPTY
+    fun geoMolangContext(stack: ItemStack, partialTick: Float): MolangContext = MolangContext.EMPTY
 }
 
 object GeoItemAnimationStates {
     private val states = WeakHashMap<ItemStack, GeoAnimationState>()
 
     @Synchronized
-    operator fun get(stack: ItemStack): GeoAnimationState =
-        states.getOrPut(stack) { GeoAnimationState() }
+    operator fun get(stack: ItemStack): GeoAnimationState = states.getOrPut(stack) { GeoAnimationState() }
 }

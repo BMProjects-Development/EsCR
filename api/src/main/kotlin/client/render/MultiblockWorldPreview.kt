@@ -20,27 +20,17 @@ object MultiblockWorldPreview {
     private const val MODEL_OUTLINE_COLOR = 0xCC6FE7FF.toInt()
     private const val MISSING_OUTLINE_COLOR = 0xE06FE7FF.toInt()
     private const val WRONG_OUTLINE_COLOR = 0xE0FF6B5F.toInt()
-
     private val renderer by lazy(::MultiblockPreviewRenderer)
 
     @Volatile
     private var active: ActivePreview? = null
 
     @JvmStatic
-    fun place(
-        multiblock: Multiblock,
-        center: BlockPos,
-        direction: Direction = Direction.NORTH
-    ): Boolean {
+    fun place(multiblock: Multiblock, center: BlockPos, direction: Direction = Direction.NORTH): Boolean {
         val level = Minecraft.getInstance().level ?: return false
         val pattern = multiblock.variants.firstOrNull() ?: return false
         active =
-            ActivePreview(
-                pattern,
-                center.immutable(),
-                direction.takeIf { it.axis.isHorizontal } ?: Direction.NORTH,
-                level.dimension()
-            )
+            ActivePreview(pattern, center.immutable(), direction.takeIf { it.axis.isHorizontal } ?: Direction.NORTH, level.dimension())
         return true
     }
 
@@ -68,11 +58,7 @@ object MultiblockWorldPreview {
     }
 
     @JvmStatic
-    fun submit(
-        poseStack: PoseStack,
-        collector: SubmitNodeCollector,
-        levelRenderState: LevelRenderState
-    ) {
+    fun submit(poseStack: PoseStack, collector: SubmitNodeCollector, levelRenderState: LevelRenderState) {
         val preview = active ?: return
         val minecraft = Minecraft.getInstance()
         val level = minecraft.level ?: return
@@ -87,44 +73,18 @@ object MultiblockWorldPreview {
 
         val camera = levelRenderState.cameraRenderState.pos
         poseStack.pushPose()
-        poseStack.translate(
-            preview.center.x - camera.x,
-            preview.center.y - camera.y,
-            preview.center.z - camera.z
-        )
-        renderer.submit(
-            missing
-                .asSequence()
-                .filterNot { it.previewState.isAir }
-                .map { it.relativePosition to it.previewState }
-                .toList(),
-            poseStack,
-            collector,
-            MODEL_OUTLINE_COLOR
-        )
+        poseStack.translate(preview.center.x - camera.x, preview.center.y - camera.y, preview.center.z - camera.z)
+        renderer.submit(missing.asSequence().filterNot { it.previewState.isAir }.map { it.relativePosition to it.previewState }.toList(), poseStack, collector, MODEL_OUTLINE_COLOR)
 
         val lineWidth = minecraft.gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth
         missing.forEach { expected ->
             val currentState = level.getBlockState(expected.worldPosition)
             val shape =
-                expected.previewState
-                    .getShape(level, expected.worldPosition, CollisionContext.empty())
-                    .takeUnless { it.isEmpty }
+                expected.previewState.getShape(level, expected.worldPosition, CollisionContext.empty()).takeUnless { it.isEmpty }
                     ?: Shapes.block()
             poseStack.pushPose()
-            poseStack.translate(
-                expected.relativePosition.x.toDouble(),
-                expected.relativePosition.y.toDouble(),
-                expected.relativePosition.z.toDouble()
-            )
-            collector.submitShapeOutline(
-                poseStack,
-                shape,
-                RenderTypes.lines(),
-                if (currentState.isAir) MISSING_OUTLINE_COLOR else WRONG_OUTLINE_COLOR,
-                lineWidth,
-                false
-            )
+            poseStack.translate(expected.relativePosition.x.toDouble(), expected.relativePosition.y.toDouble(), expected.relativePosition.z.toDouble())
+            collector.submitShapeOutline(poseStack, shape, RenderTypes.lines(), if (currentState.isAir) MISSING_OUTLINE_COLOR else WRONG_OUTLINE_COLOR, lineWidth, false)
             poseStack.popPose()
         }
         poseStack.popPose()
@@ -140,21 +100,8 @@ object MultiblockWorldPreview {
             pattern.blocks.forEachIndexed { index, matcher ->
                 if (!matcher.required) return@forEachIndexed
                 val patternPosition = pattern.positionOf(index)
-                val relative =
-                    rotate(
-                        patternPosition.x - pattern.center.x,
-                        patternPosition.y - pattern.center.y,
-                        patternPosition.z - pattern.center.z,
-                        direction
-                    )
-                add(
-                    ExpectedBlock(
-                        center.offset(relative),
-                        relative,
-                        matcher.default(),
-                        matcher
-                    )
-                )
+                val relative = rotate(patternPosition.x - pattern.center.x, patternPosition.y - pattern.center.y, patternPosition.z - pattern.center.z, direction)
+                add(ExpectedBlock(center.offset(relative), relative, matcher.default(), matcher))
             }
         }
     }

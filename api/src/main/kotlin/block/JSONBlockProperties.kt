@@ -68,9 +68,7 @@ data class BlockPropertiesData(
     val replaceable: Boolean = false
 ) {
     init {
-        numericValues().forEach { (name, value) ->
-            require(value.isFinite()) { "$name must be finite" }
-        }
+        numericValues().forEach { (name, value) -> require(value.isFinite()) { "$name must be finite" } }
         explosionResistance?.let {
             require(it >= 0F) { "explosion_resistance cannot be negative" }
         }
@@ -134,9 +132,7 @@ class JSONBlockProperties internal constructor(private val properties: BlockBeha
         val resource = primaryClassLoader?.getResourceAsStream(path)
             ?: fallbackClassLoader.getResourceAsStream(path)
             ?: error("Missing block properties data file: $path")
-        val data = resource.bufferedReader(Charsets.UTF_8).use {
-            resourceJson.decodeFromString(BlockPropertiesData.serializer(), it.readText())
-        }
+        val data = resource.bufferedReader(Charsets.UTF_8).use { resourceJson.decodeFromString(BlockPropertiesData.serializer(), it.readText()) }
         return data.applyTo(properties).also { loaded = true }
     }
 
@@ -155,13 +151,11 @@ class JSONBlockProperties internal constructor(private val properties: BlockBeha
 
         @JvmStatic
         @JvmOverloads
-        fun decode(source: String, json: Json = Json): BlockBehaviour.Properties =
-            json.decodeFromString(BlockPropertiesData.serializer(), source).toProperties()
+        fun decode(source: String, json: Json = Json): BlockBehaviour.Properties = json.decodeFromString(BlockPropertiesData.serializer(), source).toProperties()
 
         @JvmStatic
         @JvmOverloads
-        fun decode(source: JsonObject, json: Json = Json): BlockBehaviour.Properties =
-            json.decodeFromJsonElement(BlockPropertiesData.serializer(), source).toProperties()
+        fun decode(source: JsonObject, json: Json = Json): BlockBehaviour.Properties = json.decodeFromJsonElement(BlockPropertiesData.serializer(), source).toProperties()
 
         @JvmStatic
         fun resourcePath(id: Identifier): String = "data/${id.namespace}/properties/${id.path}.json"

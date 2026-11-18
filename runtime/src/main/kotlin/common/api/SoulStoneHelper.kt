@@ -16,9 +16,7 @@ object SoulStoneHelper {
         if (component == SoulStoneComponent.EMPTY) return
         if (player.stringUUID != component.owner.toString() || player.name.string == component.ownerName) return
 
-        stack[DataComponentRegistry.soulStone.get()] = component.copy(
-            ownerName = player.name.string
-        )
+        stack[DataComponentRegistry.soulStone.get()] = component.copy(ownerName = player.name.string)
     }
 
     @JvmStatic

@@ -43,13 +43,9 @@ class RayTower(properties: Properties): Block(properties), EntityBlock, Assemble
         builder.add(ASSEMBLED)
     }
 
-    override fun assembledState(originalState: BlockState, facing: Direction): BlockState =
-        originalState.setValue(ASSEMBLED, true)
+    override fun assembledState(originalState: BlockState, facing: Direction): BlockState = originalState.setValue(ASSEMBLED, true)
 
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = RayTowerEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = RayTowerEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,
@@ -70,11 +66,9 @@ class RayTower(properties: Properties): Block(properties), EntityBlock, Assemble
         return checkAndOpenMenu<RayTowerEntity>(player, level, pos)
     }
 
-    override fun getRenderShape(state: BlockState): RenderShape =
-        if (state.getValue(ASSEMBLED) && hasFormedModel()) RenderShape.INVISIBLE else super.getRenderShape(state)
+    override fun getRenderShape(state: BlockState): RenderShape = if (state.getValue(ASSEMBLED) && hasFormedModel()) RenderShape.INVISIBLE else super.getRenderShape(state)
 
-    override fun getOcclusionShape(state: BlockState): VoxelShape =
-        if (state.getValue(ASSEMBLED)) Shapes.empty() else super.getOcclusionShape(state)
+    override fun getOcclusionShape(state: BlockState): VoxelShape = if (state.getValue(ASSEMBLED)) Shapes.empty() else super.getOcclusionShape(state)
 
     override fun getShape(
         state: BlockState,
@@ -121,8 +115,7 @@ class RayTower(properties: Properties): Block(properties), EntityBlock, Assemble
         super.onExplosionHit(state, level, pos, explosion, dropConsumer)
     }
 
-    private fun hasFormedModel(): Boolean = MultiblockDefinitions
-        .assembled(ECRModIDs.RAY_TOWER.ecRL)
+    private fun hasFormedModel(): Boolean = MultiblockDefinitions.assembled(ECRModIDs.RAY_TOWER.ecRL)
         ?.formedModel != null
 
     private val shape by lazy {

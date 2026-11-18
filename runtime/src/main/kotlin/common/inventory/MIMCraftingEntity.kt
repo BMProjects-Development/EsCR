@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.inventory
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.inventory.InventoryNetwork
 import com.algorithmlx.ecr.api.inventory.ItemStorageIdentity
 import com.algorithmlx.ecr.api.inventory.PlatformItemContainer
@@ -23,7 +24,7 @@ import net.minecraft.world.level.storage.ValueOutput
 import kotlin.jvm.optionals.getOrNull
 import java.util.UUID
 
-class MIMCraftingEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
+class MIMCraftingEntity(pos: BlockPos, state: BlockState): MIMModuleEntity(
     pos, state, BlockEntityTypeRegistry.mimCrafting.get(), MIMMenuKind.CRAFTING.slots
 ), MIMCraftingProvider, BoundGemTooltipProvider {
     override val menuKind get() = MIMMenuKind.CRAFTING
@@ -35,15 +36,12 @@ class MIMCraftingEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
     }
     override val pendingCrafts: Int get() = requests.sumOf { it.remaining.toLong() }.coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
 
-    override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean =
-        slot in 0 until containerSize && MIMFrames.provider(stack) != null
+    override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = slot in 0 until containerSize && MIMFrames.provider(stack) != null
 
     override fun patterns(): List<ItemStack> {
         val level = level as? ServerLevel ?: return emptyList()
         val result = mutableListOf<ItemStack>()
-        currentPatterns(level).forEach { pattern ->
-            if (result.none { ItemStack.isSameItemSameComponents(it, pattern.output) }) result += pattern.output.copy()
-        }
+        currentPatterns(level).forEach { pattern -> if (result.none { ItemStack.isSameItemSameComponents(it, pattern.output) }) result += pattern.output.copy() }
         return result
     }
 
@@ -74,9 +72,7 @@ class MIMCraftingEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
         setChanged()
     }
 
-    override fun tasks(): List<MIMCraftingTask> = requests.map {
-        MIMCraftingTask(it.id, it.template, it.remaining, activity(it))
-    }
+    override fun tasks(): List<MIMCraftingTask> = requests.map { MIMCraftingTask(it.id, it.template, it.remaining, activity(it)) }
 
     override fun cancelTask(id: UUID): Boolean {
         if (!requests.removeIf { it.id == id }) return false
@@ -109,8 +105,7 @@ class MIMCraftingEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
         if (request.plan == null) {
             request.state = MIMCraftingState.PLANNING
             val config = ECConfig.current.inventoryManager
-            val plan = MIMCraftingPlanner(patterns, network.snapshot(), config.dependencyMaxNodes, config.dependencyMaxDepth, config.dependencyMaxCrafts)
-                .plan(request.template, 1)
+            val plan = MIMCraftingPlanner(patterns, network.snapshot(), config.dependencyMaxNodes, config.dependencyMaxDepth, config.dependencyMaxCrafts).plan(request.template, 1)
             if (!plan.complete) {
                 request.state = MIMCraftingState.MATERIALS
                 request.retryAt = level.gameTime + config.operationTicks
@@ -190,17 +185,14 @@ class MIMCraftingEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
         generation = null
     }
 
-    private fun currentPatterns(level: ServerLevel): List<MIMCraftingPattern> =
-        (0 until containerSize).flatMap { MIMFrames.patterns(level, getItem(it)) }
+    private fun currentPatterns(level: ServerLevel): List<MIMCraftingPattern> = (0 until containerSize).flatMap { MIMFrames.patterns(level, getItem(it)) }
 
     override fun boundGemTooltip(): List<Component> = listOf(
-        Component.translatable("tooltip.escr.mim.crafting"),
-        Component.translatable("tooltip.escr.mim.frames", (0 until containerSize).count { !getItem(it).isEmpty }, containerSize).withStyle(ChatFormatting.GRAY)
+        Component.translatable("tooltip.$ModId.mim.crafting"),
+        Component.translatable("tooltip.$ModId.mim.frames", (0 until containerSize).count { !getItem(it).isEmpty }, containerSize).withStyle(ChatFormatting.GRAY)
     )
 
-    private class CraftingGeneration(
-        core: MIMManager, network: InventoryNetwork, private val patterns: List<MIMCraftingPattern>
-    ) {
+    private class CraftingGeneration(core: MIMManager, network: InventoryNetwork, private val patterns: List<MIMCraftingPattern>) {
         private val coreIdentity = core.blockEntity
         private val topology = network.endpoints.map { endpoint ->
             EndpointState(endpoint.identities.map { (it as? PlatformItemContainer)?.storageIdentity ?: ItemStorageIdentity(it) }.toSet(), endpoint.side?.ordinal, endpoint.slots().toList())

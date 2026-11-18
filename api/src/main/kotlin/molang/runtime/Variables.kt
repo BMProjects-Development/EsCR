@@ -23,10 +23,9 @@ class VariablesMap: Variables {
 
     override fun getOrNull(name: String): Variables.Variable? = map[name]
 
-    override fun getOrPut(name: String, initialValue: Float): Variables.Variable =
-        map.getOrPut(name) { Variable(initialValue) }
+    override fun getOrPut(name: String, initialValue: Float): Variables.Variable = map.getOrPut(name) { Variable(initialValue) }
 
-    private class Variable(var field: Float) : Variables.Variable {
+    private class Variable(var field: Float): Variables.Variable {
         override fun get(): Float = field
         override fun set(value: Float) {
             field = value
@@ -34,9 +33,8 @@ class VariablesMap: Variables {
     }
 }
 
-private class VariablesWithFallback(val primary: Variables, val fallback: Variables) : Variables {
+private class VariablesWithFallback(val primary: Variables, val fallback: Variables): Variables {
     override fun getOrNull(name: String): Variables.Variable? = primary.getOrNull(name) ?: fallback.getOrNull(name)
 
-    override fun getOrPut(name: String, initialValue: Float): Variables.Variable =
-        getOrNull(name) ?: primary.getOrPut(name, initialValue)
+    override fun getOrPut(name: String, initialValue: Float): Variables.Variable = getOrNull(name) ?: primary.getOrPut(name, initialValue)
 }

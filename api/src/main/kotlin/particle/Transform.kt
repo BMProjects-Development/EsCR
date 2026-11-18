@@ -12,7 +12,7 @@ interface Transform {
     val rotation: Quaternionf
     val velocity: Vector3f
 
-    object Zero : Transform {
+    object Zero: Transform {
         override val parent: Transform? = null
         override val isValid: Boolean = true
         override val position: Vector3f get() = Vector3f()
@@ -21,10 +21,7 @@ interface Transform {
     }
 
     companion object {
-        fun create(
-            position: Vector3f = Vector3f(),
-            rotation: Quaternionf = Quaternionf()
-        ): Transform = object : Transform {
+        fun create(position: Vector3f = Vector3f(), rotation: Quaternionf = Quaternionf()): Transform = object: Transform {
             override val parent: Transform? = null
             override val isValid: Boolean = true
             override val position: Vector3f get() = position
@@ -34,10 +31,6 @@ interface Transform {
 
         @JvmStatic
         @JvmOverloads
-        fun bone(
-            entity: Entity,
-            bone: String,
-            offset: Vector3f = Vector3f()
-        ): Transform = GeoEntityBoneTransform.create(entity, bone, offset)
+        fun bone(entity: Entity, bone: String, offset: Vector3f = Vector3f()): Transform = GeoEntityBoneTransform.create(entity, bone, offset)
     }
 }

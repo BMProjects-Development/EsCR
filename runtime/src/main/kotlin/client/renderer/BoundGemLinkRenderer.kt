@@ -14,11 +14,7 @@ import net.minecraft.world.phys.shapes.Shapes
 object BoundGemLinkRenderer {
     private const val BOUND_GEM_OUTLINE_COLOR = 0xD9FFCA85.toInt()
 
-    fun submit(
-        poseStack: PoseStack,
-        collector: SubmitNodeCollector,
-        levelRenderState: LevelRenderState
-    ) {
+    fun submit(poseStack: PoseStack, collector: SubmitNodeCollector, levelRenderState: LevelRenderState) {
         val minecraft = Minecraft.getInstance()
         val level = minecraft.level ?: return
         val player = minecraft.player ?: return
@@ -31,29 +27,14 @@ object BoundGemLinkRenderer {
 
         val blockState = level.getBlockState(boundPos)
         val collisionContext = CollisionContext.of(player)
-        val blockShape = (AssembledMultiblocks.formedSelectionShape(level, boundPos)
-            ?: blockState.getShape(level, boundPos, collisionContext))
-            .takeUnless { it.isEmpty }
+        val blockShape = (AssembledMultiblocks.formedSelectionShape(level, boundPos) ?: blockState.getShape(level, boundPos, collisionContext)).takeUnless { it.isEmpty }
             ?: Shapes.block()
         val cameraPos = levelRenderState.cameraRenderState.pos
-        val lineWidth = minecraft.gameRenderer.gameRenderState()
-            .windowRenderState
-            .appropriateLineWidth
+        val lineWidth = minecraft.gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth
 
         poseStack.pushPose()
-        poseStack.translate(
-            boundPos.x - cameraPos.x,
-            boundPos.y - cameraPos.y,
-            boundPos.z - cameraPos.z
-        )
-        collector.submitShapeOutline(
-            poseStack,
-            blockShape,
-            RenderTypes.lines(),
-            BOUND_GEM_OUTLINE_COLOR,
-            lineWidth,
-            false
-        )
+        poseStack.translate(boundPos.x - cameraPos.x, boundPos.y - cameraPos.y, boundPos.z - cameraPos.z)
+        collector.submitShapeOutline(poseStack, blockShape, RenderTypes.lines(), BOUND_GEM_OUTLINE_COLOR, lineWidth, false)
         poseStack.popPose()
     }
 

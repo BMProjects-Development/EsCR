@@ -9,7 +9,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
-class InventoryGemItem(properties: Properties) : Item(properties), BoundGem, NoTab {
+class InventoryGemItem(properties: Properties): Item(properties), BoundGem, NoTab {
     override val dimensionalBounds = false
     override fun getBoundPos(stack: ItemStack): BlockPos? = BoundGemHelper.getBoundPos(stack)
     override fun setBoundPos(stack: ItemStack, blockPos: BlockPos?) = BoundGemHelper.setBoundPos(stack, blockPos)

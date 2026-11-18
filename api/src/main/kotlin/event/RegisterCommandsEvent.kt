@@ -10,4 +10,4 @@ class RegisterCommandsEvent(
     val dispatcher: CommandDispatcher<CommandSourceStack>,
     val buildContext: CommandBuildContext,
     val commandSelection: Commands.CommandSelection
-) : Event()
+): Event()

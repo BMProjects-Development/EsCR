@@ -11,16 +11,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.MenuType
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension
 
-object NeoForgeMenuTypePlatform : MenuTypePlatform {
-    override fun <M : AbstractContainerMenu> create(factory: (Int, Inventory) -> M): MenuType<M> =
-        MenuType(factory, FeatureFlags.VANILLA_SET)
+object NeoForgeMenuTypePlatform: MenuTypePlatform {
+    override fun <M : AbstractContainerMenu> create(factory: (Int, Inventory) -> M): MenuType<M> = MenuType(factory, FeatureFlags.VANILLA_SET)
 
     override fun <M : AbstractContainerMenu, D : Any> create(
         codec: StreamCodec<RegistryFriendlyByteBuf, D>,
         factory: (Int, Inventory, D) -> M
-    ): MenuType<M> = IMenuTypeExtension.create { containerId, inventory, buffer ->
-        factory(containerId, inventory, codec.decode(buffer))
-    }
+    ): MenuType<M> = IMenuTypeExtension.create { containerId, inventory, buffer -> factory(containerId, inventory, codec.decode(buffer)) }
 
     override fun <D : Any> open(
         player: ServerPlayer,

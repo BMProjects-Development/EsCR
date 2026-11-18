@@ -51,10 +51,7 @@ abstract class PlayerInteractEvent(
             }
     }
 
-    class RightClickItem(
-        entity: Player,
-        hand: InteractionHand
-    ): PlayerInteractEvent(entity, hand, entity.blockPosition(), null), ICancellableEvent {
+    class RightClickItem(entity: Player, hand: InteractionHand): PlayerInteractEvent(entity, hand, entity.blockPosition(), null), ICancellableEvent {
         var cancellationResult: InteractionResult = InteractionResult.PASS
     }
 

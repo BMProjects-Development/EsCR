@@ -6,9 +6,8 @@ import com.algorithmlx.ecr.fabric.init.registry.creative.FabricCreativeTabOrderi
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab
 import net.minecraft.world.item.CreativeModeTab
 
-object FabricCreativeTabPlatform : CreativeTabPlatform {
+object FabricCreativeTabPlatform: CreativeTabPlatform {
     override fun createBuilder(): CreativeModeTab.Builder = FabricCreativeModeTab.builder()
 
-    override fun build(builder: CreativeModeTab.Builder, ordering: CreativeTabOrdering): CreativeModeTab =
-        builder.build().also { FabricCreativeTabOrdering.register(it, ordering) }
+    override fun build(builder: CreativeModeTab.Builder, ordering: CreativeTabOrdering): CreativeModeTab = builder.build().also { FabricCreativeTabOrdering.register(it, ordering) }
 }

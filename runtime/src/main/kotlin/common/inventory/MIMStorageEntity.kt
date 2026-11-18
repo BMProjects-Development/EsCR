@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.common.inventory
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.inventory.InventoryEndpoint
 import com.algorithmlx.ecr.api.inventory.InventoryAccess
 import com.algorithmlx.ecr.api.item.BoundGem
@@ -16,7 +17,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
 
-class MIMStorageEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
+class MIMStorageEntity(pos: BlockPos, state: BlockState): MIMModuleEntity(
     pos, state, BlockEntityTypeRegistry.mimStorage.get(), MIMMenuKind.STORAGE.slots
 ), MIMStorageProvider, BoundGemTooltipProvider {
     override val menuKind get() = MIMMenuKind.STORAGE
@@ -33,8 +34,7 @@ class MIMStorageEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
         return (0 until containerSize).flatMap { slot ->
             val gem = getItem(slot)
             if (!MIMLinks.isBound(gem)) return@flatMap emptyList()
-            if (gem.item !is InventoryGemItem)
-                return@flatMap MIMLinks.resolve(level, gem)?.let(MIMModules::inventory)?.endpoints().orEmpty()
+            if (gem.item !is InventoryGemItem) return@flatMap MIMLinks.resolve(level, gem)?.let(MIMModules::inventory)?.endpoints().orEmpty()
             val dimension = BoundGemHelper.getLevelKey(gem)
             if (dimension != null && dimension != level.dimension()) return@flatMap emptyList()
             val pos = BoundGemHelper.getBoundPos(gem) ?: return@flatMap emptyList()
@@ -44,8 +44,8 @@ class MIMStorageEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
     }
 
     override fun boundGemTooltip(): List<Component> = buildList {
-        add(Component.translatable("tooltip.escr.mim.storage"))
-        add(Component.translatable("tooltip.escr.mim.nodes", (0 until containerSize).count { !getItem(it).isEmpty }, containerSize).withStyle(ChatFormatting.GRAY))
-        if (InventoryNetwork(endpoints()).isFull()) add(Component.translatable("tooltip.escr.mim.full").withStyle(ChatFormatting.RED))
+        add(Component.translatable("tooltip.$ModId.mim.storage"))
+        add(Component.translatable("tooltip.$ModId.mim.nodes", (0 until containerSize).count { !getItem(it).isEmpty }, containerSize).withStyle(ChatFormatting.GRAY))
+        if (InventoryNetwork(endpoints()).isFull()) add(Component.translatable("tooltip.$ModId.mim.full").withStyle(ChatFormatting.RED))
     }
 }

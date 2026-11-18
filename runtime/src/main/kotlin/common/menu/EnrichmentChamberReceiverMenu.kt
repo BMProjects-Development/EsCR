@@ -18,22 +18,14 @@ class EnrichmentChamberReceiverMenu(
     container: Container,
     access: ContainerLevelAccess
 ): AbstractMenu(MenuTypeRegistry.enrichmentChamberReceiver, containerId, access) {
-    constructor(containerId: Int, inventory: Inventory): this(
-        containerId, inventory, SimpleContainer(1),
-        ContainerLevelAccess.NULL
-    )
+    constructor(containerId: Int, inventory: Inventory): this(containerId, inventory, SimpleContainer(1), ContainerLevelAccess.NULL)
 
     init {
-        addSlot(VanillaSpecialSlot(
-            container, 0, 80, 35, BoundGemHelper::isConnectionFoundSpecial
-        ))
+        addSlot(VanillaSpecialSlot(container, 0, 80, 35, BoundGemHelper::isConnectionFoundSpecial))
         inv.make()
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        slotIndex: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, slotIndex: Int): ItemStack {
         val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
         val stack = slot.item.takeIf { it.count > 0 } ?: return ItemStack.EMPTY
 

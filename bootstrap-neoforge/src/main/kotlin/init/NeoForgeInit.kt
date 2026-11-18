@@ -20,6 +20,9 @@ import com.algorithmlx.ecr.api.event.tick.LevelTickEvent as CrossLevelTickEvent
 import com.algorithmlx.ecr.api.menu.MenuTypePlatform
 import com.algorithmlx.ecr.api.inventory.ItemStoragePlatform
 import com.algorithmlx.ecr.neoforge.inventory.NeoForgeItemStoragePlatform
+import com.algorithmlx.ecr.neoforge.inventory.NeoForgeContainerCapabilities
+import com.algorithmlx.ecr.api.entity.ShearingPlatform
+import com.algorithmlx.ecr.neoforge.entity.NeoForgeShearingPlatform
 import com.algorithmlx.ecr.api.network.NetworkPlatform
 import com.algorithmlx.ecr.api.registries.CreativeTabPlatform
 import com.algorithmlx.ecr.api.registries.ECRegistries
@@ -66,6 +69,7 @@ object NeoForgeInit {
         AttachmentPlatform.instance = NeoForgeAttachmentPlatform
         MenuTypePlatform.instance = NeoForgeMenuTypePlatform
         ItemStoragePlatform.instance = NeoForgeItemStoragePlatform
+        ShearingPlatform.instance = NeoForgeShearingPlatform
         NetworkPlatform.instance = NeoForgeNetworkPlatform(bus)
         JSONBlockProperties.allowNamespace(ModId)
         ECConfig.instance = ConfigManager.saveOrLoad(File("config/$ModId.json"), ECConfig())
@@ -81,6 +85,7 @@ object NeoForgeInit {
         forgeBus.addListener(::onAddReloadListener)
         bus.addListener(::onNewRegistry)
         bus.addListener(::onCreativeTabs)
+        bus.addListener(NeoForgeContainerCapabilities::register)
 
         forgeBus.addListener(::onDatapackSync)
         forgeBus.addListener(::onRightClickItemInteract)
@@ -120,16 +125,7 @@ object NeoForgeInit {
     }
 
     private fun onItemTooltip(event: ItemTooltipEvent) {
-        EventBuses.GAME(
-            CrossItemTooltipEvent(
-                event.itemStack,
-                event.entity,
-                event.toolTip,
-                event.flags,
-                event.context,
-                event.display
-            )
-        )
+        EventBuses.GAME(CrossItemTooltipEvent(event.itemStack, event.entity, event.toolTip, event.flags, event.context, event.display))
     }
 
     private fun onCreativeTabs(event: BuildCreativeModeTabContentsEvent) {
@@ -137,11 +133,7 @@ object NeoForgeInit {
     }
 
     private fun onAddReloadListener(event: AddServerReloadListenersEvent) {
-        EventBuses.GAME(
-            CrossAddServerReloadListenersEvent { id, listener ->
-                event.addRetainedListener(ListenerKey.create(id), listener)
-            }
-        )
+        EventBuses.GAME(CrossAddServerReloadListenersEvent { id, listener -> event.addRetainedListener(ListenerKey.create(id), listener) })
     }
 
     private fun onRegisterCommands(event: RegisterCommandsEvent) {
@@ -176,9 +168,7 @@ object NeoForgeInit {
     }
 
     private fun onEntityInteract(event: PlayerInteractEvent.EntityInteract) {
-        val crossEvent = EventBuses.GAME(
-            CrossPlayerInteractEvent.EntityInteract(event.entity, event.hand, event.target, event.location)
-        )
+        val crossEvent = EventBuses.GAME(CrossPlayerInteractEvent.EntityInteract(event.entity, event.hand, event.target, event.location))
         event.cancellationResult = crossEvent.cancellationResult
         event.isCanceled = crossEvent.isCanceled
     }

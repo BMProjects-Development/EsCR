@@ -17,10 +17,7 @@ object FabricIrisCompatibility {
             LOGGER.info("Enabled Iris compatibility for the Bedrock GEO renderer")
         }.onFailure { error ->
             BedrockGeoRenderCompatibility.installShaderPackInUseDetector { true }
-            LOGGER.warn(
-                "Iris is loaded but its API is unavailable; forcing the Bedrock GEO compatibility renderer",
-                error
-            )
+            LOGGER.warn("Iris is loaded but its API is unavailable; forcing the Bedrock GEO compatibility renderer", error)
         }
     }
 }

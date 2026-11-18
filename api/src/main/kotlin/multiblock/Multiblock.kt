@@ -17,16 +17,10 @@ open class Multiblock(
     ySize: Int,
     block: Multiblock.() -> Unit
 ) {
-    constructor(xSize: Int, zSize: Int, ySize: Int, blocks: List<MultiblockMatcher>): this(
-        xSize,
-        zSize,
-        ySize,
-        { pattern(*blocks.toTypedArray()) }
-    )
+    constructor(xSize: Int, zSize: Int, ySize: Int, blocks: List<MultiblockMatcher>): this(xSize, zSize, ySize, { pattern(*blocks.toTypedArray()) })
 
     companion object {
-        private val HORIZONTAL_DIRECTIONS =
-            listOf(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST)
+        private val HORIZONTAL_DIRECTIONS = listOf(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST)
 
         @JvmField
         val CODEC: Codec<Multiblock> = RecordCodecBuilder.create {
@@ -34,38 +28,29 @@ open class Multiblock(
                 Codec.INT.fieldOf("x_size").forGetter(Multiblock::xSize),
                 Codec.INT.fieldOf("z_size").forGetter(Multiblock::zSize),
                 Codec.INT.fieldOf("y_size").forGetter(Multiblock::ySize),
-                MultiblockMatcher.CODEC.listOf().fieldOf("blocks")
-                    .forGetter { mb -> mb.blocks },
-                MultiblockPattern.CODEC.listOf().optionalFieldOf("variants", emptyList())
-                    .forGetter { mb -> if (mb.variants.size > 1) mb.variants else emptyList() }
+                MultiblockMatcher.CODEC.listOf().fieldOf("blocks").forGetter { mb -> mb.blocks },
+                MultiblockPattern.CODEC.listOf().optionalFieldOf("variants", emptyList()).forGetter { mb -> if (mb.variants.size > 1) mb.variants else emptyList() }
             ).apply(it) { decodedXSize, decodedZSize, decodedYSize, blocks, variants ->
-                Multiblock(decodedXSize, decodedZSize, decodedYSize, blocks).also { multiblock ->
-                    if (variants.isNotEmpty()) multiblock.setVariants(variants)
-                }
+                Multiblock(decodedXSize, decodedZSize, decodedYSize, blocks).also { multiblock -> if (variants.isNotEmpty()) multiblock.setVariants(variants) }
             }
         }
 
         @JvmStatic
-        fun jsonOnly(): Multiblock = object : Multiblock(1, 1, 1, {
-            pattern(empty())
-        }) {
+        fun jsonOnly(): Multiblock = object: Multiblock(1, 1, 1, { pattern(empty()) }) {
             override val requiresJsonDefinition: Boolean = true
         }
     }
 
     open val requiresJsonDefinition: Boolean = false
-
     private val maximumXSize = xSize
     private val maximumZSize = zSize
     private val maximumYSize = ySize
     private val patternVariants = arrayListOf<MultiblockPattern>()
     val blocks = arrayListOf<MultiblockMatcher>()
     val variants: List<MultiblockPattern> get() = patternVariants
-
     val xSize: Int get() = previewVariant?.xSize ?: maximumXSize
     val zSize: Int get() = previewVariant?.zSize ?: maximumZSize
     val ySize: Int get() = previewVariant?.ySize ?: maximumYSize
-
     private val maximumVolume = maximumXSize * maximumYSize * maximumZSize
     private val previewVariant: MultiblockPattern? get() = patternVariants.firstOrNull()
 
@@ -76,30 +61,14 @@ open class Multiblock(
             "Blocks must have the same size: expected $maximumVolume got ${blocks.size}"
         }
 
-        setVariants(
-            listOf(
-                MultiblockPattern(
-                    maximumXSize,
-                    maximumZSize,
-                    maximumYSize,
-                    blocks.map { it ?: empty() }
-                )
-            )
-        )
+        setVariants(listOf(MultiblockPattern(maximumXSize, maximumZSize, maximumYSize, blocks.map { it ?: empty() })))
     }
 
-    fun scalablePattern(
-        radii: IntRange,
-        matcher: ScalablePatternContext.() -> MultiblockMatcher?
-    ) {
+    fun scalablePattern(radii: IntRange, matcher: ScalablePatternContext.() -> MultiblockMatcher?) {
         require(!radii.isEmpty() && radii.first >= 0) { "Scalable pattern radii must be non-empty and non-negative" }
 
         val maximumDiameter = radii.last * 2 + 1
-        require(
-            maximumDiameter <= maximumXSize &&
-                maximumDiameter <= maximumZSize &&
-                maximumDiameter <= maximumYSize
-        ) {
+        require(maximumDiameter <= maximumXSize && maximumDiameter <= maximumZSize && maximumDiameter <= maximumYSize) {
             "Scalable pattern diameter $maximumDiameter exceeds multiblock bounds " +
                 "($maximumXSize, $maximumYSize, $maximumZSize)"
         }
@@ -138,17 +107,7 @@ open class Multiblock(
                 )
                 val state = level.getBlockState(worldPos)
 
-                add(
-                    MultiblockWorldMatch(
-                        placement.variantIndex,
-                        structurePos,
-                        worldPos,
-                        expected.matcher,
-                        expected.states,
-                        block,
-                        state
-                    )
-                )
+                add(MultiblockWorldMatch(placement.variantIndex, structurePos, worldPos, expected.matcher, expected.states, block, state))
             }
         }
     }
@@ -180,23 +139,8 @@ open class Multiblock(
 
                     val candidate = variant.positionOf(blockIndex)
 
-                    if (checkFromBase(
-                        level,
-                        basePos,
-                        direction,
-                        candidate.x,
-                        candidate.y,
-                        candidate.z,
-                        variant
-                    ))
-                        return MultiblockPlacement(
-                            basePos,
-                            direction,
-                            candidate.x,
-                            candidate.y,
-                            candidate.z,
-                            variantIndex
-                        )
+                    if (checkFromBase(level, basePos, direction, candidate.x, candidate.y, candidate.z, variant))
+                        return MultiblockPlacement(basePos, direction, candidate.x, candidate.y, candidate.z, variantIndex)
                 }
             }
         }
@@ -219,54 +163,26 @@ open class Multiblock(
                 val matcher = variant[structurePos.x, structurePos.y, structurePos.z]
                 if (!matcher.required || !matcher.matches(baseState)) continue
 
-                if (checkFromBase(
-                    level,
-                    basePos,
-                    direction,
-                    structurePos.x,
-                    structurePos.y,
-                    structurePos.z,
-                    variant
-                ))
-                    return MultiblockPlacement(
-                        basePos,
-                        direction,
-                        structurePos.x,
-                        structurePos.y,
-                        structurePos.z,
-                        variantIndex
-                    )
+                if (checkFromBase(level, basePos, direction, structurePos.x, structurePos.y, structurePos.z, variant))
+                    return MultiblockPlacement(basePos, direction, structurePos.x, structurePos.y, structurePos.z, variantIndex)
             }
         }
 
         return null
     }
 
-    fun findPlacement(level: Level, basePos: BlockPos, structurePos: BlockPos): MultiblockPlacement? =
-        findPlacement(level, basePos) { structurePos }
+    fun findPlacement(level: Level, basePos: BlockPos, structurePos: BlockPos): MultiblockPlacement? = findPlacement(level, basePos) { structurePos }
 
-    fun findPlacementAtCenter(level: Level, basePos: BlockPos): MultiblockPlacement? =
-        findPlacement(level, basePos, MultiblockPattern::center)
+    fun findPlacementAtCenter(level: Level, basePos: BlockPos): MultiblockPlacement? = findPlacement(level, basePos, MultiblockPattern::center)
 
-    fun findPlacement(
-        level: Level,
-        basePos: BlockPos,
-        structurePos: (MultiblockPattern) -> BlockPos
-    ): MultiblockPlacement? {
+    fun findPlacement(level: Level, basePos: BlockPos, structurePos: (MultiblockPattern) -> BlockPos): MultiblockPlacement? {
         for (direction in HORIZONTAL_DIRECTIONS) {
             for ((variantIndex, variant) in patternVariants.withIndex()) {
                 val variantStructurePos = structurePos(variant)
                 if (!variant.contains(variantStructurePos)) continue
 
                 if (checkFromBase(level, basePos, direction, variantStructurePos.x, variantStructurePos.y, variantStructurePos.z, variant))
-                    return MultiblockPlacement(
-                        basePos,
-                        direction,
-                        variantStructurePos.x,
-                        variantStructurePos.y,
-                        variantStructurePos.z,
-                        variantIndex
-                    )
+                    return MultiblockPlacement(basePos, direction, variantStructurePos.x, variantStructurePos.y, variantStructurePos.z, variantIndex)
             }
         }
 
@@ -289,11 +205,7 @@ open class Multiblock(
                     if (!replaceAir && oldDefaultState.isAir) return@fe
 
                     val newState = transform(oldDefaultState)
-                    val pos = getRotatedPos(
-                        placement.basePos,
-                        x - placement.startX, y - placement.startY, z - placement.startZ,
-                        placement.direction
-                    )
+                    val pos = getRotatedPos(placement.basePos, x - placement.startX, y - placement.startY, z - placement.startZ, placement.direction)
 
                     level.setBlock(pos, newState, Block.UPDATE_ALL)
                 }
@@ -316,11 +228,7 @@ open class Multiblock(
 
                     if (!replaceAir && matcher.default().isAir) return@fe
 
-                    val pos = getRotatedPos(
-                        placement.basePos,
-                        x - placement.startX, y - placement.startY, z - placement.startZ,
-                        placement.direction
-                    )
+                    val pos = getRotatedPos(placement.basePos, x - placement.startX, y - placement.startY, z - placement.startZ, placement.direction)
 
                     val currentState = level.getBlockState(pos)
 
@@ -334,15 +242,7 @@ open class Multiblock(
 
     fun matches(level: Level, placement: MultiblockPlacement): Boolean {
         val variant = patternVariants.getOrNull(placement.variantIndex) ?: return false
-        return checkFromBase(
-            level,
-            placement.basePos,
-            placement.direction,
-            placement.startX,
-            placement.startY,
-            placement.startZ,
-            variant
-        )
+        return checkFromBase(level, placement.basePos, placement.direction, placement.startX, placement.startY, placement.startZ, variant)
     }
 
     private fun checkFromBase(
@@ -375,11 +275,7 @@ open class Multiblock(
     private fun setVariants(variants: List<MultiblockPattern>) {
         require(variants.isNotEmpty()) { "Multiblock must contain at least one pattern variant" }
         variants.forEach { variant ->
-            require(
-                variant.xSize <= maximumXSize &&
-                    variant.zSize <= maximumZSize &&
-                    variant.ySize <= maximumYSize
-            ) {
+            require(variant.xSize <= maximumXSize && variant.zSize <= maximumZSize && variant.ySize <= maximumYSize) {
                 "Pattern variant (${variant.xSize}, ${variant.ySize}, ${variant.zSize}) exceeds " +
                     "multiblock bounds ($maximumXSize, $maximumYSize, $maximumZSize)"
             }
@@ -441,11 +337,9 @@ data class MultiblockPattern(
         }
     }
 
-    operator fun get(x: Int, y: Int, z: Int): MultiblockMatcher =
-        blocks[x + z * xSize + y * xSize * zSize]
+    operator fun get(x: Int, y: Int, z: Int): MultiblockMatcher = blocks[x + z * xSize + y * xSize * zSize]
 
-    fun contains(pos: BlockPos): Boolean =
-        pos.x in 0..<xSize && pos.y in 0..<ySize && pos.z in 0..<zSize
+    fun contains(pos: BlockPos): Boolean = pos.x in 0..<xSize && pos.y in 0..<ySize && pos.z in 0..<zSize
 
     fun positionOf(index: Int): BlockPos {
         require(index in blocks.indices) { "Block index $index is outside pattern bounds" }
@@ -477,18 +371,13 @@ data class MultiblockPattern(
                 Codec.INT.fieldOf("x_size").forGetter(MultiblockPattern::xSize),
                 Codec.INT.fieldOf("z_size").forGetter(MultiblockPattern::zSize),
                 Codec.INT.fieldOf("y_size").forGetter(MultiblockPattern::ySize),
-                MultiblockMatcher.CODEC.listOf().fieldOf("blocks")
-                    .forGetter(MultiblockPattern::blocks)
+                MultiblockMatcher.CODEC.listOf().fieldOf("blocks").forGetter(MultiblockPattern::blocks)
             ).apply(it, ::MultiblockPattern)
         }
     }
 }
 
-data class MultiblockPatternMatch(
-    val position: BlockPos,
-    val matcher: MultiblockMatcher,
-    val states: List<BlockState>
-)
+data class MultiblockPatternMatch(val position: BlockPos, val matcher: MultiblockMatcher, val states: List<BlockState>)
 
 data class MultiblockWorldMatch(
     val variantIndex: Int,

@@ -19,7 +19,6 @@ import net.minecraft.world.level.ItemLike
 @Target(AnnotationTarget.CLASS, AnnotationTarget.TYPE)
 annotation class RecipeDsl
 
-// ingredients
 sealed interface IngredientSpec {
     fun resolve(registries: HolderLookup.Provider): Ingredient
 }
@@ -29,10 +28,7 @@ data class ItemIngredientSpec(val item: ItemLike): IngredientSpec {
 }
 
 data class TagIngredientSpec(val tag: TagKey<Item>): IngredientSpec {
-    override fun resolve(registries: HolderLookup.Provider): Ingredient = Ingredient.of(
-        registries.lookupOrThrow(Registries.ITEM)
-            .getOrThrow(tag)
-    )
+    override fun resolve(registries: HolderLookup.Provider): Ingredient = Ingredient.of(registries.lookupOrThrow(Registries.ITEM).getOrThrow(tag))
 }
 
 data class NativeIngredientSpec(val ingredient: Ingredient): IngredientSpec {
@@ -45,7 +41,6 @@ fun ingredient(tag: TagKey<Item>): IngredientSpec = TagIngredientSpec(tag)
 
 fun ingredient(ingredient: Ingredient): IngredientSpec = NativeIngredientSpec(ingredient)
 
-// result
 @JvmInline
 value class RecipeResult(val template: ItemStackTemplate)
 
@@ -58,11 +53,7 @@ fun ItemLike.asRecipeResult(count: Int = 1): RecipeResult = this * count
 
 fun ItemStackTemplate.asRecipeResult(): RecipeResult = RecipeResult(this)
 
-// recipe
-fun holder(id: Identifier, recipe: Recipe<*>): RecipeHolder<*> = RecipeHolder(
-    ResourceKey.create(Registries.RECIPE, id),
-    recipe
-)
+fun holder(id: Identifier, recipe: Recipe<*>): RecipeHolder<*> = RecipeHolder(ResourceKey.create(Registries.RECIPE, id), recipe)
 
 sealed interface RecipeSpec {
     val id: Identifier
@@ -70,17 +61,13 @@ sealed interface RecipeSpec {
     fun bake(registries: HolderLookup.Provider): RecipeHolder<*>
 }
 
-data class AbstractRecipeSpec(
-    override val id: Identifier,
-    private val factory: (HolderLookup.Provider) -> Recipe<*>
-) : RecipeSpec {
+data class AbstractRecipeSpec(override val id: Identifier, private val factory: (HolderLookup.Provider) -> Recipe<*>): RecipeSpec {
     override fun bake(registries: HolderLookup.Provider): RecipeHolder<*> = holder(id, factory(registries))
 }
 
 @RecipeDsl
 abstract class RecipeScope {
     abstract val id: Identifier
-
     var showNotification: Boolean = true
     protected var output: RecipeResult? = null
     var result: RecipeResult
@@ -141,10 +128,7 @@ class ShapedRecipeScope(override val id: Identifier): CraftingRecipeScope() {
         require(width in 1..3) { "Recipe $id pattern width must be between 1 and 3, actual: $width." }
         require(rows.all { it.length == width }) { "Every pattern row in recipe $id must have the same width." }
 
-        val usedSymbols = rows.asSequence()
-            .flatMap { it.asSequence() }
-            .filter { it != ShapedRecipePattern.EMPTY_SLOT }
-            .toSet()
+        val usedSymbols = rows.asSequence().flatMap { it.asSequence() }.filter { it != ShapedRecipePattern.EMPTY_SLOT }.toSet()
 
         val undefined = usedSymbols - keys.keys
         val unused = keys.keys - usedSymbols
@@ -157,7 +141,7 @@ class ShapedRecipeScope(override val id: Identifier): CraftingRecipeScope() {
 }
 
 @RecipeDsl
-class ShapelessRecipeScope(override val id: Identifier) : CraftingRecipeScope() {
+class ShapelessRecipeScope(override val id: Identifier): CraftingRecipeScope() {
     private val ingredients = mutableListOf<IngredientSpec>()
 
     operator fun ItemLike.unaryPlus() = add(this)
@@ -187,16 +171,11 @@ class ShapelessRecipeScope(override val id: Identifier) : CraftingRecipeScope() 
 }
 
 @RecipeDsl
-class CookingRecipeScope(
-    override val id: Identifier,
-    private val kind: CookingRecipeSpec.Kind,
-    defaultCookingTime: Int
-) : RecipeScope() {
+class CookingRecipeScope(override val id: Identifier, private val kind: CookingRecipeSpec.Kind, defaultCookingTime: Int): RecipeScope() {
     private var inputSpec: IngredientSpec? = null
     var experience: Float = 0f
     var cookingTime: Int = defaultCookingTime
     var category: CookingBookCategory = CookingBookCategory.MISC
-
     var group: String = ""
     var input: IngredientSpec
         get() = checkNotNull(inputSpec) { "Recipe input has not been configured yet" }
@@ -220,24 +199,12 @@ class CookingRecipeScope(
         require(cookingTime > 0) { "Recipe $id cookingTime must be positive" }
         require(experience >= 0f) { "Recipe $id experience cannot be negative" }
 
-        return CookingRecipeSpec(
-            id,
-            kind,
-            requireNotNull(inputSpec) { "Recipe $id has no input" },
-            requireResult(id),
-            experience,
-            cookingTime,
-            category,
-            group,
-            showNotification
-        )
+        return CookingRecipeSpec(id, kind, requireNotNull(inputSpec) { "Recipe $id has no input" }, requireResult(id), experience, cookingTime, category, group, showNotification)
     }
 }
 
 @RecipeDsl
-class StonecuttingRecipeScope(
-    override val id: Identifier
-) : RecipeScope() {
+class StonecuttingRecipeScope(override val id: Identifier): RecipeScope() {
     private var inputSpec: IngredientSpec? = null
 
     var input: IngredientSpec
@@ -259,16 +226,11 @@ class StonecuttingRecipeScope(
         input = ingredient(native)
     }
 
-    internal fun build(): RecipeSpec = StonecutterRecipeSpec(
-        id,
-        requireNotNull(inputSpec) { "Recipe $id has no input" },
-        requireResult(id),
-        showNotification
-    )
+    internal fun build(): RecipeSpec = StonecutterRecipeSpec(id, requireNotNull(inputSpec) { "Recipe $id has no input" }, requireResult(id), showNotification)
 }
 
 @RecipeDsl
-class SmithingTransformRecipeScope(override val id: Identifier) : RecipeScope() {
+class SmithingTransformRecipeScope(override val id: Identifier): RecipeScope() {
     var template: IngredientSpec? = null
     var base: IngredientSpec? = null
     var addition: IngredientSpec? = null
@@ -329,73 +291,40 @@ class RecipesScope(private val namespace: String) {
         return if (':' in path)
             Identifier.parse(path)
         else
-            Identifier.fromNamespaceAndPath(
-                namespace,
-                path
-            )
+            Identifier.fromNamespaceAndPath(namespace, path)
     }
 
     infix fun String.shaped(block: ShapedRecipeScope.() -> Unit) {
         val recipeId = id(this)
-        declarations += ShapedRecipeScope(recipeId)
-            .apply(block)
-            .build()
+        declarations += ShapedRecipeScope(recipeId).apply(block).build()
     }
 
     infix fun String.shapeless(block: ShapelessRecipeScope.() -> Unit) {
         val recipeId = id(this)
-        declarations += ShapelessRecipeScope(recipeId)
-            .apply(block)
-            .build()
+        declarations += ShapelessRecipeScope(recipeId).apply(block).build()
     }
 
-    infix fun String.smelting(block: CookingRecipeScope.() -> Unit) = cooking(
-        this,
-        CookingRecipeSpec.Kind.SMELTING,
-        200,
-        block
-    )
+    infix fun String.smelting(block: CookingRecipeScope.() -> Unit) = cooking(this, CookingRecipeSpec.Kind.SMELTING, 200, block)
 
-    infix fun String.blasting(block: CookingRecipeScope.() -> Unit) = cooking(
-        this,
-        CookingRecipeSpec.Kind.BLASTING,
-        100,
-        block
-    )
+    infix fun String.blasting(block: CookingRecipeScope.() -> Unit) = cooking(this, CookingRecipeSpec.Kind.BLASTING, 100, block)
 
-    infix fun String.smoking(block: CookingRecipeScope.() -> Unit) = cooking(
-        this,
-        CookingRecipeSpec.Kind.SMOKING,
-        100,
-        block
-    )
+    infix fun String.smoking(block: CookingRecipeScope.() -> Unit) = cooking(this, CookingRecipeSpec.Kind.SMOKING, 100, block)
 
-    infix fun String.campfire(block: CookingRecipeScope.() -> Unit) = cooking(
-        this,
-        CookingRecipeSpec.Kind.CAMPFIRE,
-        600,
-        block
-    )
+    infix fun String.campfire(block: CookingRecipeScope.() -> Unit) = cooking(this, CookingRecipeSpec.Kind.CAMPFIRE, 600, block)
 
     private fun cooking(path: String, kind: CookingRecipeSpec.Kind, defaultTime: Int, block: CookingRecipeScope.() -> Unit) {
         val recipeId = id(path)
-        declarations += CookingRecipeScope(recipeId, kind, defaultTime)
-            .apply(block)
-            .build()
+        declarations += CookingRecipeScope(recipeId, kind, defaultTime).apply(block).build()
     }
 
     infix fun String.stonecutting(block: StonecuttingRecipeScope.() -> Unit ) {
         val recipeId = id(this)
-        declarations += StonecuttingRecipeScope(recipeId)
-            .apply(block)
-            .build()
+        declarations += StonecuttingRecipeScope(recipeId).apply(block).build()
     }
 
     infix fun String.smithingTransform(block: SmithingTransformRecipeScope.() -> Unit) {
         val recipeId = id(this)
-        declarations += SmithingTransformRecipeScope(recipeId)
-            .apply(block)
-            .build()
+        declarations += SmithingTransformRecipeScope(recipeId).apply(block).build()
     }
 
     fun native(path: String, factory: (HolderLookup.Provider) -> Recipe<*>) {

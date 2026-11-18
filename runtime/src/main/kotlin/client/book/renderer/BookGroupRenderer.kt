@@ -7,10 +7,7 @@ import com.algorithmlx.ecr.client.book.BookGroupLayout
 import kotlin.math.roundToInt
 
 object BookGroupRenderer {
-    fun render(
-        context: BookElementRenderContext,
-        element: GroupBookElement
-    ) {
+    fun render(context: BookElementRenderContext, element: GroupBookElement) {
         BookGroupLayout.layout(element, context.width, context.research).elements.forEachIndexed { index, placement ->
             if (placement.y >= context.height || placement.x >= context.width) return@forEachIndexed
             val width = minOf(placement.width, context.width - placement.x).coerceAtLeast(0)

@@ -8,8 +8,5 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
 class EnrichmentChamberExtractor(properties: Properties): Block(properties), EntityBlock {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = EnrichmentChamberExtractorEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = EnrichmentChamberExtractorEntity(worldPosition, blockState)
 }

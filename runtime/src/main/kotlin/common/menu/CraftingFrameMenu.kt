@@ -20,11 +20,9 @@ class CraftingFrameMenu private constructor(
     private val inventory: Inventory,
     private val frameSlot: Int,
     private val frame: ItemStack
-) : AbstractMenu(MenuTypeRegistry.craftingFrame, containerId, ContainerLevelAccess.NULL) {
+): AbstractMenu(MenuTypeRegistry.craftingFrame, containerId, ContainerLevelAccess.NULL) {
     constructor(containerId: Int, inventory: Inventory) : this(containerId, inventory, -1, ItemStack.EMPTY)
-    constructor(containerId: Int, inventory: Inventory, frameSlot: Int) : this(
-        containerId, inventory, frameSlot, inventory.getItem(frameSlot)
-    )
+    constructor(containerId: Int, inventory: Inventory, frameSlot: Int) : this(containerId, inventory, frameSlot, inventory.getItem(frameSlot))
 
     private val ghosts = SimpleContainer(10)
     private val data = SimpleContainerData(2)
@@ -112,9 +110,7 @@ class CraftingFrameMenu private constructor(
         broadcastChanges()
     }
 
-    private fun component(): CraftingFrameComponent = CraftingFrameComponent(
-        (0 until CraftingFrameComponent.GRID_SIZE).map(ghosts::getItem), substituteIngredients
-    )
+    private fun component(): CraftingFrameComponent = CraftingFrameComponent((0 until CraftingFrameComponent.GRID_SIZE).map(ghosts::getItem), substituteIngredients)
 
     private fun refreshOutput() {
         val level = inventory.player.level() as? ServerLevel ?: return
@@ -123,14 +119,14 @@ class CraftingFrameMenu private constructor(
         ghosts.setItem(OUTPUT_SLOT, output)
     }
 
-    private inner class GhostSlot(index: Int, x: Int, y: Int) : Slot(ghosts, index, x, y) {
+    private inner class GhostSlot(index: Int, x: Int, y: Int): Slot(ghosts, index, x, y) {
         override fun mayPlace(stack: ItemStack): Boolean = false
         override fun mayPickup(player: Player): Boolean = false
         override fun remove(amount: Int): ItemStack = ItemStack.EMPTY
         override fun isFake(): Boolean = true
     }
 
-    private inner class PlayerSlot(index: Int, x: Int, y: Int) : Slot(inventory, index, x, y) {
+    private inner class PlayerSlot(index: Int, x: Int, y: Int): Slot(inventory, index, x, y) {
         override fun mayPlace(stack: ItemStack): Boolean = containerSlot != lockedSlot
         override fun mayPickup(player: Player): Boolean = containerSlot != lockedSlot
     }

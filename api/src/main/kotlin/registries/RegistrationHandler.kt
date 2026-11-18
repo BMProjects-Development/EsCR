@@ -25,17 +25,9 @@ interface RegistrationLookup {
 
     fun <R : Any, T : R> T.registerHolder(id: Identifier, registry: Registry<R>): RegistryHolder<R, T>
 
-    fun <R : Any, T : R> registerHolder(
-        id: String,
-        registry: Registry<R>,
-        factory: () -> T
-    ): RegistryHolder<R, T>
+    fun <R : Any, T : R> registerHolder(id: String, registry: Registry<R>, factory: () -> T): RegistryHolder<R, T>
 
-    fun <R : Any, T : R> registerHolder(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: () -> T
-    ): RegistryHolder<R, T>
+    fun <R : Any, T : R> registerHolder(id: Identifier, registry: Registry<R>, factory: () -> T): RegistryHolder<R, T>
 
     fun init()
 }
@@ -47,36 +39,31 @@ interface RegistryDefaultExtensions {
         registerNoEntry(id, BuiltInRegistries.ITEM)
     }
 
-    fun <T : Item> registerItem(id: String, factory: () -> T): Supplier<T> =
-        self().registerNoEntry(id, BuiltInRegistries.ITEM, factory)
+    fun <T : Item> registerItem(id: String, factory: () -> T): Supplier<T> = self().registerNoEntry(id, BuiltInRegistries.ITEM, factory)
 
     fun <T : Block> T.registerBlock(id: String): Supplier<T> = with(self()) {
         registerNoEntry(id, BuiltInRegistries.BLOCK)
     }
 
-    fun <T : Block> registerBlock(id: String, factory: () -> T): Supplier<T> =
-        self().registerNoEntry(id, BuiltInRegistries.BLOCK, factory)
+    fun <T : Block> registerBlock(id: String, factory: () -> T): Supplier<T> = self().registerNoEntry(id, BuiltInRegistries.BLOCK, factory)
 
     fun <T : CreativeModeTab> T.registerCreativeTab(id: String): Supplier<T> = with(self()) {
         registerNoEntry(id, BuiltInRegistries.CREATIVE_MODE_TAB)
     }
 
-    fun <T : CreativeModeTab> registerCreativeTab(id: String, factory: () -> T): Supplier<T> =
-        self().registerNoEntry(id, BuiltInRegistries.CREATIVE_MODE_TAB, factory)
+    fun <T : CreativeModeTab> registerCreativeTab(id: String, factory: () -> T): Supplier<T> = self().registerNoEntry(id, BuiltInRegistries.CREATIVE_MODE_TAB, factory)
 
     fun <T : Item> T.registerItemHolder(id: String): RegistryHolder<Item, T> = with(self()) {
         registerHolder(id, BuiltInRegistries.ITEM)
     }
 
-    fun <T : Item> registerItemHolder(id: String, factory: () -> T): RegistryHolder<Item, T> =
-        self().registerHolder(id, BuiltInRegistries.ITEM, factory)
+    fun <T : Item> registerItemHolder(id: String, factory: () -> T): RegistryHolder<Item, T> = self().registerHolder(id, BuiltInRegistries.ITEM, factory)
 
     fun <T : Block> T.registerBlockHolder(id: String): RegistryHolder<Block, T> = with(self()) {
         registerHolder(id, BuiltInRegistries.BLOCK)
     }
 
-    fun <T : Block> registerBlockHolder(id: String, factory: () -> T): RegistryHolder<Block, T> =
-        self().registerHolder(id, BuiltInRegistries.BLOCK, factory)
+    fun <T : Block> registerBlockHolder(id: String, factory: () -> T): RegistryHolder<Block, T> = self().registerHolder(id, BuiltInRegistries.BLOCK, factory)
 
     fun <T : CreativeModeTab> T.registerCreativeTabHolder(id: String): RegistryHolder<CreativeModeTab, T> = with(self()) {
         registerHolder(id, BuiltInRegistries.CREATIVE_MODE_TAB)
@@ -91,11 +78,10 @@ interface RegistryDefaultExtensions {
         registerHolder(id, BuiltInRegistries.MOB_EFFECT)
     }
 
-    fun <T : MobEffect> registerMobEffect(id: String, factory: () -> T): RegistryHolder<MobEffect, T> =
-        self().registerHolder(id, BuiltInRegistries.MOB_EFFECT, factory)
+    fun <T : MobEffect> registerMobEffect(id: String, factory: () -> T): RegistryHolder<MobEffect, T> = self().registerHolder(id, BuiltInRegistries.MOB_EFFECT, factory)
 }
 
-open class RegistrationHandler(val namespace: String) : RegistrationLookup, RegistryDefaultExtensions {
+open class RegistrationHandler(val namespace: String): RegistrationLookup, RegistryDefaultExtensions {
     private val registrations = mutableListOf<PendingRegistration>()
     private val registrationKeys = mutableSetOf<RegistrationKey>()
     private var state = State.DECLARING
@@ -104,11 +90,9 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         require(Identifier.tryBuild(namespace, "entry") != null) { "Invalid registration namespace: $namespace" }
     }
 
-    override fun <R : Any, T : R> T.registerNoEntry(id: String, registry: Registry<R>): Supplier<T> =
-        declare(identifier(id), registry) { this }
+    override fun <R : Any, T : R> T.registerNoEntry(id: String, registry: Registry<R>): Supplier<T> = declare(identifier(id), registry) { this }
 
-    override fun <R : Any, T : R> T.registerNoEntry(id: Identifier, registry: Registry<R>): Supplier<T> =
-        declare(id, registry) { this }
+    override fun <R : Any, T : R> T.registerNoEntry(id: Identifier, registry: Registry<R>): Supplier<T> = declare(id, registry) { this }
 
     override fun <R : Any, T : R> registerNoEntry(
         id: String,
@@ -122,11 +106,9 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         factory: () -> T
     ): Supplier<T> = declare(id, registry, Supplier(factory))
 
-    override fun <R : Any, T : R> T.registerHolder(id: String, registry: Registry<R>): RegistryHolder<R, T> =
-        declareHolder(identifier(id), registry) { this }
+    override fun <R : Any, T : R> T.registerHolder(id: String, registry: Registry<R>): RegistryHolder<R, T> = declareHolder(identifier(id), registry) { this }
 
-    override fun <R : Any, T : R> T.registerHolder(id: Identifier, registry: Registry<R>): RegistryHolder<R, T> =
-        declareHolder(id, registry) { this }
+    override fun <R : Any, T : R> T.registerHolder(id: Identifier, registry: Registry<R>): RegistryHolder<R, T> = declareHolder(id, registry) { this }
 
     override fun <R : Any, T : R> registerHolder(
         id: String,
@@ -165,22 +147,14 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         return requireNotNull(Identifier.tryBuild(namespace, path)) { "Invalid registration id: $namespace:$path" }
     }
 
-    private fun <R : Any, T : R> declare(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): Supplier<T> = synchronized(this) {
+    private fun <R : Any, T : R> declare(id: Identifier, registry: Registry<R>, factory: Supplier<T>): Supplier<T> = synchronized(this) {
         validateDeclaration(id, registry)
         val reference = RegistrationReference<T>(id)
         registrations += TypedPendingRegistration(id, registry, factory, reference)
         reference
     }
 
-    private fun <R : Any, T : R> declareHolder(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): RegistryHolder<R, T> = synchronized(this) {
+    private fun <R : Any, T : R> declareHolder(id: Identifier, registry: Registry<R>, factory: Supplier<T>): RegistryHolder<R, T> = synchronized(this) {
         validateDeclaration(id, registry)
         val reference = HolderRegistrationReference<R, T>(ResourceKey.create(registry.key(), id))
         registrations += TypedPendingHolderRegistration(id, registry, factory, reference)
@@ -215,7 +189,7 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         private val registry: Registry<R>,
         private val factory: Supplier<T>,
         private val reference: RegistrationReference<T>
-    ) : PendingRegistration {
+    ): PendingRegistration {
         override fun submit(platform: RegistrationPlatform) {
             reference.bind(platform.register(id, registry, factory))
         }
@@ -226,13 +200,13 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
         private val registry: Registry<R>,
         private val factory: Supplier<T>,
         private val reference: HolderRegistrationReference<R, T>
-    ) : PendingRegistration {
+    ): PendingRegistration {
         override fun submit(platform: RegistrationPlatform) {
             reference.bind(platform.registerHolder(id, registry, factory))
         }
     }
 
-    private class RegistrationReference<T>(private val id: Identifier) : Supplier<T> {
+    private class RegistrationReference<T>(private val id: Identifier): Supplier<T> {
         @Volatile
         private var delegate: Supplier<T>? = null
 
@@ -241,14 +215,10 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
             this.delegate = delegate
         }
 
-        override fun get(): T = checkNotNull(delegate) {
-            "Registration $id is unavailable because its handler has not been initialized"
-        }.get()
+        override fun get(): T = checkNotNull(delegate) { "Registration $id is unavailable because its handler has not been initialized" }.get()
     }
 
-    private class HolderRegistrationReference<R : Any, T : R>(
-        override val key: ResourceKey<R>
-    ) : RegistryHolder<R, T> {
+    private class HolderRegistrationReference<R : Any, T : R>(override val key: ResourceKey<R>): RegistryHolder<R, T> {
         @Volatile
         private var delegate: PlatformRegistryHolder<R, T>? = null
 
@@ -277,17 +247,9 @@ open class RegistrationHandler(val namespace: String) : RegistrationLookup, Regi
 }
 
 interface RegistrationPlatform {
-    fun <R : Any, T : R> register(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): Supplier<T>
+    fun <R : Any, T : R> register(id: Identifier, registry: Registry<R>, factory: Supplier<T>): Supplier<T>
 
-    fun <R : Any, T : R> registerHolder(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): PlatformRegistryHolder<R, T>
+    fun <R : Any, T : R> registerHolder(id: Identifier, registry: Registry<R>, factory: Supplier<T>): PlatformRegistryHolder<R, T>
 
     companion object {
         @JvmStatic
@@ -295,19 +257,13 @@ interface RegistrationPlatform {
     }
 }
 
-interface RegistryHolder<R : Any, T : R> : Supplier<T> {
+interface RegistryHolder<R : Any, T : R>: Supplier<T> {
     val id: Identifier
-
     val key: ResourceKey<R>
-
     val holder: Holder<R>
-
     val isBound: Boolean
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): Holder<R> = holder
 }
 
-data class PlatformRegistryHolder<R : Any, T : R>(
-    val holder: Holder<R>,
-    val supplier: Supplier<T>
-)
+data class PlatformRegistryHolder<R : Any, T : R>(val holder: Holder<R>, val supplier: Supplier<T>)

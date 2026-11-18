@@ -1,7 +1,6 @@
 package com.algorithmlx.ecr.init
 
 import com.algorithmlx.ecr.api.ModId
-import com.algorithmlx.ecr.api.vfx.VfxCommands
 import com.algorithmlx.ecr.api.commands.commands
 import com.algorithmlx.ecr.api.research.ResearchJson
 import com.algorithmlx.ecr.api.research.ResearchProgress
@@ -21,7 +20,6 @@ object ECRCommands {
         dispatcher.commands { ModId {
             aliases("essential-craft", "essentialcraft", "ecr")
             requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-            then(VfxCommands.create())
 
             "research" {
                 "reset" {
@@ -37,29 +35,17 @@ object ECRCommands {
                         ResearchProgress.reset(player)
 
                         source.sendSuccess({
-                            Component.translatableWithFallback(
-                                "research.reset.success".prefix,
-                                "Reset research progress for %s successful.",
-                                player.name.string
-                            )
+                            Component.translatableWithFallback("research.reset.success".prefix, "Reset research progress for %s successful.", player.name.string)
                         }, true)
                         1
                     }
 
-                    argument(
-                        "targets",
-                        EntityArgument.players(),
-                        { context, name -> EntityArgument.getPlayers(context, name) }
-                    ) { targets ->
+                    argument("targets", EntityArgument.players(), { context, name -> EntityArgument.getPlayers(context, name) }) { targets ->
                         executes {
                             val players = targets()
                             players.forEach(ResearchProgress::reset)
                             source.sendSuccess({
-                                Component.translatableWithFallback(
-                                    "research.reset.success.sized".prefix,
-                                    "Reset research progress for %s player(s) successful.",
-                                    players.size
-                                )
+                                Component.translatableWithFallback("research.reset.success.sized".prefix, "Reset research progress for %s player(s) successful.", players.size)
                             }, true)
                             players.size
                         }
@@ -71,40 +57,23 @@ object ECRCommands {
                         val player = this.context.source.player
                         if (player == null) {
                             source.sendFailure(
-                                Component.translatableWithFallback(
-                                    "research.unlock.all.failure".prefix,
-                                    "Research unlock without player available only inside game. Not console."
-                                )
+                                Component.translatableWithFallback("research.unlock.all.failure".prefix, "Research unlock without player available only inside game. Not console.")
                             )
                             return@executes 0
                         }
                         ResearchProgress.grantAll(player)
 
-                        source.sendSuccess({
-                            Component.translatableWithFallback(
-                                "research.unlock.all.success".prefix,
-                                "Unlocked all research for %s.",
-                                player.name.string
-                            )
-                        }, true)
+                        source.sendSuccess({ Component.translatableWithFallback("research.unlock.all.success".prefix, "Unlocked all research for %s.", player.name.string) }, true)
                         1
                     }
 
-                    argument(
-                        "targets",
-                        EntityArgument.players(),
-                        { context, name -> EntityArgument.getPlayers(context, name) }
-                    ) { targets ->
+                    argument("targets", EntityArgument.players(), { context, name -> EntityArgument.getPlayers(context, name) }) { targets ->
                         executes {
                             val players = targets()
                             players.forEach(ResearchProgress::grantAll)
 
                             source.sendSuccess({
-                                Component.translatableWithFallback(
-                                    "research.unlock.all.success.sized".prefix,
-                                    "Unlocked all research for %s player(s).",
-                                    players.size
-                                )
+                                Component.translatableWithFallback("research.unlock.all.success.sized".prefix, "Unlocked all research for %s player(s).", players.size)
                             }, true)
                             players.size
                         }
@@ -127,30 +96,17 @@ object ECRCommands {
                             }
                             ResearchProgress.grant(player, target.first, target.second)
                             source.sendSuccess({
-                                Component.translatableWithFallback(
-                                    "research.unlock.success".prefix,
-                                    "Updated research progress for %s.",
-                                    player.name.string
-                                )
+                                Component.translatableWithFallback("research.unlock.success".prefix, "Updated research progress for %s.", player.name.string)
                             }, true)
                             1
                         }
 
-                        argument(
-                            "targets",
-                            EntityArgument.players(),
-                            { context, name -> EntityArgument.getPlayers(context, name) }
-                        ) { targets ->
+                        argument("targets", EntityArgument.players(), { context, name -> EntityArgument.getPlayers(context, name) }) { targets ->
                             executes {
                                 val target = parseTarget(research()) ?: return@executes 0
-                                val changed = targets()
-                                    .count { ResearchProgress.grant(it, target.first, target.second) }
+                                val changed = targets().count { ResearchProgress.grant(it, target.first, target.second) }
                                 source.sendSuccess({
-                                    Component.translatableWithFallback(
-                                        "research.unlock.success.sized".prefix,
-                                        "Updated research progress for %s player(s).",
-                                        changed
-                                    )
+                                    Component.translatableWithFallback("research.unlock.success.sized".prefix, "Updated research progress for %s player(s).", changed)
                                 }, true)
                                 changed
                             }
@@ -165,10 +121,7 @@ object ECRCommands {
                         val player = this.context.source.player
                         if (player == null) {
                             source.sendFailure(
-                                Component.translatableWithFallback(
-                                    "ubmru.query.failure".prefix,
-                                    "Get UBMRU count without player available only inside game. Not console."
-                                )
+                                Component.translatableWithFallback("ubmru.query.failure".prefix, "Get UBMRU count without player available only inside game. Not console.")
                             )
                             return@executes 0
                         }
@@ -181,9 +134,7 @@ object ECRCommands {
                                     player.name.string, player.playerMatrix.mru,
                                     player.playerMatrix.mruType.name.string
                                 )
-                                Component.literal(
-                                    "${player.name.string} has ${player.playerMatrix.mru} ${player.playerMatrix.mruType.name.string}."
-                                )
+                                Component.literal("${player.name.string} has ${player.playerMatrix.mru} ${player.playerMatrix.mruType.name.string}.")
                             },
                             true
                         )
@@ -197,10 +148,7 @@ object ECRCommands {
                             val player = this.context.source.player
                             if (player == null) {
                                 source.sendFailure(
-                                    Component.translatableWithFallback(
-                                        "ubmru.query.failure".prefix,
-                                        "UBMRU addition without player available only inside game. Not console."
-                                    )
+                                    Component.translatableWithFallback("ubmru.query.failure".prefix, "UBMRU addition without player available only inside game. Not console.")
                                 )
                                 return@executes 0
                             }
@@ -222,17 +170,11 @@ object ECRCommands {
                             1
                         }
 
-                        argument(
-                            "targets",
-                            EntityArgument.players(),
-                            { context, name -> EntityArgument.getPlayers(context, name) }
-                        ) { targets ->
+                        argument("targets", EntityArgument.players(), { context, name -> EntityArgument.getPlayers(context, name) }) { targets ->
                             executes {
                                 val players = targets()
                                 val mruTypeName = players.first().playerMatrix.mruType.name
-                                players.forEach { player ->
-                                    player.updatePlayerMatrix { this.insert(count()) }
-                                }
+                                players.forEach { player -> player.updatePlayerMatrix { this.insert(count()) } }
 
                                 source.sendSuccess(
                                     {
@@ -257,10 +199,7 @@ object ECRCommands {
                             val player = this.context.source.player
                             if (player == null) {
                                 source.sendFailure(
-                                    Component.translatableWithFallback(
-                                        "ubmru.set.failure".prefix,
-                                        "UBMRU set without player available only inside game. Not console."
-                                    )
+                                    Component.translatableWithFallback("ubmru.set.failure".prefix, "UBMRU set without player available only inside game. Not console.")
                                 )
                                 return@executes 0
                             }
@@ -282,25 +221,15 @@ object ECRCommands {
                             1
                         }
 
-                        argument(
-                            "targets",
-                            EntityArgument.players(),
-                            { context, name -> EntityArgument.getPlayers(context, name) }
-                        ) { targets ->
+                        argument("targets", EntityArgument.players(), { context, name -> EntityArgument.getPlayers(context, name) }) { targets ->
                             executes {
                                 val players = targets()
                                 val mruTypeName = players.first().playerMatrix.mruType.name
-                                players.forEach { player ->
-                                    player.updatePlayerMatrix { this.set(count()) }
-                                }
+                                players.forEach { player -> player.updatePlayerMatrix { this.set(count()) } }
 
                                 source.sendSuccess(
                                     {
-                                        Component.translatableWithFallback(
-                                            "ubmru.set.success.sized".prefix,
-                                            "%s %s was sets for %s player(s).",
-                                            count(), mruTypeName, players.size
-                                        )
+                                        Component.translatableWithFallback("ubmru.set.success.sized".prefix, "%s %s was sets for %s player(s).", count(), mruTypeName, players.size)
                                     },
                                     true
                                 )

@@ -7,7 +7,7 @@ import mezz.jei.api.runtime.IJeiRuntime
 import net.minecraft.resources.Identifier
 
 @JeiPlugin
-class JeiBookPlugin : IModPlugin {
+class JeiBookPlugin: IModPlugin {
     override fun getPluginUid(): Identifier = Identifier.fromNamespaceAndPath(Additions.ModId, "research_book")
 
     override fun onRuntimeAvailable(jeiRuntime: IJeiRuntime) = JeiBookRecipeViewer.attach(jeiRuntime)

@@ -24,16 +24,10 @@ import net.minecraft.world.phys.BlockHitResult
 
 class EnrichmentChamberController(properties: Properties): Block(properties), EntityBlock {
     init {
-        this.registerDefaultState(
-            this.stateDefinition.any().setValue(FACING, Direction.NORTH)
-                .setValue(ACTIVE, false)
-        )
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ACTIVE, false))
     }
 
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = EnrichmentChamberControllerEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = EnrichmentChamberControllerEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,
@@ -54,18 +48,15 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
         else super.useWithoutItem(state, level, pos, player, hitResult)
     }
 
-    override fun getStateForPlacement(context: BlockPlaceContext): BlockState =
-        this.defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
+    override fun getStateForPlacement(context: BlockPlaceContext): BlockState = this.defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING, ACTIVE)
     }
 
-    override fun rotate(state: BlockState, rotation: Rotation): BlockState =
-        state.setValue(FACING, rotation.rotate(state.getValue(FACING)))
+    override fun rotate(state: BlockState, rotation: Rotation): BlockState = state.setValue(FACING, rotation.rotate(state.getValue(FACING)))
 
-    override fun mirror(state: BlockState, mirror: Mirror): BlockState =
-        state.rotate(mirror.getRotation(state.getValue(FACING)))
+    override fun mirror(state: BlockState, mirror: Mirror): BlockState = state.rotate(mirror.getRotation(state.getValue(FACING)))
 
     companion object {
         private const val MAX_STRUCTURE_SIZE = 127
@@ -93,16 +84,11 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
             }
         }
 
-        private fun findControllerSurface(
-            level: Level,
-            pos: BlockPos,
-            direction: Direction
-        ): ControllerSurface? {
+        private fun findControllerSurface(level: Level, pos: BlockPos, direction: Direction): ControllerSurface? {
             val positiveHorizontal = direction.clockWise
             val negativeHorizontal = direction.counterClockWise
             val negativeDistance = frameDistance(level, pos, negativeHorizontal)
-            val horizontalSize =
-                negativeDistance + frameDistance(level, pos, positiveHorizontal) + 1
+            val horizontalSize = negativeDistance + frameDistance(level, pos, positiveHorizontal) + 1
             val downDistance = frameDistance(level, pos, Direction.DOWN)
             val verticalSize = downDistance + frameDistance(level, pos, Direction.UP) + 1
 
@@ -127,10 +113,6 @@ class EnrichmentChamberController(properties: Properties): Block(properties), En
                 state.`is`(BlockRegistry.magicPlating.get()) ||
                 state.`is`(BlockRegistry.enrichmentChamberController.get())
 
-        private data class ControllerSurface(
-            val size: Int,
-            val startX: Int,
-            val startY: Int
-        )
+        private data class ControllerSurface(val size: Int, val startX: Int, val startY: Int)
     }
 }

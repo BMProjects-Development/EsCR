@@ -17,7 +17,7 @@ import net.minecraft.world.level.storage.TagValueOutput
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class MIMCoreEntity(pos: BlockPos, state: BlockState) : MIMDeviceEntity(
+class MIMCoreEntity(pos: BlockPos, state: BlockState): MIMDeviceEntity(
     pos, state, BlockEntityTypeRegistry.mimCore.get(), MIMMenuKind.CORE.slots,
     ECConfig.current.inventoryManager.coreCapacity, 0
 ), MIMManager, MIMExpandableContainer {
@@ -45,7 +45,7 @@ class MIMCoreEntity(pos: BlockPos, state: BlockState) : MIMDeviceEntity(
 
     override fun loadInventory(input: ValueInput) {
         migratePowerLink = MIMCoreInventoryData.isLegacy(input) || input.getBooleanOr(LEGACY_POWER_LINK_TAG, false)
-        setItems(MIMCoreInventoryData.read(input))
+        items = MIMCoreInventoryData.read(input)
         updateCapacity()
     }
 

@@ -21,6 +21,5 @@ object MIMFilters {
     else stack.item as? MIMFilterProvider ?: adapters.values.firstOrNull { it.accepts(stack) }?.provider
 
     @JvmStatic
-    fun matches(filter: ItemStack, candidate: ItemStack): Boolean =
-        filter.isEmpty || provider(filter)?.matches(filter.copy(), candidate.copy()) == true
+    fun matches(filter: ItemStack, candidate: ItemStack): Boolean = filter.isEmpty || provider(filter)?.matches(filter.copy(), candidate.copy()) == true
 }

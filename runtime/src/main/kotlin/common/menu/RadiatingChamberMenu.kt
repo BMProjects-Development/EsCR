@@ -22,7 +22,7 @@ class RadiatingChamberMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess
-) : AbstractMenu(MenuTypeRegistry.radiatingChamber, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.radiatingChamber, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inventory,
@@ -42,10 +42,7 @@ class RadiatingChamberMenu(
         inv.make()
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        index: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, index: Int): ItemStack {
         val slot = this.slots.getOrNull(index) ?: return ItemStack.EMPTY
         if (!slot.hasItem()) return ItemStack.EMPTY
 

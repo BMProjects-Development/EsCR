@@ -11,10 +11,7 @@ import net.minecraft.world.inventory.MenuType
 interface MenuTypePlatform {
     fun <M : AbstractContainerMenu> create(factory: (Int, Inventory) -> M): MenuType<M>
 
-    fun <M : AbstractContainerMenu, D : Any> create(
-        codec: StreamCodec<RegistryFriendlyByteBuf, D>,
-        factory: (Int, Inventory, D) -> M
-    ): MenuType<M>
+    fun <M : AbstractContainerMenu, D : Any> create(codec: StreamCodec<RegistryFriendlyByteBuf, D>, factory: (Int, Inventory, D) -> M): MenuType<M>
 
     fun <D : Any> open(
         player: ServerPlayer,
@@ -29,8 +26,7 @@ interface MenuTypePlatform {
     }
 }
 
-fun <M : AbstractContainerMenu> menuType(factory: (Int, Inventory) -> M): MenuType<M> =
-    MenuTypePlatform.instance.create(factory)
+fun <M : AbstractContainerMenu> menuType(factory: (Int, Inventory) -> M): MenuType<M> = MenuTypePlatform.instance.create(factory)
 
 fun <M : AbstractContainerMenu, D : Any> menuType(
     codec: StreamCodec<RegistryFriendlyByteBuf, D>,

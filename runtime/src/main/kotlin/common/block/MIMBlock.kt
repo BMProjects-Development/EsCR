@@ -16,18 +16,14 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
-open class MIMBlock(
-    properties: Properties,
-    private val factory: (BlockPos, BlockState) -> MIMDeviceEntity
-) : Block(properties), EntityBlock {
+open class MIMBlock(properties: Properties, private val factory: (BlockPos, BlockState) -> MIMDeviceEntity): Block(properties), EntityBlock {
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = factory(pos, state)
     override fun useWithoutItem(
         state: BlockState, level: Level, pos: BlockPos, player: Player, hitResult: BlockHitResult
     ): InteractionResult {
         if (level.isClientSide) return InteractionResult.SUCCESS
         val device = level.getBlockEntity(pos) as? MIMDeviceEntity ?: return InteractionResult.PASS
-        if (player is ServerPlayer)
-            MenuTypePlatform.instance.open(player, device, MIMMenuData.from(device), MIMMenuData.CODEC)
+        if (player is ServerPlayer) MenuTypePlatform.instance.open(player, device, MIMMenuData.from(device), MIMMenuData.CODEC)
         return InteractionResult.SUCCESS
     }
 

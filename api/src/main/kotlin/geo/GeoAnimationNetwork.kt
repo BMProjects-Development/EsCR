@@ -13,11 +13,7 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.level.Level
 import com.algorithmlx.ecr.api.network.Network
 
-data class GeoBlockAnimationPayload(
-    val controllerPos: BlockPos,
-    val animation: String,
-    val animationType: AnimationType
-): CustomPacketPayload {
+data class GeoBlockAnimationPayload(val controllerPos: BlockPos, val animation: String, val animationType: AnimationType): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -37,11 +33,7 @@ data class GeoBlockAnimationPayload(
     }
 }
 
-data class GeoEntityAnimationPayload(
-    val entityId: Int,
-    val animation: String,
-    val animationType: AnimationType
-): CustomPacketPayload {
+data class GeoEntityAnimationPayload(val entityId: Int, val animation: String, val animationType: AnimationType): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -88,9 +80,7 @@ data class GeoItemAnimationPayload(
     }
 }
 
-data class GeoBlockAnimationStopPayload(
-    val controllerPos: BlockPos
-): CustomPacketPayload {
+data class GeoBlockAnimationStopPayload(val controllerPos: BlockPos): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -98,17 +88,11 @@ data class GeoBlockAnimationStopPayload(
         val TYPE = CustomPacketPayload.Type<GeoBlockAnimationStopPayload>("geo_block_animation_stop".ecRL)
 
         @JvmField
-        val STREAM_CODEC = StreamCodec.composite(
-            BlockPos.STREAM_CODEC,
-            GeoBlockAnimationStopPayload::controllerPos,
-            ::GeoBlockAnimationStopPayload
-        )
+        val STREAM_CODEC = StreamCodec.composite(BlockPos.STREAM_CODEC, GeoBlockAnimationStopPayload::controllerPos, ::GeoBlockAnimationStopPayload)
     }
 }
 
-data class GeoEntityAnimationStopPayload(
-    val entityId: Int
-): CustomPacketPayload {
+data class GeoEntityAnimationStopPayload(val entityId: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -116,18 +100,11 @@ data class GeoEntityAnimationStopPayload(
         val TYPE = CustomPacketPayload.Type<GeoEntityAnimationStopPayload>("geo_entity_animation_stop".ecRL)
 
         @JvmField
-        val STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT,
-            GeoEntityAnimationStopPayload::entityId,
-            ::GeoEntityAnimationStopPayload
-        )
+        val STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, GeoEntityAnimationStopPayload::entityId, ::GeoEntityAnimationStopPayload)
     }
 }
 
-data class GeoItemAnimationStopPayload(
-    val entityId: Int,
-    val equipmentSlot: Int
-): CustomPacketPayload {
+data class GeoItemAnimationStopPayload(val entityId: Int, val equipmentSlot: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -181,27 +158,20 @@ object GeoAnimationNetwork {
         val centerX = controllerPos.x + 0.5
         val centerY = controllerPos.y + 0.5
         val centerZ = controllerPos.z + 0.5
-        level.players().asSequence()
-            .filterIsInstance<ServerPlayer>()
-            .filter { player -> player.distanceToSqr(centerX, centerY, centerZ) <= TRACKING_DISTANCE_SQR }
+        level.players().asSequence().filterIsInstance<ServerPlayer>().filter { player -> player.distanceToSqr(centerX, centerY, centerZ) <= TRACKING_DISTANCE_SQR }
             .forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
     @JvmStatic
-    fun play(
-        entity: Entity,
-        animation: String,
-        type: AnimationType = AnimationType.PLAY_ONCE
-    ): Boolean {
+    fun play(entity: Entity, animation: String, type: AnimationType = AnimationType.PLAY_ONCE): Boolean {
         if (!validateAnimationId(animation)) return false
         val payload = GeoEntityAnimationPayload(entity.id, animation, type)
         val level = entity.level()
         if (level.isClientSide)
             return playClientEntityAnimation(payload)
         else
-            nearbyPlayers(level, entity.x, entity.y, entity.z)
-                .forEach { player -> Network.sendTo(player, payload) }
+            nearbyPlayers(level, entity.x, entity.y, entity.z).forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -218,8 +188,7 @@ object GeoAnimationNetwork {
         if (level.isClientSide)
             return playClientItemAnimation(payload)
         else
-            nearbyPlayers(level, entity.x, entity.y, entity.z)
-                .forEach { player -> Network.sendTo(player, payload) }
+            nearbyPlayers(level, entity.x, entity.y, entity.z).forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -231,8 +200,7 @@ object GeoAnimationNetwork {
         val centerX = controllerPos.x + 0.5
         val centerY = controllerPos.y + 0.5
         val centerZ = controllerPos.z + 0.5
-        nearbyPlayers(level, centerX, centerY, centerZ)
-            .forEach { player -> Network.sendTo(player, payload) }
+        nearbyPlayers(level, centerX, centerY, centerZ).forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -242,8 +210,7 @@ object GeoAnimationNetwork {
         val level = entity.level()
         if (level.isClientSide) return stopClientEntityAnimation(payload)
 
-        nearbyPlayers(level, entity.x, entity.y, entity.z)
-            .forEach { player -> Network.sendTo(player, payload) }
+        nearbyPlayers(level, entity.x, entity.y, entity.z).forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -253,8 +220,7 @@ object GeoAnimationNetwork {
         val level = entity.level()
         if (level.isClientSide) return stopClientItemAnimation(payload)
 
-        nearbyPlayers(level, entity.x, entity.y, entity.z)
-            .forEach { player -> Network.sendTo(player, payload) }
+        nearbyPlayers(level, entity.x, entity.y, entity.z).forEach { player -> Network.sendTo(player, payload) }
         return true
     }
 
@@ -265,12 +231,7 @@ object GeoAnimationNetwork {
     }
 
     private fun nearbyPlayers(level: Level, x: Double, y: Double, z: Double): Sequence<ServerPlayer> =
-        level.players().asSequence()
-            .filterIsInstance<ServerPlayer>()
-            .filter { player -> player.distanceToSqr(x, y, z) <= TRACKING_DISTANCE_SQR }
+        level.players().asSequence().filterIsInstance<ServerPlayer>().filter { player -> player.distanceToSqr(x, y, z) <= TRACKING_DISTANCE_SQR }
 }
 
-private val ANIMATION_TYPE_STREAM_CODEC = ByteBufCodecs.VAR_INT.map(
-    { ordinal -> AnimationType.entries.getOrElse(ordinal) { AnimationType.PLAY_ONCE } },
-    AnimationType::ordinal
-)
+private val ANIMATION_TYPE_STREAM_CODEC = ByteBufCodecs.VAR_INT.map({ ordinal -> AnimationType.entries.getOrElse(ordinal) { AnimationType.PLAY_ONCE } }, AnimationType::ordinal)

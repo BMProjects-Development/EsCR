@@ -14,12 +14,7 @@ import com.algorithmlx.ecr.api.molang.compiler.*
 import com.algorithmlx.ecr.api.molang.runtime.MolangContext
 
 @Serializable
-data class BedrockParticleFile(
-    @SerialName("format_version")
-    val formatVersion: String,
-    @SerialName("particle_effect")
-    val particleEffect: ParticleEffect
-) {
+data class BedrockParticleFile(@SerialName("format_version") val formatVersion: String, @SerialName("particle_effect") val particleEffect: ParticleEffect) {
     @Serializable
     data class ParticleEffect(
         val description: Description,
@@ -36,10 +31,7 @@ data class BedrockParticleFile(
     )
 
     @Serializable
-    data class BasicRenderParameters(
-        val material: Material = Material.Cutout,
-        val texture: String = "texture"
-    )
+    data class BasicRenderParameters(val material: Material = Material.Cutout, val texture: String = "texture")
 
     @Serializable
     enum class Material(val needsSorting: Boolean, val backfaceCulling: Boolean) {
@@ -88,18 +80,10 @@ data class BedrockParticleFile(
         val expression: FloatExpr? = null
     ) {
         @Serializable
-        data class RandomizeOption(
-            val weight: Float,
-            val value: Event
-        )
+        data class RandomizeOption(val weight: Float, val value: Event)
 
         @Serializable
-        data class Particle(
-            val effect: String,
-            val type: Type,
-            @SerialName("pre_effect_expression")
-            val preEffectExpression: FloatExpr = FloatExpr.ZERO
-        ) {
+        data class Particle(val effect: String, val type: Type, @SerialName("pre_effect_expression") val preEffectExpression: FloatExpr = FloatExpr.ZERO) {
             @Serializable
             enum class Type {
                 @SerialName("emitter")
@@ -124,12 +108,9 @@ data class BedrockParticleFile(
         }
 
         @Serializable
-        data class Sound(
-            @SerialName("event_name")
-            val eventName: String
-        )
+        data class Sound(@SerialName("event_name") val eventName: String)
 
-        private class WeightedEventSerializer :
+        private class WeightedEventSerializer:
             JsonTransformingSerializer<RandomizeOption>(RandomizeOption.serializer()) {
             override fun transformDeserialize(element: JsonElement): JsonElement = if (element is JsonObject)
                 buildJsonObject {
@@ -198,11 +179,7 @@ data class ParticleComponents(
     val particleVisibility: ParticleVisibility = ParticleVisibility()
 ) {
     @Serializable
-    data class EmitterLocalSpace(
-        val position: Boolean = false,
-        val rotation: Boolean = false,
-        val velocity: Boolean = false
-    )
+    data class EmitterLocalSpace(val position: Boolean = false, val rotation: Boolean = false, val velocity: Boolean = false)
 
     @Serializable
     data class EmitterInitialization(
@@ -226,10 +203,7 @@ data class ParticleComponents(
         val loopingTravelDistanceEvents: List<LoopingDistance> = emptyList()
     ) {
         @Serializable
-        data class LoopingDistance(
-            val distance: Float,
-            val effects: List<String>
-        )
+        data class LoopingDistance(val distance: Float, val effects: List<String>)
     }
 
 
@@ -243,10 +217,7 @@ data class ParticleComponents(
 
 
     @Serializable
-    data class EmitterLifetimeOnce(
-        @SerialName("active_time")
-        val activeTime: FloatExpr = FloatExpr.literal(10f)
-    )
+    data class EmitterLifetimeOnce(@SerialName("active_time") val activeTime: FloatExpr = FloatExpr.literal(10f))
 
 
     @Serializable
@@ -258,10 +229,7 @@ data class ParticleComponents(
     )
 
     @Serializable
-    data class EmitterRateInstant(
-        @SerialName("num_particles")
-        val numParticles: FloatExpr = FloatExpr.literal(10f)
-    )
+    data class EmitterRateInstant(@SerialName("num_particles") val numParticles: FloatExpr = FloatExpr.literal(10f))
 
     @Serializable
     data class EmitterRateSteady(
@@ -272,23 +240,20 @@ data class ParticleComponents(
     )
 
     @Serializable
-    data class EmitterShapePoint(
-        val offset: FloatVec3Expr = FloatVec3Expr.ZERO,
-        val direction: Direction = Direction.Outwards
-    )
+    data class EmitterShapePoint(val offset: FloatVec3Expr = FloatVec3Expr.ZERO, val direction: Direction = Direction.Outwards)
 
     @Serializable(with = Direction.DirectionSerializer::class)
     sealed class Direction {
         @Serializable(with = InwardsSerializer::class)
-        data object Inwards : Direction()
+        data object Inwards: Direction()
 
         @Serializable(with = OutwardsSerializer::class)
-        data object Outwards : Direction()
+        data object Outwards: Direction()
 
         @Serializable(with = CustomSerializer::class)
-        data class Custom(val vec: FloatVec3Expr) : Direction()
+        data class Custom(val vec: FloatVec3Expr): Direction()
 
-        object DirectionSerializer : JsonContentPolymorphicSerializer<Direction>(Direction::class) {
+        object DirectionSerializer: JsonContentPolymorphicSerializer<Direction>(Direction::class) {
             override fun selectDeserializer(element: JsonElement): DeserializationStrategy<Direction> = when {
                 element is JsonPrimitive && element.content == "inwards" -> Inwards.serializer()
                 element is JsonPrimitive && element.content == "outwards" -> Outwards.serializer()
@@ -296,17 +261,17 @@ data class ParticleComponents(
             }
         }
 
-        object InwardsSerializer : ObjectAsString<Inwards>("inwards", Inwards)
-        object OutwardsSerializer : ObjectAsString<Outwards>("outwards", Outwards)
+        object InwardsSerializer: ObjectAsString<Inwards>("inwards", Inwards)
+        object OutwardsSerializer: ObjectAsString<Outwards>("outwards", Outwards)
 
-        object CustomSerializer : KSerializer<Custom> {
+        object CustomSerializer: KSerializer<Custom> {
             private val inner = FloatVec3ExprSerializer
             override val descriptor: SerialDescriptor = inner.descriptor
             override fun deserialize(decoder: Decoder) = Custom(inner.deserialize(decoder))
             override fun serialize(encoder: Encoder, value: Custom) = inner.serialize(encoder, value.vec)
         }
 
-        open class ObjectAsString<T>(private val str: String, private val value: T) : KSerializer<T> {
+        open class ObjectAsString<T>(private val str: String, private val value: T): KSerializer<T> {
             private val inner = String.serializer()
             override val descriptor: SerialDescriptor = inner.descriptor
             override fun deserialize(decoder: Decoder) = inner.deserialize(decoder).let { value }
@@ -361,10 +326,7 @@ data class ParticleComponents(
         val facingCameraMode: FacingCameraMode,
         val direction: Direction = Direction.FromVelocity(),
 
-        val uv: UV = UV(
-            uv = Pair(FloatExpr.ZERO, FloatExpr.ZERO),
-            uvSize = Pair(FloatExpr.ONE, FloatExpr.ONE)
-        )
+        val uv: UV = UV(uv = Pair(FloatExpr.ZERO, FloatExpr.ZERO), uvSize = Pair(FloatExpr.ONE, FloatExpr.ONE))
     ) {
         @Serializable
         enum class FacingCameraMode {
@@ -399,7 +361,7 @@ data class ParticleComponents(
 
             @Serializable
             @SerialName("derive_from_velocity")
-            data class FromVelocity(val minSpeedThreshold: Float = 0.01f) : Direction() {
+            data class FromVelocity(val minSpeedThreshold: Float = 0.01f): Direction() {
                 @Transient
                 val minSpeedThresholdSqr: Float = minSpeedThreshold * minSpeedThreshold
             }
@@ -407,10 +369,7 @@ data class ParticleComponents(
 
             @Serializable
             @SerialName("custom")
-            data class Custom(
-                @SerialName("custom_direction")
-                val direction: FloatVec3Expr
-            ) : Direction()
+            data class Custom(@SerialName("custom_direction") val direction: FloatVec3Expr): Direction()
         }
 
         @Serializable
@@ -449,17 +408,10 @@ data class ParticleComponents(
     data class ParticleAppearanceTinting(val color: MolangColorOrGradient)
 
     @Serializable
-    data class ParticleInitialSpin(
-        val rotation: FloatExpr = FloatExpr.ZERO,
-        @SerialName("rotation_rate")
-        val rotationRate: FloatExpr = FloatExpr.ZERO
-    )
+    data class ParticleInitialSpin(val rotation: FloatExpr = FloatExpr.ZERO, @SerialName("rotation_rate") val rotationRate: FloatExpr = FloatExpr.ZERO)
 
     @Serializable
-    data class ParticleInitialization(
-        @SerialName("per_render_expression")
-        val perRenderExpression: FloatExpr? = null
-    )
+    data class ParticleInitialization(@SerialName("per_render_expression") val perRenderExpression: FloatExpr? = null)
 
     @Serializable
     data class ParticleMotionCollision(
@@ -475,11 +427,7 @@ data class ParticleComponents(
         val events: ListOrSingle<Event> = emptyList()
     ) {
         @Serializable
-        data class Event(
-            val event: String,
-            @SerialName("min_speed")
-            val minSpeed: Float = 2f
-        )
+        data class Event(val event: String, @SerialName("min_speed") val minSpeed: Float = 2f)
     }
 
     @Serializable
@@ -512,12 +460,7 @@ data class ParticleComponents(
     )
 
     @Serializable
-    data class ParticleVisibility(
-        @SerialName("first_person")
-        val firstPerson: Boolean = true,
-        @SerialName("third_person")
-        val thirdPerson: Boolean = true
-    )
+    data class ParticleVisibility(@SerialName("first_person") val firstPerson: Boolean = true, @SerialName("third_person") val thirdPerson: Boolean = true)
 }
 
 @Serializable(with = MolangColorOrGradientSerializer::class)
@@ -531,9 +474,8 @@ data class MolangColor(
     val g: FloatExpr,
     val b: FloatExpr,
     val a: FloatExpr
-) : MolangColorOrGradient {
-    override fun eval(context: MolangContext): ParticleColor =
-        ParticleColor(r.eval(context), g.eval(context), b.eval(context), a.eval(context))
+): MolangColorOrGradient {
+    override fun eval(context: MolangContext): ParticleColor = ParticleColor(r.eval(context), g.eval(context), b.eval(context), a.eval(context))
 }
 
 @Serializable
@@ -541,7 +483,7 @@ data class MolangGradient(
     @Serializable(with = MolangGradientMapSerializer::class)
     val gradient: SortedMap<Float, MolangColor>,
     val interpolant: FloatExpr
-) : MolangColorOrGradient {
+): MolangColorOrGradient {
     override fun eval(context: MolangContext): ParticleColor {
         val alpha = interpolant.eval(context)
         val floor = gradient.floorEntry(alpha)
@@ -551,19 +493,18 @@ data class MolangGradient(
             floor == null -> ceil!!.value.eval(context)
             ceil == null -> floor.value.eval(context)
             floor == ceil -> floor.value.eval(context)
-            else -> floor.value.eval(context)
-                .mix(ceil.value.eval(context), (alpha - floor.key) / (ceil.key - floor.key))
+            else -> floor.value.eval(context).mix(ceil.value.eval(context), (alpha - floor.key) / (ceil.key - floor.key))
         }
     }
 }
 
-object MolangColorOrGradientSerializer :
+object MolangColorOrGradientSerializer:
     JsonContentPolymorphicSerializer<MolangColorOrGradient>(MolangColorOrGradient::class) {
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<MolangColorOrGradient> =
         if (element is JsonObject) MolangGradient.serializer() else MolangColor.serializer()
 }
 
-object MolangColorSerializer : KSerializer<MolangColor> {
+object MolangColorSerializer: KSerializer<MolangColor> {
     override val descriptor: SerialDescriptor = JsonElement.serializer().descriptor
     override fun deserialize(decoder: Decoder): MolangColor = parse((decoder as JsonDecoder).decodeJsonElement())
     override fun serialize(encoder: Encoder, value: MolangColor) = throw UnsupportedOperationException()
@@ -582,20 +523,14 @@ object MolangColorSerializer : KSerializer<MolangColor> {
             val g = (v shr 8 and 0xff) / 255f
             val b = (v and 0xff) / 255f
             val a = (v shr 24 and 0xff) / 255f
-            MolangColor(
-                FloatExpr.literal(r),
-                FloatExpr.literal(g),
-                FloatExpr.literal(b),
-                FloatExpr.literal(a)
-            )
+            MolangColor(FloatExpr.literal(r), FloatExpr.literal(g), FloatExpr.literal(b), FloatExpr.literal(a))
         }
     }
 }
 
-object MolangGradientMapSerializer : KSerializer<SortedMap<Float, MolangColor>> {
+object MolangGradientMapSerializer: KSerializer<SortedMap<Float, MolangColor>> {
     private val mapSerializer = SortedMap.serializer(Float.serializer(), MolangColor.serializer())
     private val listSerializer = ListSerializer(MolangColor.serializer())
-
     override val descriptor: SerialDescriptor = JsonElement.serializer().descriptor
 
     override fun deserialize(decoder: Decoder): SortedMap<Float, MolangColor> {

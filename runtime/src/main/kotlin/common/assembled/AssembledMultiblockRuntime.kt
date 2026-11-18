@@ -17,18 +17,12 @@ object AssembledMultiblockRuntime {
         definition: AssembledMultiblockDefinition,
         controllerPos: BlockPos,
         facing: Direction
-    ): AssemblyResult = AssembledMultiblocks.assemble(
-        level,
-        definition,
-        controllerPos,
-        facing
-    ) { _, originalState, controller, partFacing ->
+    ): AssemblyResult = AssembledMultiblocks.assemble(level, definition, controllerPos, facing) { _, originalState, controller, partFacing ->
         val controllerBlock = originalState.block as? AssembledMultiblockControllerBlock
         if (controller && controllerBlock != null)
             controllerBlock.assembledState(originalState, partFacing)
         else
-            BlockRegistry.assembledMultiblockPart.get().defaultBlockState()
-                .setValue(AssembledMultiblockPartBlock.CONTROLLER, controller)
+            BlockRegistry.assembledMultiblockPart.get().defaultBlockState().setValue(AssembledMultiblockPartBlock.CONTROLLER, controller)
                 .setValue(AssembledMultiblockPartBlock.FACING, partFacing)
     }
 
@@ -53,6 +47,5 @@ object AssembledMultiblockRuntime {
     ): Boolean = AssembledMultiblocks.playAnimation(level, partPos, animation, type)
 
     @JvmStatic
-    fun stopAnimation(level: Level, partPos: BlockPos): Boolean =
-        AssembledMultiblocks.stopAnimation(level, partPos)
+    fun stopAnimation(level: Level, partPos: BlockPos): Boolean = AssembledMultiblocks.stopAnimation(level, partPos)
 }

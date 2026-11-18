@@ -20,7 +20,7 @@ import com.algorithmlx.ecr.common.menu.CraftingFrameMenu
 import com.algorithmlx.ecr.common.menu.MIMFilterMenu
 import net.minecraft.core.registries.BuiltInRegistries
 
-object MenuTypeRegistry : RegistrationHandler(ModId) {
+object MenuTypeRegistry: RegistrationHandler(ModId) {
     private val mimReference = registerNoEntry(ECRModIDs.MIM_MENU, BuiltInRegistries.MENU) { menuType(MIMMenuData.CODEC, ::MIMMenu) }
     private val craftingFrameReference = registerNoEntry(ECRModIDs.CRAFTING_FRAME, BuiltInRegistries.MENU) { menuType(::CraftingFrameMenu) }
     private val mimFilterReference = registerNoEntry(ECRModIDs.MIM_FILTER, BuiltInRegistries.MENU) { menuType(::MIMFilterMenu) }

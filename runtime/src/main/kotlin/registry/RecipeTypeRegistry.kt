@@ -12,7 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.crafting.Recipe
 import net.minecraft.world.item.crafting.RecipeType
 
-object RecipeTypeRegistry : RegistrationHandler(ModId) {
+object RecipeTypeRegistry: RegistrationHandler(ModId) {
     val mithrilineFurnace = registerSimple<MithrilineFurnaceRecipe>(ECRModIDs.MITHRILINE_FURNACE)
     val radiatingChamber = registerSimple<RadiatingChamberRecipe>(ECRModIDs.RADIATING_CHAMBER)
     val structure = registerSimple<StructureRecipe>(ECRModIDs.STRUCTURE)
@@ -20,7 +20,7 @@ object RecipeTypeRegistry : RegistrationHandler(ModId) {
 
     private fun <T : Recipe<*>> registerSimple(id: String) =
         registerNoEntry(id, BuiltInRegistries.RECIPE_TYPE) {
-            object : RecipeType<T> {
+            object: RecipeType<T> {
                 override fun toString(): String = id.ecRL.toString()
             }
         }

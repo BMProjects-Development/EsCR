@@ -2,10 +2,7 @@ package com.algorithmlx.ecr.api.research.content
 
 import net.minecraft.resources.Identifier
 
-data class BookResearchLink(
-    val research: Identifier,
-    val spread: Int = 0
-) {
+data class BookResearchLink(val research: Identifier, val spread: Int = 0) {
     init {
         require(spread >= 0)
     }
@@ -36,11 +33,7 @@ data class BookResearchLink(
 
         private fun parseSpread(value: String): Int? {
             if (value.isBlank()) return null
-            return value.split('&', ';')
-                .asSequence()
-                .map(String::trim)
-                .filter(String::isNotBlank)
-                .firstNotNullOfOrNull(::parseSpreadToken)
+            return value.split('&', ';').asSequence().map(String::trim).filter(String::isNotBlank).firstNotNullOfOrNull(::parseSpreadToken)
         }
 
         private fun parseSpreadToken(value: String): Int? {

@@ -7,12 +7,7 @@ import net.minecraft.world.level.block.EntityBlock
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
-class CreativeMRUSource(
-    properties: Properties
-) : Block(properties),
+class CreativeMRUSource(properties: Properties): Block(properties),
     EntityBlock {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = CreativeMRUSourceEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = CreativeMRUSourceEntity(worldPosition, blockState)
 }

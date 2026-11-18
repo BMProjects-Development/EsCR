@@ -88,11 +88,8 @@ object ECEvents {
     private fun addBoundGemTooltip(stack: ItemStack, item: BoundGem, tooltips: MutableList<Component>) {
         val pos = item.getBoundPos(stack) ?: return
 
-        tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.pos")
-            .append(":")
-            .withStyle(ChatFormatting.GOLD)
-        tooltips += Component.literal("X").withStyle(ChatFormatting.RED)
-            .append(": ").append(Component.literal(pos.x.toString()))
+        tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.pos").append(":").withStyle(ChatFormatting.GOLD)
+        tooltips += Component.literal("X").withStyle(ChatFormatting.RED).append(": ").append(Component.literal(pos.x.toString()))
             .append(" ").append(Component.literal("Y").withStyle(ChatFormatting.GREEN))
             .append(": ").append(Component.literal(pos.y.toString()))
             .append(" ").append(Component.literal("Z").withStyle(ChatFormatting.BLUE))
@@ -100,21 +97,17 @@ object ECEvents {
 
         when (BoundGemTooltipNetwork.tooltipStatus(stack, item)) {
             BoundGemTargetStatus.NOT_MRU ->
-                tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.not_mru")
-                    .withStyle(ChatFormatting.GOLD)
+                tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.not_mru").withStyle(ChatFormatting.GOLD)
             BoundGemTargetStatus.MRU_CONNECTABLE_NOT_EXPORTER ->
-                tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.mru_connectable_not_exporter")
-                    .withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)
+                tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.mru_connectable_not_exporter").withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)
             else -> Unit
         }
 
         if (item.isOutsideBoundRadius(stack))
-            tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.outside_radius")
-                .withStyle(ChatFormatting.RED)
+            tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked.outside_radius").withStyle(ChatFormatting.RED)
 
         if (!item.dimensionalBounds)
-            tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.dimension.disallowed")
-                .withStyle(ChatFormatting.RED)
+            tooltips += Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.dimension.disallowed").withStyle(ChatFormatting.RED)
     }
 
     @JvmStatic
@@ -157,11 +150,7 @@ object ECEvents {
         if (!(recipe.chance.isEmpty() || level.random.nextInt(recipe.chance.max) >= recipe.chance.min)) return
 
         if (place != null)
-            level.setBlock(
-                center.above(),
-                place.defaultBlockState(),
-                Block.UPDATE_NEIGHBORS or Block.UPDATE_CLIENTS or Block.UPDATE_SUPPRESS_DROPS
-            )
+            level.setBlock(center.above(), place.defaultBlockState(), Block.UPDATE_NEIGHBORS or Block.UPDATE_CLIENTS or Block.UPDATE_SUPPRESS_DROPS)
         else {
             val item = ItemEntity(level, pos.x, pos.y, pos.z, result).apply { this.setNoPickUpDelay() }
             level.addFreshEntity(item)

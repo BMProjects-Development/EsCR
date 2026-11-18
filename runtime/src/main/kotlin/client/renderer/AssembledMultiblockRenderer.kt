@@ -28,9 +28,7 @@ class AssembledMultiblockRenderState: BlockEntityRenderState() {
     var modelLight: Int = 0
 }
 
-class AssembledMultiblockRenderer<T : BlockEntity>(
-    context: BlockEntityRendererProvider.Context
-): BlockEntityRenderer<T, AssembledMultiblockRenderState> {
+class AssembledMultiblockRenderer<T : BlockEntity>(context: BlockEntityRendererProvider.Context): BlockEntityRenderer<T, AssembledMultiblockRenderState> {
     override fun createRenderState() = AssembledMultiblockRenderState()
 
     override fun extractRenderState(
@@ -63,12 +61,7 @@ class AssembledMultiblockRenderer<T : BlockEntity>(
         } ?: state.lightCoords
         val now = ClientGeoAnimations.clientTimeSeconds(partialTick)
         val molang = animatable.geoMolangContext(partialTick)
-        state.model = BedrockGeoRenderEngine.extract(
-            model,
-            ClientGeoAnimations.snapshot(animatable.geoAnimationState, molang, now),
-            molang,
-            now
-        )
+        state.model = BedrockGeoRenderEngine.extract(model, ClientGeoAnimations.snapshot(animatable.geoAnimationState, molang, now), molang, now)
     }
 
     override fun submit(
@@ -79,11 +72,7 @@ class AssembledMultiblockRenderer<T : BlockEntity>(
     ) {
         val model = state.model ?: return
         poseStack.pushPose()
-        poseStack.translate(
-            state.anchorX.toDouble() + 0.5,
-            state.anchorY.toDouble(),
-            state.anchorZ.toDouble() + 0.5
-        )
+        poseStack.translate(state.anchorX.toDouble() + 0.5, state.anchorY.toDouble(), state.anchorZ.toDouble() + 0.5)
         if (state.modelYRotation != 0F) poseStack.rotateDegrees(Axis.YP, state.modelYRotation)
         BedrockGeoRenderEngine.submit(model, poseStack, collector, state.modelLight)
         poseStack.popPose()

@@ -31,16 +31,13 @@ object Network {
     fun sendToServer(payload: CustomPacketPayload) = ClientNetworkPlatform.instance.sendToServer(payload)
 
     @JvmStatic
-    fun sendTo(player: ServerPlayer, payload: CustomPacketPayload) =
-        NetworkPlatform.instance.sendToPlayer(player, payload)
+    fun sendTo(player: ServerPlayer, payload: CustomPacketPayload) = NetworkPlatform.instance.sendToPlayer(player, payload)
 
     @JvmStatic
-    fun sendTo(players: Iterable<ServerPlayer>, payload: CustomPacketPayload) =
-        players.forEach { player -> sendTo(player, payload) }
+    fun sendTo(players: Iterable<ServerPlayer>, payload: CustomPacketPayload) = players.forEach { player -> sendTo(player, payload) }
 
     @JvmStatic
-    fun sendToAll(server: MinecraftServer, payload: CustomPacketPayload) =
-        sendTo(server.playerList.players, payload)
+    fun sendToAll(server: MinecraftServer, payload: CustomPacketPayload) = sendTo(server.playerList.players, payload)
 }
 
 fun CustomPacketPayload.sendToServer() = Network.sendToServer(this)

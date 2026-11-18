@@ -7,10 +7,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.IdentityHashMap
 
-internal class BedrockGeoGpuMesh(
-    val vertexBuffer: GpuBuffer,
-    val vertexCount: Int
-) : AutoCloseable {
+internal class BedrockGeoGpuMesh(val vertexBuffer: GpuBuffer, val vertexCount: Int): AutoCloseable {
     val indexCount: Int = vertexCount / 4 * 6
 
     override fun close() {
@@ -31,16 +28,11 @@ internal object BedrockGeoGpuMeshCache {
 
         val vertexCount = BedrockGeoGpuPacking.vertexCount(model)
         if (vertexCount == 0) return null
-        val vertexData = MemoryUtil.memAlloc(vertexCount * BedrockGeoGpuPipelines.VERTEX_FORMAT.vertexSize)
-            .order(ByteOrder.nativeOrder())
+        val vertexData = MemoryUtil.memAlloc(vertexCount * BedrockGeoGpuPipelines.VERTEX_FORMAT.vertexSize).order(ByteOrder.nativeOrder())
         return try {
             BedrockGeoGpuPacking.writeVertices(model, vertexData)
             vertexData.flip()
-            val buffer = RenderSystem.getDevice().createBuffer(
-                { "Bedrock GEO ${model.identifier}" },
-                GpuBuffer.USAGE_VERTEX,
-                vertexData
-            )
+            val buffer = RenderSystem.getDevice().createBuffer({ "Bedrock GEO ${model.identifier}" }, GpuBuffer.USAGE_VERTEX, vertexData)
             BedrockGeoGpuMesh(buffer, vertexCount).also { meshes[model] = it }
         } finally {
             MemoryUtil.memFree(vertexData)
@@ -78,14 +70,11 @@ internal object BedrockGeoGpuPacking {
     const val METADATA_TEXELS_PER_INSTANCE = 1
     const val FLOATS_PER_TEXEL = 4
 
-    fun vertexCount(model: BakedGeoModel): Int =
-        model.bones.sumOf { bone -> bone.quads.size * 4 }
+    fun vertexCount(model: BakedGeoModel): Int = model.bones.sumOf { bone -> bone.quads.size * 4 }
 
-    fun paletteStrideTexels(model: BakedGeoModel): Int =
-        METADATA_TEXELS_PER_INSTANCE + model.bones.size * MATRIX_TEXELS_PER_BONE
+    fun paletteStrideTexels(model: BakedGeoModel): Int = METADATA_TEXELS_PER_INSTANCE + model.bones.size * MATRIX_TEXELS_PER_BONE
 
-    fun paletteBytes(model: BakedGeoModel, instanceCount: Int): Int =
-        paletteStrideTexels(model) * FLOATS_PER_TEXEL * Float.SIZE_BYTES * instanceCount
+    fun paletteBytes(model: BakedGeoModel, instanceCount: Int): Int = paletteStrideTexels(model) * FLOATS_PER_TEXEL * Float.SIZE_BYTES * instanceCount
 
     fun writeVertices(model: BakedGeoModel, target: ByteBuffer) {
         model.bones.forEachIndexed { boneIndex, bone ->

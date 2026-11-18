@@ -12,11 +12,7 @@ import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
 
-class MagicTableMenuScreen(
-    menu: MagicTableMenu,
-    inv: Inventory,
-    title: Component
-): AbstractContainerScreen<MagicTableMenu>(menu, inv, title) {
+class MagicTableMenuScreen(menu: MagicTableMenu, inv: Inventory, title: Component): AbstractContainerScreen<MagicTableMenu>(menu, inv, title) {
     private val mruAnimation = MRULineAnimation()
 
     override fun init() {
@@ -26,26 +22,11 @@ class MagicTableMenuScreen(
 
     override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.extractBackground(graphics, mouseX, mouseY, deltaTicks)
-        graphics.blit(
-            RenderPipelines.GUI_TEXTURED,
-            TEXTURE,
-            this.leftPos, this.topPos,
-            0F, 0F,
-            this.imageWidth, this.imageHeight,
-            256, 256
-        )
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256)
 
         val be = menu.blockEntity as? MagicTableBlockEntity ?: return
         val mru = be.mruStorage
-        drawMRULine(
-            graphics, mru,
-            98, 17,
-            this.leftPos, this.topPos,
-            52, 8,
-            mouseX, mouseY,
-            animation = mruAnimation,
-            deltaTicks = deltaTicks
-        )
+        drawMRULine(graphics, mru, 98, 17, this.leftPos, this.topPos, 52, 8, mouseX, mouseY, animation = mruAnimation, deltaTicks = deltaTicks)
     }
 
     override fun extractLabels(graphics: GuiGraphicsExtractor, xm: Int, ym: Int) {}

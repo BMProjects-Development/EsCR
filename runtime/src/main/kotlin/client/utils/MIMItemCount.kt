@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.utils
 
+import com.algorithmlx.ecr.api.ModId
 import net.minecraft.network.chat.Component
 
 data class MIMItemCount(val text: String, val scale: Float) {
@@ -8,10 +9,7 @@ data class MIMItemCount(val text: String, val scale: Float) {
         private const val ABBREVIATED_MAX_LENGTH = 3
         private const val FULL_SCALE = 1f
         private const val REDUCED_SCALE = 0.5f
-        private val UNITS = listOf(
-            1000000000L to "screen.escr.mim.count.billion", 1000000L to "screen.escr.mim.count.million",
-            1000L to "screen.escr.mim.count.thousand"
-        )
+        private val UNITS = listOf(1000000000L to "screen.$ModId.mim.count.billion", 1000000L to "screen.$ModId.mim.count.million", 1000L to "screen.$ModId.mim.count.thousand")
 
         fun format(count: Long, craftable: Boolean = false): MIMItemCount {
             val unit = UNITS.firstOrNull { count >= it.first }

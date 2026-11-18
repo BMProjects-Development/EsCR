@@ -69,12 +69,7 @@ class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, cont
 
             in PLAYER_START ..< PLAYER_END -> {
                 if (stack.has(DataComponents.COOKING_FUEL))
-                    moveItemStackTo(
-                        stack,
-                        HeatGeneratorEntity.FUEL_SLOT,
-                        HeatGeneratorEntity.FUEL_SLOT + 1,
-                        false
-                    )
+                    moveItemStackTo(stack, HeatGeneratorEntity.FUEL_SLOT, HeatGeneratorEntity.FUEL_SLOT + 1, false)
                 else if (slotIndex < HOTBAR_START) moveItemStackTo(stack, HOTBAR_START, PLAYER_END, false)
                 else moveItemStackTo(stack, PLAYER_START, HOTBAR_START, false)
 
@@ -102,7 +97,6 @@ class HeatGeneratorMenu(containerId: Int, private val inventory: Inventory, cont
         const val FUEL_X = 44
         const val OUTPUT_X = 116
         const val MACHINE_SLOT_Y = 48
-
         private const val PLAYER_START = 2
         private const val HOTBAR_START = 29
         private const val PLAYER_END = 38

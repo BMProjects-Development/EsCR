@@ -12,104 +12,167 @@
   },
   "__RESOLVED_ARTIFACTS_HASH": {
     "com.electronwill.night-config:core": -1511628128,
+    "com.electronwill.night-config:core:jar:sources": -1801496201,
     "com.electronwill.night-config:toml": 1712532459,
+    "com.electronwill.night-config:toml:jar:sources": -497688522,
     "com.google.code.findbugs:jsr305": 299067225,
+    "com.google.code.findbugs:jsr305:jar:sources": -1507653832,
     "com.google.code.gson:gson": 2033324098,
+    "com.google.code.gson:gson:jar:sources": -1697866182,
     "com.google.errorprone:error_prone_annotations": -1496559811,
+    "com.google.errorprone:error_prone_annotations:jar:sources": 63616671,
     "com.google.guava:failureaccess": 1832439937,
+    "com.google.guava:failureaccess:jar:sources": 928550017,
     "com.google.guava:guava": 855982080,
+    "com.google.guava:guava:jar:sources": 152594417,
     "com.google.guava:listenablefuture": 507785527,
     "com.google.j2objc:j2objc-annotations": 308514517,
+    "com.google.j2objc:j2objc-annotations:jar:sources": 2088907364,
     "com.mojang:logging": 793301838,
+    "com.mojang:logging:jar:sources": -1204690467,
     "commons-io:commons-io": 1014769079,
+    "commons-io:commons-io:jar:sources": -575222655,
     "dev.nyon:KotlinLangForge": 1869718603,
+    "dev.nyon:KotlinLangForge:jar:sources": 593077267,
     "io.github.llamalad7:mixinextras-neoforge": -361365935,
+    "io.github.llamalad7:mixinextras-neoforge:jar:sources": -140133188,
     "maven.modrinth:iris": -1567792411,
     "net.fabricmc:sponge-mixin": -1317809119,
+    "net.fabricmc:sponge-mixin:jar:sources": 830931070,
     "net.jodah:typetools": 1853940382,
+    "net.jodah:typetools:jar:sources": 1182635549,
     "net.minecrell:terminalconsoleappender": 331435330,
+    "net.minecrell:terminalconsoleappender:jar:sources": 1361980295,
     "net.neoforged.accesstransformers:at-parser": 1488880796,
+    "net.neoforged.accesstransformers:at-parser:jar:sources": 467578301,
     "net.neoforged.fancymodloader:earlydisplay": 611158868,
+    "net.neoforged.fancymodloader:earlydisplay:jar:sources": 632707428,
     "net.neoforged.fancymodloader:loader": -427539504,
+    "net.neoforged.fancymodloader:loader:jar:sources": -1836667900,
     "net.neoforged:JarJarMetadata": -184276844,
+    "net.neoforged:JarJarMetadata:jar:sources": -1909729047,
     "net.neoforged:JarJarSelector": -2012863176,
+    "net.neoforged:JarJarSelector:jar:sources": 476216152,
     "net.neoforged:accesstransformers": -1081126822,
+    "net.neoforged:accesstransformers:jar:sources": -324917269,
     "net.neoforged:bus": 754614066,
+    "net.neoforged:bus:jar:sources": -777622604,
     "net.neoforged:mergetool:jar:api": -244757532,
+    "net.neoforged:mergetool:jar:sources": 1172659509,
+    "net.neoforged:neoforge:jar:sources": -1663043570,
     "net.neoforged:neoforge:jar:universal": 2081003654,
     "net.neoforged:srgutils": 693833667,
+    "net.neoforged:srgutils:jar:sources": -467983583,
     "net.sf.jopt-simple:jopt-simple": 2045842693,
+    "net.sf.jopt-simple:jopt-simple:jar:sources": 500659233,
     "org.apache.commons:commons-lang3": -1641928449,
+    "org.apache.commons:commons-lang3:jar:sources": 176861374,
     "org.apache.logging.log4j:log4j-api": -650879141,
+    "org.apache.logging.log4j:log4j-api:jar:sources": -425509848,
     "org.apache.logging.log4j:log4j-core": 1341514029,
+    "org.apache.logging.log4j:log4j-core:jar:sources": 826791613,
     "org.apache.logging.log4j:log4j-slf4j2-impl": -1017791622,
+    "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources": -1204304810,
     "org.apache.maven:maven-artifact": -1835801589,
+    "org.apache.maven:maven-artifact:jar:sources": -1403817981,
     "org.checkerframework:checker-qual": -1606727471,
+    "org.checkerframework:checker-qual:jar:sources": -1026084095,
     "org.codehaus.plexus:plexus-utils": -1091504945,
+    "org.codehaus.plexus:plexus-utils:jar:sources": 1581040157,
     "org.jetbrains.kotlin:kotlin-reflect": 602196150,
+    "org.jetbrains.kotlin:kotlin-reflect:jar:sources": 853285311,
     "org.jetbrains.kotlin:kotlin-stdlib": -1794978055,
     "org.jetbrains.kotlin:kotlin-stdlib-jdk7": -1176568911,
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources": 132226028,
     "org.jetbrains.kotlin:kotlin-stdlib-jdk8": 1382214248,
+    "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources": 683878935,
+    "org.jetbrains.kotlin:kotlin-stdlib:jar:sources": -1582819537,
     "org.jetbrains.kotlinx:atomicfu-jvm": -429243583,
+    "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources": -1788414107,
     "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm": -1283888257,
+    "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources": 892140135,
     "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8": -1712061698,
+    "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources": -65770626,
     "org.jetbrains.kotlinx:kotlinx-datetime-jvm": -1434621327,
+    "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources": 1487358971,
     "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm": -1970848743,
+    "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources": -1373713900,
     "org.jetbrains.kotlinx:kotlinx-io-core-jvm": 1041802962,
+    "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources": 598876993,
     "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm": 1391232101,
+    "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources": 894827663,
     "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm": 1314920181,
+    "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources": 511334844,
     "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm": 336848969,
+    "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources": -46954107,
     "org.jetbrains:annotations": 2059447028,
+    "org.jetbrains:annotations:jar:sources": 2058847035,
     "org.jline:jline-reader": -526073279,
+    "org.jline:jline-reader:jar:sources": -1481836770,
     "org.jline:jline-terminal": 1549185966,
+    "org.jline:jline-terminal:jar:sources": -1600697845,
     "org.lwjgl:lwjgl-tinyfd": -599206420,
+    "org.lwjgl:lwjgl-tinyfd:jar:sources": 1690241680,
     "org.ow2.asm:asm": -725630944,
     "org.ow2.asm:asm-analysis": -269332005,
+    "org.ow2.asm:asm-analysis:jar:sources": -1555907447,
     "org.ow2.asm:asm-commons": 1572716311,
+    "org.ow2.asm:asm-commons:jar:sources": 111025409,
     "org.ow2.asm:asm-tree": -476329301,
+    "org.ow2.asm:asm-tree:jar:sources": -546489497,
     "org.ow2.asm:asm-util": -1835945489,
-    "org.slf4j:slf4j-api": -2093366542
+    "org.ow2.asm:asm-util:jar:sources": -1641307661,
+    "org.ow2.asm:asm:jar:sources": 801011213,
+    "org.slf4j:slf4j-api": -2093366542,
+    "org.slf4j:slf4j-api:jar:sources": -1621956017
   },
   "artifacts": {
     "com.electronwill.night-config:core": {
       "shasums": {
-        "jar": "cd890520bd3c680cf82e79f16071de9c8f367206a2f841c777d944289f343ebc"
+        "jar": "cd890520bd3c680cf82e79f16071de9c8f367206a2f841c777d944289f343ebc",
+        "sources": "f371d05e1732980b8c8d54c5a3ff09de5fecde1755cbaafc3f0a3e66411511c3"
       },
       "version": "3.9.0"
     },
     "com.electronwill.night-config:toml": {
       "shasums": {
-        "jar": "475e6fa3315619294d5ab74f2eb80f0705129d43e652d3ccd5337c77d0a29a6b"
+        "jar": "475e6fa3315619294d5ab74f2eb80f0705129d43e652d3ccd5337c77d0a29a6b",
+        "sources": "d7d638987b520273244103689985327cf4c7e72b0ba9f134d5da6f5d16bde892"
       },
       "version": "3.9.0"
     },
     "com.google.code.findbugs:jsr305": {
       "shasums": {
-        "jar": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+        "jar": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7",
+        "sources": "1c9e85e272d0708c6a591dc74828c71603053b48cc75ae83cce56912a2aa063b"
       },
       "version": "3.0.2"
     },
     "com.google.code.gson:gson": {
       "shasums": {
-        "jar": "0cdd163ce3598a20fc04eee71b140b24f6f2a3b35f0a499dbbdd9852e83fbfaf"
+        "jar": "0cdd163ce3598a20fc04eee71b140b24f6f2a3b35f0a499dbbdd9852e83fbfaf",
+        "sources": "984c3636c3911185469a2df991da1bb325de391b9215088ce6c26476bdd61f99"
       },
       "version": "2.10"
     },
     "com.google.errorprone:error_prone_annotations": {
       "shasums": {
-        "jar": "721cb91842b46fa056847d104d5225c8b8e1e8b62263b993051e1e5a0137b7ec"
+        "jar": "721cb91842b46fa056847d104d5225c8b8e1e8b62263b993051e1e5a0137b7ec",
+        "sources": "31a8f1bd791fb22c606af95049062a3c8252ce4b1b17555d00dc609e6371101d"
       },
       "version": "2.11.0"
     },
     "com.google.guava:failureaccess": {
       "shasums": {
-        "jar": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26"
+        "jar": "a171ee4c734dd2da837e4b16be9df4661afab72a41adaf31eb84dfdaf936ca26",
+        "sources": "092346eebbb1657b51aa7485a246bf602bb464cc0b0e2e1c7e7201fadce1e98f"
       },
       "version": "1.0.1"
     },
     "com.google.guava:guava": {
       "shasums": {
-        "jar": "a42edc9cab792e39fe39bb94f3fca655ed157ff87a8af78e1d6ba5b07c4a00ab"
+        "jar": "a42edc9cab792e39fe39bb94f3fca655ed157ff87a8af78e1d6ba5b07c4a00ab",
+        "sources": "8ab1853cdaf936ec88be80c17302b7c20abafbd4f54d4fb54d7011c529e3a44a"
       },
       "version": "31.1-jre"
     },
@@ -121,31 +184,36 @@
     },
     "com.google.j2objc:j2objc-annotations": {
       "shasums": {
-        "jar": "21af30c92267bd6122c0e0b4d20cccb6641a37eaf956c6540ec471d584e64a7b"
+        "jar": "21af30c92267bd6122c0e0b4d20cccb6641a37eaf956c6540ec471d584e64a7b",
+        "sources": "ba4df669fec153fa4cd0ef8d02c6d3ef0702b7ac4cabe080facf3b6e490bb972"
       },
       "version": "1.3"
     },
     "com.mojang:logging": {
       "shasums": {
-        "jar": "3c7ac9742fa98c773275379eb1046c048b5d2ee989152a8c69e7ba696c3f8538"
+        "jar": "3c7ac9742fa98c773275379eb1046c048b5d2ee989152a8c69e7ba696c3f8538",
+        "sources": "6d1126d8600c6e504bc54c914303acb7fff7fbdd513ef79a2e1e5efcce50f519"
       },
       "version": "1.7.12"
     },
     "commons-io:commons-io": {
       "shasums": {
-        "jar": "961b2f6d87dbacc5d54abf45ab7a6e2495f89b75598962d8c723cea9bc210908"
+        "jar": "961b2f6d87dbacc5d54abf45ab7a6e2495f89b75598962d8c723cea9bc210908",
+        "sources": "8c5746d4e96ed0300a7252b1d4cb65111b19400d28a929ca8e0e4b637875f1ee"
       },
       "version": "2.11.0"
     },
     "dev.nyon:KotlinLangForge": {
       "shasums": {
-        "jar": "138f0fb54f679744e787dd9c31f616c22e134d36c96967a2b0b0be0290f6716e"
+        "jar": "138f0fb54f679744e787dd9c31f616c22e134d36c96967a2b0b0be0290f6716e",
+        "sources": "26a4e330162a42efa55530b142a10583025b4524f326bbfa509fac63ab4a96ac"
       },
       "version": "2.14.1-k2.4.20-3.1+neoforge"
     },
     "io.github.llamalad7:mixinextras-neoforge": {
       "shasums": {
-        "jar": "6a464b1c603b716033f3561a0632a7cc7be17c9d75af1cab7f1db5fe98c3888a"
+        "jar": "6a464b1c603b716033f3561a0632a7cc7be17c9d75af1cab7f1db5fe98c3888a",
+        "sources": "26d675938154972c240303f7785b3d8d6430f6aa7fd2a249419d6f5110e4607b"
       },
       "version": "0.5.4"
     },
@@ -157,265 +225,309 @@
     },
     "net.fabricmc:sponge-mixin": {
       "shasums": {
-        "jar": "9e90efec71d2bad5b96c9089f019d14a8603227d3c5f408d12f53fae89d99d41"
+        "jar": "9e90efec71d2bad5b96c9089f019d14a8603227d3c5f408d12f53fae89d99d41",
+        "sources": "abf52887326291ac76e3172a3a5eb425a7cc18db6ba89c14348887b7b0df10f3"
       },
       "version": "0.17.3+mixin.0.8.7"
     },
     "net.jodah:typetools": {
       "shasums": {
-        "jar": "408300867804be05d1083cc0287dd3a21295a9e76090e288013ba5a4182dc96d"
+        "jar": "408300867804be05d1083cc0287dd3a21295a9e76090e288013ba5a4182dc96d",
+        "sources": "0e95594058f99fc4488ff4fde2fa68b0aa78817b1bf84edeebf1d6dc2b9dfea8"
       },
       "version": "0.6.3"
     },
     "net.minecrell:terminalconsoleappender": {
       "shasums": {
-        "jar": "1afea1bca095068f7f4483f061feed94753be34233ddb0df9ec380fc14d5a985"
+        "jar": "1afea1bca095068f7f4483f061feed94753be34233ddb0df9ec380fc14d5a985",
+        "sources": "a6847b15ff3b8d51089558a872e2930798809c0cc6cf8d1c4639d7e2bac76fda"
       },
       "version": "1.3.0"
     },
     "net.neoforged.accesstransformers:at-parser": {
       "shasums": {
-        "jar": "546bf36537c606b4d14cb1a313873f41fba13837d067987a32170c4a3199f08a"
+        "jar": "546bf36537c606b4d14cb1a313873f41fba13837d067987a32170c4a3199f08a",
+        "sources": "b6da8783d9647c4c386a164a589a5c4abd73909ffedba7cd86347e859b568676"
       },
       "version": "11.0.2"
     },
     "net.neoforged.fancymodloader:earlydisplay": {
       "shasums": {
-        "jar": "9d868448217b9747d14efd78bb69b6871a900b7516a3f7384f979442ddd7dad0"
+        "jar": "9d868448217b9747d14efd78bb69b6871a900b7516a3f7384f979442ddd7dad0",
+        "sources": "630febbaaf788a6cb4ea4df3f334751a52beba8749d671db64ad6b67ec8210f2"
       },
       "version": "12.0.0"
     },
     "net.neoforged.fancymodloader:loader": {
       "shasums": {
-        "jar": "e8dc780cab7ed41fb6ce11fffac9f4541add56524b7380bf6575f529ae30de73"
+        "jar": "e8dc780cab7ed41fb6ce11fffac9f4541add56524b7380bf6575f529ae30de73",
+        "sources": "39f2a1ff4148e36501d15aaa5cca1e53945c241fad0b3e8eeb3b9a2f8415e6fa"
       },
       "version": "12.0.0"
     },
     "net.neoforged:JarJarMetadata": {
       "shasums": {
-        "jar": "0573f74ec304669fb3c5403f42403f359e565baf8532e61ec5c1d1c911f6661b"
+        "jar": "0573f74ec304669fb3c5403f42403f359e565baf8532e61ec5c1d1c911f6661b",
+        "sources": "7d4254b702b7d48016a4868bd99d8ea6c0b2af3cd5c39e6bae5e818ef916312e"
       },
       "version": "0.5.1"
     },
     "net.neoforged:JarJarSelector": {
       "shasums": {
-        "jar": "76114eb591593a03d422fb9f8d84c7bea0dba2ad1d8c30488cf1ff04c50ce425"
+        "jar": "76114eb591593a03d422fb9f8d84c7bea0dba2ad1d8c30488cf1ff04c50ce425",
+        "sources": "88f0dd02e4e003670ec208302cfd54e9184459ced701e81bf1558276ba2aa002"
       },
       "version": "0.5.1"
     },
     "net.neoforged:accesstransformers": {
       "shasums": {
-        "jar": "e5f175eca04f3ab68dab45742323f5c38d1b61cf9a098b5ad85bd1d19621cdba"
+        "jar": "e5f175eca04f3ab68dab45742323f5c38d1b61cf9a098b5ad85bd1d19621cdba",
+        "sources": "d176c2fbc3f4c409e4dbaa5b1b7097f2f2d72869c051144bcf4f444957148583"
       },
       "version": "11.0.2"
     },
     "net.neoforged:bus": {
       "shasums": {
-        "jar": "705e24f37752809499a5cd0c7dd31eaabf3d933c5d3b2060168e94e9ef62593a"
+        "jar": "705e24f37752809499a5cd0c7dd31eaabf3d933c5d3b2060168e94e9ef62593a",
+        "sources": "d0e705c9b626c5ea2ad85df6f827f1fb8891d01c04da608d29680a73fcd993e9"
       },
       "version": "8.0.5"
     },
     "net.neoforged:mergetool": {
       "shasums": {
-        "api": "e78f586e085206e3b5699bf0a8de3ee94c59dd34d8cd5b4033e8c58e5ac9c2ec"
+        "api": "e78f586e085206e3b5699bf0a8de3ee94c59dd34d8cd5b4033e8c58e5ac9c2ec",
+        "sources": "78695429b2c1d2403a57bfca0a679ba58bf0d5d5ca430af9e0effc970466c2d7"
       },
       "version": "2.0.7"
     },
     "net.neoforged:neoforge": {
       "shasums": {
+        "sources": "a6f06be1f1dcbe3d6ce80afc003d0b76b50c36fcfe149042f7430199983d1010",
         "universal": "779300e599956869807cebc0ad093ce301bc857a2f3a4a0023b89757150b4c3a"
       },
       "version": "26.3.0.4-beta"
     },
     "net.neoforged:srgutils": {
       "shasums": {
-        "jar": "e4cbc878bc44627196b0507291d09a445fcc8ba8407601944a06d1baa03adc5c"
+        "jar": "e4cbc878bc44627196b0507291d09a445fcc8ba8407601944a06d1baa03adc5c",
+        "sources": "670b402263f92387518eb9dcf83d940ad8c56d4ca39856465846346f72550553"
       },
       "version": "1.0.10"
     },
     "net.sf.jopt-simple:jopt-simple": {
       "shasums": {
-        "jar": "df26cc58f235f477db07f753ba5a3ab243ebe5789d9f89ecf68dd62ea9a66c28"
+        "jar": "df26cc58f235f477db07f753ba5a3ab243ebe5789d9f89ecf68dd62ea9a66c28",
+        "sources": "06b283801a5a94ef697b7f2c79a048c4e2f848b3daddda61cab74d882bdd97a5"
       },
       "version": "5.0.4"
     },
     "org.apache.commons:commons-lang3": {
       "shasums": {
-        "jar": "d919d904486c037f8d193412da0c92e22a9fa24230b9d67a57855c5c31c7e94e"
+        "jar": "d919d904486c037f8d193412da0c92e22a9fa24230b9d67a57855c5c31c7e94e",
+        "sources": "325a4551eee7d99f7616aa05b00ee3ca9d0cdc8face1b252a9864f2d945c58b3"
       },
       "version": "3.12.0"
     },
     "org.apache.logging.log4j:log4j-api": {
       "shasums": {
-        "jar": "820de7bbaf430eaf2e3e5ccb92f23e2085797c5ac4d4f7fc6c8b660fbefa1dbc"
+        "jar": "820de7bbaf430eaf2e3e5ccb92f23e2085797c5ac4d4f7fc6c8b660fbefa1dbc",
+        "sources": "1d99b59e4eb2b28d88ac61928f7d0a1baa259bb0590ba1de1f33012b47e3ebbb"
       },
       "version": "2.26.0"
     },
     "org.apache.logging.log4j:log4j-core": {
       "shasums": {
-        "jar": "406bb3132c47a5d322e5c571feb0787ca84496469f346eb51f1ef2ee45499902"
+        "jar": "406bb3132c47a5d322e5c571feb0787ca84496469f346eb51f1ef2ee45499902",
+        "sources": "03358928efb94f10484d8ec3f28ad8f4ff3226de9b7c606fcb1ebdb24b9fd0dd"
       },
       "version": "2.26.0"
     },
     "org.apache.logging.log4j:log4j-slf4j2-impl": {
       "shasums": {
-        "jar": "cfc1bddbd39e684b698ae968291d8a3b3a55ee0ec2ef3d3ea5c2336a9e151598"
+        "jar": "cfc1bddbd39e684b698ae968291d8a3b3a55ee0ec2ef3d3ea5c2336a9e151598",
+        "sources": "018f8c2e95714264c9b82a18421311c89e0372c444fb0cf2e5be63288155c041"
       },
       "version": "2.26.0"
     },
     "org.apache.maven:maven-artifact": {
       "shasums": {
-        "jar": "54cc1c1ef932e3d4a903352111b42b4d3c3ed8e7a1d0de73b625309d9c3ad3e8"
+        "jar": "54cc1c1ef932e3d4a903352111b42b4d3c3ed8e7a1d0de73b625309d9c3ad3e8",
+        "sources": "2f371e3df38790afdef942b244da7ec3d85ae1adee6b8f86aa4a296f25103ddc"
       },
       "version": "3.9.16"
     },
     "org.checkerframework:checker-qual": {
       "shasums": {
-        "jar": "ff10785ac2a357ec5de9c293cb982a2cbb605c0309ea4cc1cb9b9bc6dbe7f3cb"
+        "jar": "ff10785ac2a357ec5de9c293cb982a2cbb605c0309ea4cc1cb9b9bc6dbe7f3cb",
+        "sources": "fd99a45195ed893803624d1030387056a96601013f5e61ccabd79abb4ddfa876"
       },
       "version": "3.12.0"
     },
     "org.codehaus.plexus:plexus-utils": {
       "shasums": {
-        "jar": "05a63effd67e2d6b9d610cc82e2bd7473289d34802e57a529b28110f28af5679"
+        "jar": "05a63effd67e2d6b9d610cc82e2bd7473289d34802e57a529b28110f28af5679",
+        "sources": "f9b0daa4d3728acf62a90f07136b56790b677dd42644d169855b9f9ec410a27d"
       },
       "version": "3.6.1"
     },
     "org.jetbrains.kotlin:kotlin-reflect": {
       "shasums": {
-        "jar": "b4aac2a4686ffdc110602ce153e4a90ffd7f37fa86fcca9d3b3aa39c08f8c2fc"
+        "jar": "b4aac2a4686ffdc110602ce153e4a90ffd7f37fa86fcca9d3b3aa39c08f8c2fc",
+        "sources": "ead091a7aaa0d631aabacfe6c380a448965a2be9304def629ad252676ff2a120"
       },
       "version": "2.4.20"
     },
     "org.jetbrains.kotlin:kotlin-stdlib": {
       "shasums": {
-        "jar": "2226de463d309d4a5500a481320b3dea515a6981dcae1def531fbc158884e25f"
+        "jar": "2226de463d309d4a5500a481320b3dea515a6981dcae1def531fbc158884e25f",
+        "sources": "9a2ce1266925b3cb0ff361392b91c3e288d3e78ca0961bb39e33e27aa6d1749a"
       },
       "version": "2.4.20"
     },
     "org.jetbrains.kotlin:kotlin-stdlib-jdk7": {
       "shasums": {
-        "jar": "f734859ccafd60897d7afa1fd58ad76842286f625630c6403c4271e417f1a8d9"
+        "jar": "f734859ccafd60897d7afa1fd58ad76842286f625630c6403c4271e417f1a8d9",
+        "sources": "2534c8908432e06de73177509903d405b55f423dd4c2f747e16b92a2162611e6"
       },
       "version": "2.4.20"
     },
     "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
       "shasums": {
-        "jar": "a39cf9486d1fefb22fc38c35b4ecab658b0cfea90a7135a723881d961f605cc8"
+        "jar": "a39cf9486d1fefb22fc38c35b4ecab658b0cfea90a7135a723881d961f605cc8",
+        "sources": "3cb6895054a0985bba591c165503fe4dd63a215af53263b67a071ccdc242bf6e"
       },
       "version": "2.4.20"
     },
     "org.jetbrains.kotlinx:atomicfu-jvm": {
       "shasums": {
-        "jar": "cdc94bfe4f739a0121860e61977d5c1e6a3d53c21f2471493393ba9e900d394e"
+        "jar": "cdc94bfe4f739a0121860e61977d5c1e6a3d53c21f2471493393ba9e900d394e",
+        "sources": "09e8719c35c3491633ea8d0dfb2a0f1769dfff5a6bbaf55ee5412a6221331215"
       },
       "version": "0.33.0"
     },
     "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm": {
       "shasums": {
-        "jar": "d1d75aa01dffbb4d1c520e67e4c4e7f5f6174718e7cb4632412503f2f0e604fa"
+        "jar": "d1d75aa01dffbb4d1c520e67e4c4e7f5f6174718e7cb4632412503f2f0e604fa",
+        "sources": "3e0847c0b463965404d5b6fe5d6868000a220b050180dec68501801e9439976a"
       },
       "version": "1.11.0"
     },
     "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8": {
       "shasums": {
-        "jar": "1238f179da55360725ec49b887225317f31ae89bd29b652cbe139ff59f5d45cb"
+        "jar": "1238f179da55360725ec49b887225317f31ae89bd29b652cbe139ff59f5d45cb",
+        "sources": "8a42fb2a78b17b2f6a21785f237e263e8ce6ca12a5155dcb6bca3f0f3ae27fd4"
       },
       "version": "1.11.0"
     },
     "org.jetbrains.kotlinx:kotlinx-datetime-jvm": {
       "shasums": {
-        "jar": "c764cb4882bb30a5b4279e07324ef60ed4f82f23a7bb420ee62550266d0f6162"
+        "jar": "c764cb4882bb30a5b4279e07324ef60ed4f82f23a7bb420ee62550266d0f6162",
+        "sources": "d2d3e8cf389ab0f162c61a2cfdaec488fca766ee16b8da12ac81bd5d53500de2"
       },
       "version": "0.8.0-0.6.x-compat"
     },
     "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm": {
       "shasums": {
-        "jar": "8589de0b7c476bfdd02a24641685f609ade72f5e595cf2909c168acdba7e6ba4"
+        "jar": "8589de0b7c476bfdd02a24641685f609ade72f5e595cf2909c168acdba7e6ba4",
+        "sources": "483e02a686fbbba255eabfdf6b35e1d6408c8504c5f75e40f3d5e0a5d998a50c"
       },
       "version": "0.9.1"
     },
     "org.jetbrains.kotlinx:kotlinx-io-core-jvm": {
       "shasums": {
-        "jar": "765d8851d8ca694706931331b92386844800867e041b720f1f193dbda874d370"
+        "jar": "765d8851d8ca694706931331b92386844800867e041b720f1f193dbda874d370",
+        "sources": "7d312485ba44ece3b874003829239fdd25c91ce8837b2956b741920dab24dbc7"
       },
       "version": "0.9.1"
     },
     "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm": {
       "shasums": {
-        "jar": "744e8db1d55f4a23f6656d5ac33723a5c13fdcfab477f7fd3457b49b6bd96723"
+        "jar": "744e8db1d55f4a23f6656d5ac33723a5c13fdcfab477f7fd3457b49b6bd96723",
+        "sources": "cdc2954b08aa086aab7a68e73fa536524cf6c241d082479970b36f2b4f428a7f"
       },
       "version": "1.11.0"
     },
     "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm": {
       "shasums": {
-        "jar": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d"
+        "jar": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d",
+        "sources": "9c9b7d4aabc03e671b5297ca5d50931f7c961f3d7e36a67ce945921b08a7be40"
       },
       "version": "1.11.0"
     },
     "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm": {
       "shasums": {
-        "jar": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935"
+        "jar": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935",
+        "sources": "8a0eae6ac1a42a0fbe1b850ea4e21ad71d2a8aa896ee2257b1492b471bd5c5fe"
       },
       "version": "1.11.0"
     },
     "org.jetbrains:annotations": {
       "shasums": {
-        "jar": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+        "jar": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05",
+        "sources": "ff2309b42f7584520497bb48bc609aca04c9886cf48708f14be83f00423ec144"
       },
       "version": "23.0.0"
     },
     "org.jline:jline-reader": {
       "shasums": {
-        "jar": "acd1c94d1e228aa7b7962f69b21ed3a9fd828eb3a63e4baf9086954e626af1f0"
+        "jar": "acd1c94d1e228aa7b7962f69b21ed3a9fd828eb3a63e4baf9086954e626af1f0",
+        "sources": "0adc8a0da22de89cf19c79062275cbbe15cb8698312d2383959919055ac494da"
       },
       "version": "3.20.0"
     },
     "org.jline:jline-terminal": {
       "shasums": {
-        "jar": "12125170e795519ba6dc8010c070b53c76aae92b485c1e37530e54ab5dd08d43"
+        "jar": "12125170e795519ba6dc8010c070b53c76aae92b485c1e37530e54ab5dd08d43",
+        "sources": "a035d74776601f3e8906677d0cc3998cb3efb3772e40499eab0e9c8618fed1cf"
       },
       "version": "3.20.0"
     },
     "org.lwjgl:lwjgl-tinyfd": {
       "shasums": {
-        "jar": "3ffad01103b6cbc8c12c7156691fd87a96f063600a5ff5c9087d321c6736963a"
+        "jar": "3ffad01103b6cbc8c12c7156691fd87a96f063600a5ff5c9087d321c6736963a",
+        "sources": "fad02c6ed657ecf8920748bf32a5e6bd2b944e36ad4570dea8b546cd469b37cd"
       },
       "version": "3.4.1"
     },
     "org.ow2.asm:asm": {
       "shasums": {
-        "jar": "ed825d10ab1399c8c0cb669e688cf0c8c82629b4c8399b58352b68e92ca10fcb"
+        "jar": "ed825d10ab1399c8c0cb669e688cf0c8c82629b4c8399b58352b68e92ca10fcb",
+        "sources": "cb29bf42b4008972c566944d377192aa1b2d90275b9cfa9a7fa86de669fde11c"
       },
       "version": "9.10.1"
     },
     "org.ow2.asm:asm-analysis": {
       "shasums": {
-        "jar": "dede75a21306b65974ecd8f87114ff6970f09fb794157a4ca09ab25c888c2bfc"
+        "jar": "dede75a21306b65974ecd8f87114ff6970f09fb794157a4ca09ab25c888c2bfc",
+        "sources": "a85db3987f46505bba104ab1d267692aaa1937792007dcdffad34f54c76193ef"
       },
       "version": "9.10.1"
     },
     "org.ow2.asm:asm-commons": {
       "shasums": {
-        "jar": "6d0abefb7cbf972ea16edb37ec14835372505063a45f976ab7ea889ed9497895"
+        "jar": "6d0abefb7cbf972ea16edb37ec14835372505063a45f976ab7ea889ed9497895",
+        "sources": "a26e55103e094a0f6df75a7b5e578bd7b4ad73abd2641b0fa2ac97db70641906"
       },
       "version": "9.10.1"
     },
     "org.ow2.asm:asm-tree": {
       "shasums": {
-        "jar": "3dfb0d5b6a106cd40b5b250e39935fbf2f927f4477546a5369a3ac609cf0506b"
+        "jar": "3dfb0d5b6a106cd40b5b250e39935fbf2f927f4477546a5369a3ac609cf0506b",
+        "sources": "93a9406bb68abff43f491891625e0d3c7edce87b70d2370ec1ea4627c9ead090"
       },
       "version": "9.10.1"
     },
     "org.ow2.asm:asm-util": {
       "shasums": {
-        "jar": "1bb99d091fba2597dc6d51193e9bbcf0d8447e7ed96bd8f0198b18152f09655c"
+        "jar": "1bb99d091fba2597dc6d51193e9bbcf0d8447e7ed96bd8f0198b18152f09655c",
+        "sources": "a7cbc3782c5384837149f84869dcc24625ed9a0bcaec9e929e69c44abf8f7125"
       },
       "version": "9.10.1"
     },
     "org.slf4j:slf4j-api": {
       "shasums": {
-        "jar": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+        "jar": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832",
+        "sources": "db0d08d8efa05ad19d174d747bd9d8e68dbb02b596812fe7b3a681656e346694"
       },
       "version": "2.0.17"
     }
@@ -1521,367 +1633,714 @@
   "repositories": {
     "https://maven.neoforged.net/releases/": [
       "com.electronwill.night-config:core",
+      "com.electronwill.night-config:core:jar:sources",
       "com.electronwill.night-config:toml",
+      "com.electronwill.night-config:toml:jar:sources",
       "com.google.code.findbugs:jsr305",
+      "com.google.code.findbugs:jsr305:jar:sources",
       "com.google.code.gson:gson",
+      "com.google.code.gson:gson:jar:sources",
       "com.google.errorprone:error_prone_annotations",
+      "com.google.errorprone:error_prone_annotations:jar:sources",
       "com.google.guava:failureaccess",
+      "com.google.guava:failureaccess:jar:sources",
       "com.google.guava:guava",
+      "com.google.guava:guava:jar:sources",
       "com.google.guava:listenablefuture",
       "com.google.j2objc:j2objc-annotations",
+      "com.google.j2objc:j2objc-annotations:jar:sources",
       "com.mojang:logging",
+      "com.mojang:logging:jar:sources",
       "commons-io:commons-io",
+      "commons-io:commons-io:jar:sources",
       "dev.nyon:KotlinLangForge",
+      "dev.nyon:KotlinLangForge:jar:sources",
       "io.github.llamalad7:mixinextras-neoforge",
+      "io.github.llamalad7:mixinextras-neoforge:jar:sources",
       "maven.modrinth:iris",
       "net.fabricmc:sponge-mixin",
+      "net.fabricmc:sponge-mixin:jar:sources",
       "net.jodah:typetools",
+      "net.jodah:typetools:jar:sources",
       "net.minecrell:terminalconsoleappender",
+      "net.minecrell:terminalconsoleappender:jar:sources",
       "net.neoforged.accesstransformers:at-parser",
+      "net.neoforged.accesstransformers:at-parser:jar:sources",
       "net.neoforged.fancymodloader:earlydisplay",
+      "net.neoforged.fancymodloader:earlydisplay:jar:sources",
       "net.neoforged.fancymodloader:loader",
+      "net.neoforged.fancymodloader:loader:jar:sources",
       "net.neoforged:JarJarMetadata",
+      "net.neoforged:JarJarMetadata:jar:sources",
       "net.neoforged:JarJarSelector",
+      "net.neoforged:JarJarSelector:jar:sources",
       "net.neoforged:accesstransformers",
+      "net.neoforged:accesstransformers:jar:sources",
       "net.neoforged:bus",
+      "net.neoforged:bus:jar:sources",
       "net.neoforged:mergetool:jar:api",
+      "net.neoforged:mergetool:jar:sources",
+      "net.neoforged:neoforge:jar:sources",
       "net.neoforged:neoforge:jar:universal",
       "net.neoforged:srgutils",
+      "net.neoforged:srgutils:jar:sources",
       "net.sf.jopt-simple:jopt-simple",
+      "net.sf.jopt-simple:jopt-simple:jar:sources",
       "org.apache.commons:commons-lang3",
+      "org.apache.commons:commons-lang3:jar:sources",
       "org.apache.logging.log4j:log4j-api",
+      "org.apache.logging.log4j:log4j-api:jar:sources",
       "org.apache.logging.log4j:log4j-core",
+      "org.apache.logging.log4j:log4j-core:jar:sources",
       "org.apache.logging.log4j:log4j-slf4j2-impl",
+      "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources",
       "org.apache.maven:maven-artifact",
+      "org.apache.maven:maven-artifact:jar:sources",
       "org.checkerframework:checker-qual",
+      "org.checkerframework:checker-qual:jar:sources",
       "org.codehaus.plexus:plexus-utils",
+      "org.codehaus.plexus:plexus-utils:jar:sources",
       "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-reflect:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources",
+      "org.jetbrains.kotlin:kotlin-stdlib:jar:sources",
       "org.jetbrains.kotlinx:atomicfu-jvm",
+      "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+      "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources",
       "org.jetbrains:annotations",
+      "org.jetbrains:annotations:jar:sources",
       "org.jline:jline-reader",
+      "org.jline:jline-reader:jar:sources",
       "org.jline:jline-terminal",
+      "org.jline:jline-terminal:jar:sources",
       "org.lwjgl:lwjgl-tinyfd",
+      "org.lwjgl:lwjgl-tinyfd:jar:sources",
       "org.ow2.asm:asm",
       "org.ow2.asm:asm-analysis",
+      "org.ow2.asm:asm-analysis:jar:sources",
       "org.ow2.asm:asm-commons",
+      "org.ow2.asm:asm-commons:jar:sources",
       "org.ow2.asm:asm-tree",
+      "org.ow2.asm:asm-tree:jar:sources",
       "org.ow2.asm:asm-util",
-      "org.slf4j:slf4j-api"
+      "org.ow2.asm:asm-util:jar:sources",
+      "org.ow2.asm:asm:jar:sources",
+      "org.slf4j:slf4j-api",
+      "org.slf4j:slf4j-api:jar:sources"
     ],
     "https://libraries.minecraft.net/": [
       "com.electronwill.night-config:core",
+      "com.electronwill.night-config:core:jar:sources",
       "com.electronwill.night-config:toml",
+      "com.electronwill.night-config:toml:jar:sources",
       "com.google.code.findbugs:jsr305",
+      "com.google.code.findbugs:jsr305:jar:sources",
       "com.google.code.gson:gson",
+      "com.google.code.gson:gson:jar:sources",
       "com.google.errorprone:error_prone_annotations",
+      "com.google.errorprone:error_prone_annotations:jar:sources",
       "com.google.guava:failureaccess",
+      "com.google.guava:failureaccess:jar:sources",
       "com.google.guava:guava",
+      "com.google.guava:guava:jar:sources",
       "com.google.guava:listenablefuture",
       "com.google.j2objc:j2objc-annotations",
+      "com.google.j2objc:j2objc-annotations:jar:sources",
       "com.mojang:logging",
+      "com.mojang:logging:jar:sources",
       "commons-io:commons-io",
+      "commons-io:commons-io:jar:sources",
       "dev.nyon:KotlinLangForge",
+      "dev.nyon:KotlinLangForge:jar:sources",
       "io.github.llamalad7:mixinextras-neoforge",
+      "io.github.llamalad7:mixinextras-neoforge:jar:sources",
       "maven.modrinth:iris",
       "net.fabricmc:sponge-mixin",
+      "net.fabricmc:sponge-mixin:jar:sources",
       "net.jodah:typetools",
+      "net.jodah:typetools:jar:sources",
       "net.minecrell:terminalconsoleappender",
+      "net.minecrell:terminalconsoleappender:jar:sources",
       "net.neoforged.accesstransformers:at-parser",
+      "net.neoforged.accesstransformers:at-parser:jar:sources",
       "net.neoforged.fancymodloader:earlydisplay",
+      "net.neoforged.fancymodloader:earlydisplay:jar:sources",
       "net.neoforged.fancymodloader:loader",
+      "net.neoforged.fancymodloader:loader:jar:sources",
       "net.neoforged:JarJarMetadata",
+      "net.neoforged:JarJarMetadata:jar:sources",
       "net.neoforged:JarJarSelector",
+      "net.neoforged:JarJarSelector:jar:sources",
       "net.neoforged:accesstransformers",
+      "net.neoforged:accesstransformers:jar:sources",
       "net.neoforged:bus",
+      "net.neoforged:bus:jar:sources",
       "net.neoforged:mergetool:jar:api",
+      "net.neoforged:mergetool:jar:sources",
+      "net.neoforged:neoforge:jar:sources",
       "net.neoforged:neoforge:jar:universal",
       "net.neoforged:srgutils",
+      "net.neoforged:srgutils:jar:sources",
       "net.sf.jopt-simple:jopt-simple",
+      "net.sf.jopt-simple:jopt-simple:jar:sources",
       "org.apache.commons:commons-lang3",
+      "org.apache.commons:commons-lang3:jar:sources",
       "org.apache.logging.log4j:log4j-api",
+      "org.apache.logging.log4j:log4j-api:jar:sources",
       "org.apache.logging.log4j:log4j-core",
+      "org.apache.logging.log4j:log4j-core:jar:sources",
       "org.apache.logging.log4j:log4j-slf4j2-impl",
+      "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources",
       "org.apache.maven:maven-artifact",
+      "org.apache.maven:maven-artifact:jar:sources",
       "org.checkerframework:checker-qual",
+      "org.checkerframework:checker-qual:jar:sources",
       "org.codehaus.plexus:plexus-utils",
+      "org.codehaus.plexus:plexus-utils:jar:sources",
       "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-reflect:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources",
+      "org.jetbrains.kotlin:kotlin-stdlib:jar:sources",
       "org.jetbrains.kotlinx:atomicfu-jvm",
+      "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+      "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources",
       "org.jetbrains:annotations",
+      "org.jetbrains:annotations:jar:sources",
       "org.jline:jline-reader",
+      "org.jline:jline-reader:jar:sources",
       "org.jline:jline-terminal",
+      "org.jline:jline-terminal:jar:sources",
       "org.lwjgl:lwjgl-tinyfd",
+      "org.lwjgl:lwjgl-tinyfd:jar:sources",
       "org.ow2.asm:asm",
       "org.ow2.asm:asm-analysis",
+      "org.ow2.asm:asm-analysis:jar:sources",
       "org.ow2.asm:asm-commons",
+      "org.ow2.asm:asm-commons:jar:sources",
       "org.ow2.asm:asm-tree",
+      "org.ow2.asm:asm-tree:jar:sources",
       "org.ow2.asm:asm-util",
-      "org.slf4j:slf4j-api"
+      "org.ow2.asm:asm-util:jar:sources",
+      "org.ow2.asm:asm:jar:sources",
+      "org.slf4j:slf4j-api",
+      "org.slf4j:slf4j-api:jar:sources"
     ],
     "https://repo.maven.apache.org/maven2/": [
       "com.electronwill.night-config:core",
+      "com.electronwill.night-config:core:jar:sources",
       "com.electronwill.night-config:toml",
+      "com.electronwill.night-config:toml:jar:sources",
       "com.google.code.findbugs:jsr305",
+      "com.google.code.findbugs:jsr305:jar:sources",
       "com.google.code.gson:gson",
+      "com.google.code.gson:gson:jar:sources",
       "com.google.errorprone:error_prone_annotations",
+      "com.google.errorprone:error_prone_annotations:jar:sources",
       "com.google.guava:failureaccess",
+      "com.google.guava:failureaccess:jar:sources",
       "com.google.guava:guava",
+      "com.google.guava:guava:jar:sources",
       "com.google.guava:listenablefuture",
       "com.google.j2objc:j2objc-annotations",
+      "com.google.j2objc:j2objc-annotations:jar:sources",
       "com.mojang:logging",
+      "com.mojang:logging:jar:sources",
       "commons-io:commons-io",
+      "commons-io:commons-io:jar:sources",
       "dev.nyon:KotlinLangForge",
+      "dev.nyon:KotlinLangForge:jar:sources",
       "io.github.llamalad7:mixinextras-neoforge",
+      "io.github.llamalad7:mixinextras-neoforge:jar:sources",
       "maven.modrinth:iris",
       "net.fabricmc:sponge-mixin",
+      "net.fabricmc:sponge-mixin:jar:sources",
       "net.jodah:typetools",
+      "net.jodah:typetools:jar:sources",
       "net.minecrell:terminalconsoleappender",
+      "net.minecrell:terminalconsoleappender:jar:sources",
       "net.neoforged.accesstransformers:at-parser",
+      "net.neoforged.accesstransformers:at-parser:jar:sources",
       "net.neoforged.fancymodloader:earlydisplay",
+      "net.neoforged.fancymodloader:earlydisplay:jar:sources",
       "net.neoforged.fancymodloader:loader",
+      "net.neoforged.fancymodloader:loader:jar:sources",
       "net.neoforged:JarJarMetadata",
+      "net.neoforged:JarJarMetadata:jar:sources",
       "net.neoforged:JarJarSelector",
+      "net.neoforged:JarJarSelector:jar:sources",
       "net.neoforged:accesstransformers",
+      "net.neoforged:accesstransformers:jar:sources",
       "net.neoforged:bus",
+      "net.neoforged:bus:jar:sources",
       "net.neoforged:mergetool:jar:api",
+      "net.neoforged:mergetool:jar:sources",
+      "net.neoforged:neoforge:jar:sources",
       "net.neoforged:neoforge:jar:universal",
       "net.neoforged:srgutils",
+      "net.neoforged:srgutils:jar:sources",
       "net.sf.jopt-simple:jopt-simple",
+      "net.sf.jopt-simple:jopt-simple:jar:sources",
       "org.apache.commons:commons-lang3",
+      "org.apache.commons:commons-lang3:jar:sources",
       "org.apache.logging.log4j:log4j-api",
+      "org.apache.logging.log4j:log4j-api:jar:sources",
       "org.apache.logging.log4j:log4j-core",
+      "org.apache.logging.log4j:log4j-core:jar:sources",
       "org.apache.logging.log4j:log4j-slf4j2-impl",
+      "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources",
       "org.apache.maven:maven-artifact",
+      "org.apache.maven:maven-artifact:jar:sources",
       "org.checkerframework:checker-qual",
+      "org.checkerframework:checker-qual:jar:sources",
       "org.codehaus.plexus:plexus-utils",
+      "org.codehaus.plexus:plexus-utils:jar:sources",
       "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-reflect:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources",
+      "org.jetbrains.kotlin:kotlin-stdlib:jar:sources",
       "org.jetbrains.kotlinx:atomicfu-jvm",
+      "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+      "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources",
       "org.jetbrains:annotations",
+      "org.jetbrains:annotations:jar:sources",
       "org.jline:jline-reader",
+      "org.jline:jline-reader:jar:sources",
       "org.jline:jline-terminal",
+      "org.jline:jline-terminal:jar:sources",
       "org.lwjgl:lwjgl-tinyfd",
+      "org.lwjgl:lwjgl-tinyfd:jar:sources",
       "org.ow2.asm:asm",
       "org.ow2.asm:asm-analysis",
+      "org.ow2.asm:asm-analysis:jar:sources",
       "org.ow2.asm:asm-commons",
+      "org.ow2.asm:asm-commons:jar:sources",
       "org.ow2.asm:asm-tree",
+      "org.ow2.asm:asm-tree:jar:sources",
       "org.ow2.asm:asm-util",
-      "org.slf4j:slf4j-api"
+      "org.ow2.asm:asm-util:jar:sources",
+      "org.ow2.asm:asm:jar:sources",
+      "org.slf4j:slf4j-api",
+      "org.slf4j:slf4j-api:jar:sources"
     ],
     "https://maven.fabricmc.net/": [
       "com.electronwill.night-config:core",
+      "com.electronwill.night-config:core:jar:sources",
       "com.electronwill.night-config:toml",
+      "com.electronwill.night-config:toml:jar:sources",
       "com.google.code.findbugs:jsr305",
+      "com.google.code.findbugs:jsr305:jar:sources",
       "com.google.code.gson:gson",
+      "com.google.code.gson:gson:jar:sources",
       "com.google.errorprone:error_prone_annotations",
+      "com.google.errorprone:error_prone_annotations:jar:sources",
       "com.google.guava:failureaccess",
+      "com.google.guava:failureaccess:jar:sources",
       "com.google.guava:guava",
+      "com.google.guava:guava:jar:sources",
       "com.google.guava:listenablefuture",
       "com.google.j2objc:j2objc-annotations",
+      "com.google.j2objc:j2objc-annotations:jar:sources",
       "com.mojang:logging",
+      "com.mojang:logging:jar:sources",
       "commons-io:commons-io",
+      "commons-io:commons-io:jar:sources",
       "dev.nyon:KotlinLangForge",
+      "dev.nyon:KotlinLangForge:jar:sources",
       "io.github.llamalad7:mixinextras-neoforge",
+      "io.github.llamalad7:mixinextras-neoforge:jar:sources",
       "maven.modrinth:iris",
       "net.fabricmc:sponge-mixin",
+      "net.fabricmc:sponge-mixin:jar:sources",
       "net.jodah:typetools",
+      "net.jodah:typetools:jar:sources",
       "net.minecrell:terminalconsoleappender",
+      "net.minecrell:terminalconsoleappender:jar:sources",
       "net.neoforged.accesstransformers:at-parser",
+      "net.neoforged.accesstransformers:at-parser:jar:sources",
       "net.neoforged.fancymodloader:earlydisplay",
+      "net.neoforged.fancymodloader:earlydisplay:jar:sources",
       "net.neoforged.fancymodloader:loader",
+      "net.neoforged.fancymodloader:loader:jar:sources",
       "net.neoforged:JarJarMetadata",
+      "net.neoforged:JarJarMetadata:jar:sources",
       "net.neoforged:JarJarSelector",
+      "net.neoforged:JarJarSelector:jar:sources",
       "net.neoforged:accesstransformers",
+      "net.neoforged:accesstransformers:jar:sources",
       "net.neoforged:bus",
+      "net.neoforged:bus:jar:sources",
       "net.neoforged:mergetool:jar:api",
+      "net.neoforged:mergetool:jar:sources",
+      "net.neoforged:neoforge:jar:sources",
       "net.neoforged:neoforge:jar:universal",
       "net.neoforged:srgutils",
+      "net.neoforged:srgutils:jar:sources",
       "net.sf.jopt-simple:jopt-simple",
+      "net.sf.jopt-simple:jopt-simple:jar:sources",
       "org.apache.commons:commons-lang3",
+      "org.apache.commons:commons-lang3:jar:sources",
       "org.apache.logging.log4j:log4j-api",
+      "org.apache.logging.log4j:log4j-api:jar:sources",
       "org.apache.logging.log4j:log4j-core",
+      "org.apache.logging.log4j:log4j-core:jar:sources",
       "org.apache.logging.log4j:log4j-slf4j2-impl",
+      "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources",
       "org.apache.maven:maven-artifact",
+      "org.apache.maven:maven-artifact:jar:sources",
       "org.checkerframework:checker-qual",
+      "org.checkerframework:checker-qual:jar:sources",
       "org.codehaus.plexus:plexus-utils",
+      "org.codehaus.plexus:plexus-utils:jar:sources",
       "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-reflect:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources",
+      "org.jetbrains.kotlin:kotlin-stdlib:jar:sources",
       "org.jetbrains.kotlinx:atomicfu-jvm",
+      "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+      "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources",
       "org.jetbrains:annotations",
+      "org.jetbrains:annotations:jar:sources",
       "org.jline:jline-reader",
+      "org.jline:jline-reader:jar:sources",
       "org.jline:jline-terminal",
+      "org.jline:jline-terminal:jar:sources",
       "org.lwjgl:lwjgl-tinyfd",
+      "org.lwjgl:lwjgl-tinyfd:jar:sources",
       "org.ow2.asm:asm",
       "org.ow2.asm:asm-analysis",
+      "org.ow2.asm:asm-analysis:jar:sources",
       "org.ow2.asm:asm-commons",
+      "org.ow2.asm:asm-commons:jar:sources",
       "org.ow2.asm:asm-tree",
+      "org.ow2.asm:asm-tree:jar:sources",
       "org.ow2.asm:asm-util",
-      "org.slf4j:slf4j-api"
+      "org.ow2.asm:asm-util:jar:sources",
+      "org.ow2.asm:asm:jar:sources",
+      "org.slf4j:slf4j-api",
+      "org.slf4j:slf4j-api:jar:sources"
     ],
     "https://repo.nyon.dev/releases/": [
       "com.electronwill.night-config:core",
+      "com.electronwill.night-config:core:jar:sources",
       "com.electronwill.night-config:toml",
+      "com.electronwill.night-config:toml:jar:sources",
       "com.google.code.findbugs:jsr305",
+      "com.google.code.findbugs:jsr305:jar:sources",
       "com.google.code.gson:gson",
+      "com.google.code.gson:gson:jar:sources",
       "com.google.errorprone:error_prone_annotations",
+      "com.google.errorprone:error_prone_annotations:jar:sources",
       "com.google.guava:failureaccess",
+      "com.google.guava:failureaccess:jar:sources",
       "com.google.guava:guava",
+      "com.google.guava:guava:jar:sources",
       "com.google.guava:listenablefuture",
       "com.google.j2objc:j2objc-annotations",
+      "com.google.j2objc:j2objc-annotations:jar:sources",
       "com.mojang:logging",
+      "com.mojang:logging:jar:sources",
       "commons-io:commons-io",
+      "commons-io:commons-io:jar:sources",
       "dev.nyon:KotlinLangForge",
+      "dev.nyon:KotlinLangForge:jar:sources",
       "io.github.llamalad7:mixinextras-neoforge",
+      "io.github.llamalad7:mixinextras-neoforge:jar:sources",
       "maven.modrinth:iris",
       "net.fabricmc:sponge-mixin",
+      "net.fabricmc:sponge-mixin:jar:sources",
       "net.jodah:typetools",
+      "net.jodah:typetools:jar:sources",
       "net.minecrell:terminalconsoleappender",
+      "net.minecrell:terminalconsoleappender:jar:sources",
       "net.neoforged.accesstransformers:at-parser",
+      "net.neoforged.accesstransformers:at-parser:jar:sources",
       "net.neoforged.fancymodloader:earlydisplay",
+      "net.neoforged.fancymodloader:earlydisplay:jar:sources",
       "net.neoforged.fancymodloader:loader",
+      "net.neoforged.fancymodloader:loader:jar:sources",
       "net.neoforged:JarJarMetadata",
+      "net.neoforged:JarJarMetadata:jar:sources",
       "net.neoforged:JarJarSelector",
+      "net.neoforged:JarJarSelector:jar:sources",
       "net.neoforged:accesstransformers",
+      "net.neoforged:accesstransformers:jar:sources",
       "net.neoforged:bus",
+      "net.neoforged:bus:jar:sources",
       "net.neoforged:mergetool:jar:api",
+      "net.neoforged:mergetool:jar:sources",
+      "net.neoforged:neoforge:jar:sources",
       "net.neoforged:neoforge:jar:universal",
       "net.neoforged:srgutils",
+      "net.neoforged:srgutils:jar:sources",
       "net.sf.jopt-simple:jopt-simple",
+      "net.sf.jopt-simple:jopt-simple:jar:sources",
       "org.apache.commons:commons-lang3",
+      "org.apache.commons:commons-lang3:jar:sources",
       "org.apache.logging.log4j:log4j-api",
+      "org.apache.logging.log4j:log4j-api:jar:sources",
       "org.apache.logging.log4j:log4j-core",
+      "org.apache.logging.log4j:log4j-core:jar:sources",
       "org.apache.logging.log4j:log4j-slf4j2-impl",
+      "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources",
       "org.apache.maven:maven-artifact",
+      "org.apache.maven:maven-artifact:jar:sources",
       "org.checkerframework:checker-qual",
+      "org.checkerframework:checker-qual:jar:sources",
       "org.codehaus.plexus:plexus-utils",
+      "org.codehaus.plexus:plexus-utils:jar:sources",
       "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-reflect:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources",
+      "org.jetbrains.kotlin:kotlin-stdlib:jar:sources",
       "org.jetbrains.kotlinx:atomicfu-jvm",
+      "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+      "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources",
       "org.jetbrains:annotations",
+      "org.jetbrains:annotations:jar:sources",
       "org.jline:jline-reader",
+      "org.jline:jline-reader:jar:sources",
       "org.jline:jline-terminal",
+      "org.jline:jline-terminal:jar:sources",
       "org.lwjgl:lwjgl-tinyfd",
+      "org.lwjgl:lwjgl-tinyfd:jar:sources",
       "org.ow2.asm:asm",
       "org.ow2.asm:asm-analysis",
+      "org.ow2.asm:asm-analysis:jar:sources",
       "org.ow2.asm:asm-commons",
+      "org.ow2.asm:asm-commons:jar:sources",
       "org.ow2.asm:asm-tree",
+      "org.ow2.asm:asm-tree:jar:sources",
       "org.ow2.asm:asm-util",
-      "org.slf4j:slf4j-api"
+      "org.ow2.asm:asm-util:jar:sources",
+      "org.ow2.asm:asm:jar:sources",
+      "org.slf4j:slf4j-api",
+      "org.slf4j:slf4j-api:jar:sources"
     ],
     "https://api.modrinth.com/maven/": [
       "com.electronwill.night-config:core",
+      "com.electronwill.night-config:core:jar:sources",
       "com.electronwill.night-config:toml",
+      "com.electronwill.night-config:toml:jar:sources",
       "com.google.code.findbugs:jsr305",
+      "com.google.code.findbugs:jsr305:jar:sources",
       "com.google.code.gson:gson",
+      "com.google.code.gson:gson:jar:sources",
       "com.google.errorprone:error_prone_annotations",
+      "com.google.errorprone:error_prone_annotations:jar:sources",
       "com.google.guava:failureaccess",
+      "com.google.guava:failureaccess:jar:sources",
       "com.google.guava:guava",
+      "com.google.guava:guava:jar:sources",
       "com.google.guava:listenablefuture",
       "com.google.j2objc:j2objc-annotations",
+      "com.google.j2objc:j2objc-annotations:jar:sources",
       "com.mojang:logging",
+      "com.mojang:logging:jar:sources",
       "commons-io:commons-io",
+      "commons-io:commons-io:jar:sources",
       "dev.nyon:KotlinLangForge",
+      "dev.nyon:KotlinLangForge:jar:sources",
       "io.github.llamalad7:mixinextras-neoforge",
+      "io.github.llamalad7:mixinextras-neoforge:jar:sources",
       "maven.modrinth:iris",
       "net.fabricmc:sponge-mixin",
+      "net.fabricmc:sponge-mixin:jar:sources",
       "net.jodah:typetools",
+      "net.jodah:typetools:jar:sources",
       "net.minecrell:terminalconsoleappender",
+      "net.minecrell:terminalconsoleappender:jar:sources",
       "net.neoforged.accesstransformers:at-parser",
+      "net.neoforged.accesstransformers:at-parser:jar:sources",
       "net.neoforged.fancymodloader:earlydisplay",
+      "net.neoforged.fancymodloader:earlydisplay:jar:sources",
       "net.neoforged.fancymodloader:loader",
+      "net.neoforged.fancymodloader:loader:jar:sources",
       "net.neoforged:JarJarMetadata",
+      "net.neoforged:JarJarMetadata:jar:sources",
       "net.neoforged:JarJarSelector",
+      "net.neoforged:JarJarSelector:jar:sources",
       "net.neoforged:accesstransformers",
+      "net.neoforged:accesstransformers:jar:sources",
       "net.neoforged:bus",
+      "net.neoforged:bus:jar:sources",
       "net.neoforged:mergetool:jar:api",
+      "net.neoforged:mergetool:jar:sources",
+      "net.neoforged:neoforge:jar:sources",
       "net.neoforged:neoforge:jar:universal",
       "net.neoforged:srgutils",
+      "net.neoforged:srgutils:jar:sources",
       "net.sf.jopt-simple:jopt-simple",
+      "net.sf.jopt-simple:jopt-simple:jar:sources",
       "org.apache.commons:commons-lang3",
+      "org.apache.commons:commons-lang3:jar:sources",
       "org.apache.logging.log4j:log4j-api",
+      "org.apache.logging.log4j:log4j-api:jar:sources",
       "org.apache.logging.log4j:log4j-core",
+      "org.apache.logging.log4j:log4j-core:jar:sources",
       "org.apache.logging.log4j:log4j-slf4j2-impl",
+      "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources",
       "org.apache.maven:maven-artifact",
+      "org.apache.maven:maven-artifact:jar:sources",
       "org.checkerframework:checker-qual",
+      "org.checkerframework:checker-qual:jar:sources",
       "org.codehaus.plexus:plexus-utils",
+      "org.codehaus.plexus:plexus-utils:jar:sources",
       "org.jetbrains.kotlin:kotlin-reflect",
+      "org.jetbrains.kotlin:kotlin-reflect:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:sources",
       "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+      "org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:sources",
+      "org.jetbrains.kotlin:kotlin-stdlib:jar:sources",
       "org.jetbrains.kotlinx:atomicfu-jvm",
+      "org.jetbrains.kotlinx:atomicfu-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+      "org.jetbrains.kotlinx:kotlinx-datetime-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-io-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-io-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:jar:sources",
       "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+      "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:jar:sources",
       "org.jetbrains:annotations",
+      "org.jetbrains:annotations:jar:sources",
       "org.jline:jline-reader",
+      "org.jline:jline-reader:jar:sources",
       "org.jline:jline-terminal",
+      "org.jline:jline-terminal:jar:sources",
       "org.lwjgl:lwjgl-tinyfd",
+      "org.lwjgl:lwjgl-tinyfd:jar:sources",
       "org.ow2.asm:asm",
       "org.ow2.asm:asm-analysis",
+      "org.ow2.asm:asm-analysis:jar:sources",
       "org.ow2.asm:asm-commons",
+      "org.ow2.asm:asm-commons:jar:sources",
       "org.ow2.asm:asm-tree",
+      "org.ow2.asm:asm-tree:jar:sources",
       "org.ow2.asm:asm-util",
-      "org.slf4j:slf4j-api"
+      "org.ow2.asm:asm-util:jar:sources",
+      "org.ow2.asm:asm:jar:sources",
+      "org.slf4j:slf4j-api",
+      "org.slf4j:slf4j-api:jar:sources"
     ]
   },
   "services": {
     "dev.nyon:KotlinLangForge": {
+      "net.minecraftforge.forgespi.language.IModLanguageProvider": [
+        "dev.nyon.klf.KotlinLanguageProvider"
+      ],
+      "net.neoforged.neoforgespi.language.IModLanguageLoader": [
+        "dev.nyon.klf.KotlinLanguageLoader"
+      ],
+      "net.neoforged.neoforgespi.language.IModLanguageProvider": [
+        "dev.nyon.klf.KotlinLanguageProvider"
+      ]
+    },
+    "dev.nyon:KotlinLangForge:jar:sources": {
       "net.minecraftforge.forgespi.language.IModLanguageProvider": [
         "dev.nyon.klf.KotlinLanguageProvider"
       ],
@@ -1930,7 +2389,37 @@
         "org.spongepowered.tools.obfuscation.mcp.ObfuscationServiceMCP"
       ]
     },
+    "net.fabricmc:sponge-mixin:jar:sources": {
+      "cpw.mods.modlauncher.api.ITransformationService": [
+        "org.spongepowered.asm.launch.MixinTransformationServiceLegacy"
+      ],
+      "cpw.mods.modlauncher.serviceapi.ILaunchPluginService": [
+        "org.spongepowered.asm.launch.MixinLaunchPluginLegacy"
+      ],
+      "javax.annotation.processing.Processor": [
+        "org.spongepowered.tools.obfuscation.MixinObfuscationProcessorInjection",
+        "org.spongepowered.tools.obfuscation.MixinObfuscationProcessorTargets"
+      ],
+      "org.spongepowered.asm.service.IGlobalPropertyService": [
+        "org.spongepowered.asm.service.mojang.Blackboard"
+      ],
+      "org.spongepowered.asm.service.IMixinService": [
+        "org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapper"
+      ],
+      "org.spongepowered.asm.service.IMixinServiceBootstrap": [
+        "org.spongepowered.asm.service.mojang.MixinServiceLaunchWrapperBootstrap"
+      ],
+      "org.spongepowered.tools.obfuscation.service.IObfuscationService": [
+        "org.spongepowered.tools.obfuscation.fg3.ObfuscationServiceFG3",
+        "org.spongepowered.tools.obfuscation.mcp.ObfuscationServiceMCP"
+      ]
+    },
     "net.neoforged.fancymodloader:earlydisplay": {
+      "net.neoforged.neoforgespi.earlywindow.ImmediateWindowProvider": [
+        "net.neoforged.fml.earlydisplay.DisplayWindow"
+      ]
+    },
+    "net.neoforged.fancymodloader:earlydisplay:jar:sources": {
       "net.neoforged.neoforgespi.earlywindow.ImmediateWindowProvider": [
         "net.neoforged.fml.earlydisplay.DisplayWindow"
       ]
@@ -1949,6 +2438,30 @@
       ],
       "org.spongepowered.asm.service.IGlobalPropertyService": [
         "net.neoforged.fml.loading.mixin.FMLMixinGlobalProperties"
+      ]
+    },
+    "net.neoforged.fancymodloader:loader:jar:sources": {
+      "net.neoforged.neoforgespi.language.IModLanguageLoader": [
+        "net.neoforged.fml.javafmlmod.FMLJavaModLanguageProvider",
+        "net.neoforged.fml.mclanguageprovider.MinecraftModLanguageProvider"
+      ],
+      "net.neoforged.neoforgespi.locating.IDependencyLocator": [
+        "net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator"
+      ],
+      "net.neoforged.neoforgespi.locating.IModFileReader": [
+        "net.neoforged.fml.loading.moddiscovery.readers.JarModsDotTomlModFileReader",
+        "net.neoforged.fml.loading.moddiscovery.readers.NestedLibraryModReader"
+      ],
+      "org.spongepowered.asm.service.IGlobalPropertyService": [
+        "net.neoforged.fml.loading.mixin.FMLMixinGlobalProperties"
+      ]
+    },
+    "net.neoforged:neoforge:jar:sources": {
+      "net.neoforged.fml.IBindingsProvider": [
+        "net.neoforged.neoforge.internal.NeoForgeBindings"
+      ],
+      "net.neoforged.fml.startup.JUnitGameBootstrapper": [
+        "net.neoforged.neoforge.junit.JUnitMain"
       ]
     },
     "net.neoforged:neoforge:jar:universal": {
@@ -1981,6 +2494,11 @@
       ]
     },
     "org.apache.logging.log4j:log4j-slf4j2-impl": {
+      "org.slf4j.spi.SLF4JServiceProvider": [
+        "org.apache.logging.slf4j.SLF4JServiceProvider"
+      ]
+    },
+    "org.apache.logging.log4j:log4j-slf4j2-impl:jar:sources": {
       "org.slf4j.spi.SLF4JServiceProvider": [
         "org.apache.logging.slf4j.SLF4JServiceProvider"
       ]

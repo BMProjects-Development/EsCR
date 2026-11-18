@@ -8,23 +8,17 @@ interface MRUBalance {
     val lowerBalance: Double
 }
 
-interface MutableMRUBalance : MRUBalance {
+interface MutableMRUBalance: MRUBalance {
     val maxUpperBalance: Double
-
     val maxLowerBalance: Double
-
     val minUpperBalance: Double
-
     val minLowerBalance: Double
 
     fun setUpperBalance(newBalance: Double)
 
     fun setLowerBalance(newBalance: Double)
 
-    fun setBalance(
-        upperBalance: Double,
-        lowerBalance: Double
-    )
+    fun setBalance(upperBalance: Double, lowerBalance: Double)
 
     fun setBalance(balance: MRUBalance) {
         setBalance(balance.upperBalance, balance.lowerBalance)
@@ -34,10 +28,7 @@ interface MutableMRUBalance : MRUBalance {
 
     fun updateLowerBalance(changeOn: Double): Double
 
-    fun includeSource(
-        source: MRUBalance,
-        gameTime: Long
-    )
+    fun includeSource(source: MRUBalance, gameTime: Long)
 
     fun toImmutable(): MRUBalance
 

@@ -56,11 +56,7 @@ internal fun optimizeConstants(ast: AstFloat): AstFloat {
                 if (condition.value) optimizeConstants(ast.thenBranch)
                 else optimizeConstants(ast.elseBranch)
             else
-                Conditional(
-                    condition,
-                    optimizeConstants(ast.thenBranch),
-                    optimizeConstants(ast.elseBranch)
-                )
+                Conditional(condition, optimizeConstants(ast.thenBranch), optimizeConstants(ast.elseBranch))
         }
     }
 }

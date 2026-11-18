@@ -18,15 +18,8 @@ import net.minecraft.world.item.crafting.display.RecipeDisplay
 import net.minecraft.world.item.crafting.display.SlotDisplay
 import net.minecraft.world.level.Level
 
-class MithrilineFurnaceRecipe(
-    val input: Ingredient,
-    val espe: Int,
-    private val result: ItemStackTemplate
-) : Recipe<SingleRecipeInput> {
-    override fun matches(
-        input: SingleRecipeInput,
-        level: Level
-    ): Boolean {
+class MithrilineFurnaceRecipe(val input: Ingredient, val espe: Int, private val result: ItemStackTemplate): Recipe<SingleRecipeInput> {
+    override fun matches(input: SingleRecipeInput, level: Level): Boolean {
         if (level.isClientSide || input.isEmpty) return false
 
         return this.input.test(input.item())
@@ -47,20 +40,10 @@ class MithrilineFurnaceRecipe(
     override fun recipeBookCategory(): RecipeBookCategory = RecipeBookCategories.FURNACE_MISC
 
     override fun display(): List<RecipeDisplay> =
-        listOf(
-            Display(
-                input.display(),
-                SlotDisplay.ItemStackSlotDisplay(result),
-                SlotDisplay.ItemSlotDisplay(BlockRegistry.mithrilineFurnace.get().asItem())
-            )
-        )
+        listOf(Display(input.display(), SlotDisplay.ItemStackSlotDisplay(result), SlotDisplay.ItemSlotDisplay(BlockRegistry.mithrilineFurnace.get().asItem())))
 
     @JvmRecord
-    data class Display(
-        val ingredient: SlotDisplay,
-        private val resultDisplay: SlotDisplay,
-        private val station: SlotDisplay
-    ) : RecipeDisplay {
+    data class Display(val ingredient: SlotDisplay, private val resultDisplay: SlotDisplay, private val station: SlotDisplay): RecipeDisplay {
         override fun result(): SlotDisplay = resultDisplay
 
         override fun craftingStation(): SlotDisplay = station
@@ -106,16 +89,9 @@ class MithrilineFurnaceRecipe(
             }
 
         @JvmField
-        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, MithrilineFurnaceRecipe> =
-            StreamCodec.of(
-                ::encode,
-                ::decode
-            )
+        val STREAM_CODEC: StreamCodec<RegistryFriendlyByteBuf, MithrilineFurnaceRecipe> = StreamCodec.of(::encode, ::decode)
 
-        private fun encode(
-            buf: RegistryFriendlyByteBuf,
-            recipe: MithrilineFurnaceRecipe
-        ) {
+        private fun encode(buf: RegistryFriendlyByteBuf, recipe: MithrilineFurnaceRecipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.input)
             buf.writeInt(recipe.espe)
             ItemStackTemplate.STREAM_CODEC.encode(buf, recipe.result)

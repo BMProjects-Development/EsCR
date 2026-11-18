@@ -81,11 +81,7 @@ object NeoForgeClientInit {
     }
 
     private fun onSubmitCustomGeometry(event: SubmitCustomGeometryEvent) {
-        ECRClientRendering.submit(
-            event.poseStack,
-            event.submitNodeCollector,
-            event.levelRenderState
-        )
+        ECRClientRendering.submit(event.poseStack, event.submitNodeCollector, event.levelRenderState)
     }
 
     private fun onRegisterSpecialModelRenderer(event: RegisterSpecialModelRendererEvent) {
@@ -95,14 +91,12 @@ object NeoForgeClientInit {
     private fun onMenuScreen(event: RegisterMenuScreensEvent) {
         EventBuses.MOD(
             CrossRegisterMenuScreensEvent(
-                object : CrossRegisterMenuScreensEvent.MenuScreenRegistrar {
+                object: CrossRegisterMenuScreensEvent.MenuScreenRegistrar {
                     override fun <M, S> register(
                         menuType: MenuType<out M>,
                         screenConstructor: CrossRegisterMenuScreensEvent.ScreenConstructor<M, S>
                     ) where M : AbstractContainerMenu, S : Screen, S : MenuAccess<M> {
-                        event.register(menuType) { menu, inventory, title ->
-                            screenConstructor.create(menu, inventory, title)
-                        }
+                        event.register(menuType) { menu, inventory, title -> screenConstructor.create(menu, inventory, title) }
                     }
                 }
             )
@@ -116,7 +110,7 @@ object NeoForgeClientInit {
     private fun onRegisterEntityRenderers(event: EntityRenderersEvent.RegisterRenderers) {
         EventBuses.MOD(
             CrossEntityRenderersEvent.RegisterRenderers(
-                object : CrossEntityRenderersEvent.BlockEntityRendererRegistrar {
+                object: CrossEntityRenderersEvent.BlockEntityRendererRegistrar {
                     override fun <T : BlockEntity, S : BlockEntityRenderState> register(
                         blockEntityType: BlockEntityType<out T>,
                         rendererProvider: BlockEntityRendererProvider<T, S>
@@ -127,10 +121,6 @@ object NeoForgeClientInit {
     }
 
     private fun onRegisterEntityModelLayer(event: EntityRenderersEvent.RegisterLayerDefinitions) {
-        EventBuses.MOD(
-            CrossEntityRenderersEvent.RegisterLayerDefinitions { layerLocation, supplier ->
-                event.registerLayerDefinition(layerLocation, supplier::invoke)
-            }
-        )
+        EventBuses.MOD(CrossEntityRenderersEvent.RegisterLayerDefinitions { layerLocation, supplier -> event.registerLayerDefinition(layerLocation, supplier::invoke) })
     }
 }

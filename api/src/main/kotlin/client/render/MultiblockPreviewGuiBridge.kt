@@ -10,6 +10,5 @@ object MultiblockPreviewGuiBridge {
         this.implementation = implement
     }
 
-    fun add(graphics: GuiGraphicsExtractor, state: MultiblockPreviewRenderState) =
-        implementation(graphics, state)
+    fun add(graphics: GuiGraphicsExtractor, state: MultiblockPreviewRenderState) = implementation(graphics, state)
 }

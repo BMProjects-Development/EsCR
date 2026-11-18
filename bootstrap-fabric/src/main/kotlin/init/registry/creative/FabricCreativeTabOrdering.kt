@@ -26,10 +26,7 @@ object FabricCreativeTabOrdering {
             if (display != 0) return@comparator -display
             compare(first.key().identifier(), second.key().identifier())
         }
-        val tabs = BuiltInRegistries.CREATIVE_MODE_TAB.listElements()
-            .filter { it.key().identifier().namespace != "minecraft" }
-            .sorted(fallback)
-            .toList()
+        val tabs = BuiltInRegistries.CREATIVE_MODE_TAB.listElements().filter { it.key().identifier().namespace != "minecraft" }.sorted(fallback).toList()
 
         val orderings: Map<CreativeModeTab, CreativeTabOrdering>
         synchronized(FabricCreativeTabOrdering::class.java) {
@@ -70,11 +67,7 @@ object FabricCreativeTabOrdering {
 
 
         if (sorted.size != tabs.size) {
-            val cycle = indegree.entries.stream()
-                .filter { it.value > 0 }
-                .map { it.key }
-                .sorted(FabricCreativeTabOrdering::compare)
-                .toList()
+            val cycle = indegree.entries.stream().filter { it.value > 0 }.map { it.key }.sorted(FabricCreativeTabOrdering::compare).toList()
             throw IllegalStateException("Creative tab ordering creative a cycle: $cycle")
         }
 

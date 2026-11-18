@@ -48,11 +48,7 @@ object BedrockGeoRenderEngine {
             if (loggedMissingGeometries.add(reference)) {
                 val resourceCount = model.geometryResource?.let(BedrockGeoAssets::geometryCount) ?: 0
                 if (resourceCount > 1)
-                    LOGGER.error(
-                        "Unable to render GEO model: resource '{}' contains {} geometries; use a Bedrock geometry identifier",
-                        reference,
-                        resourceCount
-                    )
+                    LOGGER.error("Unable to render GEO model: resource '{}' contains {} geometries; use a Bedrock geometry identifier", reference, resourceCount)
                 else
                     LOGGER.error("Unable to render GEO model: geometry '{}' is not loaded", reference)
             }
@@ -107,21 +103,12 @@ object BedrockGeoRenderEngine {
         ) {
             val pose = poseStack.last()
             collector.submitBedrockGeoGpu(
-                BedrockGeoGpuSubmit(
-                    data,
-                    Matrix4f(pose.pose()),
-                    Matrix3f(pose.normal()),
-                    BedrockGeoGpuRenderTypes.get(data.texture, data.renderType),
-                    modelLight,
-                    packedOverlay
-                )
+                BedrockGeoGpuSubmit(data, Matrix4f(pose.pose()), Matrix3f(pose.normal()), BedrockGeoGpuRenderTypes.get(data.texture, data.renderType), modelLight, packedOverlay)
             )
             poseStack.popPose()
             return
         }
-        collector.submitCustomGeometry(poseStack, renderType) { basePose, consumer ->
-            emitVertices(data, basePose, consumer, modelLight, packedOverlay, color)
-        }
+        collector.submitCustomGeometry(poseStack, renderType) { basePose, consumer -> emitVertices(data, basePose, consumer, modelLight, packedOverlay, color) }
         poseStack.popPose()
     }
 
@@ -136,16 +123,8 @@ object BedrockGeoRenderEngine {
                 normalTransform.transform(normal).normalize()
                 repeat(4) { vertexIndex ->
                     val positionIndex = vertexIndex * 3
-                    transform.transformPosition(
-                        quad.positions[positionIndex],
-                        quad.positions[positionIndex + 1],
-                        quad.positions[positionIndex + 2],
-                        point
-                    )
-                    consumer.addVertex(basePose, point)
-                        .setColor(color)
-                        .setUv(quad.uvs[vertexIndex * 2], quad.uvs[vertexIndex * 2 + 1])
-                        .setOverlay(packedOverlay)
+                    transform.transformPosition(quad.positions[positionIndex], quad.positions[positionIndex + 1], quad.positions[positionIndex + 2], point)
+                    consumer.addVertex(basePose, point).setColor(color).setUv(quad.uvs[vertexIndex * 2], quad.uvs[vertexIndex * 2 + 1]).setOverlay(packedOverlay)
                         .setLight(modelLight)
                         .setNormal(basePose, normal)
                 }

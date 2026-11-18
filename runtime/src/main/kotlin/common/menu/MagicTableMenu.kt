@@ -23,7 +23,7 @@ class MagicTableMenu(
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess,
     val data: ContainerData
-) : AbstractMenu(MenuTypeRegistry.magicTable, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.magicTable, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inventory,
@@ -39,42 +39,23 @@ class MagicTableMenu(
         addSlot(VanillaSpecialSlot(container, 7, 152, 16, { false }, { false }, isHighlightable = { !container.getItem(7).isEmpty }))
     }
 
-    private fun buildSlots(
-        container: Container,
-        inv: Inventory,
-        stackSize: Int = 64
-    ) {
-        // Recipe slots
+    private fun buildSlots(container: Container, inv: Inventory, stackSize: Int = 64) {
         addSlot(VanillaSpecialSlot(container, 0, 26, 17, stackSize = stackSize, place = { this.item.isEmpty }))
         addSlot(VanillaSpecialSlot(container, 1, 62, 17, stackSize = stackSize, place = { this.item.isEmpty }))
         addSlot(VanillaSpecialSlot(container, 2, 26, 53, stackSize = stackSize, place = { this.item.isEmpty }))
         addSlot(VanillaSpecialSlot(container, 3, 62, 53, stackSize = stackSize, place = { this.item.isEmpty }))
 
-        // Catalyst
         addSlot(VanillaSpecialSlot(container, 4, 44, 35, stackSize = stackSize, stackSizeWithItem = { stackSize }))
-        // Result
         addSlot(VanillaSpecialSlot(container, 5, 116, 35, { false }))
 
-        // Bound gem
-        addSlot(
-            VanillaSpecialSlot(
-                container,
-                6,
-                152,
-                53,
-                BoundGemHelper::isConnectionFoundSpecial
-            )
-        )
+        addSlot(VanillaSpecialSlot(container, 6, 152, 53, BoundGemHelper::isConnectionFoundSpecial))
 
         inv.make()
 
         addDataSlots(data)
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        slotIndex: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, slotIndex: Int): ItemStack {
         val slot = this.slots.getOrNull(slotIndex) ?: return ItemStack.EMPTY
         val stack = slot.item.takeIf { it.count > 0 } ?: return ItemStack.EMPTY
 

@@ -51,12 +51,8 @@ object FabricClientInit {
         registerReloadListeners()
         registerRendering()
         registerTooltipEvent()
-        ClientPlayConnectionEvents.DISCONNECT.register { _, client ->
-            client.execute { EventBuses.GAME(ClientPlayerNetworkEvent.LoggingOut) }
-        }
-        ClientPlayConnectionEvents.JOIN.register { _, _, client ->
-            client.execute { EventBuses.GAME(ClientPlayerNetworkEvent.LoggingIn) }
-        }
+        ClientPlayConnectionEvents.DISCONNECT.register { _, client -> client.execute { EventBuses.GAME(ClientPlayerNetworkEvent.LoggingOut) } }
+        ClientPlayConnectionEvents.JOIN.register { _, _, client -> client.execute { EventBuses.GAME(ClientPlayerNetworkEvent.LoggingIn) } }
         ClientTickEvents.START_CLIENT_TICK.register { EventBuses.GAME(ClientTickEvent.Pre) }
         ClientTickEvents.END_CLIENT_TICK.register { EventBuses.GAME(ClientTickEvent.Post) }
 
@@ -67,14 +63,7 @@ object FabricClientInit {
     private fun registerTooltipEvent() {
         ItemTooltipCallback.EVENT.register { stack, context, flags, components ->
             EventBuses.GAME(
-                ItemTooltipEvent(
-                    stack,
-                    Minecraft.getInstance().player,
-                    components,
-                    flags,
-                    context,
-                    stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT)
-                )
+                ItemTooltipEvent(stack, Minecraft.getInstance().player, components, flags, context, stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT))
             )
         }
     }
@@ -85,19 +74,13 @@ object FabricClientInit {
     }
 
     private fun registerRendering() {
-        LevelRenderEvents.COLLECT_SUBMITS.register { context ->
-            ECRClientRendering.submit(
-                context.poseStack(),
-                context.submitNodeCollector(),
-                context.levelState()
-            )
-        }
+        LevelRenderEvents.COLLECT_SUBMITS.register { context -> ECRClientRendering.submit(context.poseStack(), context.submitNodeCollector(), context.levelState()) }
     }
 
     private fun registerClientExtensions() {
         EventBuses.MOD(
             EntityRenderersEvent.RegisterRenderers(
-                object : EntityRenderersEvent.BlockEntityRendererRegistrar {
+                object: EntityRenderersEvent.BlockEntityRendererRegistrar {
                     override fun <T : BlockEntity, S : BlockEntityRenderState> register(
                         blockEntityType: BlockEntityType<out T>,
                         rendererProvider: BlockEntityRendererProvider<T, S>
@@ -105,21 +88,15 @@ object FabricClientInit {
                 }
             )
         )
-        EventBuses.MOD(
-            EntityRenderersEvent.RegisterLayerDefinitions { layerLocation, supplier ->
-                ModelLayerRegistry.registerModelLayer(layerLocation, supplier::invoke)
-            }
-        )
+        EventBuses.MOD(EntityRenderersEvent.RegisterLayerDefinitions { layerLocation, supplier -> ModelLayerRegistry.registerModelLayer(layerLocation, supplier::invoke) })
         EventBuses.MOD(
             RegisterMenuScreensEvent(
-                object : RegisterMenuScreensEvent.MenuScreenRegistrar {
+                object: RegisterMenuScreensEvent.MenuScreenRegistrar {
                     override fun <M, S> register(
                         menuType: MenuType<out M>,
                         screenConstructor: RegisterMenuScreensEvent.ScreenConstructor<M, S>
                     ) where M : AbstractContainerMenu, S : Screen, S : MenuAccess<M> {
-                        MenuScreens.register(menuType) { menu, inventory, title ->
-                            screenConstructor.create(menu, inventory, title)
-                        }
+                        MenuScreens.register(menuType) { menu, inventory, title -> screenConstructor.create(menu, inventory, title) }
                     }
                 }
             )

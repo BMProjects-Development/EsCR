@@ -88,12 +88,7 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
         if (pattern.xSize <= 2 || pattern.ySize <= 2 || pattern.zSize <= 2) return null
 
         val first = getWorldPosition(placement, 1, 1, 1)
-        val last = getWorldPosition(
-            placement,
-            pattern.xSize - 2,
-            pattern.ySize - 2,
-            pattern.zSize - 2
-        )
+        val last = getWorldPosition(placement, pattern.xSize - 2, pattern.ySize - 2, pattern.zSize - 2)
 
         return AABB(
             minOf(first.x, last.x).toDouble(),
@@ -139,9 +134,7 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
     private fun findElements(level: Level, placement: MultiblockPlacement?, block: Block): Set<BlockPos> {
         if (placement == null) return emptySet()
 
-        return multiblock.matchesIn(
-            level, placement, block
-        ).asSequence().filter { it.matches }.map { it.worldPos.immutable() }.toSet()
+        return multiblock.matchesIn(level, placement, block).asSequence().filter { it.matches }.map { it.worldPos.immutable() }.toSet()
     }
 
     private fun updateCapacity(capacity: Int) {
@@ -155,13 +148,7 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
 
     override fun getDisplayName(): Component = Component.empty()
 
-    override fun createMenu(
-        containerId: Int,
-        inventory: Inventory,
-        player: Player
-    ): AbstractContainerMenu = EnrichmentChamberControllerMenu(
-        containerId, inventory, ContainerLevelAccess.create(this.level!!, this.blockPos), this
-    )
+    override fun createMenu(containerId: Int, inventory: Inventory, player: Player): AbstractContainerMenu = EnrichmentChamberControllerMenu(containerId, inventory, ContainerLevelAccess.create(this.level!!, this.blockPos), this)
 
     companion object {
         private const val MRU_CAPACITY_TAG = "mru_capacity"
@@ -172,7 +159,6 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
         private const val PLACEMENT_START_Z_TAG = "multiblock_start_z"
         private const val PLACEMENT_VARIANT_TAG = "multiblock_variant"
         private const val STRUCTURE_CHECK_INTERVAL = 20L
-
         private val config = ECConfig.instance.enrichmentChamber
         private val multiblock
             get() = MultiblockRegistry.enrichmentChamber
@@ -208,36 +194,18 @@ class EnrichmentChamberControllerEntity(worldPosition: BlockPos, blockState: Blo
             if (placement != null && MultiblockRegistry.enrichmentChamber.countMatchesIn(level, placement, BlockRegistry.enrichmentChamberController.get()) > 1)
                 placement = null
 
-            be.synchronizeElements<EnrichmentChamberExtractorEntity>(
-                level,
-                placement,
-                BlockRegistry.enrichmentChamberExtractor.get()
-            )
-            be.synchronizeElements<EnrichmentChamberReceiverEntity>(
-                level,
-                placement,
-                BlockRegistry.enrichmentChamberReceiver.get()
-            )
+            be.synchronizeElements<EnrichmentChamberExtractorEntity>(level, placement, BlockRegistry.enrichmentChamberExtractor.get())
+            be.synchronizeElements<EnrichmentChamberReceiverEntity>(level, placement, BlockRegistry.enrichmentChamberReceiver.get())
             be.setPlacement(placement)
 
             val active = placement != null
             if (state.getValue(EnrichmentChamberController.ACTIVE) != active)
-                level.setBlockAndUpdate(
-                    be.blockPos,
-                    state.setValue(EnrichmentChamberController.ACTIVE, active)
-                )
+                level.setBlockAndUpdate(be.blockPos, state.setValue(EnrichmentChamberController.ACTIVE, active))
 
             if (placement == null) return
 
-            val holderCount = multiblock.countMatchesIn(
-                level,
-                placement,
-                BlockRegistry.enrichmentChamberHolder.get()
-            )
-            val capacity = (
-                config.controllerCapacity.toLong() +
-                    config.holderCapacity.toLong() * holderCount
-                ).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
+            val holderCount = multiblock.countMatchesIn(level, placement, BlockRegistry.enrichmentChamberHolder.get())
+            val capacity = (config.controllerCapacity.toLong() + config.holderCapacity.toLong() * holderCount).coerceAtMost(Int.MAX_VALUE.toLong()).toInt()
             be.updateCapacity(capacity)
         }
     }

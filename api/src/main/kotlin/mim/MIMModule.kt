@@ -20,7 +20,7 @@ interface MIMManager {
     fun craftingModules(): List<MIMCraftingProvider>
 }
 
-interface MIMModule : BoundGemTarget {
+interface MIMModule: BoundGemTarget {
     val blockEntity: BlockEntity
     fun attach(manager: MIMManager): Boolean
     fun managerTick(context: MIMContext) {}
@@ -34,11 +34,11 @@ interface MIMInventoryProvider {
     fun endpoints(): List<InventoryEndpoint>
 }
 
-interface MIMStorageProvider : MIMModule, MIMInventoryProvider
+interface MIMStorageProvider: MIMModule, MIMInventoryProvider
 
-interface MIMStorageNodeProvider : MIMInventoryProvider, BoundGemTarget
+interface MIMStorageNodeProvider: MIMInventoryProvider, BoundGemTarget
 
-interface MIMCraftingProvider : MIMModule {
+interface MIMCraftingProvider: MIMModule {
     val pendingCrafts: Int
     val activity: MIMCraftingActivity? get() = null
     fun patterns(): List<ItemStack>
@@ -60,19 +60,19 @@ class MIMCraftingTask(
     val target: ItemStack get() = template.copy()
 }
 
-interface MIMTransferModule : MIMModule {
+interface MIMTransferModule: MIMModule {
     val transferOrder: Int get() = 0
     fun transfer(network: InventoryNetwork)
 }
 
-interface MIMTerminal : MIMModule {
+interface MIMTerminal: MIMModule {
     val canWithdraw: Boolean
     fun parent(): MIMManager?
     fun deposit(stack: ItemStack): ItemStack
     fun withdraw(template: ItemStack, amount: Int): ItemStack
 }
 
-interface MIMExpandableContainer : Container {
+interface MIMExpandableContainer: Container {
     val availableSlots: Int
     fun insertConfiguration(stack: ItemStack): ItemStack
 }
@@ -94,8 +94,7 @@ object MIMModules {
     }
 
     @JvmStatic
-    fun resolve(target: BlockEntity): MIMModule? =
-        target as? MIMModule ?: adapters.values.firstNotNullOfOrNull { it(target) }
+    fun resolve(target: BlockEntity): MIMModule? = target as? MIMModule ?: adapters.values.firstNotNullOfOrNull { it(target) }
 
     @JvmStatic
     fun all(target: BlockEntity): List<MIMModule> {
@@ -104,8 +103,7 @@ object MIMModules {
     }
 
     @JvmStatic
-    fun inventory(target: BlockEntity): MIMStorageNodeProvider? =
-        target as? MIMStorageNodeProvider ?: inventories.values.firstNotNullOfOrNull { it(target) }
+    fun inventory(target: BlockEntity): MIMStorageNodeProvider? = target as? MIMStorageNodeProvider ?: inventories.values.firstNotNullOfOrNull { it(target) }
 
     @JvmStatic
     fun isInternal(container: Container): Boolean = container is MIMManager || container is MIMModule ||

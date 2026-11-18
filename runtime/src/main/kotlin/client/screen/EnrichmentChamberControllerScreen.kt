@@ -20,26 +20,11 @@ class EnrichmentChamberControllerScreen(
 
     override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.extractBackground(graphics, mouseX, mouseY, deltaTicks)
-        graphics.blit(
-            RenderPipelines.GUI_TEXTURED,
-            TEXTURE,
-            this.leftPos, this.topPos,
-            0F, 0F,
-            this.imageWidth, this.imageHeight,
-            256, 256
-        )
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256)
 
         val be = menu.blockEntity as? EnrichmentChamberControllerEntity ?: return
         val mru = be.mruStorage
-        drawMRULine(
-            graphics, mru,
-            26, 39,
-            this.leftPos, this.topPos,
-            124, 8,
-            mouseX, mouseY,
-            animation = mruAnimation,
-            deltaTicks = deltaTicks
-        )
+        drawMRULine(graphics, mru, 26, 39, this.leftPos, this.topPos, 124, 8, mouseX, mouseY, animation = mruAnimation, deltaTicks = deltaTicks)
     }
 
     override fun extractLabels(graphics: GuiGraphicsExtractor, xm: Int, ym: Int) {}

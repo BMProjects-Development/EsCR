@@ -18,7 +18,7 @@ data class MIMTaskEntry(
     val module: BlockPos, val id: UUID?, val target: ItemStack, val remaining: Int, val activity: MIMCraftingActivity
 )
 
-data class MIMTaskRequest(val containerId: Int, val requestId: Int, val offset: Int) : CustomPacketPayload {
+data class MIMTaskRequest(val containerId: Int, val requestId: Int, val offset: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -33,21 +33,18 @@ data class MIMTaskRequest(val containerId: Int, val requestId: Int, val offset: 
             if (menu.containerId != request.containerId || request.offset < 0) return
             val core = (menu.device as? MIMTerminal)?.takeIf { menu.stillValid(player) }?.parent() ?: return
             val tasks = core.craftingModules().flatMap { module ->
-                val entries = module.tasks().filter { it.remaining > 0 }.map {
-                    MIMTaskEntry(module.blockEntity.blockPos, it.id, it.target, it.remaining, it.activity)
-                }
+                val entries = module.tasks().filter { it.remaining > 0 }.map { MIMTaskEntry(module.blockEntity.blockPos, it.id, it.target, it.remaining, it.activity) }
                 if (entries.isNotEmpty() || module.pendingCrafts <= 0) entries
                 else listOf(MIMTaskEntry(module.blockEntity.blockPos, null, ItemStack.EMPTY, module.pendingCrafts,
                     module.activity ?: MIMCraftingActivity(MIMCraftingState.IDLE, 0, 0, 0)))
             }
             val offset = request.offset.coerceAtMost((tasks.size - MIMTaskResponse.PAGE_SIZE).coerceAtLeast(0))
-            Network.sendTo(player, MIMTaskResponse(menu.containerId, request.requestId, offset, tasks.size,
-                tasks.drop(offset).take(MIMTaskResponse.PAGE_SIZE)))
+            Network.sendTo(player, MIMTaskResponse(menu.containerId, request.requestId, offset, tasks.size, tasks.drop(offset).take(MIMTaskResponse.PAGE_SIZE)))
         }
     }
 }
 
-data class MIMTaskCancel(val containerId: Int, val module: BlockPos, val id: UUID) : CustomPacketPayload {
+data class MIMTaskCancel(val containerId: Int, val module: BlockPos, val id: UUID): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -69,7 +66,7 @@ data class MIMTaskCancel(val containerId: Int, val module: BlockPos, val id: UUI
 
 data class MIMTaskResponse(
     val containerId: Int, val requestId: Int, val offset: Int, val total: Int, val entries: List<MIMTaskEntry>
-) : CustomPacketPayload {
+): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {

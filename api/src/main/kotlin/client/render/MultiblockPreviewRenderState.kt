@@ -7,11 +7,8 @@ import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState
 import org.joml.Matrix3x2fc
 
 sealed interface MultiblockPreviewModel {
-    data class Pattern(val multiblock: Multiblock) : MultiblockPreviewModel
-    data class Assembled(
-        val definition: AssembledMultiblockDefinition,
-        val assembled: Boolean
-    ) : MultiblockPreviewModel
+    data class Pattern(val multiblock: Multiblock): MultiblockPreviewModel
+    data class Assembled(val definition: AssembledMultiblockDefinition, val assembled: Boolean): MultiblockPreviewModel
 }
 
 class MultiblockPreviewRenderState(
@@ -23,7 +20,7 @@ class MultiblockPreviewRenderState(
     private val y1: Int,
     private val scissorArea: ScreenRectangle = ScreenRectangle(x0, y0, x1 - x0, y1 - y0),
     val textureKey: Any = TextureKey(model, x0, y0, x1, y1)
-) : PictureInPictureRenderState {
+): PictureInPictureRenderState {
     constructor(
         multiblock: Multiblock,
         transform: MultiblockPreviewTransform,
@@ -33,16 +30,7 @@ class MultiblockPreviewRenderState(
         y1: Int,
         scissorArea: ScreenRectangle = ScreenRectangle(x0, y0, x1 - x0, y1 - y0),
         textureKey: Any = TextureKey(MultiblockPreviewModel.Pattern(multiblock), x0, y0, x1, y1)
-    ) : this(
-        MultiblockPreviewModel.Pattern(multiblock),
-        transform,
-        x0,
-        y0,
-        x1,
-        y1,
-        scissorArea,
-        textureKey
-    )
+    ) : this(MultiblockPreviewModel.Pattern(multiblock), transform, x0, y0, x1, y1, scissorArea, textureKey)
 
     private val bounds = PictureInPictureRenderState.getBounds(x0, y0, x1, y1, scissorArea)
         ?: ScreenRectangle.empty()

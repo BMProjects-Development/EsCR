@@ -28,9 +28,7 @@ class MithrilineFurnaceRenderState: BlockEntityRenderState() {
     var coreRotation: Float = 0F
 }
 
-class MithrilineFurnaceRenderer(
-    ctx: BlockEntityRendererProvider.Context
-): BlockEntityRenderer<MithrilineFurnaceEntity, MithrilineFurnaceRenderState> {
+class MithrilineFurnaceRenderer(ctx: BlockEntityRendererProvider.Context): BlockEntityRenderer<MithrilineFurnaceEntity, MithrilineFurnaceRenderState> {
     private val body: ModelPart
     private val sprite: TextureAtlasSprite
 
@@ -68,10 +66,7 @@ class MithrilineFurnaceRenderer(
 
         poseStack.rotateDegrees(Axis.YP, state.coreRotation)
 
-        submitNodeCollector.submitModelPart(
-            body, poseStack, RenderTypes.entityCutout(MF_MATERIAL.atlasLocation()),
-            state.lightCoords, OverlayTexture.NO_OVERLAY, sprite
-        )
+        submitNodeCollector.submitModelPart(body, poseStack, RenderTypes.entityCutout(MF_MATERIAL.atlasLocation()), state.lightCoords, OverlayTexture.NO_OVERLAY, sprite)
 
         poseStack.popPose()
     }

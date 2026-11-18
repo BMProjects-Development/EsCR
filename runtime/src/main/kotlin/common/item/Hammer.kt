@@ -18,9 +18,7 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
 
-class Hammer(
-    properties: Properties
-) : Item(properties) {
+class Hammer(properties: Properties): Item(properties) {
     private lateinit var cachedRecipe: CachedRecipe<SingleRecipeInput, StructureRecipe>
 
     override fun useOn(context: UseOnContext): InteractionResult {
@@ -58,27 +56,14 @@ class Hammer(
                 val place = recipe.blockForPlace
                 val result = recipe.assemble(craftingInput)
 
-                if (recipe.consumeStructure)
-                    recipe.multiblock.replaceInWorld(level, placement) { Blocks.AIR.defaultBlockState() }
+                if (recipe.consumeStructure) recipe.multiblock.replaceInWorld(level, placement) { Blocks.AIR.defaultBlockState() }
 
-                if (!(recipe.chance.isEmpty() || level.random.nextInt(recipe.chance.max) >= recipe.chance.min))
-                    return InteractionResult.FAIL
+                if (!(recipe.chance.isEmpty() || level.random.nextInt(recipe.chance.max) >= recipe.chance.min)) return InteractionResult.FAIL
 
                 if (place != null)
-                    level.setBlock(
-                        pos.above(),
-                        place.defaultBlockState(),
-                        Block.UPDATE_NEIGHBORS or Block.UPDATE_CLIENTS or Block.UPDATE_SUPPRESS_DROPS
-                    )
+                    level.setBlock(pos.above(), place.defaultBlockState(), Block.UPDATE_NEIGHBORS or Block.UPDATE_CLIENTS or Block.UPDATE_SUPPRESS_DROPS)
                 else {
-                    val item =
-                        ItemEntity(
-                            level,
-                            pos.x + 0.5,
-                            pos.y + 1.0,
-                            pos.z + 0.5,
-                            result
-                        ).apply { this.setNoPickUpDelay() }
+                    val item = ItemEntity(level, pos.x + 0.5, pos.y + 1.0, pos.z + 0.5, result).apply { this.setNoPickUpDelay() }
                     level.addFreshEntity(item)
                 }
 
@@ -87,14 +72,8 @@ class Hammer(
         }
     }
 
-    private fun findMatchingDefinition(
-        level: Level,
-        selectedPos: BlockPos,
-        facing: Direction
-    ): AssembledMultiblockDefinition? =
+    private fun findMatchingDefinition(level: Level, selectedPos: BlockPos, facing: Direction): AssembledMultiblockDefinition? =
         MultiblockDefinitions.allAssembled().values.firstOrNull { definition ->
-            definition.controllerCandidates(selectedPos, facing).any { controllerPos ->
-                definition.matches(level, controllerPos, facing)
-            }
+            definition.controllerCandidates(selectedPos, facing).any { controllerPos -> definition.matches(level, controllerPos, facing) }
         }
 }

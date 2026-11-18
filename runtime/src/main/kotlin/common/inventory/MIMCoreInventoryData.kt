@@ -24,9 +24,7 @@ object MIMCoreInventoryData {
 
     fun write(output: ValueOutput, items: List<ItemStack>) {
         output.putInt(VERSION_TAG, VERSION)
-        output.store(ITEMS_TAG, ENTRY_CODEC.listOf(), items.mapIndexedNotNull { index, stack ->
-            if (stack.isEmpty) null else Entry(index, stack)
-        })
+        output.store(ITEMS_TAG, ENTRY_CODEC.listOf(), items.mapIndexedNotNull { index, stack -> if (stack.isEmpty) null else Entry(index, stack) })
     }
 
     fun read(input: ValueInput): NonNullList<ItemStack> {
@@ -34,14 +32,10 @@ object MIMCoreInventoryData {
         val offset = if (isLegacy(input)) 1 else 0
         if (entries == null) {
             val legacy = NonNullList.withSize(LEGACY_SIZE, ItemStack.EMPTY).also { ContainerHelper.loadAllItems(input, it) }
-            return NonNullList.withSize(LEGACY_SIZE + offset, ItemStack.EMPTY).also { items ->
-                legacy.forEachIndexed { index, stack -> items[index + offset] = stack }
-            }
+            return NonNullList.withSize(LEGACY_SIZE + offset, ItemStack.EMPTY).also { items -> legacy.forEachIndexed { index, stack -> items[index + offset] = stack } }
         }
         val size = maxOf(MIMMenuKind.CORE.slots, (entries.maxOfOrNull { it.slot } ?: -1) + 1 + offset)
-        return NonNullList.withSize(size, ItemStack.EMPTY).also { items ->
-            entries.forEach { items[it.slot + offset] = it.stack }
-        }
+        return NonNullList.withSize(size, ItemStack.EMPTY).also { items -> entries.forEach { items[it.slot + offset] = it.stack } }
     }
 
     fun isLegacy(input: ValueInput): Boolean = input.getIntOr(VERSION_TAG, 0) < VERSION

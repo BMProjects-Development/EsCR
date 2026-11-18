@@ -2,7 +2,7 @@ package com.algorithmlx.ecr.client.widget.mim
 
 import kotlin.math.ceil
 
-internal object MIMDependencyLayout {
+object MIMDependencyLayout {
     const val WIDTH = 256
     const val HEIGHT = 256
     const val DISPLAY_SCALE = 0.75f
@@ -45,7 +45,7 @@ internal object MIMDependencyLayout {
     const val CONTENT_HEIGHT = BODY_HEIGHT - PADDING * 2
 }
 
-internal class MIMDependencyViewport {
+class MIMDependencyViewport {
     var zoom = 1f
         private set
     var horizontal = 0.0

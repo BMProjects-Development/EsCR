@@ -45,7 +45,6 @@ class RadiatingChamberEntity(
     var craftProgress = 0
     var maxCraftProgress = 0
     private var activeRecipe: Identifier? = null
-
     override val mruStorage = MRUStorageContainer(5000, MRUTypeRegistry.radiationUnit) { setChanged() }
     override val balance = MRUBalanceContainer { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.RECEIVER

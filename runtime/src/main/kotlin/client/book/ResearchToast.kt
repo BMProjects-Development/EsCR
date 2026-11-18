@@ -18,10 +18,7 @@ import net.minecraft.world.item.ItemStack
 import kotlin.math.ceil
 import kotlin.math.max
 
-class ResearchToast private constructor(
-    private val entry: BookEntry,
-    private val type: Type
-) : Toast {
+class ResearchToast private constructor(private val entry: BookEntry, private val type: Type): Toast {
     private var visibility = Toast.Visibility.SHOW
 
     override fun getWantedVisibility(): Toast.Visibility = visibility
@@ -109,8 +106,7 @@ class ResearchToast private constructor(
         }
     }
 
-    private fun BookText.component(): Component =
-        if (translated) Component.translatable(value) else Component.literal(value)
+    private fun BookText.component(): Component = if (translated) Component.translatable(value) else Component.literal(value)
 
     companion object {
         private const val WIDTH = 160

@@ -23,15 +23,10 @@ import net.minecraft.world.phys.BlockHitResult
 
 class MagicalTeleporter(properties: Properties): Block(properties), EntityBlock {
     init {
-        this.registerDefaultState(
-            this.stateDefinition.any().setValue(FACING, Direction.NORTH)
-        )
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH))
     }
 
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = MagicalTeleporterEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = MagicalTeleporterEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,
@@ -52,18 +47,15 @@ class MagicalTeleporter(properties: Properties): Block(properties), EntityBlock 
     else
         InteractionResult.FAIL
 
-    override fun getStateForPlacement(context: BlockPlaceContext): BlockState =
-        this.defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
+    override fun getStateForPlacement(context: BlockPlaceContext): BlockState = this.defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING)
     }
 
-    override fun rotate(state: BlockState, rotation: Rotation): BlockState =
-        state.setValue(FACING, rotation.rotate(state.getValue(FACING)))
+    override fun rotate(state: BlockState, rotation: Rotation): BlockState = state.setValue(FACING, rotation.rotate(state.getValue(FACING)))
 
-    override fun mirror(state: BlockState, mirror: Mirror): BlockState =
-        state.rotate(mirror.getRotation(state.getValue(FACING)))
+    override fun mirror(state: BlockState, mirror: Mirror): BlockState = state.rotate(mirror.getRotation(state.getValue(FACING)))
 
     companion object {
         private val FACING = HorizontalDirectionalBlock.FACING

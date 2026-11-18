@@ -29,8 +29,7 @@ object ConfigManager {
 
     inline fun <reified T : Any> saveOrLoad(file: File, defaults: T): T = saveOrLoad(file, defaults, serializer())
 
-    inline fun <reified T : Any> saveOrLoad(cache: MutableMap<String, Any>, file: File, defaults: T): T =
-        saveOrLoad(cache, file, defaults, serializer())
+    inline fun <reified T : Any> saveOrLoad(cache: MutableMap<String, Any>, file: File, defaults: T): T = saveOrLoad(cache, file, defaults, serializer())
 
     fun <T : Any> saveOrLoad(file: File, defaults: T, serializer: KSerializer<T>): T {
         if (!file.exists()) {
@@ -108,9 +107,7 @@ object ConfigManager {
             Files.writeString(temporary, content, StandardCharsets.UTF_8)
 
             try {
-                Files.move(
-                    temporary, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE
-                )
+                Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE)
             } catch (_: AtomicMoveNotSupportedException) {
                 Files.move(temporary, target, StandardCopyOption.REPLACE_EXISTING)
             }
@@ -232,9 +229,7 @@ object ConfigManager {
         val comments = linkedMapOf<String, MutableList<JsonComment>>()
 
         fun addAnnotations(path: String, annotations: List<Annotation>) {
-            annotations.filterIsInstance<JsonComment>().forEach { annotation ->
-                comments.getOrPut(path, ::mutableListOf).add(annotation)
-            }
+            annotations.filterIsInstance<JsonComment>().forEach { annotation -> comments.getOrPut(path, ::mutableListOf).add(annotation) }
         }
 
         fun visit(descriptor: SerialDescriptor, prefix: String, recursionStack: MutableSet<String>) {
@@ -263,14 +258,10 @@ object ConfigManager {
 
         visit(rootDescriptor, "", mutableSetOf())
 
-        return comments.mapValues { (_, annotations) ->
-            annotations.distinct().joinToString("\n", transform = ::formatComment)
-        }
+        return comments.mapValues { (_, annotations) -> annotations.distinct().joinToString("\n", transform = ::formatComment) }
     }
 
-    private fun buildDefaultMap(
-        rootDescriptor: SerialDescriptor, currentRoot: JsonElement, defaultsRoot: JsonElement
-    ): Map<String, JsonElement> {
+    private fun buildDefaultMap(rootDescriptor: SerialDescriptor, currentRoot: JsonElement, defaultsRoot: JsonElement): Map<String, JsonElement> {
         val result = linkedMapOf<String, JsonElement>()
         val recursionStack = mutableSetOf<String>()
 
@@ -308,10 +299,7 @@ object ConfigManager {
 
                         val inheritedChildPolicy = policy?.takeIf { it.recursive }
 
-                        visit(
-                            childDescriptor, currentValue,
-                            defaultValue, path, inheritedChildPolicy
-                        )
+                        visit(childDescriptor, currentValue, defaultValue, path, inheritedChildPolicy)
                     }
                 }
             } finally {
@@ -338,8 +326,6 @@ object ConfigManager {
                 append(" */")
             }
         else
-            lines.joinToString("\n") {
-                "// $it"
-            }
+            lines.joinToString("\n") { "// $it" }
     }
 }

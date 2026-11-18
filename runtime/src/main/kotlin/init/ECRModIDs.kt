@@ -3,11 +3,8 @@ package com.algorithmlx.ecr.init
 import com.algorithmlx.ecr.api.utils.ecRL
 
 object ECRModIDs {
-    // Block Type Codecs
     const val CLUSTER = "cluster"
     const val CRYSTAL = "crystal"
-
-    // Universal
     const val SOLAR_PRISM = "solar_prism"
     const val RADIATING_CHAMBER = "radiating_chamber"
     const val MITHRILINE_FURNACE = "mithriline_furnace"
@@ -18,6 +15,20 @@ object ECRModIDs {
     const val MAGIC_TABLE = "magic_table"
     const val COLD_DISTILLER = "cold_distiller"
     const val HEAT_GENERATOR = "heat_generator"
+    const val NATURAL_FURNACE = "natural_furnace"
+    const val ENDER_GENERATOR = "ender_generator"
+    const val MAGMATIC_SMELTERY = "magmatic_smeltery"
+    const val MAGMATIC_FURNACE = "magmatic_furnace"
+    const val MAGICAL_MAGMATIC_FURNACE = "magical_magmatic_furnace"
+    const val PALE_MAGMATIC_FURNACE = "pale_magmatic_furnace"
+    const val VOID_MAGMATIC_FURNACE = "void_magmatic_furnace"
+    const val MAGICAL_BREEDER = "magical_breeder"
+    const val MAGICAL_SHEARING_STATION = "magical_shearing_station"
+    const val MONSTER_HOLDING_DEVICE = "monster_holding_device"
+    const val MAGICAL_CHEST = "magical_chest"
+    const val MAGICAL_HOPPER = "magical_hopper"
+    const val MAGICAL_ALLOY = "magical_alloy"
+    const val ALLOY_CONTENTS = "alloy_contents"
     const val MAGICAL_TELEPORTER = "magical_teleporter"
     const val ENRICHMENT_CHAMBER = "enrichment_chamber"
     const val ENRICHMENT_CHAMBER_CONTROLLER = "${ENRICHMENT_CHAMBER}_controller"
@@ -43,8 +54,6 @@ object ECRModIDs {
     const val CONTROL_ROD = "control_rod"
     const val MIM_FILTER = "magical_inventory_filter"
     const val MIM_ADVANCED_FILTER = "advanced_magical_inventory_filter"
-
-    // Blocks
     const val MITHRILINE_PLATING = "mithriline_plating"
     const val VOID_STONE = "void_stone"
     const val PALE_BLOCK = "pale_block"
@@ -61,34 +70,25 @@ object ECRModIDs {
     const val RAY_TOWER_BASE = "${RAY_TOWER}_base"
     const val MITHRILINE_ORE = "mithriline_ore"
     const val DEEPSLATE_MITHRILINE_ORE = "deepslate_$MITHRILINE_ORE"
-
-    // Data Components / Attachments
     const val BOOK_TYPE = "book_type"
     const val PLAYER_MATRIX = "player_matrix"
-
-    // BookTypes
     const val BASIC = "basic"
     const val MRU = "mru"
     const val ENGINEER = "engineer"
     const val HOANNA = "hoanna"
     const val SHADE = "shade"
-
-    // Items
     const val HAMMER = "hammer"
     const val RESEARCH_BOOK = "research_book"
-
     const val WEAKNESS_ELEMENTAL_AXE = "weakness_elemental_axe"
     const val WEAKNESS_ELEMENTAL_HOE = "weakness_elemental_hoe"
     const val WEAKNESS_ELEMENTAL_PICKAXE = "weakness_elemental_pickaxe"
     const val WEAKNESS_ELEMENTAL_SHOVEL = "weakness_elemental_shovel"
     const val WEAKNESS_ELEMENTAL_SWORD = "weakness_elemental_sword"
-
     const val ELEMENTAL_GEM = "elemental_gem"
     const val FLAME_GEM = "flame_gem"
     const val WATER_GEM = "water_gem"
     const val EARTH_GEM = "earth_gem"
     const val AIR_GEM = "air_gem"
-
     const val ELEMENTAL_CORE = "elemental_core"
     const val COMBINED_MAGIC_ALLOYS = "combined_magic_alloys"
     const val DEMONIC_CORE = "demonic_core"
@@ -121,38 +121,22 @@ object ECRModIDs {
     const val EYE_OF_ABSORPTION = "eye_of_absorption"
     const val HEAT_CORE = "heat_core"
     const val MONOCLE = "monocle"
-
-    // MRU Types
     const val UBMRU = "ubmru"
     const val ESPE = "espe"
-
-    // Multiblock Matcher
     const val TAG = "tag"
     const val BLOCK = "block"
     const val LIST = "list"
-
-    // Multiblocks
     const val FLAME_CRYSTAL = "flame_crystal"
     const val WATER_CRYSTAL = "water_crystal"
     const val EARTH_CRYSTAL = "earth_crystal"
     const val AIR_CRYSTAL = "air_crystal"
     const val LIGHTNING_COLLECTOR = "lightning_collector"
-
-    // Recipes
     const val STRUCTURE = "structure"
-
-    // Creative Tabs
     const val TAB_ITEMS = "tab_items"
     const val TAB_BLOCKS = "tab_blocks"
-
-    // Ingredients
     const val COUNT = "count"
-
-    // Effects, Enchantments and other Magic objects
     const val MRU_CORRUPTION = "${MRU}_corruption"
-
     const val MAGIC_DEFENSE = "magic_defense"
-
     const val MAGIC_BREAK = "magic_break"
 
     fun guiLocation(id: String) = textureLocation("gui/$id")

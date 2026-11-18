@@ -22,18 +22,9 @@ import net.minecraft.world.level.material.FluidState
 import net.minecraft.world.level.material.Fluids
 import java.util.Optional
 
-abstract class SideBlock(properties: Properties): CrossCollisionBlock(
-    8f, 8f, 16f, 16f, 16f,
-    properties
-), FullBlockParticles {
+abstract class SideBlock(properties: Properties): CrossCollisionBlock(8f, 8f, 16f, 16f, 16f, properties), FullBlockParticles {
     init {
-        this.registerDefaultState(
-            this.stateDefinition.any().setValue(NORTH, false)
-                .setValue(EAST, false)
-                .setValue(SOUTH, false)
-                .setValue(WEST, false)
-                .setValue(WATERLOGGED, false)
-        )
+        this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(WATERLOGGED, false))
     }
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
@@ -98,11 +89,7 @@ abstract class SideBlock(properties: Properties): CrossCollisionBlock(
         val westState = blockGetter.getBlockState(west)
         val eastState = blockGetter.getBlockState(east)
 
-        return this.defaultBlockState()
-            .setValue(NORTH, attach(northState))
-            .setValue(SOUTH, attach(southState))
-            .setValue(WEST, attach(westState))
-            .setValue(EAST, attach(eastState))
+        return this.defaultBlockState().setValue(NORTH, attach(northState)).setValue(SOUTH, attach(southState)).setValue(WEST, attach(westState)).setValue(EAST, attach(eastState))
     }
 
     companion object {

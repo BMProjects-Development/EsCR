@@ -16,9 +16,7 @@ import net.minecraft.world.level.block.state.BlockState
 class MIMNodeEntity(
     pos: BlockPos, state: BlockState, type: BlockEntityType<*>,
     val imports: Boolean, val persistent: Boolean
-) : MIMModuleEntity(
-    pos, state, type, MIMMenuKind.NODE.slots
-), MIMTransferModule {
+): MIMModuleEntity(pos, state, type, MIMMenuKind.NODE.slots), MIMTransferModule {
     override val menuKind get() = MIMMenuKind.NODE
     override val transferOrder get() = if (imports) 0 else 1
     override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = slot in 0 until containerSize && MIMFilters.provider(stack) != null

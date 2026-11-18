@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
-interface ItemStorageTransaction : AutoCloseable {
+interface ItemStorageTransaction: AutoCloseable {
     fun commit()
 }
 
@@ -21,7 +21,7 @@ interface ItemStoragePlatform {
     }
 }
 
-abstract class PlatformItemContainer : Container {
+abstract class PlatformItemContainer: Container {
     abstract val storageIdentity: Any
     abstract fun slotIdentity(slot: Int): Any
     abstract fun amount(slot: Int): Long

@@ -6,6 +6,13 @@ import com.algorithmlx.ecr.common.block.entity.AssembledMultiblockPartBlockEntit
 import com.algorithmlx.ecr.common.block.entity.ColdDistillerEntity
 import com.algorithmlx.ecr.common.block.entity.CreativeMRUSourceEntity
 import com.algorithmlx.ecr.common.block.entity.HeatGeneratorEntity
+import com.algorithmlx.ecr.common.block.entity.NaturalFurnaceEntity
+import com.algorithmlx.ecr.common.block.entity.EnderGeneratorEntity
+import com.algorithmlx.ecr.common.block.entity.MagmaticFurnaceEntity
+import com.algorithmlx.ecr.common.block.entity.MagmaticSmelteryEntity
+import com.algorithmlx.ecr.common.block.entity.MonsterHoldingEntity
+import com.algorithmlx.ecr.common.block.entity.MagicalChestEntity
+import com.algorithmlx.ecr.common.block.entity.MagicalHopperEntity
 import com.algorithmlx.ecr.common.block.entity.MagicTableBlockEntity
 import com.algorithmlx.ecr.common.block.entity.MagicalTeleporterEntity
 import com.algorithmlx.ecr.common.block.entity.MatrixDestructorEntity
@@ -23,7 +30,16 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import java.util.function.Supplier
 
-object BlockEntityTypeRegistry : RegistrationHandler(ModId) {
+object BlockEntityTypeRegistry: RegistrationHandler(ModId) {
+    val naturalFurnace = register(ECRModIDs.NATURAL_FURNACE) { BlockEntityType(::NaturalFurnaceEntity, setOf(BlockRegistry.naturalFurnace.get())) }
+    val enderGenerator = register(ECRModIDs.ENDER_GENERATOR) { BlockEntityType(::EnderGeneratorEntity, setOf(BlockRegistry.enderGenerator.get())) }
+    val magmaticSmeltery = register(ECRModIDs.MAGMATIC_SMELTERY) { BlockEntityType(::MagmaticSmelteryEntity, setOf(BlockRegistry.magmaticSmeltery.get())) }
+    val magmaticFurnace = register(ECRModIDs.MAGMATIC_FURNACE) {
+        BlockEntityType(::MagmaticFurnaceEntity, setOf(BlockRegistry.magmaticFurnace.get(), BlockRegistry.magicalMagmaticFurnace.get(), BlockRegistry.paleMagmaticFurnace.get(), BlockRegistry.voidMagmaticFurnace.get()))
+    }
+    val monsterHolding = register(ECRModIDs.MONSTER_HOLDING_DEVICE) { BlockEntityType(::MonsterHoldingEntity, setOf(BlockRegistry.monsterHolding.get())) }
+    val magicalChest = register(ECRModIDs.MAGICAL_CHEST) { BlockEntityType(::MagicalChestEntity, setOf(BlockRegistry.magicalChest.get())) }
+    val magicalHopper = register(ECRModIDs.MAGICAL_HOPPER) { BlockEntityType(::MagicalHopperEntity, setOf(BlockRegistry.magicalHopper.get())) }
     val mimCore = register(ECRModIDs.MIM_CORE) { BlockEntityType(::MIMCoreEntity, setOf(BlockRegistry.mimCore.get())) }
     val mimStorage = register(ECRModIDs.MIM_STORAGE) { BlockEntityType(::MIMStorageEntity, setOf(BlockRegistry.mimStorage.get())) }
     val mimStorageNode = register(ECRModIDs.MIM_STORAGE_NODE) {
@@ -61,22 +77,13 @@ object BlockEntityTypeRegistry : RegistrationHandler(ModId) {
         BlockEntityType(::MagicalTeleporterEntity, setOf(BlockRegistry.magicalTeleporter.get()))
     }
     val enrichmentChamberController = register(ECRModIDs.ENRICHMENT_CHAMBER_CONTROLLER) {
-        BlockEntityType(
-            ::EnrichmentChamberControllerEntity,
-            setOf(BlockRegistry.enrichmentChamberController.get())
-        )
+        BlockEntityType(::EnrichmentChamberControllerEntity, setOf(BlockRegistry.enrichmentChamberController.get()))
     }
     val enrichmentChamberExtractor = register(ECRModIDs.ENRICHMENT_CHAMBER_EXTRACTOR) {
-        BlockEntityType(
-            ::EnrichmentChamberExtractorEntity,
-            setOf(BlockRegistry.enrichmentChamberExtractor.get())
-        )
+        BlockEntityType(::EnrichmentChamberExtractorEntity, setOf(BlockRegistry.enrichmentChamberExtractor.get()))
     }
     val enrichmentChamberReceiver = register(ECRModIDs.ENRICHMENT_CHAMBER_RECEIVER) {
-        BlockEntityType(
-            ::EnrichmentChamberReceiverEntity,
-            setOf(BlockRegistry.enrichmentChamberReceiver.get())
-        )
+        BlockEntityType(::EnrichmentChamberReceiverEntity, setOf(BlockRegistry.enrichmentChamberReceiver.get()))
     }
     val rayTower = register(ECRModIDs.RAY_TOWER) {
         BlockEntityType(::RayTowerEntity, setOf(BlockRegistry.rayTower.get()))
@@ -97,6 +104,5 @@ object BlockEntityTypeRegistry : RegistrationHandler(ModId) {
         BlockEntityType(::HeatGeneratorEntity, setOf(BlockRegistry.heatGenerator.get()))
     }
 
-    private fun <T : BlockEntity> register(id: String, factory: () -> BlockEntityType<T>) =
-        registerNoEntry(id, BuiltInRegistries.BLOCK_ENTITY_TYPE, factory)
+    private fun <T : BlockEntity> register(id: String, factory: () -> BlockEntityType<T>) = registerNoEntry(id, BuiltInRegistries.BLOCK_ENTITY_TYPE, factory)
 }

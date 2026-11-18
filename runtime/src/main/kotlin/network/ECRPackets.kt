@@ -15,7 +15,6 @@ import com.algorithmlx.ecr.api.research.ResearchProgress
 import com.algorithmlx.ecr.api.research.ResearchProgressPayload
 import com.algorithmlx.ecr.api.research.ResearchSyncPayload
 import com.algorithmlx.ecr.api.research.UpdateBookViewPayload
-import com.algorithmlx.ecr.api.vfx.VfxCommandPayload
 import com.algorithmlx.ecr.common.menu.MIMSearchPayload
 import com.algorithmlx.ecr.common.menu.MIMViewportPayload
 import com.algorithmlx.ecr.common.menu.MIMCraftPayload
@@ -26,7 +25,7 @@ import com.algorithmlx.ecr.common.menu.MIMTaskRequest
 import com.algorithmlx.ecr.common.menu.MIMTaskCancel
 import com.algorithmlx.ecr.common.menu.MIMTaskResponse
 
-object ECRPackets : PacketRegistry(ModId) {
+object ECRPackets: PacketRegistry(ModId) {
     val mimTaskRequest = serverbound(MIMTaskRequest.TYPE, MIMTaskRequest.STREAM_CODEC) { payload ->
         MIMTaskRequest.handle(player, payload)
     }
@@ -63,13 +62,8 @@ object ECRPackets : PacketRegistry(ModId) {
     val boundGemTooltipResponse = clientbound(BoundGemTooltipResponsePayload.TYPE, BoundGemTooltipResponsePayload.STREAM_CODEC)
     val soulStoneTooltipResponse = clientbound(SoulStoneTooltipResponsePayload.TYPE, SoulStoneTooltipResponsePayload.STREAM_CODEC)
     val magicShield = clientbound(MagicShieldPayload.TYPE, MagicShieldPayload.STREAM_CODEC)
-    val researchSync = clientbound(
-        ResearchSyncPayload.TYPE,
-        ResearchSyncPayload.STREAM_CODEC,
-        MaxPayloadSize(8 * 1024 * 1024)
-    )
+    val researchSync = clientbound(ResearchSyncPayload.TYPE, ResearchSyncPayload.STREAM_CODEC, MaxPayloadSize(8 * 1024 * 1024))
     val researchProgress = clientbound(ResearchProgressPayload.TYPE, ResearchProgressPayload.STREAM_CODEC)
-    val vfxCommand = clientbound(VfxCommandPayload.TYPE, VfxCommandPayload.STREAM_CODEC)
 
     val completeResearch = serverbound(CompleteResearchPayload.TYPE, CompleteResearchPayload.STREAM_CODEC) { payload ->
         ResearchProgress.tryUnlock(player, payload.research)
@@ -80,16 +74,10 @@ object ECRPackets : PacketRegistry(ModId) {
     val updateBookView = serverbound(UpdateBookViewPayload.TYPE, UpdateBookViewPayload.STREAM_CODEC) { payload ->
         ResearchProgress.updateView(player, payload.state)
     }
-    val boundGemTooltipRequest = serverbound(
-        BoundGemTooltipRequestPayload.TYPE,
-        BoundGemTooltipRequestPayload.STREAM_CODEC
-    ) { payload ->
+    val boundGemTooltipRequest = serverbound(BoundGemTooltipRequestPayload.TYPE, BoundGemTooltipRequestPayload.STREAM_CODEC) { payload ->
         BoundGemTooltipNetwork.handleRequest(player, payload)
     }
-    val soulStoneTooltipRequest = serverbound(
-        SoulStoneTooltipRequestPayload.TYPE,
-        SoulStoneTooltipRequestPayload.STREAM_CODEC
-    ) { payload ->
+    val soulStoneTooltipRequest = serverbound(SoulStoneTooltipRequestPayload.TYPE, SoulStoneTooltipRequestPayload.STREAM_CODEC) { payload ->
         SoulStoneTooltipNetwork.handleRequest(player, payload)
     }
 }

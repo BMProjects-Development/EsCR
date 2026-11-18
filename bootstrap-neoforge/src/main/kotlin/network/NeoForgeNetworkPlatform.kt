@@ -11,7 +11,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 
-class NeoForgeNetworkPlatform(bus: IEventBus) : NetworkPlatform {
+class NeoForgeNetworkPlatform(bus: IEventBus): NetworkPlatform {
     private val registries = mutableListOf<PacketRegistry>()
 
     init {
@@ -23,8 +23,7 @@ class NeoForgeNetworkPlatform(bus: IEventBus) : NetworkPlatform {
         registries += registry
     }
 
-    override fun sendToPlayer(player: ServerPlayer, payload: CustomPacketPayload) =
-        PacketDistributor.sendToPlayer(player, payload)
+    override fun sendToPlayer(player: ServerPlayer, payload: CustomPacketPayload) = PacketDistributor.sendToPlayer(player, payload)
 
     private fun registerPayloads(event: RegisterPayloadHandlersEvent) {
         registries.forEach { registry ->

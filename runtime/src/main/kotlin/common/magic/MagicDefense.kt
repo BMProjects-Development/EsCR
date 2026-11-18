@@ -22,8 +22,7 @@ object MagicDefense {
         val entry = ECConfig.current.magicDefense(target.type) ?: return MagicDefenseResult(amount)
         val attacker = source.entity as? ServerPlayer ?: return MagicDefenseResult(amount)
 
-        if (ResearchProgress.has(attacker, ECRModIDs.MAGIC_DEFENSE.ecRL) || attacker.isCreative)
-            return MagicDefenseResult(amount)
+        if (ResearchProgress.has(attacker, ECRModIDs.MAGIC_DEFENSE.ecRL) || attacker.isCreative) return MagicDefenseResult(amount)
 
         val weapon = source.weaponItem ?: attacker.weaponItem
         val shieldBreaker = weapon.item as? MagicShieldBreaker
@@ -36,17 +35,7 @@ object MagicDefense {
 
         if (!hasIgnore && enchantmentLevel >= 3) return MagicDefenseResult(amount)
 
-        val context = MagicDefenseContext(
-            target,
-            attacker,
-            source.directEntity,
-            source,
-            weapon,
-            amount,
-            enchantmentLevel,
-            protectionScale(enchantmentLevel),
-            hasIgnore
-        )
+        val context = MagicDefenseContext(target, attacker, source.directEntity, source, weapon, amount, enchantmentLevel, protectionScale(enchantmentLevel), hasIgnore)
 
         val result = functions.fold(MagicDefenseResult(amount)) { current, function ->
             if (current.stopped) current
@@ -59,9 +48,7 @@ object MagicDefense {
     }
 
     private fun enchantmentLevel(level: ServerLevel, weapon: ItemStack): Int {
-        val enchantment = level.registryAccess()
-            .lookupOrThrow(Registries.ENCHANTMENT)
-            .getOrThrow(ResourceKeys.MAGIC_BREAK)
+        val enchantment = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(ResourceKeys.MAGIC_BREAK)
 
         return EnchantmentHelper.getItemEnchantmentLevel(enchantment, weapon).coerceIn(0, 3)
     }

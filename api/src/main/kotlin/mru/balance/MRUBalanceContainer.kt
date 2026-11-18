@@ -12,7 +12,7 @@ class MRUBalanceContainer(
     initialUpperBalance: Double = minUpperBalance,
     initialLowerBalance: Double = minLowerBalance,
     private val onChange: (MRUBalance) -> Unit = {}
-) : MutableMRUBalance {
+): MutableMRUBalance {
     private var mutableUpperBalance = 0.0
     private var mutableLowerBalance = 0.0
     private var sourceTick = Long.MIN_VALUE
@@ -44,10 +44,7 @@ class MRUBalanceContainer(
         applyBalance(mutableUpperBalance, newBalance)
     }
 
-    override fun setBalance(
-        upperBalance: Double,
-        lowerBalance: Double
-    ) {
+    override fun setBalance(upperBalance: Double, lowerBalance: Double) {
         resetSourceSamples()
         applyBalance(upperBalance, lowerBalance)
     }
@@ -64,10 +61,7 @@ class MRUBalanceContainer(
         return mutableLowerBalance - oldBalance
     }
 
-    override fun includeSource(
-        source: MRUBalance,
-        gameTime: Long
-    ) {
+    override fun includeSource(source: MRUBalance, gameTime: Long) {
         if (sourceTick != gameTime) {
             sourceTick = gameTime
             sources.clear()
@@ -93,18 +87,10 @@ class MRUBalanceContainer(
 
     override fun load(input: ValueInput) {
         resetSourceSamples()
-        applyBalance(
-            input.getDoubleOr("upper_balance", minUpperBalance),
-            input.getDoubleOr("lower_balance", minLowerBalance),
-            notify = false
-        )
+        applyBalance(input.getDoubleOr("upper_balance", minUpperBalance), input.getDoubleOr("lower_balance", minLowerBalance), notify = false)
     }
 
-    private fun applyBalance(
-        upperBalance: Double,
-        lowerBalance: Double,
-        notify: Boolean = true
-    ) {
+    private fun applyBalance(upperBalance: Double, lowerBalance: Double, notify: Boolean = true) {
         val nextUpper = clamp(upperBalance, minUpperBalance, maxUpperBalance)
         val nextLower = clamp(lowerBalance, minLowerBalance, maxLowerBalance)
         if (mutableUpperBalance == nextUpper && mutableLowerBalance == nextLower) return
@@ -126,15 +112,8 @@ class MRUBalanceContainer(
         const val MIN_BALANCE = 0.0
         const val MAX_BALANCE = 2.0
 
-        private fun clamp(
-            value: Double,
-            min: Double,
-            max: Double
-        ): Double = if (value.isNaN()) min else value.coerceIn(min, max)
+        private fun clamp(value: Double, min: Double, max: Double): Double = if (value.isNaN()) min else value.coerceIn(min, max)
     }
 }
 
-data class ImmutableMRUBalance(
-    override val upperBalance: Double,
-    override val lowerBalance: Double
-) : MRUBalance
+data class ImmutableMRUBalance(override val upperBalance: Double, override val lowerBalance: Double): MRUBalance

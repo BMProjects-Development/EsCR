@@ -22,7 +22,7 @@ import com.algorithmlx.ecr.common.multiblocks.SunAbsorber
 import com.algorithmlx.ecr.common.multiblocks.WaterCrystal
 import net.minecraft.resources.Identifier
 
-object MultiblockRegistry : RegistrationHandler(ModId) {
+object MultiblockRegistry: RegistrationHandler(ModId) {
     private val codeMithrilineFurnace = registerNoEntry(ECRModIDs.MITHRILINE_FURNACE, ECRegistries.MULTIBLOCK) { MithrilineFurnaceMultiblock }
     private val codeSoulStone = registerNoEntry(ECRModIDs.SOUL_STONE, ECRegistries.MULTIBLOCK) { SoulStoneMultiblock }
     private val codeFlameCrystal = registerNoEntry(ECRModIDs.FLAME_CRYSTAL, ECRegistries.MULTIBLOCK) { FlameCrystal }
@@ -51,10 +51,7 @@ object MultiblockRegistry : RegistrationHandler(ModId) {
                 ECRModIDs.SUN_ABSORBER
             ).mapTo(linkedSetOf(), String::ecRL)
         )
-        registerConfiguredAssembledMultiblocks(
-            ECConfig.current.multiblocks.customAssembledRegistryIds(),
-            setOf(ECRModIDs.RAY_TOWER.ecRL)
-        )
+        registerConfiguredAssembledMultiblocks(ECConfig.current.multiblocks.customAssembledRegistryIds(), setOf(ECRModIDs.RAY_TOWER.ecRL))
     }
 
     val mithrilineFurnace: Multiblock get() = MultiblockDefinitions[ECRModIDs.MITHRILINE_FURNACE.ecRL] ?: codeMithrilineFurnace.get()

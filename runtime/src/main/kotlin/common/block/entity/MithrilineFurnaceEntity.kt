@@ -43,7 +43,7 @@ class MithrilineFurnaceEntity(
 ): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.mithrilineFurnace.get(), worldPosition, blockState), MRUDevice, WorldlyContainer {
     @all:JvmName("items")
     private var items = NonNullList.withSize(2, ItemStack.EMPTY)
-    private val containerData: ContainerData = object : ContainerData {
+    private val containerData: ContainerData = object: ContainerData {
         override fun get(index: Int): Int = when (index) {
             0 -> this@MithrilineFurnaceEntity.craftProgress
             1 -> this@MithrilineFurnaceEntity.maxCraftProgress
@@ -61,17 +61,15 @@ class MithrilineFurnaceEntity(
     }
 
     val recipe = CachedRecipe(RecipeTypeRegistry.mithrilineFurnace.get())
-
     var structureIsValid = false
     var craftProgress = 0
     var maxCraftProgress = 0
     var slownessGeneration = false
     var espeGenerationRemainder = 0.0
-    // Client Only
     var coreRotationPrevious = 0f
     var coreRotationAngle = 0f
     private val snowstormEmitters = mutableListOf<ParticleEmitter>()
-    private val snowstormTransform = object : Transform {
+    private val snowstormTransform = object: Transform {
         override val parent: Transform? = null
         override val isValid: Boolean get() = !isRemoved
         override val position: Vector3f
@@ -127,13 +125,11 @@ class MithrilineFurnaceEntity(
 
     override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean = slot == 0
 
-    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean =
-        slot != 1 && super<SynchronizedContainerBlockEntity>.canPlaceItem(slot, itemStack)
+    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = slot != 1 && super<SynchronizedContainerBlockEntity>.canPlaceItem(slot, itemStack)
 
     companion object {
         @JvmStatic
-        fun hasValidStructure(level: Level, pos: BlockPos): Boolean =
-            MultiblockRegistry.mithrilineFurnace.findPlacementAtCenter(level, pos) != null
+        fun hasValidStructure(level: Level, pos: BlockPos): Boolean = MultiblockRegistry.mithrilineFurnace.findPlacementAtCenter(level, pos) != null
 
         @JvmStatic
         fun onTick(level: Level, pos: BlockPos, be: MithrilineFurnaceEntity) {
@@ -186,8 +182,7 @@ class MithrilineFurnaceEntity(
                     val bpDown = BlockPos(xo, pos.y + 1, zo)
                     val bsDown = level.getBlockState(bpDown)
 
-                    if (bsDown.`is`(BlockRegistry.mithrilineCrystal.get()) && downCrystalCount + 1 <= 12)
-                        downCrystalCount++
+                    if (bsDown.`is`(BlockRegistry.mithrilineCrystal.get()) && downCrystalCount + 1 <= 12) downCrystalCount++
 
                     val bpUp = BlockPos(xo, pos.y + 3, zo)
                     val bsUp = level.getBlockState(bpUp)
@@ -275,7 +270,6 @@ class MithrilineFurnaceEntity(
             this.setChanged()
         }
 
-        // Client Only
         @JvmStatic
         private fun MithrilineFurnaceEntity.processRotation() {
             this.coreRotationPrevious = this.coreRotationAngle

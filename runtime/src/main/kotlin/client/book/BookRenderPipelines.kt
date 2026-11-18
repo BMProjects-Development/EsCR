@@ -21,14 +21,7 @@ object BookRenderPipelines {
 
         val shader = category?.shader
         val key = SpacePipelineKey(category?.id, config.key)
-        return custom.computeIfAbsent(key) {
-            create(
-                location(category?.id, config),
-                shader?.vertex ?: "core/book_space".ecRL,
-                shader?.fragment ?: "core/book_space".ecRL,
-                config
-            )
-        }
+        return custom.computeIfAbsent(key) { create(location(category?.id, config), shader?.vertex ?: "core/book_space".ecRL, shader?.fragment ?: "core/book_space".ecRL, config) }
     }
 
     private fun location(category: Identifier?, config: ResearchBookSpaceShaderConfig): Identifier {
@@ -42,10 +35,7 @@ object BookRenderPipelines {
         fragment: Identifier,
         config: ResearchBookSpaceShaderConfig? = null
     ): RenderPipeline {
-        val builder = RenderPipeline.builder(RenderPipelinesAccessor.guiSnippet())
-            .withLocation(location)
-            .withVertexShader(vertex)
-            .withFragmentShader(fragment)
+        val builder = RenderPipeline.builder(RenderPipelinesAccessor.guiSnippet()).withLocation(location).withVertexShader(vertex).withFragmentShader(fragment)
         if (config != null) {
             builder.withShaderDefine("ECR_STAR_DENSITY", config.starDensity)
             builder.withShaderDefine("ECR_STAR_SIZE", config.starSize)
@@ -53,8 +43,5 @@ object BookRenderPipelines {
         return RenderPipelinesAccessor.register(builder.build())
     }
 
-    private data class SpacePipelineKey(
-        val category: Identifier?,
-        val config: String
-    )
+    private data class SpacePipelineKey(val category: Identifier?, val config: String)
 }

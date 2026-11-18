@@ -39,12 +39,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class RayTowerEntity(
-    worldPosition: BlockPos,
-    blockState: BlockState
-): SynchronizedContainerBlockEntity(
-    BlockEntityTypeRegistry.rayTower.get(), worldPosition, blockState
-), MRUDevice, AssembledMultiblockPartEntity, GeoAnimatable {
+class RayTowerEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.rayTower.get(), worldPosition, blockState), MRUDevice, AssembledMultiblockPartEntity, GeoAnimatable {
     override var assembledMultiblockData: AssembledMultiblockPartData? = null
         private set
     override val geoAnimationState = GeoAnimationState()
@@ -77,11 +72,9 @@ class RayTowerEntity(
 
     override fun getContainerSize(): Int = this.items.size
 
-    override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean =
-        isAssembledMultiblock && super.canPlaceItem(slot, stack)
+    override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = isAssembledMultiblock && super.canPlaceItem(slot, stack)
 
-    override fun canTakeItem(target: Container, slot: Int, stack: ItemStack): Boolean =
-        isAssembledMultiblock && super.canTakeItem(target, slot, stack)
+    override fun canTakeItem(target: Container, slot: Int, stack: ItemStack): Boolean = isAssembledMultiblock && super.canTakeItem(target, slot, stack)
 
     override fun saveAdditional(output: ValueOutput) {
         ContainerHelper.saveAllItems(output, this.items)

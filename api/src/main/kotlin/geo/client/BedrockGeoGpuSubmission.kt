@@ -17,13 +17,12 @@ class BedrockGeoGpuSubmit(
     val renderType: RenderType,
     val packedLight: Int,
     val packedOverlay: Int
-) : BatchableSubmit {
+): BatchableSubmit {
     private val key = BedrockGeoGpuBatchKey(data.model, data.texture, data.renderType)
 
     override fun batchKey(): Any = key
 
-    override fun featureType(): FeatureRendererType<BedrockGeoGpuSubmit> =
-        BedrockGeoGpuFeatureRenderer.TYPE
+    override fun featureType(): FeatureRendererType<BedrockGeoGpuSubmit> = BedrockGeoGpuFeatureRenderer.TYPE
 }
 
 private class BedrockGeoGpuBatchKey(

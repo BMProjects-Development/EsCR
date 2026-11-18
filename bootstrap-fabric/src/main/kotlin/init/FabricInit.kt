@@ -95,9 +95,7 @@ object FabricInit {
         initRegistries()
         registerWorldgen()
 
-        CommandRegistrationCallback.EVENT.register { dispatcher, context, selection ->
-            EventBuses.GAME(RegisterCommandsEvent(dispatcher, context, selection))
-        }
+        CommandRegistrationCallback.EVENT.register { dispatcher, context, selection -> EventBuses.GAME(RegisterCommandsEvent(dispatcher, context, selection)) }
 
         extendPlatform()
     }
@@ -134,12 +132,8 @@ object FabricInit {
     }
 
     private fun registerProgressEvents() {
-        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register { player, _ ->
-            EventBuses.GAME(OnDatapackSyncEvent(player.level().server.playerList, player))
-        }
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register { server, _, success ->
-            if (success) EventBuses.GAME(OnDatapackSyncEvent(server.playerList, null))
-        }
+        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register { player, _ -> EventBuses.GAME(OnDatapackSyncEvent(player.level().server.playerList, player)) }
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register { server, _, success -> if (success) EventBuses.GAME(OnDatapackSyncEvent(server.playerList, null)) }
         ServerTickEvents.START_SERVER_TICK.register { server ->
             EventBuses.GAME(ServerTickEvent.Pre(server))
             server.playerList.players.forEach { player -> EventBuses.GAME(PlayerTickEvent.Pre(player)) }
@@ -153,19 +147,10 @@ object FabricInit {
     }
 
     private fun registerAccessEvents() {
-        UseItemCallback.EVENT.register { player, _, hand ->
-            EventBuses.GAME(PlayerInteractEvent.RightClickItem(player, hand)).result()
-        }
-        UseBlockCallback.EVENT.register { player, level, hand, hit ->
-            EventBuses.GAME(PlayerInteractEvent.RightClickBlock(player, hand, hit)).result()
-        }
+        UseItemCallback.EVENT.register { player, _, hand -> EventBuses.GAME(PlayerInteractEvent.RightClickItem(player, hand)).result() }
+        UseBlockCallback.EVENT.register { player, level, hand, hit -> EventBuses.GAME(PlayerInteractEvent.RightClickBlock(player, hand, hit)).result() }
         AttackBlockCallback.EVENT.register { player, _, _, pos, direction ->
-            val event = PlayerInteractEvent.LeftClickBlock(
-                player,
-                pos,
-                direction,
-                PlayerInteractEvent.LeftClickBlock.Action.START
-            )
+            val event = PlayerInteractEvent.LeftClickBlock(player, pos, direction, PlayerInteractEvent.LeftClickBlock.Action.START)
             if (EventBuses.GAME(event).isCanceled) InteractionResult.FAIL else InteractionResult.PASS
         }
         UseEntityCallback.EVENT.register { player, _, hand, entity, hit ->
@@ -178,15 +163,11 @@ object FabricInit {
     }
 
     private fun registerTabEvent() {
-        CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register { tab, output ->
-            EventBuses.MOD(BuildCreativeModeTabContentsEvent(tab, output::accept))
-        }
+        CreativeModeTabEvents.MODIFY_OUTPUT_ALL.register { tab, output -> EventBuses.MOD(BuildCreativeModeTabContentsEvent(tab, output::accept)) }
     }
 
     private fun registerEntityEvents() {
-        ServerLivingEntityEvents.ALLOW_DEATH.register { entity, source, _ ->
-            !EventBuses.GAME(LivingDeathEvent(entity, source)).isCanceled
-        }
+        ServerLivingEntityEvents.ALLOW_DEATH.register { entity, source, _ -> !EventBuses.GAME(LivingDeathEvent(entity, source)).isCanceled }
     }
 
     private fun extendPlatform() {
@@ -196,7 +177,7 @@ object FabricInit {
             if (level.isClientSide) return@menuScreen
             val serverPlayer = player as ServerPlayer
             serverPlayer.openMenu(
-                object : ExtendedMenuProvider<MenuTypeData> {
+                object: ExtendedMenuProvider<MenuTypeData> {
                     override fun getDisplayName(): Component = provider.displayName
 
                     override fun createMenu(
@@ -217,12 +198,9 @@ object FabricInit {
         t: T
     ): T = Registry.register(BuiltInRegistries.REGISTRY as Registry<Registry<*>>, resourceKey.identifier(), t)
 
-    private fun PlayerInteractEvent.RightClickItem.result(): InteractionResult =
-        if (isCanceled) cancellationResult else InteractionResult.PASS
+    private fun PlayerInteractEvent.RightClickItem.result(): InteractionResult = if (isCanceled) cancellationResult else InteractionResult.PASS
 
-    private fun PlayerInteractEvent.RightClickBlock.result(): InteractionResult =
-        if (isCanceled) cancellationResult else InteractionResult.PASS
+    private fun PlayerInteractEvent.RightClickBlock.result(): InteractionResult = if (isCanceled) cancellationResult else InteractionResult.PASS
 
-    private fun PlayerInteractEvent.EntityInteract.result(): InteractionResult =
-        if (isCanceled) cancellationResult else InteractionResult.PASS
+    private fun PlayerInteractEvent.EntityInteract.result(): InteractionResult = if (isCanceled) cancellationResult else InteractionResult.PASS
 }

@@ -24,12 +24,10 @@ class ParticleEmitter(
     val rotation = Quaternionf(rotation)
     val velocity = Vector3f(velocity)
     val particles = arrayListOf<BedrockParticle>()
-
     private val components = effect.components
     private val curveVariables: CurveVariables = CurveVariables({ context }, effect.curves)
     private val variables: Variables = VariablesMap().fallbackBackTo(curveVariables)
     val context: MolangContext = MolangContext(sourceEntity, variables)
-
     private var firedCreationEvents = false
     private var firedExpirationEvents = false
     private var emissionStopped = false
@@ -182,8 +180,7 @@ class ParticleEmitter(
         }
     }
 
-    fun fire(timeSince: Float, events: List<String>, particle: BedrockParticle?) =
-        events.forEach { fire(timeSince, it, particle) }
+    fun fire(timeSince: Float, events: List<String>, particle: BedrockParticle?) = events.forEach { fire(timeSince, it, particle) }
 
     fun fire(timeSince: Float, eventName: String, particle: BedrockParticle?) {
         effect.events[eventName]?.let { fire(timeSince, it, particle) }
@@ -243,16 +240,7 @@ class ParticleEmitter(
         event.sound?.let { config ->
             val sound = effect.referencedSounds[config.eventName] ?: return@let
             val soundPosition = particle?.globalPosition ?: position
-            system.level.playLocalSound(
-                soundPosition.x.toDouble(),
-                soundPosition.y.toDouble(),
-                soundPosition.z.toDouble(),
-                sound,
-                SoundSource.AMBIENT,
-                1f,
-                1f,
-                false
-            )
+            system.level.playLocalSound(soundPosition.x.toDouble(), soundPosition.y.toDouble(), soundPosition.z.toDouble(), sound, SoundSource.AMBIENT, 1f, 1f, false)
         }
     }
 }

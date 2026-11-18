@@ -20,10 +20,7 @@ class MagicalTeleporterMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess
-): AbstractMenu(
-    MenuTypeRegistry.magicalTeleporter, containerId,
-    access
-) {
+): AbstractMenu(MenuTypeRegistry.magicalTeleporter, containerId, access) {
     constructor(containerId: Int, inv: Inventory, data: MenuTypeData): this(
         containerId, inv, SimpleContainer(2), inv.player.level().getBlockEntity(data.pos), ContainerLevelAccess.NULL
     )
@@ -35,10 +32,7 @@ class MagicalTeleporterMenu(
         addSlot(VanillaSpecialSlot(container, 1, 116, 48, BoundGemHelper::isConnectionFoundSpecial))
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        slotIndex: Int
-    ): ItemStack = ItemStack.EMPTY // later
+    override fun quickMoveStack(player: Player, slotIndex: Int): ItemStack = ItemStack.EMPTY
 
     override fun stillValid(player: Player): Boolean = stillValid(access, player, BlockRegistry.magicalTeleporter.get())
 }

@@ -7,6 +7,11 @@ import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.common.block.*
 import com.algorithmlx.ecr.common.inventory.*
+import com.algorithmlx.ecr.common.block.entity.EnderGeneratorEntity
+import com.algorithmlx.ecr.common.block.entity.MagicalChestEntity
+import com.algorithmlx.ecr.common.block.entity.MagmaticSmelteryEntity
+import com.algorithmlx.ecr.common.block.entity.MonsterHoldingEntity
+import com.algorithmlx.ecr.common.machine.MachineBlock
 import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.common.item.NamedBlockItem
 import net.minecraft.core.registries.Registries
@@ -20,14 +25,23 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.PushReaction
 import java.util.function.Supplier
 
-object BlockRegistry : RegistrationHandler(ModId) {
+object BlockRegistry: RegistrationHandler(ModId) {
+    val naturalFurnace = registerMachine(ECRModIDs.NATURAL_FURNACE, ::NaturalFurnace)
+    val enderGenerator = registerMachine(ECRModIDs.ENDER_GENERATOR, { MachineBlock(it, ::EnderGeneratorEntity) })
+    val magmaticSmeltery = registerMachine(ECRModIDs.MAGMATIC_SMELTERY, { MachineBlock(it, ::MagmaticSmelteryEntity) })
+    val magmaticFurnace = registerMachine(ECRModIDs.MAGMATIC_FURNACE, { MagmaticFurnace(it) })
+    val magicalMagmaticFurnace = registerMachine(ECRModIDs.MAGICAL_MAGMATIC_FURNACE, { MagmaticFurnace(it, MagmaticFurnace.Tier.MAGICAL) })
+    val paleMagmaticFurnace = registerMachine(ECRModIDs.PALE_MAGMATIC_FURNACE, { MagmaticFurnace(it, MagmaticFurnace.Tier.PALE) })
+    val voidMagmaticFurnace = registerMachine(ECRModIDs.VOID_MAGMATIC_FURNACE, { MagmaticFurnace(it, MagmaticFurnace.Tier.VOID) })
+    val magicalBreeder = registerMachine(ECRModIDs.MAGICAL_BREEDER, { AnimalStation(it, AnimalStation.Operation.BREED) })
+    val magicalShearingStation = registerMachine(ECRModIDs.MAGICAL_SHEARING_STATION, { AnimalStation(it, AnimalStation.Operation.SHEAR) })
+    val monsterHolding = registerMachine(ECRModIDs.MONSTER_HOLDING_DEVICE, { MachineBlock(it, ::MonsterHoldingEntity) })
+    val magicalChest = registerMachine(ECRModIDs.MAGICAL_CHEST, { MachineBlock(it, ::MagicalChestEntity) })
+    val magicalHopper = registerMachine(ECRModIDs.MAGICAL_HOPPER, ::MagicalHopper)
     val assembledMultiblockPart = register(
         ECRModIDs.ASSEMBLED_MULTIBLOCK_PART,
         ::AssembledMultiblockPartBlock,
-        BlockBehaviour.Properties
-            .of()
-            .pushReaction(PushReaction.IMMOVEABLE)
-            .json(),
+        BlockBehaviour.Properties.of().pushReaction(PushReaction.IMMOVEABLE).json(),
         shouldRegisterItem = false
     )
     val mithrilineFurnace = register(ECRModIDs.MITHRILINE_FURNACE, ::MithrilineFurnace)
@@ -80,6 +94,8 @@ object BlockRegistry : RegistrationHandler(ModId) {
     val mithrilineOre = register(ECRModIDs.MITHRILINE_ORE, { DropExperienceBlock(UniformInt.of(0, 5), it) })
     val deepslateMithrilineOre = register(ECRModIDs.DEEPSLATE_MITHRILINE_ORE, { DropExperienceBlock(UniformInt.of(0, 5), it) })
 
+    private fun <B: Block> registerMachine(id: String, factory: (BlockBehaviour.Properties) -> B): Supplier<B> = registerDefaulted(id, factory, BlockBehaviour.Properties.of().strength(1F))
+
     private fun registerBasic(
         id: String,
         properties: JSONBlockProperties = BlockBehaviour.Properties.of().json(),
@@ -107,12 +123,7 @@ object BlockRegistry : RegistrationHandler(ModId) {
 
         if (shouldRegisterItem)
             registerItem(id) {
-                NamedBlockItem(
-                    entry.get(),
-                    Item.Properties()
-                        .setId(ResourceKey.create(Registries.ITEM, registryId))
-                        .useBlockDescriptionPrefix()
-                )
+                NamedBlockItem(entry.get(), Item.Properties().setId(ResourceKey.create(Registries.ITEM, registryId)).useBlockDescriptionPrefix())
             }
 
         return entry

@@ -9,7 +9,7 @@ import java.util.UUID
 import net.minecraft.core.UUIDUtil
 import com.algorithmlx.ecr.api.mim.MIMCraftingState
 
-internal class MIMCraftingRequest(template: ItemStack, var remaining: Int, val id: UUID = UUID.randomUUID()) {
+class MIMCraftingRequest(template: ItemStack, var remaining: Int, val id: UUID = UUID.randomUUID()) {
     val template: ItemStack = template.copyWithCount(1)
     var job: MIMCraftingJob? = null
     var plan: MIMCraftingPlan? = null

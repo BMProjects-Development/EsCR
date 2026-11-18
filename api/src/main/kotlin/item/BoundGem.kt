@@ -7,11 +7,8 @@ import net.minecraft.world.level.Level
 
 interface BoundGem {
     val world: String? get() = null
-
     val dimensionalBounds: Boolean get() = true
-
     val transferStrength: Int get() = 1000
-
     val boundRadius: Double get() = 16.0
 
     fun getBoundPos(stack: ItemStack): BlockPos?

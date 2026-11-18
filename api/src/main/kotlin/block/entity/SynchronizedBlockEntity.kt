@@ -10,9 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
-open class SynchronizedBlockEntity(
-    type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState
-): BlockEntity(type, worldPosition, blockState) {
+open class SynchronizedBlockEntity(type: BlockEntityType<*>, worldPosition: BlockPos, blockState: BlockState): BlockEntity(type, worldPosition, blockState) {
     override fun setChanged() {
         super.setChanged()
         this.syncForNearby()

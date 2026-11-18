@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.api.item
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.mru.MRUDevice
 import com.algorithmlx.ecr.api.mru.resolveMRUDevice
 import com.algorithmlx.ecr.api.container.AbstractMenu
@@ -35,8 +36,7 @@ object BoundGemTooltips {
         if (slot.container is Inventory || slot.item.item !is BoundGem) return false
         if ((menu as? BoundGemSlotContext)?.hasBoundGemTooltip(slot) == true) return true
         var device = slot.container as? MRUDevice
-        if (device == null)
-            (menu as? AbstractMenu)?.access?.execute { level, pos -> device = level.resolveMRUDevice(pos) }
+        if (device == null) (menu as? AbstractMenu)?.access?.execute { level, pos -> device = level.resolveMRUDevice(pos) }
         val locator = device?.locator ?: return false
         return locator.locatorStorage === slot.container && locator.locatorSlot == slot.containerSlot
     }
@@ -50,7 +50,7 @@ object BoundGemTooltips {
         val level = if (dimension == null) player.level() else player.level().server.getLevel(dimension) ?: return unavailable()
         if (!level.isLoaded(pos) || level.getBlockState(pos).isAir) return unavailable()
         return target(level, pos) + if (slot.mayPlace(stack)) emptyList()
-        else listOf(Component.translatable("tooltip.escr.bound_gem.incompatible").withStyle(ChatFormatting.RED))
+        else listOf(Component.translatable("tooltip.$ModId.bound_gem.incompatible").withStyle(ChatFormatting.RED))
     }
 
     @JvmStatic
@@ -62,9 +62,9 @@ object BoundGemTooltips {
             addAll(custom?.takeIf { it.isNotEmpty() } ?: listOf(level.getBlockState(pos).block.name))
             val storage = level.resolveMRUDevice(pos)?.mruStorage
             if (storage != null && storage.mruCapacity > 0)
-                add(Component.translatable("tooltip.escr.bound_gem.mru", storage.mru, storage.mruCapacity).withStyle(ChatFormatting.GRAY))
+                add(Component.translatable("tooltip.$ModId.bound_gem.mru", storage.mru, storage.mruCapacity).withStyle(ChatFormatting.GRAY))
         }
     }
 
-    private fun unavailable(): List<Component> = listOf(Component.translatable("tooltip.escr.bound_gem.unavailable"))
+    private fun unavailable(): List<Component> = listOf(Component.translatable("tooltip.$ModId.bound_gem.unavailable"))
 }

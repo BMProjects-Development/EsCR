@@ -42,7 +42,7 @@ class StructureRecipe(
     val structureCenter: Block?,
     val blockForPlace: Block?,
     val consumeStructure: Boolean = false
-) : Recipe<SingleRecipeInput> {
+): Recipe<SingleRecipeInput> {
     val multiblock: Multiblock
         get() =
             MultiblockDefinitions[multiblockId]
@@ -76,11 +76,7 @@ class StructureRecipe(
         val definition = MultiblockDefinitions[multiblockId]
         require(
             structureCenter == null || definition == null ||
-                definition.variants
-                    .asSequence()
-                    .flatMap { it.blocks.asSequence() }
-                    .map { it.default() }
-                    .any { it.`is`(structureCenter) }
+                definition.variants.asSequence().flatMap { it.blocks.asSequence() }.map { it.default() }.any { it.`is`(structureCenter) }
         ) {
             "Structure center is not contained in $multiblockId"
         }
@@ -92,10 +88,7 @@ class StructureRecipe(
 
     override fun placementInfo(): PlacementInfo = PlacementInfo.NOT_PLACEABLE
 
-    override fun matches(
-        input: SingleRecipeInput,
-        level: Level
-    ): Boolean = ingredient.test(input.item())
+    override fun matches(input: SingleRecipeInput, level: Level): Boolean = ingredient.test(input.item())
 
     override fun assemble(input: SingleRecipeInput): ItemStack = result.getOrNull()?.create() ?: ItemStack.EMPTY
 
@@ -115,11 +108,7 @@ class StructureRecipe(
             )
         )
 
-    data class Display(
-        val ingredient: SlotDisplay,
-        private val resultDisplay: SlotDisplay,
-        val structureCenter: Optional<SlotDisplay>
-    ) : RecipeDisplay {
+    data class Display(val ingredient: SlotDisplay, private val resultDisplay: SlotDisplay, val structureCenter: Optional<SlotDisplay>): RecipeDisplay {
         override fun result(): SlotDisplay = this.resultDisplay
 
         override fun craftingStation(): SlotDisplay = this.ingredient
@@ -141,15 +130,10 @@ class StructureRecipe(
             @JvmField
             val STREAM_CODEC = StreamCodec.of(::encode, ::decode)
 
-            private fun encode(
-                buf: RegistryFriendlyByteBuf,
-                display: Display
-            ) {
+            private fun encode(buf: RegistryFriendlyByteBuf, display: Display) {
                 SlotDisplay.STREAM_CODEC.encode(buf, display.ingredient)
                 SlotDisplay.STREAM_CODEC.encode(buf, display.resultDisplay)
-                buf.writeOptional(display.structureCenter) { b, slotDisplay ->
-                    SlotDisplay.STREAM_CODEC.encode(b as RegistryFriendlyByteBuf, slotDisplay)
-                }
+                buf.writeOptional(display.structureCenter) { b, slotDisplay -> SlotDisplay.STREAM_CODEC.encode(b as RegistryFriendlyByteBuf, slotDisplay) }
             }
 
             private fun decode(buf: RegistryFriendlyByteBuf): Display {
@@ -167,27 +151,20 @@ class StructureRecipe(
             RecordCodecBuilder.mapCodec {
                 it
                     .group(
-                        Identifier.CODEC
-                            .fieldOf("multiblock")
-                            .forGetter(StructureRecipe::multiblockId),
+                        Identifier.CODEC.fieldOf("multiblock").forGetter(StructureRecipe::multiblockId),
                         Codec.INT.fieldOf("time").forGetter(StructureRecipe::time),
                         Ingredient.CODEC.fieldOf("input").forGetter(StructureRecipe::ingredient),
                         ItemStackTemplate.CODEC.optionalFieldOf("result").forGetter(StructureRecipe::result),
                         Range.CODEC.optionalFieldOf("chance", Range(0, 0)).forGetter(StructureRecipe::chance),
-                        Codec
-                            .optionalField("structure_center", Identifier.CODEC, true)
+                        Codec.optionalField("structure_center", Identifier.CODEC, true)
                             .forGetter { fg ->
                                 Optional.ofNullable(fg.structureCenter?.let { thing -> BuiltInRegistries.BLOCK.getKey(thing) })
                             },
-                        Codec
-                            .optionalField("placement", Identifier.CODEC, true)
+                        Codec.optionalField("placement", Identifier.CODEC, true)
                             .forGetter { fg ->
                                 Optional.ofNullable(fg.blockForPlace?.let { thing -> BuiltInRegistries.BLOCK.getKey(thing) })
                             },
-                        Codec.BOOL
-                            .fieldOf("consume_structure")
-                            .orElseGet { false }
-                            .forGetter(StructureRecipe::consumeStructure)
+                        Codec.BOOL.fieldOf("consume_structure").orElseGet { false }.forGetter(StructureRecipe::consumeStructure)
                     ).apply(it) { multiblockId, time, ingredient, result, chance, center, placement, consumeStructure ->
                         StructureRecipe(
                             multiblockId,
@@ -209,16 +186,11 @@ class StructureRecipe(
         @JvmField
         val STREAM_CODEC = StreamCodec.of(::encode, ::decode)
 
-        private fun encode(
-            buf: RegistryFriendlyByteBuf,
-            recipe: StructureRecipe
-        ) {
+        private fun encode(buf: RegistryFriendlyByteBuf, recipe: StructureRecipe) {
             Identifier.STREAM_CODEC.encode(buf, recipe.multiblockId)
             buf.writeInt(recipe.time)
             Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.ingredient)
-            buf.writeOptional(recipe.result) { buffer, item ->
-                ItemStackTemplate.STREAM_CODEC.encode(buffer as RegistryFriendlyByteBuf, item)
-            }
+            buf.writeOptional(recipe.result) { buffer, item -> ItemStackTemplate.STREAM_CODEC.encode(buffer as RegistryFriendlyByteBuf, item) }
             Range.STREAM_CODEC.encode(buf, recipe.chance)
             buf.writeNullable(recipe.structureCenter?.let { BuiltInRegistries.BLOCK.getKey(it) }, Identifier.STREAM_CODEC)
             buf.writeNullable(recipe.blockForPlace?.let { BuiltInRegistries.BLOCK.getKey(it) }, Identifier.STREAM_CODEC)
@@ -237,45 +209,20 @@ class StructureRecipe(
 
             val structureCenter = BuiltInRegistries.BLOCK.getOptional(structureCenterId).getOrNull()
             val blockForPlace = BuiltInRegistries.BLOCK.getOptional(blockForPlaceId).getOrNull()
-            return StructureRecipe(
-                multiblockId,
-                time,
-                ingredient,
-                result,
-                chance,
-                structureCenter,
-                blockForPlace,
-                consumeStructure
-            )
+            return StructureRecipe(multiblockId, time, ingredient, result, chance, structureCenter, blockForPlace, consumeStructure)
         }
     }
 
-    data class Range(
-        val min: Int,
-        val max: Int
-    ) {
+    data class Range(val min: Int, val max: Int) {
         fun isEmpty() = this.min == 0 && max == 0
 
         companion object {
             @JvmField
             val CODEC: Codec<Range> =
-                RecordCodecBuilder.create {
-                    it
-                        .group(
-                            Codec.INT.fieldOf("min").forGetter(Range::min),
-                            Codec.INT.fieldOf("max").forGetter(Range::max)
-                        ).apply(it, ::Range)
-                }
+                RecordCodecBuilder.create { it.group(Codec.INT.fieldOf("min").forGetter(Range::min), Codec.INT.fieldOf("max").forGetter(Range::max)).apply(it, ::Range) }
 
             @JvmField
-            val STREAM_CODEC: StreamCodec<ByteBuf, Range> =
-                StreamCodec.composite(
-                    ByteBufCodecs.INT,
-                    Range::min,
-                    ByteBufCodecs.INT,
-                    Range::max,
-                    ::Range
-                )
+            val STREAM_CODEC: StreamCodec<ByteBuf, Range> = StreamCodec.composite(ByteBufCodecs.INT, Range::min, ByteBufCodecs.INT, Range::max, ::Range)
         }
     }
 }

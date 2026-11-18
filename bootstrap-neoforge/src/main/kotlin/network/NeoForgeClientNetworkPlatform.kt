@@ -9,7 +9,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.client.network.ClientPacketDistributor
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent
 
-class NeoForgeClientNetworkPlatform(bus: IEventBus) : ClientNetworkPlatform {
+class NeoForgeClientNetworkPlatform(bus: IEventBus): ClientNetworkPlatform {
     private val registries = mutableListOf<PacketRegistry>()
 
     init {
@@ -24,10 +24,7 @@ class NeoForgeClientNetworkPlatform(bus: IEventBus) : ClientNetworkPlatform {
     override fun sendToServer(payload: CustomPacketPayload) = ClientPacketDistributor.sendToServer(payload)
 
     private fun registerPayloads(event: RegisterClientPayloadHandlersEvent) {
-        registries.asSequence()
-            .flatMap { registry -> registry.packets.asSequence() }
-            .filterIsInstance<ClientboundPacket<*>>()
-            .forEach { packet -> register(event, packet) }
+        registries.asSequence().flatMap { registry -> registry.packets.asSequence() }.filterIsInstance<ClientboundPacket<*>>().forEach { packet -> register(event, packet) }
     }
 
     @Suppress("UNCHECKED_CAST")

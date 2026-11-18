@@ -65,9 +65,7 @@ class ConnectedTexture private constructor(
     private val outlineComponentBounds: Boolean = false
 ) {
     val variants: List<ConnectedTextureVariant?> = Collections.unmodifiableList(variants.toList())
-    val faces: Set<Direction> = Collections.unmodifiableSet(
-        if (faces.isEmpty()) EnumSet.noneOf(Direction::class.java) else EnumSet.copyOf(faces)
-    )
+    val faces: Set<Direction> = Collections.unmodifiableSet(if (faces.isEmpty()) EnumSet.noneOf(Direction::class.java) else EnumSet.copyOf(faces))
 
     init {
         require(this.variants.size == ConnectedTextureMask.VARIANT_COUNT) {
@@ -82,18 +80,9 @@ class ConnectedTexture private constructor(
         variants: List<Identifier>,
         connection: ConnectedTextureConnection = ConnectedTextureConnection.SAME_BLOCK,
         faces: Set<Direction> = ALL_FACES
-    ) : this(
-        source = source,
-        variants = variants.map { ConnectedTextureVariant(it) }.toTypedArray(),
-        connection = connection,
-        faces = faces
-    )
+    ) : this(source = source, variants = variants.map { ConnectedTextureVariant(it) }.toTypedArray(), connection = connection, faces = faces)
 
-    fun packedMask(
-        level: BlockAndTintGetter,
-        pos: BlockPos,
-        state: BlockState
-    ): Int = ConnectedTextureMask.pack { face -> mask(level, pos, state, face) }
+    fun packedMask(level: BlockAndTintGetter, pos: BlockPos, state: BlockState): Int = ConnectedTextureMask.pack { face -> mask(level, pos, state, face) }
 
     fun mask(
         level: BlockAndTintGetter,
@@ -109,9 +98,7 @@ class ConnectedTexture private constructor(
 
         val preferredMask = if (connections == 4)
             ConnectedTextureMask.fourWayFromDiagonals { firstSide, secondSide ->
-                val diagonalPos = pos
-                    .relative(ConnectedTextureMask.direction(face, firstSide))
-                    .relative(ConnectedTextureMask.direction(face, secondSide))
+                val diagonalPos = pos.relative(ConnectedTextureMask.direction(face, firstSide)).relative(ConnectedTextureMask.direction(face, secondSide))
                 val diagonalState = level.getBlockState(diagonalPos)
                 connection.connects(level, pos, state, diagonalPos, diagonalState, face)
             }
@@ -183,24 +170,11 @@ class ConnectedTexture private constructor(
             return ConnectedTexture(
                 source = source,
                 variants = Array(ConnectedTextureMask.VARIANT_COUNT) { mask ->
-                    val column = axisIndex(
-                        mask = mask,
-                        start = ConnectedTextureMask.RIGHT,
-                        end = ConnectedTextureMask.LEFT
-                    )
-                    val row = axisIndex(
-                        mask = mask,
-                        start = ConnectedTextureMask.BOTTOM,
-                        end = ConnectedTextureMask.TOP
-                    )
+                    val column = axisIndex(mask = mask, start = ConnectedTextureMask.RIGHT, end = ConnectedTextureMask.LEFT)
+                    val row = axisIndex(mask = mask, start = ConnectedTextureMask.BOTTOM, end = ConnectedTextureMask.TOP)
                     ConnectedTextureVariant(
                         sprite = map,
-                        region = ConnectedTextureRegion(
-                            x = column * textureSize,
-                            y = row * textureSize,
-                            width = textureSize,
-                            height = textureSize
-                        )
+                        region = ConnectedTextureRegion(x = column * textureSize, y = row * textureSize, width = textureSize, height = textureSize)
                     )
                 },
                 connection = connection,
@@ -239,18 +213,12 @@ class ConnectedTexture private constructor(
                 source,
                 mapOf(
                     ConnectedTextureMask.RIGHT to ConnectedTextureVariant(startLine),
-                    ConnectedTextureMask.BOTTOM to ConnectedTextureVariant(
-                        startLine,
-                        ConnectedTextureRotation.CLOCKWISE_90
-                    ),
+                    ConnectedTextureMask.BOTTOM to ConnectedTextureVariant(startLine, ConnectedTextureRotation.CLOCKWISE_90),
                     ConnectedTextureMask.LEFT to leftEnd,
                     ConnectedTextureMask.TOP to topEnd,
                     ConnectedTextureMask.LEFT or ConnectedTextureMask.RIGHT to
                         ConnectedTextureVariant(line),
-                    ConnectedTextureMask.TOP or ConnectedTextureMask.BOTTOM to ConnectedTextureVariant(
-                        line,
-                        ConnectedTextureRotation.CLOCKWISE_90
-                    ),
+                    ConnectedTextureMask.TOP or ConnectedTextureMask.BOTTOM to ConnectedTextureVariant(line, ConnectedTextureRotation.CLOCKWISE_90),
                     ConnectedTextureMask.RIGHT or ConnectedTextureMask.BOTTOM to
                         ConnectedTextureVariant(angle),
                     ConnectedTextureMask.BOTTOM or ConnectedTextureMask.LEFT to rightCorner,
@@ -277,13 +245,7 @@ class ConnectedTexture private constructor(
                 require(mask in resolved.indices) { "Connected texture mask must be between 0 and 15, got $mask" }
                 resolved[mask] = variant
             }
-            return ConnectedTexture(
-                source,
-                resolved,
-                connection,
-                faces,
-                outlineComponentBounds
-            )
+            return ConnectedTexture(source, resolved, connection, faces, outlineComponentBounds)
         }
 
         private fun axisIndex(mask: Int, start: Int, end: Int): Int = when (mask and (start or end)) {

@@ -7,13 +7,11 @@ object ResearchBookConfigValues {
     private const val MIN_ZOOM = 0.5F
     private const val MAX_ZOOM = 2F
     private const val PARALLAX_PAN_RANGE = 8192F
-
     private const val OFFSET_LOW_BITS = 4
     private const val OFFSET_LOW_MASK = (1 shl OFFSET_LOW_BITS) - 1
     private const val OFFSET_MAX = (1 shl 12) - 1
     private const val ZOOM_BITS = 7
     private const val ZOOM_MAX = (1 shl ZOOM_BITS) - 1
-
     private const val STAR_DENSITY_MIN = 0.25F
     private const val STAR_DENSITY_MAX = 2F
     private const val STAR_SIZE_MIN = 0.5F
@@ -35,12 +33,10 @@ object ResearchBookConfigValues {
         return (alpha shl 24) or (red shl 16) or (green shl 8) or blue
     }
 
-    fun zoomStep(): Float =
-        ECConfig.current.researchBook.graph.zoomStep.takeIf(Float::isFinite)?.coerceIn(0.01F, 0.5F) ?: 0.12F
+    fun zoomStep(): Float = ECConfig.current.researchBook.graph.zoomStep.takeIf(Float::isFinite)?.coerceIn(0.01F, 0.5F) ?: 0.12F
 
     fun availableBlinkSeconds(): Double =
-        ECConfig.current.researchBook.graph.availableBlinkSeconds
-            .takeIf(Double::isFinite)
+        ECConfig.current.researchBook.graph.availableBlinkSeconds.takeIf(Double::isFinite)
             ?.coerceIn(0.5, 30.0)
             ?: 3.0
 
@@ -62,10 +58,7 @@ object ResearchBookConfigValues {
     }
 }
 
-data class ResearchBookSpaceShaderConfig(
-    val starDensity: Float,
-    val starSize: Float
-) {
+data class ResearchBookSpaceShaderConfig(val starDensity: Float, val starSize: Float) {
     val key: String = "d${(starDensity * 100F).roundToInt()}_s${(starSize * 100F).roundToInt()}"
     val isDefault: Boolean = starDensity == 1F && starSize == 1F
 }

@@ -41,19 +41,16 @@ import org.joml.Vector3f
 class MagicalTeleporterEntity(
     worldPosition: BlockPos,
     blockState: BlockState
-) : SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.magicalTeleporter.get(), worldPosition, blockState),
+): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.magicalTeleporter.get(), worldPosition, blockState),
     MRUDevice {
     private var items: NonNullList<ItemStack> = NonNullList.withSize(2, ItemStack.EMPTY)
     private var progressTime = 0
-
     private var structureIsValid = false
     private var isChunkLoaded = false
-
-    // client only
     private var playerParticleSpawned = false
     private val snowstormEmitters = mutableListOf<ParticleEmitter>()
     private val snowstormTransform =
-        object : Transform {
+        object: Transform {
             override val parent: Transform? = null
             override val isValid: Boolean get() = !isRemoved
             override val position: Vector3f
@@ -70,17 +67,8 @@ class MagicalTeleporterEntity(
         this.items = items
     }
 
-    override fun createMenu(
-        containerId: Int,
-        inventory: Inventory
-    ): AbstractContainerMenu =
-        MagicalTeleporterMenu(
-            containerId,
-            inventory,
-            this,
-            this,
-            ContainerLevelAccess.create(this.level!!, this.blockPos)
-        )
+    override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu =
+        MagicalTeleporterMenu(containerId, inventory, this, this, ContainerLevelAccess.create(this.level!!, this.blockPos))
 
     override fun saveAdditional(output: ValueOutput) {
         ContainerHelper.saveAllItems(output, this.items)
@@ -109,10 +97,7 @@ class MagicalTeleporterEntity(
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.CONNECTABLE_RECEIVER
     override val locator: MRUDevice.LocatorData = MRUDevice.LocatorData(this, 0)
 
-    override fun preRemoveSideEffects(
-        pos: BlockPos,
-        state: BlockState
-    ) {
+    override fun preRemoveSideEffects(pos: BlockPos, state: BlockState) {
         if (isChunkLoaded) {
             (level as? ServerLevel)?.let {
                 ChunkLoadingManager.remove(it, pos)
@@ -127,17 +112,10 @@ class MagicalTeleporterEntity(
         private val config = ECConfig.current.magicalTeleporter
 
         @JvmStatic
-        fun hasValidStructure(
-            level: Level,
-            pos: BlockPos
-        ): Boolean = MultiblockRegistry.magicalTeleporter.findPlacement(level, pos, BlockPos(2, 0, 2)) != null
+        fun hasValidStructure(level: Level, pos: BlockPos): Boolean = MultiblockRegistry.magicalTeleporter.findPlacement(level, pos, BlockPos(2, 0, 2)) != null
 
         @JvmStatic
-        fun onTick(
-            level: Level,
-            pos: BlockPos,
-            blockEntity: MagicalTeleporterEntity
-        ) {
+        fun onTick(level: Level, pos: BlockPos, blockEntity: MagicalTeleporterEntity) {
             val oldValid = blockEntity.structureIsValid
             val newValid = hasValidStructure(level, pos)
 
@@ -167,9 +145,7 @@ class MagicalTeleporterEntity(
                     blockEntity.playerParticleSpawned = true
                 } else if (entityAtTeleporter == null && blockEntity.playerParticleSpawned) {
                     blockEntity.playerParticleSpawned = false
-                    blockEntity.snowstormEmitters.filter { it.effect.identifier == hasPlayerId }.forEach {
-                        it.stopLoop()
-                    }
+                    blockEntity.snowstormEmitters.filter { it.effect.identifier == hasPlayerId }.forEach { it.stopLoop() }
                     blockEntity.snowstormEmitters.removeIf { it.effect.identifier == hasPlayerId }
                 }
 

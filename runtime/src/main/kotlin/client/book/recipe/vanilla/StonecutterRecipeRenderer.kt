@@ -8,19 +8,14 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.item.crafting.StonecutterRecipe
 import net.minecraft.world.item.crafting.display.StonecutterRecipeDisplay
 
-object StonecutterRecipeRenderer : BookRecipeRenderer<StonecutterRecipe> {
+object StonecutterRecipeRenderer: BookRecipeRenderer<StonecutterRecipe> {
     private const val RENDER_WIDTH = 128
     private const val RENDER_HEIGHT = 32
-
     private const val SLOT_SIZE = 32
     private const val ITEM_SIZE = SLOT_SIZE / 2
-
     private const val ELEMENT_GAP = 8
 
-    override fun build(
-        recipe: StonecutterRecipe,
-        builder: BookRecipeRenderBuilder
-    ) {
+    override fun build(recipe: StonecutterRecipe, builder: BookRecipeRenderBuilder) {
         val display = recipe.display().filterIsInstance<StonecutterRecipeDisplay>().firstOrNull() ?: return
 
         val item = ItemStack(Items.STONECUTTER)

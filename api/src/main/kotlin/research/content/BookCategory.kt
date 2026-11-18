@@ -15,21 +15,12 @@ data class BookCategory(
     val titleShadow: Boolean = false
 )
 
-data class BookShader(
-    val vertex: Identifier,
-    val fragment: Identifier = vertex
-)
+data class BookShader(val vertex: Identifier, val fragment: Identifier = vertex)
 
-data class BookIcon(
-    val item: Identifier? = null,
-    val texture: Identifier? = null
-) {
+data class BookIcon(val item: Identifier? = null, val texture: Identifier? = null) {
     init {
         require(item == null || texture == null)
     }
 }
 
-data class BookText(
-    val value: String,
-    val translated: Boolean = true
-)
+data class BookText(val value: String, val translated: Boolean = true)

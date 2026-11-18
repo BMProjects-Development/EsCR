@@ -23,9 +23,7 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.min
 
-class MultiblockPreviewRenderer(
-    private val modelResolver: BlockModelResolver = BlockModelResolver(Minecraft.getInstance().modelManager)
-) {
+class MultiblockPreviewRenderer(private val modelResolver: BlockModelResolver = BlockModelResolver(Minecraft.getInstance().modelManager)) {
     private val displayContext = BlockDisplayContext.create()
     private val modelState = BlockModelRenderState()
 
@@ -48,12 +46,7 @@ class MultiblockPreviewRenderer(
         submitter: SubmitNodeCollector,
         outlineColor: Int = -1
     ) {
-        submitBlocks(
-            blocks.flatMap { (position, state) -> previewParts(position, state) },
-            poseStack,
-            submitter,
-            outlineColor
-        )
+        submitBlocks(blocks.flatMap { (position, state) -> previewParts(position, state) }, poseStack, submitter, outlineColor)
     }
 
     fun submit(
@@ -114,26 +107,15 @@ class MultiblockPreviewRenderer(
         val projected = projectedBounds(blocks, pivot, transform)
         val availableWidth = bounds.width.coerceAtLeast(1f)
         val availableHeight = bounds.height.coerceAtLeast(1f)
-        val fittedScale = min(
-            availableWidth / projected.width.coerceAtLeast(1f),
-            availableHeight / projected.height.coerceAtLeast(1f)
-        ) * transform.scale
+        val fittedScale = min(availableWidth / projected.width.coerceAtLeast(1f), availableHeight / projected.height.coerceAtLeast(1f)) * transform.scale
 
-        poseStack.translate(
-            bounds.x + bounds.width / 2f + transform.offsetX,
-            bounds.y + bounds.height / 2f + transform.offsetY,
-            0f
-        )
+        poseStack.translate(bounds.x + bounds.width / 2f + transform.offsetX, bounds.y + bounds.height / 2f + transform.offsetY, 0f)
         poseStack.scale(-fittedScale, -fittedScale, fittedScale)
         poseStack.translate(-projected.centerX, -projected.centerY, -projected.centerZ)
         rotateAroundPivot(pivot, poseStack, transform)
     }
 
-    private fun projectedBounds(
-        blocks: List<PreviewBlock>,
-        pivot: Vector3f,
-        transform: MultiblockPreviewTransform
-    ): ProjectedBounds {
+    private fun projectedBounds(blocks: List<PreviewBlock>, pivot: Vector3f, transform: MultiblockPreviewTransform): ProjectedBounds {
         val rotation = rotation(transform)
         var minX = Float.POSITIVE_INFINITY
         var minY = Float.POSITIVE_INFINITY
@@ -148,8 +130,7 @@ class MultiblockPreviewRenderer(
             for (x in floatArrayOf(block.pos.x.toFloat(), block.pos.x + 1f)) {
                 for (y in floatArrayOf(block.pos.y.toFloat(), block.pos.y + 1f)) {
                     for (z in floatArrayOf(block.pos.z.toFloat(), block.pos.z + 1f)) {
-                        val point = Vector3f(x, y, z)
-                            .sub(pivot)
+                        val point = Vector3f(x, y, z).sub(pivot)
                         rotation.transform(point)
                         point.add(pivot)
                         minX = minOf(minX, point.x)
@@ -166,37 +147,24 @@ class MultiblockPreviewRenderer(
         return ProjectedBounds(minX, minY, minZ, maxX, maxY, maxZ)
     }
 
-    private fun applyWorldTransform(
-        multiblock: Multiblock,
-        poseStack: PoseStack,
-        transform: MultiblockPreviewTransform
-    ) {
+    private fun applyWorldTransform(multiblock: Multiblock, poseStack: PoseStack, transform: MultiblockPreviewTransform) {
         poseStack.translate(transform.offsetX, transform.offsetY, 0f)
         poseStack.scale(transform.scale, transform.scale, transform.scale)
         rotateAroundPivot(multiblock, poseStack, transform)
     }
 
-    private fun rotateAroundPivot(
-        multiblock: Multiblock,
-        poseStack: PoseStack,
-        transform: MultiblockPreviewTransform
-    ) {
+    private fun rotateAroundPivot(multiblock: Multiblock, poseStack: PoseStack, transform: MultiblockPreviewTransform) {
         val pivot = Vector3f(multiblock.xSize / 2f, 0f, multiblock.zSize / 2f)
         rotateAroundPivot(pivot, poseStack, transform)
     }
 
-    private fun rotateAroundPivot(
-        pivot: Vector3f,
-        poseStack: PoseStack,
-        transform: MultiblockPreviewTransform
-    ) {
+    private fun rotateAroundPivot(pivot: Vector3f, poseStack: PoseStack, transform: MultiblockPreviewTransform) {
         val rotation = rotation(transform)
 
         poseStack.rotateAround(rotation, pivot.x, pivot.y, pivot.z)
     }
 
-    private fun rotation(transform: MultiblockPreviewTransform): Quaternionf = Quaternionf()
-        .rotateX(transform.rotationY * Mth.DEG_TO_RAD)
+    private fun rotation(transform: MultiblockPreviewTransform): Quaternionf = Quaternionf().rotateX(transform.rotationY * Mth.DEG_TO_RAD)
         .rotateY(transform.rotationX * Mth.DEG_TO_RAD)
 
     private fun submitBlocks(
@@ -215,15 +183,10 @@ class MultiblockPreviewRenderer(
         submitter: SubmitNodeCollector,
         outlineColor: Int = -1
     ) {
-        blocks.forEach { block ->
-            submitBlock(block, poseStack, submitter, outlineColor)
-        }
+        blocks.forEach { block -> submitBlock(block, poseStack, submitter, outlineColor) }
     }
 
-    private fun previewBlocks(
-        definition: AssembledMultiblockDefinition,
-        transform: MultiblockPreviewTransform
-    ): List<PreviewBlock> {
+    private fun previewBlocks(definition: AssembledMultiblockDefinition, transform: MultiblockPreviewTransform): List<PreviewBlock> {
         val selectedY = definition.minOffset.y + transform.layer.coerceIn(0, definition.ySize - 1)
         return definition.parts.flatMap { part ->
             if (transform.singleLayer && part.offset.y != selectedY) return@flatMap emptyList()
@@ -245,18 +208,11 @@ class MultiblockPreviewRenderer(
         val projected = projectedBounds(data, transform)
         val availableWidth = bounds.width.coerceAtLeast(1f)
         val availableHeight = bounds.height.coerceAtLeast(1f)
-        val fittedScale = min(
-            availableWidth / projected.width.coerceAtLeast(1f),
-            availableHeight / projected.height.coerceAtLeast(1f)
-        ) * transform.scale
+        val fittedScale = min(availableWidth / projected.width.coerceAtLeast(1f), availableHeight / projected.height.coerceAtLeast(1f)) * transform.scale
         val pivot = geoPivot(data)
 
         poseStack.pushPose()
-        poseStack.translate(
-            bounds.x + bounds.width / 2f + transform.offsetX,
-            bounds.y + bounds.height / 2f + transform.offsetY,
-            0f
-        )
+        poseStack.translate(bounds.x + bounds.width / 2f + transform.offsetX, bounds.y + bounds.height / 2f + transform.offsetY, 0f)
         poseStack.scale(-fittedScale, -fittedScale, fittedScale)
         poseStack.translate(-projected.centerX, -projected.centerY, -projected.centerZ)
         rotateAroundPivot(pivot, poseStack, transform)
@@ -264,10 +220,7 @@ class MultiblockPreviewRenderer(
         poseStack.popPose()
     }
 
-    private fun projectedBounds(
-        data: BedrockGeoRenderData,
-        transform: MultiblockPreviewTransform
-    ): ProjectedBounds {
+    private fun projectedBounds(data: BedrockGeoRenderData, transform: MultiblockPreviewTransform): ProjectedBounds {
         val pivot = geoPivot(data)
         val halfWidth = data.model.visibleBoundsWidth.coerceAtLeast(1f) * data.scale / 2f
         val halfHeight = data.model.visibleBoundsHeight.coerceAtLeast(1f) * data.scale / 2f
@@ -329,9 +282,7 @@ class MultiblockPreviewRenderer(
 
     private fun previewParts(pos: BlockPos, state: BlockState): List<PreviewBlock> {
         val block = state.block
-        if (block is Multipart<*>)
-            return block.getPreviewParts(pos, Direction.NORTH, state)
-                .map { (partPos, partState) -> PreviewBlock(partPos, partState) }
+        if (block is Multipart<*>) return block.getPreviewParts(pos, Direction.NORTH, state).map { (partPos, partState) -> PreviewBlock(partPos, partState) }
         return listOf(PreviewBlock(pos, state))
     }
 

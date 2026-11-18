@@ -13,17 +13,10 @@ import net.minecraft.server.packs.resources.SimplePreparableReloadListener
 import net.minecraft.util.profiling.ProfilerFiller
 
 class SoulStoneDataReloadListener(private val json: Json): SimplePreparableReloadListener<Unit>() {
-    override fun prepare(
-        manager: ResourceManager,
-        profiler: ProfilerFiller
-    ) {}
+    override fun prepare(manager: ResourceManager, profiler: ProfilerFiller) {}
 
     @OptIn(ExperimentalSerializationApi::class)
-    override fun apply(
-        preparations: Unit,
-        manager: ResourceManager,
-        profiler: ProfilerFiller
-    ) {
+    override fun apply(preparations: Unit, manager: ResourceManager, profiler: ProfilerFiller) {
         manager.listResources("settings/soul_stone") { it.path.endsWith(".json") && !it.path.split('/').last().startsWith('_') }.forEach {
             val data = json.decodeFromStream(SoulStoneData.serializer(), it.value.open())
             val id = data.entity.rl
@@ -44,10 +37,7 @@ class SoulStoneDataReloadListener(private val json: Json): SimplePreparableReloa
             }
 
             if (entity == null || !entity.isPresent) {
-                LOGGER.warn(
-                    "[Soul Stone Data] Failed to load soul stone data for entity with id \"${id}\"! " +
-                            "Check the validity of the specified entity. File: ${it.key}"
-                )
+                LOGGER.warn("[Soul Stone Data] Failed to load soul stone data for entity with id \"${id}\"! " + "Check the validity of the specified entity. File: ${it.key}")
                 return@forEach
             }
 

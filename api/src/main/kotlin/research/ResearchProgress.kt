@@ -49,16 +49,12 @@ data class BookViewState(
 
 data class BookBookmark(val research: Identifier, val spread: Int, val color: Int)
 
-class ResearchSavedData private constructor(
-    private val players: MutableMap<UUID, PlayerResearchData>
-) : SavedData() {
+class ResearchSavedData private constructor(private val players: MutableMap<UUID, PlayerResearchData>): SavedData() {
     constructor() : this(LinkedHashMap())
 
     fun player(uuid: UUID): PlayerResearchData = players.getOrPut(uuid, ::PlayerResearchData)
 
-    private fun encode(): String = researchJson.encodeToString(
-        ResearchStoreDto(players.mapKeys { it.key.toString() }.mapValues { it.value.toDto() })
-    )
+    private fun encode(): String = researchJson.encodeToString(ResearchStoreDto(players.mapKeys { it.key.toString() }.mapValues { it.value.toDto() }))
 
     companion object {
         private val CODEC: Codec<ResearchSavedData> = Codec.STRING.xmap(::decode, ResearchSavedData::encode)
@@ -69,9 +65,7 @@ class ResearchSavedData private constructor(
             val root = researchJson.parseToJsonElement(json).jsonObject
             val store = if ("players" in root) researchJson.decodeFromJsonElement<ResearchStoreDto>(root)
             else ResearchStoreDto(researchJson.decodeFromJsonElement<Map<String, PlayerResearchDataDto>>(root))
-            val players = store.players
-                .mapKeysTo(LinkedHashMap()) { UUID.fromString(it.key) }
-                .mapValuesTo(LinkedHashMap()) { it.value.toModel() }
+            val players = store.players.mapKeysTo(LinkedHashMap()) { UUID.fromString(it.key) }.mapValuesTo(LinkedHashMap()) { it.value.toModel() }
             return ResearchSavedData(players)
         }
     }
@@ -314,9 +308,7 @@ object ResearchProgress {
             playerData.unlocked += research
             playerData.completedTaskLevels.remove(research)
         } else {
-            val levelIndex = entry.taskLevels.indexOfFirst { level ->
-                level.id == taskId || level.tasks.any { it.id == taskId }
-            }
+            val levelIndex = entry.taskLevels.indexOfFirst { level -> level.id == taskId || level.tasks.any { it.id == taskId } }
             if (levelIndex < 0) return false
             if (levelIndex == entry.taskLevels.lastIndex) {
                 playerData.unlocked += research
@@ -349,29 +341,22 @@ object ResearchProgress {
         val completedLevel = data(player).completedTaskLevels[research] ?: 0
         entry.taskLevels.forEachIndexed { levelIndex, level ->
             if (level.id == taskId) return levelIndex < completedLevel || level.tasks.all { it.task.progress(player, entry.id).complete }
-            level.tasks.forEach { definition ->
-                if (definition.id == taskId) return levelIndex < completedLevel || definition.task.progress(player, entry.id).complete
-            }
+            level.tasks.forEach { definition -> if (definition.id == taskId) return levelIndex < completedLevel || definition.task.progress(player, entry.id).complete }
         }
         return false
     }
 
     private fun storage(server: MinecraftServer): ResearchSavedData = server.overworld().dataStorage.computeIfAbsent(ResearchSavedData.TYPE)
 
-    private fun defaultBookLevel(): Identifier? = ECRegistries.BOOK_TYPES.entrySet()
-        .minByOrNull { it.value.order }
+    private fun defaultBookLevel(): Identifier? = ECRegistries.BOOK_TYPES.entrySet().minByOrNull { it.value.order }
         ?.key
         ?.identifier()
 
     private fun collectProgress(player: ServerPlayer): Map<Identifier, List<ResearchTaskProgress>> =
-        ResearchCatalog.snapshot().entries.values.associate { entry ->
-            entry.id to entry.tasks.map { it.progress(player, entry.id) }
-        }
+        ResearchCatalog.snapshot().entries.values.associate { entry -> entry.id to entry.tasks.map { it.progress(player, entry.id) } }
 
     private fun collectBookRecipes(server: MinecraftServer): Map<Identifier, Recipe<*>> =
-        ResearchCatalog.snapshot().entries.values.asSequence()
-            .flatMap { entry -> entry.pages.asSequence() }
-            .flatMap { page -> page.elements.asSequence() }
+        ResearchCatalog.snapshot().entries.values.asSequence().flatMap { entry -> entry.pages.asSequence() }.flatMap { page -> page.elements.asSequence() }
             .flatMap(BookElementSpec::walkElements)
             .mapNotNull { it as? CraftingBookElement }
             .map(CraftingBookElement::recipe)
@@ -422,8 +407,7 @@ private fun BookElementSpec.walkElements(): Sequence<BookElement> = sequence {
     if (content is GroupBookElement) content.elements.forEach { child -> yieldAll(child.walkElements()) }
 }
 
-private fun BookEntry.hasTask(taskId: String): Boolean =
-    taskLevels.any { it.id == taskId || it.tasks.any { definition -> definition.id == taskId } }
+private fun BookEntry.hasTask(taskId: String): Boolean = taskLevels.any { it.id == taskId || it.tasks.any { definition -> definition.id == taskId } }
 
 private fun BookEntry.currentLevelOpenOnly(data: PlayerResearchData): Boolean {
     if (taskLevels.isEmpty()) return false

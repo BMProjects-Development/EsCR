@@ -9,8 +9,7 @@ object ConnectedTextures {
     private val textures = HashMap<Identifier, ConnectedTexture>()
 
     @JvmStatic
-    fun register(block: Block, texture: ConnectedTexture): ConnectedTexture =
-        register(BuiltInRegistries.BLOCK.getKey(block), texture)
+    fun register(block: Block, texture: ConnectedTexture): ConnectedTexture = register(BuiltInRegistries.BLOCK.getKey(block), texture)
 
     @JvmStatic
     fun register(block: Identifier, texture: ConnectedTexture): ConnectedTexture = synchronized(textures) {

@@ -9,20 +9,15 @@ import com.algorithmlx.ecr.registry.BlockRegistry
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 
-object MithrilineFurnaceRenderer : BookRecipeRenderer<MithrilineFurnaceRecipe> {
+object MithrilineFurnaceRenderer: BookRecipeRenderer<MithrilineFurnaceRecipe> {
     private const val RENDER_WIDTH = 128
     private const val RENDER_HEIGHT = 48
-
     private const val SLOT_SIZE = 32
     private const val ITEM_SIZE = SLOT_SIZE / 2
-
     private const val ELEMENT_GAP = 8
     private const val TEXT_GAP = ELEMENT_GAP / 2
 
-    override fun build(
-        recipe: MithrilineFurnaceRecipe,
-        builder: BookRecipeRenderBuilder
-    ) {
+    override fun build(recipe: MithrilineFurnaceRecipe, builder: BookRecipeRenderBuilder) {
         val display = recipe.display().filterIsInstance<MithrilineFurnaceRecipe.Display>().firstOrNull() ?: return
 
         val startX = builder.width / 2
@@ -34,12 +29,7 @@ object MithrilineFurnaceRenderer : BookRecipeRenderer<MithrilineFurnaceRecipe> {
 
         val resultX = furnaceX + ITEM_SIZE + ELEMENT_GAP
 
-        val espeText =
-            Component
-                .empty()
-                .append(recipe.espe.toString())
-                .append(" ")
-                .append(Component.translatable("screen.$ModId.research_book.recipe.espe"))
+        val espeText = Component.empty().append(recipe.espe.toString()).append(" ").append(Component.translatable("screen.$ModId.research_book.recipe.espe"))
         val espeX = (builder.width) - builder.mc.font.width(espeText)
 
         builder.slot(display.ingredient, BookRecipeSlotType.INPUT, startX, slotY)

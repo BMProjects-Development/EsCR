@@ -6,7 +6,7 @@ import dev.emi.emi.api.stack.EmiStack
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.ItemStack
 
-object EmiBookRecipeViewer : BookRecipeViewer {
+object EmiBookRecipeViewer: BookRecipeViewer {
     override fun openRecipes(stack: ItemStack): Boolean {
         if (stack.isEmpty) return false
         val minecraft = Minecraft.getInstance()

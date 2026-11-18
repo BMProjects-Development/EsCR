@@ -17,17 +17,13 @@ object ECRegistries {
     @JvmField
     val MULTIBLOCK: Registry<Multiblock> = MappedRegistry(ECRegistryKeys.MULTIBLOCK_KEY, Lifecycle.stable())
     @JvmField
-    val ASSEMBLED_MULTIBLOCK: Registry<AssembledMultiblockDefinition> =
-        MappedRegistry(ECRegistryKeys.ASSEMBLED_MULTIBLOCK_KEY, Lifecycle.stable())
+    val ASSEMBLED_MULTIBLOCK: Registry<AssembledMultiblockDefinition> = MappedRegistry(ECRegistryKeys.ASSEMBLED_MULTIBLOCK_KEY, Lifecycle.stable())
     @JvmField
     val BOOK_TYPES: Registry<BookType> = MappedRegistry(ECRegistryKeys.BOOK_TYPE_KEY, Lifecycle.stable())
     @JvmField
-    val BOOK_ELEMENT_SERIALIZER: Registry<BookElementSerializer<*>> =
-        MappedRegistry(ECRegistryKeys.BOOK_ELEMENT_SERIALIZER_KEY, Lifecycle.stable())
+    val BOOK_ELEMENT_SERIALIZER: Registry<BookElementSerializer<*>> = MappedRegistry(ECRegistryKeys.BOOK_ELEMENT_SERIALIZER_KEY, Lifecycle.stable())
     @JvmField
-    val RESEARCH_TASK_SERIALIZER: Registry<ResearchTaskSerializer<*>> =
-        MappedRegistry(ECRegistryKeys.RESEARCH_TASK_SERIALIZER_KEY, Lifecycle.stable())
+    val RESEARCH_TASK_SERIALIZER: Registry<ResearchTaskSerializer<*>> = MappedRegistry(ECRegistryKeys.RESEARCH_TASK_SERIALIZER_KEY, Lifecycle.stable())
     @JvmField
-    val MULTIBLOCK_MATCHER_TYPE: Registry<MultiblockMatcherType<*>> =
-        MappedRegistry(ECRegistryKeys.MULTIBLOCK_MATCHER_TYPE_KEY, Lifecycle.stable())
+    val MULTIBLOCK_MATCHER_TYPE: Registry<MultiblockMatcherType<*>> = MappedRegistry(ECRegistryKeys.MULTIBLOCK_MATCHER_TYPE_KEY, Lifecycle.stable())
 }

@@ -7,7 +7,7 @@ import com.algorithmlx.ecr.api.research.ResearchTaskSerializer
 import com.algorithmlx.ecr.api.research.content.BookElementSerializer
 import com.algorithmlx.ecr.api.research.serializer.ResearchSerializers
 
-object ResearchSerializerRegistry : RegistrationHandler(ModId) {
+object ResearchSerializerRegistry: RegistrationHandler(ModId) {
     init {
         listOf(
             ResearchSerializers.SPACE_ELEMENT,

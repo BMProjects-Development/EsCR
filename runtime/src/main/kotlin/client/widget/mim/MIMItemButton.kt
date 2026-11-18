@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Item
 
-internal class MIMItemButton(private var icon: ItemStack, label: Component, action: () -> Unit) : Button(
+class MIMItemButton(private var icon: ItemStack, label: Component, action: () -> Unit): Button(
     0, 0, MIMTerminalLayout.CRAFT_BUTTON_WIDTH, MIMTerminalLayout.CRAFT_BUTTON_HEIGHT,
     label, { action() }, DEFAULT_NARRATION
 ) {

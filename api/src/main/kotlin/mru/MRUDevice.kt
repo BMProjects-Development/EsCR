@@ -16,32 +16,20 @@ import kotlin.jvm.optionals.getOrNull
 
 interface MRUDevice {
     val mruStorage: IOMRUStorage
-
     val balance: MutableMRUBalance
-
     val locator: LocatorData? get() = null
-
     val deviceType: DeviceType
 
     enum class DeviceType {
         RECEIVER,
-
         TRANSLATOR,
-
         IO,
-
         CONNECTABLE_RECEIVER,
-
-        UNCONNECTABLE,
-
-        ;
+        UNCONNECTABLE;
 
         val isExporter: Boolean get() = this == TRANSLATOR || this.isUniversal
-
         val isUniversal: Boolean get() = this == IO
-
         val isReceiver: Boolean get() = this == RECEIVER || this == CONNECTABLE_RECEIVER || this.isUniversal
-
         val isConnectable: Boolean get() = this == CONNECTABLE_RECEIVER || this.isExporter
     }
 

@@ -14,9 +14,7 @@ class MIMCraftingSelection(target: ItemStack, val batches: Int) {
         ItemStack.isSameItemSameComponents(template, other.template)
 }
 
-internal class MIMCraftingPreview(
-    private val menu: MIMMenu, private val tree: MIMDependencyWindow
-) {
+class MIMCraftingPreview(private val menu: MIMMenu, private val tree: MIMDependencyWindow) {
     private val queries = mutableListOf<Query>()
     private var treeQuery = 0
 

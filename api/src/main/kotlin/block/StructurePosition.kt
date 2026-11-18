@@ -23,5 +23,4 @@ class StructurePosition private constructor(private val positions: List<BlockPos
     }
 }
 
-fun structurePosition(init: StructurePosition.Builder.() -> Unit): StructurePosition =
-    StructurePosition.Builder().apply(init).build()
+fun structurePosition(init: StructurePosition.Builder.() -> Unit): StructurePosition = StructurePosition.Builder().apply(init).build()

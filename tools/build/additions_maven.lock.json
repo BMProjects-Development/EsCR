@@ -7,15 +7,28 @@
     "repositories": -533858583
   },
   "__RESOLVED_ARTIFACTS_HASH": {
+    "dev.architectury:architectury:jar:sources": 94660937,
     "dev.architectury:architectury:pom": -326214319,
     "dev.emi:emi-neoforge:jar:api": -2034723671,
+    "dev.emi:emi-neoforge:jar:sources": -2063763852,
     "me.shedaniel.cloth:basic-math": -1066250475,
+    "me.shedaniel.cloth:basic-math:jar:sources": 322934686,
     "me.shedaniel.cloth:cloth-config": 1985249332,
+    "me.shedaniel.cloth:cloth-config:jar:sources": 93442818,
     "me.shedaniel:RoughlyEnoughItems-api": -1804115780,
+    "me.shedaniel:RoughlyEnoughItems-api:jar:sources": 685147714,
     "mezz.jei:jei-26.3-common-api": 565896911,
-    "net.fabricmc:fabric-loader": -1421286224
+    "mezz.jei:jei-26.3-common-api:jar:sources": -1567338858,
+    "net.fabricmc:fabric-loader": -1421286224,
+    "net.fabricmc:fabric-loader:jar:sources": -451703793
   },
   "artifacts": {
+    "dev.architectury:architectury": {
+      "shasums": {
+        "sources": "aefc7122f0d381235bdd932a634e9b78abc4ed653cab6a138efe1e42e947a781"
+      },
+      "version": "22.0.3"
+    },
     "dev.architectury:architectury:pom": {
       "shasums": {
         "jar": "9ce8f8ccdba5891492b668b37ba61adbe601040dfaf7ef414d9d9aca1096fc9f"
@@ -24,37 +37,43 @@
     },
     "dev.emi:emi-neoforge": {
       "shasums": {
-        "api": "b3a8e23c5e59813f184423b94e37bb635867ddc9be2b68b3502fad7b9134779b"
+        "api": "b3a8e23c5e59813f184423b94e37bb635867ddc9be2b68b3502fad7b9134779b",
+        "sources": "59c09da6f1898392fb2bec1a398ac2c84bfb1b8d376fed968aa73c1a9dcc2289"
       },
       "version": "1.1.24+1.21.1"
     },
     "me.shedaniel.cloth:basic-math": {
       "shasums": {
-        "jar": "2527eb04394e7a13fa5b8884baa9319f60b07ad6229d759f9451563cd113c059"
+        "jar": "2527eb04394e7a13fa5b8884baa9319f60b07ad6229d759f9451563cd113c059",
+        "sources": "8025b242e1248046f0ed6805b191d428dadf1609045a566119c28536d65a23b2"
       },
       "version": "0.6.1"
     },
     "me.shedaniel.cloth:cloth-config": {
       "shasums": {
-        "jar": "a08133729ca07730127b6f08e7b6bd2eb1228f24b8f04e426e7b3e2bf148d0a3"
+        "jar": "a08133729ca07730127b6f08e7b6bd2eb1228f24b8f04e426e7b3e2bf148d0a3",
+        "sources": "282904e299d994d486d25baea9517ff740531f9dd8a18d3a7d93719e623440c4"
       },
       "version": "26.3.159"
     },
     "me.shedaniel:RoughlyEnoughItems-api": {
       "shasums": {
-        "jar": "c93fa0a62769171cd823e636d89284cedff50bbfd73363b46ba0033c9857a7bc"
+        "jar": "c93fa0a62769171cd823e636d89284cedff50bbfd73363b46ba0033c9857a7bc",
+        "sources": "b63b961f4af355aff4db0a5948c73c329a9098b2562baa214df810bd3b5e7bb4"
       },
       "version": "26.3.824"
     },
     "mezz.jei:jei-26.3-common-api": {
       "shasums": {
-        "jar": "0679856dbdd2fedb90610d5058e4543333a26bd374205cacfd2d70a1bbced8c0"
+        "jar": "0679856dbdd2fedb90610d5058e4543333a26bd374205cacfd2d70a1bbced8c0",
+        "sources": "53e8e8b5aea2487b4cce6cf728293284c2ac57a4593998c13d7ec8fa7f1087ef"
       },
       "version": "31.16.0.87"
     },
     "net.fabricmc:fabric-loader": {
       "shasums": {
-        "jar": "93044e4dd46de5d8136701292f05e868da096d2c9fddb4793e4fdbcc63efc695"
+        "jar": "93044e4dd46de5d8136701292f05e868da096d2c9fddb4793e4fdbcc63efc695",
+        "sources": "b5a6ef0f608b62b362aacd3367fb2dba69915e0081b88c14f99209e5005dbf1d"
       },
       "version": "0.19.5"
     }
@@ -312,58 +331,100 @@
   },
   "repositories": {
     "https://maven.blamejared.com/": [
+      "dev.architectury:architectury:jar:sources",
       "dev.architectury:architectury:pom",
       "dev.emi:emi-neoforge:jar:api",
+      "dev.emi:emi-neoforge:jar:sources",
       "me.shedaniel.cloth:basic-math",
+      "me.shedaniel.cloth:basic-math:jar:sources",
       "me.shedaniel.cloth:cloth-config",
+      "me.shedaniel.cloth:cloth-config:jar:sources",
       "me.shedaniel:RoughlyEnoughItems-api",
+      "me.shedaniel:RoughlyEnoughItems-api:jar:sources",
       "mezz.jei:jei-26.3-common-api",
-      "net.fabricmc:fabric-loader"
+      "mezz.jei:jei-26.3-common-api:jar:sources",
+      "net.fabricmc:fabric-loader",
+      "net.fabricmc:fabric-loader:jar:sources"
     ],
     "https://maven.shedaniel.me/": [
+      "dev.architectury:architectury:jar:sources",
       "dev.architectury:architectury:pom",
       "dev.emi:emi-neoforge:jar:api",
+      "dev.emi:emi-neoforge:jar:sources",
       "me.shedaniel.cloth:basic-math",
+      "me.shedaniel.cloth:basic-math:jar:sources",
       "me.shedaniel.cloth:cloth-config",
+      "me.shedaniel.cloth:cloth-config:jar:sources",
       "me.shedaniel:RoughlyEnoughItems-api",
+      "me.shedaniel:RoughlyEnoughItems-api:jar:sources",
       "mezz.jei:jei-26.3-common-api",
-      "net.fabricmc:fabric-loader"
+      "mezz.jei:jei-26.3-common-api:jar:sources",
+      "net.fabricmc:fabric-loader",
+      "net.fabricmc:fabric-loader:jar:sources"
     ],
     "https://maven.terraformersmc.com/releases/": [
+      "dev.architectury:architectury:jar:sources",
       "dev.architectury:architectury:pom",
       "dev.emi:emi-neoforge:jar:api",
+      "dev.emi:emi-neoforge:jar:sources",
       "me.shedaniel.cloth:basic-math",
+      "me.shedaniel.cloth:basic-math:jar:sources",
       "me.shedaniel.cloth:cloth-config",
+      "me.shedaniel.cloth:cloth-config:jar:sources",
       "me.shedaniel:RoughlyEnoughItems-api",
+      "me.shedaniel:RoughlyEnoughItems-api:jar:sources",
       "mezz.jei:jei-26.3-common-api",
-      "net.fabricmc:fabric-loader"
+      "mezz.jei:jei-26.3-common-api:jar:sources",
+      "net.fabricmc:fabric-loader",
+      "net.fabricmc:fabric-loader:jar:sources"
     ],
     "https://maven.architectury.dev/": [
+      "dev.architectury:architectury:jar:sources",
       "dev.architectury:architectury:pom",
       "dev.emi:emi-neoforge:jar:api",
+      "dev.emi:emi-neoforge:jar:sources",
       "me.shedaniel.cloth:basic-math",
+      "me.shedaniel.cloth:basic-math:jar:sources",
       "me.shedaniel.cloth:cloth-config",
+      "me.shedaniel.cloth:cloth-config:jar:sources",
       "me.shedaniel:RoughlyEnoughItems-api",
+      "me.shedaniel:RoughlyEnoughItems-api:jar:sources",
       "mezz.jei:jei-26.3-common-api",
-      "net.fabricmc:fabric-loader"
+      "mezz.jei:jei-26.3-common-api:jar:sources",
+      "net.fabricmc:fabric-loader",
+      "net.fabricmc:fabric-loader:jar:sources"
     ],
     "https://maven.fabricmc.net/": [
+      "dev.architectury:architectury:jar:sources",
       "dev.architectury:architectury:pom",
       "dev.emi:emi-neoforge:jar:api",
+      "dev.emi:emi-neoforge:jar:sources",
       "me.shedaniel.cloth:basic-math",
+      "me.shedaniel.cloth:basic-math:jar:sources",
       "me.shedaniel.cloth:cloth-config",
+      "me.shedaniel.cloth:cloth-config:jar:sources",
       "me.shedaniel:RoughlyEnoughItems-api",
+      "me.shedaniel:RoughlyEnoughItems-api:jar:sources",
       "mezz.jei:jei-26.3-common-api",
-      "net.fabricmc:fabric-loader"
+      "mezz.jei:jei-26.3-common-api:jar:sources",
+      "net.fabricmc:fabric-loader",
+      "net.fabricmc:fabric-loader:jar:sources"
     ],
     "https://repo.maven.apache.org/maven2/": [
+      "dev.architectury:architectury:jar:sources",
       "dev.architectury:architectury:pom",
       "dev.emi:emi-neoforge:jar:api",
+      "dev.emi:emi-neoforge:jar:sources",
       "me.shedaniel.cloth:basic-math",
+      "me.shedaniel.cloth:basic-math:jar:sources",
       "me.shedaniel.cloth:cloth-config",
+      "me.shedaniel.cloth:cloth-config:jar:sources",
       "me.shedaniel:RoughlyEnoughItems-api",
+      "me.shedaniel:RoughlyEnoughItems-api:jar:sources",
       "mezz.jei:jei-26.3-common-api",
-      "net.fabricmc:fabric-loader"
+      "mezz.jei:jei-26.3-common-api:jar:sources",
+      "net.fabricmc:fabric-loader",
+      "net.fabricmc:fabric-loader:jar:sources"
     ]
   },
   "services": {
@@ -373,6 +434,20 @@
       ],
       "net.fabricmc.tinyremapper.TinyRemapper$CLIExtensionProvider": [
         "net.fabricmc.tinyremapper.extension.mixin.MixinExtension$CLIProvider"
+      ],
+      "org.spongepowered.asm.service.IGlobalPropertyService": [
+        "net.fabricmc.loader.impl.launch.knot.FabricGlobalPropertyService"
+      ],
+      "org.spongepowered.asm.service.IMixinService": [
+        "net.fabricmc.loader.impl.launch.knot.MixinServiceKnot"
+      ],
+      "org.spongepowered.asm.service.IMixinServiceBootstrap": [
+        "net.fabricmc.loader.impl.launch.knot.MixinServiceKnotBootstrap"
+      ]
+    },
+    "net.fabricmc:fabric-loader:jar:sources": {
+      "net.fabricmc.loader.impl.game.GameProvider": [
+        "net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider"
       ],
       "org.spongepowered.asm.service.IGlobalPropertyService": [
         "net.fabricmc.loader.impl.launch.knot.FabricGlobalPropertyService"

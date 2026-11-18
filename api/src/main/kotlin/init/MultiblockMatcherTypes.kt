@@ -8,7 +8,7 @@ import com.algorithmlx.ecr.api.multiblock.TagMultiblockMatcher
 import com.algorithmlx.ecr.api.registries.ECRegistries
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 
-object MultiblockMatcherTypes : RegistrationHandler(ModId) {
+object MultiblockMatcherTypes: RegistrationHandler(ModId) {
     private val tagReference = registerNoEntry("tag", ECRegistries.MULTIBLOCK_MATCHER_TYPE) {
         MultiblockMatcherType(TagMultiblockMatcher.CODEC)
     }

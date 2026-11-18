@@ -8,9 +8,7 @@ import net.minecraft.client.gui.components.EditBox
 import net.minecraft.client.gui.navigation.ScreenRectangle
 import net.minecraft.network.chat.Component
 
-class MIMSearchBox(font: Font) : EditBox(
-    font, 0, 0, MIMTerminalLayout.SEARCH_WIDTH, TEXT_HEIGHT, Component.literal(">_")
-) {
+class MIMSearchBox(font: Font): EditBox(font, 0, 0, MIMTerminalLayout.SEARCH_WIDTH, TEXT_HEIGHT, Component.literal(">_")) {
     init {
         isBordered = false
         setMaxLength(MIMMenu.MAX_SEARCH)
@@ -27,8 +25,7 @@ class MIMSearchBox(font: Font) : EditBox(
         visible && mouseX >= x && mouseX < x + width && mouseY >= y - VERTICAL_PADDING &&
             mouseY < y - VERTICAL_PADDING + MIMTerminalLayout.SEARCH_HEIGHT
 
-    override fun getRectangle(): ScreenRectangle =
-        ScreenRectangle(x, y - VERTICAL_PADDING, width, MIMTerminalLayout.SEARCH_HEIGHT)
+    override fun getRectangle(): ScreenRectangle = ScreenRectangle(x, y - VERTICAL_PADDING, width, MIMTerminalLayout.SEARCH_HEIGHT)
 
     companion object {
         private const val TEXT_HEIGHT = 8

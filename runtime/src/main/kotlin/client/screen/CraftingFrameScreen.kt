@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.screen
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.common.menu.CraftingFrameMenu
 import com.algorithmlx.ecr.client.widget.mim.MIMPressedButton
 import com.algorithmlx.ecr.init.ECRModIDs
@@ -14,9 +15,7 @@ import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 
-class CraftingFrameScreen(menu: CraftingFrameMenu, inventory: Inventory, title: Component) : AbstractContainerScreen<CraftingFrameMenu>(
-    menu, inventory, title, WIDTH, HEIGHT
-) {
+class CraftingFrameScreen(menu: CraftingFrameMenu, inventory: Inventory, title: Component): AbstractContainerScreen<CraftingFrameMenu>(menu, inventory, title, WIDTH, HEIGHT) {
     private lateinit var clear: FrameButton
     private lateinit var exact: FrameButton
     private val buttonClicks = mutableSetOf<Int>()
@@ -24,8 +23,8 @@ class CraftingFrameScreen(menu: CraftingFrameMenu, inventory: Inventory, title: 
     override fun init() {
         super.init()
         buttonClicks.clear()
-        clear = addRenderableWidget(FrameButton(5, Component.translatable("screen.escr.mim.frame.clear"), CraftingFrameMenu.CLEAR_GRID, true))
-        exact = addRenderableWidget(FrameButton(33, Component.translatable("screen.escr.mim.frame.exact"), CraftingFrameMenu.TOGGLE_SUBSTITUTION, false))
+        clear = addRenderableWidget(FrameButton(5, Component.translatable("screen.$ModId.mim.frame.clear"), CraftingFrameMenu.CLEAR_GRID, true))
+        exact = addRenderableWidget(FrameButton(33, Component.translatable("screen.$ModId.mim.frame.exact"), CraftingFrameMenu.TOGGLE_SUBSTITUTION, false))
         updateButtons()
     }
 
@@ -35,7 +34,7 @@ class CraftingFrameScreen(menu: CraftingFrameMenu, inventory: Inventory, title: 
     }
 
     private fun updateButtons() {
-        exact.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.frame.exact_state", Component.translatable(if (menu.substituteIngredients) "options.off" else "options.on"))))
+        exact.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.frame.exact_state", Component.translatable(if (menu.substituteIngredients) "options.off" else "options.on"))))
     }
 
     override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
@@ -60,13 +59,12 @@ class CraftingFrameScreen(menu: CraftingFrameMenu, inventory: Inventory, title: 
         return true
     }
 
-    override fun mouseDragged(event: MouseButtonEvent, dragX: Double, dragY: Double): Boolean =
-        buttonClicks.isNotEmpty() || super.mouseDragged(event, dragX, dragY)
+    override fun mouseDragged(event: MouseButtonEvent, dragX: Double, dragY: Double): Boolean = buttonClicks.isNotEmpty() || super.mouseDragged(event, dragX, dragY)
 
     override fun hasClickedOutside(mouseX: Double, mouseY: Double, left: Int, top: Int): Boolean =
         !clear.isMouseOver(mouseX, mouseY) && !exact.isMouseOver(mouseX, mouseY) && super.hasClickedOutside(mouseX, mouseY, left, top)
 
-    private inner class FrameButton(yOffset: Int, label: Component, id: Int, private val brush: Boolean) : MIMPressedButton(
+    private inner class FrameButton(yOffset: Int, label: Component, id: Int, private val brush: Boolean): MIMPressedButton(
         leftPos + WIDTH, topPos + yOffset, BUTTON_WIDTH, BUTTON_HEIGHT, label,
         { minecraft.gameMode?.handleInventoryButtonClick(menu.containerId, id) }
     ) {

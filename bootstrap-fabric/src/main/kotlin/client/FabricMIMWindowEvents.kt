@@ -14,27 +14,15 @@ object FabricMIMWindowEvents {
     fun init() {
         ScreenEvents.AFTER_INIT.register { _, screen, _, _ ->
             if (screen !is MIMWindowHost) return@register
-            early(ScreenMouseEvents.allowMouseClick(screen), ScreenMouseEvents.AllowMouseClick { target, event ->
-                !MIMWindowInput.mouseClicked(target, event)
-            })
-            early(ScreenMouseEvents.allowMouseRelease(screen), ScreenMouseEvents.AllowMouseRelease { target, event ->
-                !MIMWindowInput.mouseReleased(target, event)
-            })
-            early(ScreenMouseEvents.allowMouseDrag(screen), ScreenMouseEvents.AllowMouseDrag { target, event, x, y ->
-                !MIMWindowInput.mouseDragged(target, event, x, y)
-            })
+            early(ScreenMouseEvents.allowMouseClick(screen), ScreenMouseEvents.AllowMouseClick { target, event -> !MIMWindowInput.mouseClicked(target, event) })
+            early(ScreenMouseEvents.allowMouseRelease(screen), ScreenMouseEvents.AllowMouseRelease { target, event -> !MIMWindowInput.mouseReleased(target, event) })
+            early(ScreenMouseEvents.allowMouseDrag(screen), ScreenMouseEvents.AllowMouseDrag { target, event, x, y -> !MIMWindowInput.mouseDragged(target, event, x, y) })
             early(ScreenMouseEvents.allowMouseScroll(screen), ScreenMouseEvents.AllowMouseScroll { target, x, y, horizontal, vertical ->
                 !MIMWindowInput.mouseScrolled(target, x, y, horizontal, vertical)
             })
-            early(ScreenKeyboardEvents.allowKeyPress(screen), ScreenKeyboardEvents.AllowKeyPress { target, event ->
-                !MIMWindowInput.keyPressed(target, event)
-            })
-            early(ScreenKeyboardEvents.allowKeyRelease(screen), ScreenKeyboardEvents.AllowKeyRelease { target, event ->
-                !MIMWindowInput.keyReleased(target, event)
-            })
-            early(ScreenKeyboardEvents.allowCharType(screen), ScreenKeyboardEvents.AllowCharType { target, event ->
-                !MIMWindowInput.charTyped(target, event)
-            })
+            early(ScreenKeyboardEvents.allowKeyPress(screen), ScreenKeyboardEvents.AllowKeyPress { target, event -> !MIMWindowInput.keyPressed(target, event) })
+            early(ScreenKeyboardEvents.allowKeyRelease(screen), ScreenKeyboardEvents.AllowKeyRelease { target, event -> !MIMWindowInput.keyReleased(target, event) })
+            early(ScreenKeyboardEvents.allowCharType(screen), ScreenKeyboardEvents.AllowCharType { target, event -> !MIMWindowInput.charTyped(target, event) })
         }
     }
 

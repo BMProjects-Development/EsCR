@@ -4,12 +4,12 @@ import com.algorithmlx.ecr.api.inventory.StoredItem
 import net.minecraft.world.item.ItemStack
 import com.algorithmlx.ecr.api.mim.MIMCraftingPattern
 
-internal class MIMCraftingJob(patterns: List<MIMCraftingPattern>, initialStock: List<StoredItem>) {
+class MIMCraftingJob(patterns: List<MIMCraftingPattern>, initialStock: List<StoredItem>) {
     enum class Status { SEARCHING, CRAFTED, EXHAUSTED }
     private sealed interface Step
-    private data object Progress : Step
-    private data object Exhausted : Step
-    private class Attempt(val pattern: MIMCraftingPattern, grid: List<ItemStack>) : Step {
+    private data object Progress: Step
+    private data object Exhausted: Step
+    private class Attempt(val pattern: MIMCraftingPattern, grid: List<ItemStack>): Step {
         val grid = grid.map(ItemStack::copy)
     }
     private val choices = patterns.toList()
@@ -99,9 +99,7 @@ internal class MIMCraftingJob(patterns: List<MIMCraftingPattern>, initialStock: 
         return Status.SEARCHING
     }
 
-    private fun tryCommit(
-        attempt: Attempt, commit: (MIMCraftingPattern, List<ItemStack>, List<ItemStack>) -> Decision
-    ): Decision {
+    private fun tryCommit(attempt: Attempt, commit: (MIMCraftingPattern, List<ItemStack>, List<ItemStack>) -> Decision): Decision {
         val outputs = attempt.pattern.outputs(attempt.grid.map(ItemStack::copy))?.filterNot(ItemStack::isEmpty) ?: return Decision.REJECTED
         if (outputs.isEmpty() || !ItemStack.matches(attempt.pattern.output, outputs.first())) return Decision.REJECTED
         val inputs = attempt.grid.filterNot(ItemStack::isEmpty).map(ItemStack::copy)

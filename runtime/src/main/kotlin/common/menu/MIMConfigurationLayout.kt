@@ -39,10 +39,7 @@ class MIMConfigurationLayout(
     data class ScrollBar(val x: Int, val y: Int, val height: Int, val thumbU: Int = 194, val disabledThumbU: Int = 206)
 
     companion object {
-        val CORE = MIMConfigurationLayout(
-            "mim/core", 194, 194, 8, 14, 4, 112, ScrollBar(174, 14, 172), true,
-            fixedSlots = listOf(Position(8, 90)), mruBar = Bounds(30, 94, 138, 8)
-        )
+        val CORE = MIMConfigurationLayout("mim/core", 194, 194, 8, 14, 4, 112, ScrollBar(174, 14, 172), true, fixedSlots = listOf(Position(8, 90)), mruBar = Bounds(30, 94, 138, 8))
         val STORAGE = MIMConfigurationLayout("mim/node", 176, 166, 8, 14, 3, 84)
         val CRAFTING = MIMConfigurationLayout("mim/frames", 176, 166, 8, 35, 1, 84)
         val NODE = MIMConfigurationLayout("single_slot_gui", 176, 166, 80, 35, 1, 84)

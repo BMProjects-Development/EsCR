@@ -10,7 +10,7 @@ import com.algorithmlx.ecr.common.recipe.StructureRecipe
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.crafting.RecipeSerializer
 
-object RecipeSerializerRegistry : RegistrationHandler(ModId) {
+object RecipeSerializerRegistry: RegistrationHandler(ModId) {
     private val mithrilineFurnaceReference = registerNoEntry(ECRModIDs.MITHRILINE_FURNACE, BuiltInRegistries.RECIPE_SERIALIZER) {
         RecipeSerializer(MithrilineFurnaceRecipe.CODEC, MithrilineFurnaceRecipe.STREAM_CODEC)
     }

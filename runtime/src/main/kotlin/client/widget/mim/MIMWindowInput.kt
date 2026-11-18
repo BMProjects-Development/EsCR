@@ -16,9 +16,7 @@ object MIMWindowInput {
         return true
     }
 
-    fun mouseReleased(screen: Screen, event: MouseButtonEvent): Boolean = route(
-        screen, { it.hasOverlayPointerCapture }
-    ) { screen.mouseReleased(event) }
+    fun mouseReleased(screen: Screen, event: MouseButtonEvent): Boolean = route(screen, { it.hasOverlayPointerCapture }) { screen.mouseReleased(event) }
 
     fun mouseDragged(screen: Screen, event: MouseButtonEvent, dragX: Double, dragY: Double): Boolean = route(
         screen, { it.hasOverlayPointerCapture }
@@ -32,13 +30,9 @@ object MIMWindowInput {
         screen, { it.isFloatingInputFocused || event.isEscape() && it.floatingWindowBounds.isNotEmpty() }
     ) { screen.keyPressed(event) }
 
-    fun keyReleased(screen: Screen, event: KeyEvent): Boolean = route(
-        screen, { it.isFloatingInputFocused }
-    ) { screen.keyReleased(event) }
+    fun keyReleased(screen: Screen, event: KeyEvent): Boolean = route(screen, { it.isFloatingInputFocused }) { screen.keyReleased(event) }
 
-    fun charTyped(screen: Screen, event: CharacterEvent): Boolean = route(
-        screen, { it.isFloatingTextInput }
-    ) { screen.charTyped(event) }
+    fun charTyped(screen: Screen, event: CharacterEvent): Boolean = route(screen, { it.isFloatingTextInput }) { screen.charTyped(event) }
 
     private inline fun route(screen: Screen, captures: (MIMWindowHost) -> Boolean, handle: () -> Unit): Boolean {
         val host = screen as? MIMWindowHost ?: return false

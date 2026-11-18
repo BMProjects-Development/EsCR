@@ -20,10 +20,7 @@ object ItemRegistry: RegistrationHandler(ModId) {
     val hammer = register(ECRModIDs.HAMMER, ::Hammer)
     val soulStone = register(ECRModIDs.SOUL_STONE, ::SoulStone)
     val researchBook = register(ECRModIDs.RESEARCH_BOOK, ::ResearchBookItem) {
-        Item.Properties().component(
-            DataComponentRegistry.bookType.get(),
-            BookTypeRegistry.basic.key
-        )
+        Item.Properties().component(DataComponentRegistry.bookType.get(), BookTypeRegistry.basic.key)
     }
 
     val boundGem = register(ECRModIDs.BOUND_GEM, ::BoundGemItem)
@@ -69,6 +66,7 @@ object ItemRegistry: RegistrationHandler(ModId) {
     val mithrilineIngot = basicItem(ECRModIDs.MITHRILINE_INGOT)
     val magicalIngot = basicItem(ECRModIDs.MAGICAL_INGOT)
     val magicalSlag = basicItem(ECRModIDs.MAGICAL_SLAG)
+    val magicalAlloy = basicItem(ECRModIDs.MAGICAL_ALLOY)
     val mithrilineDust = basicItem(ECRModIDs.MITHRILINE_DUST)
     val heatingRod = basicItem(ECRModIDs.HEATING_ROD)
     val mithrilineCrystalGem = basicItem(ECRModIDs.MITHRILINE_CRYSTAL_GEM)
@@ -78,14 +76,9 @@ object ItemRegistry: RegistrationHandler(ModId) {
     val heatCore = basicItem(ECRModIDs.HEAT_CORE)
     val monocle = basicItem(ECRModIDs.MONOCLE)
 
-    private fun basicItem(id: String, properties: () -> Item.Properties = { Item.Properties() }) =
-        register(id, ::Item, properties)
+    private fun basicItem(id: String, properties: () -> Item.Properties = { Item.Properties() }) = register(id, ::Item, properties)
 
-    private fun <T: Item> register(
-        id: String,
-        item: (Item.Properties) -> T,
-        properties: () -> Item.Properties = { Item.Properties() }
-    ): Supplier<T> {
+    private fun <T: Item> register(id: String, item: (Item.Properties) -> T, properties: () -> Item.Properties = { Item.Properties() }): Supplier<T> {
         val itemKey = { it: Identifier -> ResourceKey.create(Registries.ITEM, it) }
         val entryId = id.ecRL
         return registerItem(id) {

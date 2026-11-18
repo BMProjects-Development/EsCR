@@ -125,19 +125,13 @@ object ResearchCatalog {
 
     @JvmStatic
     @Synchronized
-    fun replace(
-        categories: Collection<BookCategory>,
-        entries: Collection<BookEntry>
-    ) {
+    fun replace(categories: Collection<BookCategory>, entries: Collection<BookEntry>) {
         loadedCategories = categories.toList()
         loadedEntries = entries.toList()
         refresh()
     }
 
-    private fun install(
-        categoryMap: LinkedHashMap<Identifier, BookCategory>,
-        entryMap: LinkedHashMap<Identifier, BookEntry>
-    ) {
+    private fun install(categoryMap: LinkedHashMap<Identifier, BookCategory>, entryMap: LinkedHashMap<Identifier, BookEntry>) {
         val disabled = disabledResearches()
         val filtered = filterDisabled(categoryMap, entryMap, disabled)
         val layout = ResearchLayout.resolve(filtered.categories, filtered.entries)
@@ -203,8 +197,7 @@ object ResearchCatalog {
             }
 
             val removedCategories =
-                activeCategories.values
-                    .filter { category -> category.dependencies.any { it in disabled || (it in knownEntries && it !in activeEntries) } }
+                activeCategories.values.filter { category -> category.dependencies.any { it in disabled || (it in knownEntries && it !in activeEntries) } }
                     .mapTo(LinkedHashSet(), BookCategory::id)
             if (removedCategories.isNotEmpty()) {
                 activeCategories.keys.removeAll(removedCategories)
@@ -241,17 +234,12 @@ private fun BookElementSpec.walkElements(): Sequence<BookElement> = sequence {
 private object ResearchLayout {
     private const val NODE_GAP = 14
 
-    fun resolve(
-        categories: Map<Identifier, BookCategory>,
-        entries: Map<Identifier, BookEntry>
-    ): LinkedHashMap<Identifier, ResolvedBookEntry> {
+    fun resolve(categories: Map<Identifier, BookCategory>, entries: Map<Identifier, BookEntry>): LinkedHashMap<Identifier, ResolvedBookEntry> {
         if (entries.isNotEmpty()) require(categories.isNotEmpty()) { "Research entries require at least one category" }
         categories.values.forEach { category ->
             category.dependencies.forEach { require(it in entries) { "Unknown dependency $it in category ${category.id}" } }
             category.bookLevel?.let {
-                require(
-                    ECRegistries.BOOK_TYPES.containsKey(it)
-                ) { "Unknown book level $it in category ${category.id}" }
+                require(ECRegistries.BOOK_TYPES.containsKey(it)) { "Unknown book level $it in category ${category.id}" }
             }
         }
         entries.values.forEach { entry ->
@@ -268,15 +256,8 @@ private object ResearchLayout {
         return result
     }
 
-    private fun validateTextRequirements(
-        entry: BookEntry,
-        entries: Map<Identifier, BookEntry>
-    ) {
-        entry.pages
-            .asSequence()
-            .flatMap { it.elements.asSequence() }
-            .flatMap(BookElementSpec::walkElements)
-            .mapNotNull { it as? TextBookElement }
+    private fun validateTextRequirements(entry: BookEntry, entries: Map<Identifier, BookEntry>) {
+        entry.pages.asSequence().flatMap { it.elements.asSequence() }.flatMap(BookElementSpec::walkElements).mapNotNull { it as? TextBookElement }
             .flatMap { element ->
                 sequenceOf(element.requirement) + element.variants.asSequence().map(BookTextVariant::requirement)
             }.filterNotNull()
@@ -284,11 +265,7 @@ private object ResearchLayout {
             .forEach { validateRequirement(entry.id, it, entries) }
     }
 
-    private fun validateLink(
-        entry: BookEntry,
-        categories: Map<Identifier, BookCategory>,
-        entries: Map<Identifier, BookEntry>
-    ) {
+    private fun validateLink(entry: BookEntry, categories: Map<Identifier, BookCategory>, entries: Map<Identifier, BookEntry>) {
         val link = entry.link ?: return
         require(entry.pages.isEmpty()) { "Research link ${entry.id} must not contain pages" }
         when (link) {
@@ -324,11 +301,7 @@ private object ResearchLayout {
         }
     }
 
-    private fun validateRequirement(
-        owner: Identifier,
-        requirement: ResearchRequirement,
-        entries: Map<Identifier, BookEntry>
-    ) {
+    private fun validateRequirement(owner: Identifier, requirement: ResearchRequirement, entries: Map<Identifier, BookEntry>) {
         val targetId = requirement.researchId(owner)
         val target = entries[targetId] ?: error("Unknown research $targetId in $owner")
         requirement.task?.let { taskId ->
@@ -365,10 +338,7 @@ private object ResearchLayout {
         return resolved
     }
 
-    private fun alignedPosition(
-        entry: BookEntry,
-        parent: ResolvedBookEntry
-    ): BookPosition? {
+    private fun alignedPosition(entry: BookEntry, parent: ResolvedBookEntry): BookPosition? {
         val align = entry.align
         if (align.isEmpty()) return null
         if (BookEntryAlign.UP in align && BookEntryAlign.DOWN in align) return null

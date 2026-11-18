@@ -3,6 +3,7 @@ load("@ecr_project//:config.bzl", "PROJECT")
 load("@rules_kotlin//kotlin:core.bzl", "define_kt_toolchain", "kt_compiler_plugin", "kt_kotlinc_options")
 load("@touchcontroller//rule:extract_access_widener.bzl", "extract_access_widener")
 load("@touchcontroller//rule:apply_access_widener.bzl", "apply_access_widener")
+load("@touchcontroller//repo/neoform/rule:jar_import.bzl", "jar_import")
 
 MINECRAFT_LIBRARIES = "@minecraft//" + PROJECT["minecraft_version"] + ":client_libraries"
 
@@ -45,12 +46,13 @@ java_library(
 java_import(
     name = "minecraft",
     jars = ["@neoform//tasks/joined_pre_process_jar"],
+    srcjar = "@neoform//tasks/joined_patch",
     deps = [MINECRAFT_LIBRARIES],
 )
 
 java_library(
     name = "neoforge_minecraft",
-    exports = ["@neoforge//:neoforge", MINECRAFT_LIBRARIES],
+    exports = ["@neoforge//:neoforge", "@neoforge//:neoforge_deps", MINECRAFT_LIBRARIES],
 )
 
 extract_access_widener(
@@ -66,6 +68,20 @@ apply_access_widener(
 
 java_library(
     name = "fabric_minecraft",
-    exports = [":fabric_minecraft_accessible", MINECRAFT_LIBRARIES],
+    exports = [":fabric_minecraft_library", MINECRAFT_LIBRARIES],
+)
+
+jar_import(
+    name = "fabric_minecraft_library",
+    jar = ":fabric_minecraft_accessible",
+    srcjar = "@neoform//tasks/joined_patch",
+)
+
+filegroup(
+    name = "development_assets",
+    srcs = [
+        "@minecraft_assets//:assets_" + PROJECT["minecraft_version"],
+        "@minecraft_assets//:version_" + PROJECT["minecraft_version"],
+    ],
 )
 

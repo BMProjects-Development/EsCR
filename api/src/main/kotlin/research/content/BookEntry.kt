@@ -36,28 +36,18 @@ data class BookEntry(
 }
 
 sealed interface BookEntryLink {
-    data class Category(
-        val category: Identifier
-    ) : BookEntryLink
+    data class Category(val category: Identifier): BookEntryLink
 
-    data class Research(
-        val research: Identifier
-    ) : BookEntryLink
+    data class Research(val research: Identifier): BookEntryLink
 
-    data class Page(
-        val research: Identifier,
-        val spread: Int
-    ) : BookEntryLink {
+    data class Page(val research: Identifier, val spread: Int): BookEntryLink {
         init {
             require(spread >= 0)
         }
     }
 }
 
-data class ResearchRequirement(
-    val research: Identifier? = null,
-    val task: String? = null
-) {
+data class ResearchRequirement(val research: Identifier? = null, val task: String? = null) {
     init {
         require(research != null || !task.isNullOrBlank())
     }
@@ -65,10 +55,7 @@ data class ResearchRequirement(
     fun researchId(owner: Identifier): Identifier = research ?: owner
 }
 
-data class ResearchTaskLevel(
-    val id: String,
-    val tasks: List<ResearchTaskDefinition>
-) {
+data class ResearchTaskLevel(val id: String, val tasks: List<ResearchTaskDefinition>) {
     init {
         require(id.isNotBlank())
         require(tasks.isNotEmpty())
@@ -123,11 +110,7 @@ enum class BookElementAlign {
     RIGHT
 }
 
-data class ResolvedBookEntry(
-    val entry: BookEntry,
-    val category: Identifier,
-    val position: BookPosition
-)
+data class ResolvedBookEntry(val entry: BookEntry, val category: Identifier, val position: BookPosition)
 
 enum class ResearchTargetType {
     ITEM,

@@ -9,9 +9,7 @@ import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import kotlin.math.floor
 
-class MithrilineFurnaceProgressArrow(
-    x: Int, y: Int, private val menu: MithrilineFurnaceMenu
-): AbstractWidget(x, y, 16, 8, Component.empty()) {
+class MithrilineFurnaceProgressArrow(x: Int, y: Int, private val menu: MithrilineFurnaceMenu): AbstractWidget(x, y, 16, 8, Component.empty()) {
     override fun extractWidgetRenderState(
         graphics: GuiGraphicsExtractor,
         mouseX: Int,
@@ -30,10 +28,7 @@ class MithrilineFurnaceProgressArrow(
             val calc = progress.toFloat() / maxProgress.toFloat()
             val floor = floor(calc * 16)
 
-            graphics.blit(
-                RenderPipelines.GUI_TEXTURED, TEXTURE,
-                this.x, (this.y + (16 - floor)).toInt(), 8F, 16F - floor, 8, floor.toInt(), 16, 16
-            )
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.x, (this.y + (16 - floor)).toInt(), 8F, 16F - floor, 8, floor.toInt(), 16, 16)
         }
     }
 

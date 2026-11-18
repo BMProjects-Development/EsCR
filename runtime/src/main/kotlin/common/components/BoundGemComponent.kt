@@ -34,9 +34,7 @@ data class BoundGemComponent(
 
         private fun encode(buf: RegistryFriendlyByteBuf, data: BoundGemComponent) {
             BlockPos.STREAM_CODEC.encode(buf, data.pos)
-            buf.writeOptional(data.dimension) { b, resK ->
-                ResourceKey.streamCodec(Registries.DIMENSION).encode(b, resK)
-            }
+            buf.writeOptional(data.dimension) { b, resK -> ResourceKey.streamCodec(Registries.DIMENSION).encode(b, resK) }
             ByteBufCodecs.BOOL.encode(buf, data.crossDimension)
             ByteBufCodecs.BOOL.encode(buf, data.outsideBoundRadius)
         }

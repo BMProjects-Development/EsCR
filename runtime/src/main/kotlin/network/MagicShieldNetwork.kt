@@ -35,11 +35,7 @@ data class MagicShieldPayload(
                 buf.writeBoolean(value.blocked)
             },
             {
-                MagicShieldPayload(
-                    it.readVarInt(),
-                    it.readFloat(), it.readFloat(), it.readFloat(),
-                    it.readBoolean()
-                )
+                MagicShieldPayload(it.readVarInt(), it.readFloat(), it.readFloat(), it.readFloat(), it.readBoolean())
             }
         )
     }
@@ -53,9 +49,7 @@ object MagicShieldNetwork {
 
     fun show(level: ServerLevel, target: Entity, source: DamageSource, blocked: Boolean) {
         val position = hitPosition(target, source)
-        val payload = MagicShieldPayload(
-            target.id, position.x.toFloat(), position.y.toFloat(), position.z.toFloat(), blocked
-        )
+        val payload = MagicShieldPayload(target.id, position.x.toFloat(), position.y.toFloat(), position.z.toFloat(), blocked)
 
         level.players().filter { it.distanceToSqr(target) <= MAX_DIST_SQUARE }.forEach { Network.sendTo(it, payload) }
     }
@@ -77,15 +71,9 @@ object MagicShieldNetwork {
             end = start.add(attacker.lookAngle.scale(MAX_DIST))
         }
 
-        val hit = box.clip(start, end).orElseGet {
-            Vec3(start.x.coerceIn(box.minX, box.maxX), start.y.coerceIn(box.minY, box.maxY), start.z.coerceIn(box.minZ, box.maxZ))
-        }
+        val hit = box.clip(start, end).orElseGet { Vec3(start.x.coerceIn(box.minX, box.maxX), start.y.coerceIn(box.minY, box.maxY), start.z.coerceIn(box.minZ, box.maxZ)) }
         val offset = hit.subtract(center)
-        val position = Vec3(
-            offset.x / max(box.xsize * 0.5, MIN_RADIUS),
-            offset.y / max(box.ysize * 0.5, MIN_RADIUS),
-            offset.z / max(box.zsize * 0.5, MIN_RADIUS)
-        )
+        val position = Vec3(offset.x / max(box.xsize * 0.5, MIN_RADIUS), offset.y / max(box.ysize * 0.5, MIN_RADIUS), offset.z / max(box.zsize * 0.5, MIN_RADIUS))
         val maxAxis = max(abs(position.x), max(abs(position.y), abs(position.z)))
 
         if (maxAxis < MAX_DIRECTION_LENGTH) return target.lookAngle.scale(-1.0)

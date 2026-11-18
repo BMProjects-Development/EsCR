@@ -10,12 +10,12 @@ object ConnectedTextureMask {
     const val VARIANT_COUNT: Int = 16
 
     private val neighbours = arrayOf(
-        arrayOf(Direction.SOUTH, Direction.EAST, Direction.NORTH, Direction.WEST), // DOWN
-        arrayOf(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST), // UP
-        arrayOf(Direction.UP, Direction.WEST, Direction.DOWN, Direction.EAST), // NORTH
-        arrayOf(Direction.UP, Direction.EAST, Direction.DOWN, Direction.WEST), // SOUTH
-        arrayOf(Direction.UP, Direction.SOUTH, Direction.DOWN, Direction.NORTH), // WEST
-        arrayOf(Direction.UP, Direction.NORTH, Direction.DOWN, Direction.SOUTH), // EAST
+        arrayOf(Direction.SOUTH, Direction.EAST, Direction.NORTH, Direction.WEST),
+        arrayOf(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST),
+        arrayOf(Direction.UP, Direction.WEST, Direction.DOWN, Direction.EAST),
+        arrayOf(Direction.UP, Direction.EAST, Direction.DOWN, Direction.WEST),
+        arrayOf(Direction.UP, Direction.SOUTH, Direction.DOWN, Direction.NORTH),
+        arrayOf(Direction.UP, Direction.NORTH, Direction.DOWN, Direction.SOUTH),
     )
 
     @JvmStatic
@@ -39,9 +39,7 @@ object ConnectedTextureMask {
         return mask and (1 shl ((missingSide + 2) % 4)).inv()
     }
 
-    internal fun fourWayFromDiagonals(
-        hasDiagonal: (firstSide: Int, secondSide: Int) -> Boolean
-    ): Int {
+    internal fun fourWayFromDiagonals(hasDiagonal: (firstSide: Int, secondSide: Int) -> Boolean): Int {
         var missingCorners = 0
         for (side in 0..3) {
             val nextSide = (side + 1) % 4
@@ -60,10 +58,7 @@ object ConnectedTextureMask {
         }
     }
 
-    internal fun withoutRejectedConnections(
-        mask: Int,
-        accepts: (side: Int) -> Boolean
-    ): Int {
+    internal fun withoutRejectedConnections(mask: Int, accepts: (side: Int) -> Boolean): Int {
         var result = mask
         for (side in 0..3) {
             val bit = 1 shl side
@@ -82,6 +77,5 @@ object ConnectedTextureMask {
     }
 
     @JvmStatic
-    fun unpack(packed: Int, face: Direction): Int =
-        (packed ushr (face.get3DDataValue() * 4)) and 0xF
+    fun unpack(packed: Int, face: Direction): Int = (packed ushr (face.get3DDataValue() * 4)) and 0xF
 }

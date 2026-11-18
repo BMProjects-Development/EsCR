@@ -25,6 +25,6 @@ fun interface EventListener<in E : Event> {
 }
 
 @JvmInline
-value class Subscription internal constructor(internal val remove: () -> Unit) : AutoCloseable {
+value class Subscription internal constructor(internal val remove: () -> Unit): AutoCloseable {
     override fun close() = remove()
 }

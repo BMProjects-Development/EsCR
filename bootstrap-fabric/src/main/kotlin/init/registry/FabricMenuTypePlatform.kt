@@ -14,9 +14,8 @@ import net.minecraft.world.flag.FeatureFlags
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.MenuType
 
-object FabricMenuTypePlatform : MenuTypePlatform {
-    override fun <M : AbstractContainerMenu> create(factory: (Int, Inventory) -> M): MenuType<M> =
-        MenuType(factory, FeatureFlags.VANILLA_SET)
+object FabricMenuTypePlatform: MenuTypePlatform {
+    override fun <M : AbstractContainerMenu> create(factory: (Int, Inventory) -> M): MenuType<M> = MenuType(factory, FeatureFlags.VANILLA_SET)
 
     override fun <M : AbstractContainerMenu, D : Any> create(
         codec: StreamCodec<RegistryFriendlyByteBuf, D>,
@@ -29,11 +28,10 @@ object FabricMenuTypePlatform : MenuTypePlatform {
         data: D,
         codec: StreamCodec<RegistryFriendlyByteBuf, D>
     ) {
-        player.openMenu(object : ExtendedMenuProvider<D> {
+        player.openMenu(object: ExtendedMenuProvider<D> {
             override fun getDisplayName(): Component = provider.displayName
 
-            override fun createMenu(containerId: Int, inventory: Inventory, player: Player): AbstractContainerMenu? =
-                provider.createMenu(containerId, inventory, player)
+            override fun createMenu(containerId: Int, inventory: Inventory, player: Player): AbstractContainerMenu? = provider.createMenu(containerId, inventory, player)
 
             override fun getScreenOpeningData(player: ServerPlayer): D = data
         })

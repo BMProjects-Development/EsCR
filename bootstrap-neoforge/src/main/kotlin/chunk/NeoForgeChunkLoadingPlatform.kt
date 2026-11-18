@@ -11,27 +11,19 @@ import net.neoforged.neoforge.common.world.chunk.TicketController
 import net.neoforged.neoforge.common.world.chunk.TicketHelper
 import java.util.WeakHashMap
 
-class NeoForgeChunkLoadingPlatform(bus: IEventBus) : ChunkLoadingPlatform {
+class NeoForgeChunkLoadingPlatform(bus: IEventBus): ChunkLoadingPlatform {
     private val owners = WeakHashMap<ServerLevel, MutableMap<BlockPos, MutableSet<Long>>>()
-
-    private val controller = TicketController(
-        "chunk_loader".ecRL,
-        ::restoreOwners
-    )
+    private val controller = TicketController("chunk_loader".ecRL, ::restoreOwners)
 
     init {
         bus.addListener(::registerController)
     }
 
     override fun add(level: ServerLevel, owner: BlockPos, chunk: ChunkPos): Boolean {
-        val ownerChunks = owners
-            .getOrPut(level, ::HashMap)
-            .getOrPut(owner.immutable(), ::HashSet)
+        val ownerChunks = owners.getOrPut(level, ::HashMap).getOrPut(owner.immutable(), ::HashSet)
 
         val ownerChanged = ownerChunks.add(chunk.pack())
-        val ticketChanged = controller.forceChunk(
-            level, owner, chunk.x, chunk.z, true, false
-        )
+        val ticketChanged = controller.forceChunk(level, owner, chunk.x, chunk.z, true, false)
 
         return ownerChanged || ticketChanged
     }
@@ -45,14 +37,7 @@ class NeoForgeChunkLoadingPlatform(bus: IEventBus) : ChunkLoadingPlatform {
         if (ownerChunks?.isEmpty() == true) levelOwners.remove(ownerKey)
         if (levelOwners?.isEmpty() == true) owners.remove(level)
 
-        val ticketChanged = controller.forceChunk(
-            level,
-            owner,
-            chunk.x,
-            chunk.z,
-            false,
-            false
-        )
+        val ticketChanged = controller.forceChunk(level, owner, chunk.x, chunk.z, false, false)
 
         return ownerChanged || ticketChanged
     }
@@ -64,14 +49,7 @@ class NeoForgeChunkLoadingPlatform(bus: IEventBus) : ChunkLoadingPlatform {
 
         for (packed in chunks) {
             val chunk = ChunkPos.unpack(packed)
-            controller.forceChunk(
-                level,
-                owner,
-                chunk.x,
-                chunk.z,
-                false,
-                false
-            )
+            controller.forceChunk(level, owner, chunk.x, chunk.z, false, false)
         }
 
         if (levelOwners.isEmpty()) owners.remove(level)

@@ -22,10 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class MagicTable(properties: Properties): Block(properties), EntityBlock, FullBlockParticles {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = MagicTableBlockEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = MagicTableBlockEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,

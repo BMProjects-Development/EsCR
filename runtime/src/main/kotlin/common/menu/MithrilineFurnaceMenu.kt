@@ -22,7 +22,7 @@ class MithrilineFurnaceMenu(
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess,
     val data: ContainerData
-) : AbstractMenu(MenuTypeRegistry.mithrilineFurnace, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.mithrilineFurnace, containerId, access) {
     constructor(containerId: Int, inventory: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inventory,
@@ -41,10 +41,7 @@ class MithrilineFurnaceMenu(
         addDataSlots(data)
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        index: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, index: Int): ItemStack {
         var qms = ItemStack.EMPTY
         val ms = this.slots[index]
 

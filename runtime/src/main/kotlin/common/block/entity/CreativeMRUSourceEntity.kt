@@ -13,20 +13,12 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class CreativeMRUSourceEntity(
-    worldPosition: BlockPos,
-    blockState: BlockState
-) : SynchronizedBlockEntity(
-    BlockEntityTypeRegistry.creativeMRUSource.get(),
-    worldPosition,
-    blockState
-), MRUDevice {
+class CreativeMRUSourceEntity(worldPosition: BlockPos, blockState: BlockState): SynchronizedBlockEntity(BlockEntityTypeRegistry.creativeMRUSource.get(), worldPosition, blockState), MRUDevice {
     override val mruStorage: IOMRUStorage = ImmutableMRUStorage()
     override val balance = MRUBalanceContainer { setChanged() }
     override val deviceType: MRUDevice.DeviceType = MRUDevice.DeviceType.TRANSLATOR
 
-    private class ImmutableMRUStorage : IOMRUStorage {
-        // save/load no need to infinite storage
+    private class ImmutableMRUStorage: IOMRUStorage {
         override fun save(output: ValueOutput) {}
         override fun load(input: ValueInput) {}
         override fun set(amount: Int) {}

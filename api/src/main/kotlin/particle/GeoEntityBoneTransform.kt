@@ -16,14 +16,13 @@ class GeoEntityBoneTransform private constructor(
     private val animatable: GeoAnimatable,
     val bone: String,
     offset: Vector3f
-) : Transform {
+): Transform {
     private val localOffset = Vector3f(offset)
     private val resolvedPosition = Vector3f()
     private val resolvedRotation = Quaternionf()
     private val resolvedVelocity = Vector3f()
     private var lastUpdateTick = Long.MIN_VALUE
     private var resolvable = true
-
     override val parent: Transform? = null
 
     override val isValid: Boolean
@@ -62,35 +61,15 @@ class GeoEntityBoneTransform private constructor(
 
         val now = ClientGeoAnimations.clientTimeSeconds()
         val molang = animatable.geoMolangContext(0F)
-        val pose = BedrockGeoAnimator.pose(
-            baked,
-            ClientGeoAnimations.snapshot(animatable.geoAnimationState, molang, now),
-            molang,
-            now
-        )
+        val pose = BedrockGeoAnimator.pose(baked, ClientGeoAnimations.snapshot(animatable.geoAnimationState, molang, now), molang, now)
         val bakedBone = baked.bones[boneIndex]
         val entityRotation = 180F - entity.yRot
-        val transform = Matrix4f()
-            .rotateY(radians(entityRotation))
-            .scale(model.scale)
-            .mul(pose.transforms[boneIndex])
-        val bonePosition = Vector3f(
-            bakedBone.pivotX,
-            bakedBone.pivotY,
-            bakedBone.pivotZ
-        ).add(localOffset)
+        val transform = Matrix4f().rotateY(radians(entityRotation)).scale(model.scale).mul(pose.transforms[boneIndex])
+        val bonePosition = Vector3f(bakedBone.pivotX, bakedBone.pivotY, bakedBone.pivotZ).add(localOffset)
         transform.transformPosition(bonePosition)
-        resolvedPosition.set(
-            entity.x.toFloat() + bonePosition.x,
-            entity.y.toFloat() + bonePosition.y,
-            entity.z.toFloat() + bonePosition.z
-        )
+        resolvedPosition.set(entity.x.toFloat() + bonePosition.x, entity.y.toFloat() + bonePosition.y, entity.z.toFloat() + bonePosition.z)
         transform.getUnnormalizedRotation(resolvedRotation).normalize()
-        resolvedVelocity.set(
-            entity.deltaMovement.x.toFloat(),
-            entity.deltaMovement.y.toFloat(),
-            entity.deltaMovement.z.toFloat()
-        )
+        resolvedVelocity.set(entity.deltaMovement.x.toFloat(), entity.deltaMovement.y.toFloat(), entity.deltaMovement.z.toFloat())
         resolvable = true
     }
 

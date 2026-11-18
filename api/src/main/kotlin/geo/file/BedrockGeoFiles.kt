@@ -47,8 +47,8 @@ data class BedrockCube(
 )
 
 sealed interface BedrockUv {
-    data class Box(val u: Float, val v: Float) : BedrockUv
-    data class PerFace(val faces: Map<GeoFaceDirection, Face>) : BedrockUv
+    data class Box(val u: Float, val v: Float): BedrockUv
+    data class PerFace(val faces: Map<GeoFaceDirection, Face>): BedrockUv
 
     data class Face(
         val u: Float,
@@ -94,11 +94,7 @@ enum class BedrockAnimationLoop {
     HOLD
 }
 
-data class BedrockBoneAnimation(
-    val position: BedrockAnimationChannel?,
-    val rotation: BedrockAnimationChannel?,
-    val scale: BedrockAnimationChannel?
-)
+data class BedrockBoneAnimation(val position: BedrockAnimationChannel?, val rotation: BedrockAnimationChannel?, val scale: BedrockAnimationChannel?)
 
 data class BedrockAnimationChannel(val keyframes: List<BedrockKeyframe>)
 
@@ -187,10 +183,7 @@ object BedrockGeoFileParser {
     }
 
     private fun parseUv(element: JsonElement?, size: GeoVec3): BedrockUv = when (element) {
-        is JsonArray -> BedrockUv.Box(
-            element.getOrNull(0)?.jsonPrimitive?.floatOrNull ?: 0F,
-            element.getOrNull(1)?.jsonPrimitive?.floatOrNull ?: 0F
-        )
+        is JsonArray -> BedrockUv.Box(element.getOrNull(0)?.jsonPrimitive?.floatOrNull ?: 0F, element.getOrNull(1)?.jsonPrimitive?.floatOrNull ?: 0F)
         is JsonObject -> BedrockUv.PerFace(
             GeoFaceDirection.entries.mapNotNull { direction ->
                 val face = element[direction.name.lowercase()] as? JsonObject ?: return@mapNotNull null
@@ -231,11 +224,7 @@ object BedrockGeoFileParser {
         }
         val bones = (animation["bones"] as? JsonObject).orEmpty().mapValues { (_, value) ->
             val bone = value.jsonObject
-            BedrockBoneAnimation(
-                parseChannel(bone["position"]),
-                parseChannel(bone["rotation"]),
-                parseChannel(bone["scale"])
-            )
+            BedrockBoneAnimation(parseChannel(bone["position"]), parseChannel(bone["rotation"]), parseChannel(bone["scale"]))
         }
         val events = buildList {
             parseEvents(animation["sound_effects"], BedrockAnimationEvent.Type.SOUND, this)
@@ -244,9 +233,7 @@ object BedrockGeoFileParser {
         }.sortedBy(BedrockAnimationEvent::timeSeconds)
         val inferredLength = sequence {
             bones.values.forEach { bone ->
-                listOfNotNull(bone.position, bone.rotation, bone.scale).forEach { channel ->
-                    channel.keyframes.lastOrNull()?.timeSeconds?.let { yield(it) }
-                }
+                listOfNotNull(bone.position, bone.rotation, bone.scale).forEach { channel -> channel.keyframes.lastOrNull()?.timeSeconds?.let { yield(it) } }
             }
             events.lastOrNull()?.timeSeconds?.let { yield(it) }
         }.maxOrNull() ?: 0F
@@ -267,22 +254,14 @@ object BedrockGeoFileParser {
 
     private fun parseChannel(element: JsonElement?): BedrockAnimationChannel? = when (element) {
         null, JsonNull -> null
-        is JsonArray, is JsonPrimitive -> BedrockAnimationChannel(
-            listOf(BedrockKeyframe(0F, element.asVec3Expression(), element.asVec3Expression(), GeoInterpolation.LINEAR))
-        )
+        is JsonArray, is JsonPrimitive -> BedrockAnimationChannel(listOf(BedrockKeyframe(0F, element.asVec3Expression(), element.asVec3Expression(), GeoInterpolation.LINEAR)))
         is JsonObject -> BedrockAnimationChannel(element.map { (time, value) ->
             val keyframeTime = time.toFloatOrNull()
                 ?: throw SerializationException("Invalid animation keyframe time '$time'")
             if (value is JsonObject && ("pre" in value || "post" in value)) {
                 val pre = (value["pre"] ?: value["post"] ?: JsonPrimitive(0)).asVec3Expression()
                 val post = (value["post"] ?: value["pre"] ?: JsonPrimitive(0)).asVec3Expression()
-                BedrockKeyframe(
-                    keyframeTime,
-                    pre,
-                    post,
-                    if (value.string("lerp_mode")?.lowercase() == "catmullrom") GeoInterpolation.CATMULL_ROM
-                    else GeoInterpolation.LINEAR
-                )
+                BedrockKeyframe(keyframeTime, pre, post, if (value.string("lerp_mode")?.lowercase() == "catmullrom") GeoInterpolation.CATMULL_ROM else GeoInterpolation.LINEAR)
             } else {
                 val expression = value.asVec3Expression()
                 BedrockKeyframe(keyframeTime, expression, expression, GeoInterpolation.LINEAR)
@@ -290,22 +269,14 @@ object BedrockGeoFileParser {
         }.sortedBy(BedrockKeyframe::timeSeconds))
     }
 
-    private fun parseEvents(
-        element: JsonElement?,
-        type: BedrockAnimationEvent.Type,
-        output: MutableList<BedrockAnimationEvent>
-    ) {
+    private fun parseEvents(element: JsonElement?, type: BedrockAnimationEvent.Type, output: MutableList<BedrockAnimationEvent>) {
         val timeline = element as? JsonObject ?: return
         timeline.forEach { (time, value) ->
             val seconds = time.toFloatOrNull() ?: return@forEach
             val values = if (value is JsonArray) value else JsonArray(listOf(value))
             values.forEach { eventValue ->
                 when (type) {
-                    BedrockAnimationEvent.Type.TIMELINE -> output += BedrockAnimationEvent(
-                        seconds,
-                        type,
-                        eventValue.jsonPrimitive.content
-                    )
+                    BedrockAnimationEvent.Type.TIMELINE -> output += BedrockAnimationEvent(seconds, type, eventValue.jsonPrimitive.content)
                     BedrockAnimationEvent.Type.SOUND -> {
                         val event = eventValue as? JsonObject ?: return@forEach
                         output += BedrockAnimationEvent(seconds, type, event.string("effect") ?: return@forEach)
@@ -355,8 +326,7 @@ private fun JsonObject.requiredString(name: String): String = string(name)
 private fun JsonObject.string(name: String): String? = this[name]?.jsonPrimitive?.contentOrNull
 private fun JsonObject.float(name: String, default: Float): Float = this[name]?.jsonPrimitive?.floatOrNull ?: default
 private fun JsonObject.int(name: String, default: Int): Int = this[name]?.jsonPrimitive?.intOrNull ?: default
-private fun JsonObject.boolean(name: String, default: Boolean): Boolean =
-    this[name]?.jsonPrimitive?.booleanOrNull ?: default
+private fun JsonObject.boolean(name: String, default: Boolean): Boolean = this[name]?.jsonPrimitive?.booleanOrNull ?: default
 
 private fun JsonObject.vec3(name: String, default: GeoVec3): GeoVec3 {
     val array = this[name] as? JsonArray ?: return default

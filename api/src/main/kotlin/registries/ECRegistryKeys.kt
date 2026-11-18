@@ -17,17 +17,13 @@ object ECRegistryKeys {
     @JvmField
     val MULTIBLOCK_KEY: ResourceKey<Registry<Multiblock>> = ResourceKey.createRegistryKey("multiblock".ecRL)
     @JvmField
-    val ASSEMBLED_MULTIBLOCK_KEY: ResourceKey<Registry<AssembledMultiblockDefinition>> =
-        ResourceKey.createRegistryKey("assembled_multiblock".ecRL)
+    val ASSEMBLED_MULTIBLOCK_KEY: ResourceKey<Registry<AssembledMultiblockDefinition>> = ResourceKey.createRegistryKey("assembled_multiblock".ecRL)
     @JvmField
     val BOOK_TYPE_KEY: ResourceKey<Registry<BookType>> = ResourceKey.createRegistryKey(("book_type").ecRL)
     @JvmField
-    val BOOK_ELEMENT_SERIALIZER_KEY: ResourceKey<Registry<BookElementSerializer<*>>> =
-        ResourceKey.createRegistryKey("book_element_serializer".ecRL)
+    val BOOK_ELEMENT_SERIALIZER_KEY: ResourceKey<Registry<BookElementSerializer<*>>> = ResourceKey.createRegistryKey("book_element_serializer".ecRL)
     @JvmField
-    val RESEARCH_TASK_SERIALIZER_KEY: ResourceKey<Registry<ResearchTaskSerializer<*>>> =
-        ResourceKey.createRegistryKey("research_task_serializer".ecRL)
+    val RESEARCH_TASK_SERIALIZER_KEY: ResourceKey<Registry<ResearchTaskSerializer<*>>> = ResourceKey.createRegistryKey("research_task_serializer".ecRL)
     @JvmField
-    val MULTIBLOCK_MATCHER_TYPE_KEY: ResourceKey<Registry<MultiblockMatcherType<*>>> =
-        ResourceKey.createRegistryKey("multiblock_matcher_type".ecRL)
+    val MULTIBLOCK_MATCHER_TYPE_KEY: ResourceKey<Registry<MultiblockMatcherType<*>>> = ResourceKey.createRegistryKey("multiblock_matcher_type".ecRL)
 }

@@ -7,10 +7,7 @@ import net.minecraft.world.level.ChunkPos
 import java.util.WeakHashMap
 
 object FabricChunkLoadingPlatform: ChunkLoadingPlatform {
-    private data class LevelState(
-        val owners: MutableMap<BlockPos, MutableSet<Long>> = HashMap(),
-        val references: MutableMap<Long, Int> = HashMap()
-    )
+    private data class LevelState(val owners: MutableMap<BlockPos, MutableSet<Long>> = HashMap(), val references: MutableMap<Long, Int> = HashMap())
 
     private val levels = WeakHashMap<ServerLevel, LevelState>()
 

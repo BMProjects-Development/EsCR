@@ -67,7 +67,7 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
     var currentGeneration: Int = 0
         private set
 
-    private val containerData: ContainerData = object : ContainerData {
+    private val containerData: ContainerData = object: ContainerData {
         override fun get(index: Int): Int = when (index) {
             DATA_BURN_TIME -> ceil(this@HeatGeneratorEntity.burnTimeRemaining).toInt().coerceAtLeast(0)
             DATA_MAX_BURN_TIME -> this@HeatGeneratorEntity.maxBurnTime
@@ -149,8 +149,7 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
     override fun canTakeItemThroughFace(slot: Int, itemStack: ItemStack, direction: Direction): Boolean =
         slot == OUTPUT_SLOT || slot == FUEL_SLOT && !itemStack.has(DataComponents.COOKING_FUEL)
 
-    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean =
-        slot == FUEL_SLOT && itemStack.has(DataComponents.COOKING_FUEL)
+    override fun canPlaceItem(slot: Int, itemStack: ItemStack): Boolean = slot == FUEL_SLOT && itemStack.has(DataComponents.COOKING_FUEL)
 
     override val mruStorage: IOMRUStorage
         get() = this.mutableMRUStorage
@@ -386,7 +385,6 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         const val DATA_MRU_CAPACITY_HIGH = 9
         const val DATA_UPGRADED = 10
         const val TEMPERATURE_SCALE = 10.0
-
         const val FUEL_SLOT = 0
         const val OUTPUT_SLOT = 1
         private const val SLOT_COUNT = 2
@@ -398,7 +396,6 @@ class HeatGeneratorEntity(worldPosition: BlockPos, blockState: BlockState): Sync
         private const val FIRE_EFFECT_TICKS_TAG = "fire_effect_ticks"
         private const val SLAG_PENDING_TAG = "slag_pending"
         private const val BALANCE_INITIALIZED_TAG = "balance_initialized"
-
         private val INPUT_SLOTS = intArrayOf(FUEL_SLOT)
         private val BOTTOM_SLOTS = intArrayOf(OUTPUT_SLOT, FUEL_SLOT)
 

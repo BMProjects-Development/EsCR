@@ -6,7 +6,7 @@ import com.algorithmlx.ecr.api.registries.ECRegistries
 import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.init.ECRModIDs
 
-object MRUTypeRegistry : RegistrationHandler(ModId) {
+object MRUTypeRegistry: RegistrationHandler(ModId) {
     private val espeReference = registerNoEntry(ECRModIDs.ESPE, ECRegistries.MRU_TYPE, ::MRUType)
     private val radiationUnitReference = registerNoEntry(ECRModIDs.MRU, ECRegistries.MRU_TYPE, ::MRUType)
     private val ubmruReference = registerNoEntry(ECRModIDs.UBMRU, ECRegistries.MRU_TYPE) {

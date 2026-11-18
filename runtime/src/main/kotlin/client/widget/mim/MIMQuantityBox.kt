@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.widget.mim
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.client.utils.MIMGuiTextures
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -12,12 +13,12 @@ import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.client.input.PreeditEvent
 import net.minecraft.network.chat.Component
 
-internal class MIMQuantityBox(font: Font, changed: () -> Unit) : AbstractWidget(
+class MIMQuantityBox(font: Font, changed: () -> Unit): AbstractWidget(
     0, 0, MIMDependencyTextures.QUANTITY.width, MIMDependencyTextures.QUANTITY.height,
-    Component.translatable("screen.escr.mim.batches")
+    Component.translatable("screen.$ModId.mim.batches")
 ) {
     private val texture = MIMDependencyTextures.QUANTITY
-    private val editor = object : EditBox(font, 2, (texture.height - font.lineHeight) / 2, texture.width - 4, font.lineHeight, message) {
+    private val editor = object: EditBox(font, 2, (texture.height - font.lineHeight) / 2, texture.width - 4, font.lineHeight, message) {
         override fun insertText(text: String) = super.insertText(text.filter { it in '0'..'9' })
     }
     var value: String

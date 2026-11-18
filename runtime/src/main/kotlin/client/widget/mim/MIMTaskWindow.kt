@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.widget.mim
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.mim.MIMCraftingState
 import com.algorithmlx.ecr.api.client.MRULineAnimation
 import com.algorithmlx.ecr.api.client.drawMRUGradientLine
@@ -28,7 +29,7 @@ import kotlin.math.roundToInt
 import com.algorithmlx.ecr.client.widget.mim.MIMDependencyLayout as Layout
 import com.algorithmlx.ecr.client.widget.mim.MIMDependencyTextures as Textures
 
-class MIMTaskWindow(private val font: Font, private val menu: MIMMenu, onStopAll: () -> Unit) : AbstractContainerEventHandler(), MIMFloatingWindow {
+class MIMTaskWindow(private val font: Font, private val menu: MIMMenu, onStopAll: () -> Unit): AbstractContainerEventHandler(), MIMFloatingWindow {
     private val geometry = MIMWindowFrame(Layout.WIDTH, Layout.HEIGHT, Layout.TITLE_HEIGHT, ::layout)
     private var scale = 1f
     private var open = false
@@ -48,33 +49,27 @@ class MIMTaskWindow(private val font: Font, private val menu: MIMMenu, onStopAll
     override var visible = false
         private set
     private val close = MIMDependencyButton(
-        font, Component.translatable("screen.escr.mim.tasks.close"),
+        font, Component.translatable("screen.$ModId.mim.tasks.close"),
         Textures.CLOSE, Textures.CLOSE_PRESSED, Textures.CLOSE_HOVERED, false
     ) { close() }
-    private val stop = MIMDependencyButton(
-        font, Component.translatable("screen.escr.mim.tasks.stop_all"), Textures.CRAFT, Textures.CRAFT_PRESSED,
-        Textures.CRAFT_HOVERED
-    ) {
+    private val stop = MIMDependencyButton(font, Component.translatable("screen.$ModId.mim.tasks.stop_all"), Textures.CRAFT, Textures.CRAFT_PRESSED, Textures.CRAFT_HOVERED) {
         onStopAll()
         nextRefresh = 0
     }
     private val cancel = List(MIMTaskResponse.PAGE_SIZE) { row ->
-        MIMDependencyButton(
-            font, Component.translatable("screen.escr.mim.tasks.cancel"),
-            Textures.CLOSE, Textures.CLOSE_PRESSED, Textures.CLOSE_HOVERED, false
-        ) {
+        MIMDependencyButton(font, Component.translatable("screen.$ModId.mim.tasks.cancel"), Textures.CLOSE, Textures.CLOSE_PRESSED, Textures.CLOSE_HOVERED, false) {
             entries.getOrNull(row)?.let { task ->
                 task.id?.let { MIMTaskCancel(menu.containerId, task.module, it).sendToServer() }
             }
             nextRefresh = 0
-        }.also { it.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.tasks.cancel"))) }
+        }.also { it.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.tasks.cancel"))) }
     }
-    private val scrollbar = MIMDependencyScrollBar({ select(it.roundToInt()) }, Component.translatable("screen.escr.mim.tasks.scroll"))
+    private val scrollbar = MIMDependencyScrollBar({ select(it.roundToInt()) }, Component.translatable("screen.$ModId.mim.tasks.scroll"))
     private val buttons = listOf(close, stop) + cancel
     private val widgets: List<AbstractWidget> = buttons + scrollbar
     private val maximum: Int get() = (total - MIMTaskResponse.PAGE_SIZE).coerceAtLeast(0)
     private val mruAnimation = MRULineAnimation()
-    private val power = object : MRUStorage {
+    private val power = object: MRUStorage {
         override val mru: Int get() = menu.coreMRU
         override val mruCapacity: Int get() = menu.coreMRUCapacity
         override val mruType get() = MRUTypeRegistry.radiationUnit
@@ -169,21 +164,21 @@ class MIMTaskWindow(private val font: Font, private val menu: MIMMenu, onStopAll
         graphics.nextStratum()
         local(graphics) {
             Textures.PANEL.draw(graphics, 0, 0)
-            graphics.text(font, Component.translatable("screen.escr.mim.tasks"), 11, 11, MIMGuiTextures.TEXT, false)
-            graphics.text(font, Component.translatable("screen.escr.mim.work.queued", menu.queuedCrafts), 13, 40, MIMGuiTextures.TEXT, false)
+            graphics.text(font, Component.translatable("screen.$ModId.mim.tasks"), 11, 11, MIMGuiTextures.TEXT, false)
+            graphics.text(font, Component.translatable("screen.$ModId.mim.work.queued", menu.queuedCrafts), 13, 40, MIMGuiTextures.TEXT, false)
             if (entries.isEmpty()) graphics.text(font, Component.translatable(
-                if (total == 0) "screen.escr.mim.tasks.empty" else "screen.escr.mim.dependency.loading"
+                if (total == 0) "screen.$ModId.mim.tasks.empty" else "screen.$ModId.mim.dependency.loading"
             ), 13, Layout.CONTENT_Y + 6, MIMGuiTextures.TEXT, false)
             entries.forEachIndexed { index, task ->
                 val top = Layout.CONTENT_Y + index * ROW_HEIGHT
                 Textures.CARD.frame(graphics, 13, top, CARD_WIDTH)
                 if (!task.target.isEmpty) graphics.fakeItem(task.target, 17, top + 8)
-                val name = if (task.target.isEmpty) Component.translatable("screen.escr.mim.tasks.module") else task.target.hoverName
+                val name = if (task.target.isEmpty) Component.translatable("screen.$ModId.mim.tasks.module") else task.target.hoverName
                 graphics.text(font, font.plainSubstrByWidth(name.string, 162), 37, top + 5, MIMGuiTextures.TEXT, false)
-                val details = Component.translatable("screen.escr.mim.tasks.details", task.remaining, status(task)).string
+                val details = Component.translatable("screen.$ModId.mim.tasks.details", task.remaining, status(task)).string
                 graphics.text(font, font.plainSubstrByWidth(details, 162), 37, top + 18, MIMGuiTextures.TEXT, false)
             }
-            graphics.text(font, Component.translatable("screen.escr.mim.tasks.page", if (total == 0) 0 else offset + 1,
+            graphics.text(font, Component.translatable("screen.$ModId.mim.tasks.page", if (total == 0) 0 else offset + 1,
                 offset + entries.size, total), 11, 239, MIMGuiTextures.TEXT, false)
             drawMRUGradientLine(graphics, power, 8, 224, 0, 0, 8, 124, animation = mruAnimation, deltaTicks = deltaTicks)
         }
@@ -198,10 +193,10 @@ class MIMTaskWindow(private val font: Font, private val menu: MIMMenu, onStopAll
         if (localX !in 13f..CANCEL_X.toFloat() || localY < Layout.CONTENT_Y) return false
         val index = ((localY - Layout.CONTENT_Y) / ROW_HEIGHT).toInt()
         val task = entries.getOrNull(index) ?: return false
-        val position = Component.translatable("tooltip.escr.bound_gem.coordinates", task.module.x, task.module.y, task.module.z)
+        val position = Component.translatable("tooltip.$ModId.bound_gem.coordinates", task.module.x, task.module.y, task.module.z)
         graphics.setComponentTooltipForNextFrame(font, listOf(
-            if (task.target.isEmpty) Component.translatable("screen.escr.mim.tasks.module") else task.target.hoverName,
-            Component.translatable("screen.escr.mim.tasks.details", task.remaining, status(task)), position
+            if (task.target.isEmpty) Component.translatable("screen.$ModId.mim.tasks.module") else task.target.hoverName,
+            Component.translatable("screen.$ModId.mim.tasks.details", task.remaining, status(task)), position
         ), mouseX, mouseY)
         return true
     }
@@ -254,16 +249,16 @@ class MIMTaskWindow(private val font: Font, private val menu: MIMMenu, onStopAll
         if (visible && isFocused) NarratableEntry.NarrationPriority.FOCUSED else NarratableEntry.NarrationPriority.NONE
     override fun getNarratables(): Collection<NarratableEntry> = widgets.filter { it.visible }
     override fun updateNarration(output: NarrationElementOutput) {
-        output.add(NarratedElementType.TITLE, Component.translatable("screen.escr.mim.tasks"))
+        output.add(NarratedElementType.TITLE, Component.translatable("screen.$ModId.mim.tasks"))
     }
 
     private fun status(task: MIMTaskEntry): Component = when (task.activity.state) {
-        MIMCraftingState.POWER -> Component.translatable("screen.escr.mim.work.power")
-        MIMCraftingState.MATERIALS -> Component.translatable("screen.escr.mim.work.materials")
-        MIMCraftingState.SPACE -> Component.translatable("screen.escr.mim.work.space")
-        MIMCraftingState.PLANNING -> Component.translatable("screen.escr.mim.work.planning")
-        MIMCraftingState.WORKING -> Component.translatable("screen.escr.mim.work.crafting", task.activity.completed, task.activity.ticks)
-        else -> Component.translatable("screen.escr.mim.tasks.queued")
+        MIMCraftingState.POWER -> Component.translatable("screen.$ModId.mim.work.power")
+        MIMCraftingState.MATERIALS -> Component.translatable("screen.$ModId.mim.work.materials")
+        MIMCraftingState.SPACE -> Component.translatable("screen.$ModId.mim.work.space")
+        MIMCraftingState.PLANNING -> Component.translatable("screen.$ModId.mim.work.planning")
+        MIMCraftingState.WORKING -> Component.translatable("screen.$ModId.mim.work.crafting", task.activity.completed, task.activity.ticks)
+        else -> Component.translatable("screen.$ModId.mim.tasks.queued")
     }
 
     companion object {

@@ -36,7 +36,6 @@ class MatrixDestructorEntity(
     worldPosition: BlockPos, blockState: BlockState
 ): SynchronizedContainerBlockEntity(BlockEntityTypeRegistry.matrixDestructor.get(), worldPosition, blockState), MRUDevice {
     private var items: NonNullList<ItemStack> = NonNullList.withSize(1, ItemStack.EMPTY)
-
     var progress = 0
     @JvmField
     var status = MatrixDestructorStatus.STOPPED
@@ -66,13 +65,7 @@ class MatrixDestructorEntity(
         super.loadAdditional(input)
     }
 
-    override fun createMenu(
-        containerId: Int,
-        inventory: Inventory
-    ): AbstractContainerMenu = MatrixDestructorMenu(
-        containerId, inventory, this, this,
-        ContainerLevelAccess.create(this.level!!, this.blockPos)
-    )
+    override fun createMenu(containerId: Int, inventory: Inventory): AbstractContainerMenu = MatrixDestructorMenu(containerId, inventory, this, this, ContainerLevelAccess.create(this.level!!, this.blockPos))
 
     override fun getContainerSize(): Int = this.items.size
 
@@ -92,9 +85,7 @@ class MatrixDestructorEntity(
         companion object {
             @JvmField
             val CODEC: Codec<MatrixDestructorStatus> = RecordCodecBuilder.create {
-                it.group(
-                    Codec.STRING.fieldOf("name").forGetter(MatrixDestructorStatus::name)
-                ).apply(it, MatrixDestructorStatus::valueOf)
+                it.group(Codec.STRING.fieldOf("name").forGetter(MatrixDestructorStatus::name)).apply(it, MatrixDestructorStatus::valueOf)
             }
         }
     }
@@ -112,10 +103,7 @@ class MatrixDestructorEntity(
 
             if (stack.isEmpty) {
                 be.progress = 0
-                be.setStatusUpdated(
-                    if (be.mruStorage.hasMRU) MatrixDestructorStatus.WAITING
-                    else MatrixDestructorStatus.STOPPED
-                )
+                be.setStatusUpdated(if (be.mruStorage.hasMRU) MatrixDestructorStatus.WAITING else MatrixDestructorStatus.STOPPED)
                 return
             }
 

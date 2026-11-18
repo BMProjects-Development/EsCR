@@ -22,12 +22,9 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-class CrystalBlock(properties: Properties) : Block(properties), Multipart<CrystalPart>, FullBlockParticles {
+class CrystalBlock(properties: Properties): Block(properties), Multipart<CrystalPart>, FullBlockParticles {
     init {
-        this.registerDefaultState(
-            this.stateDefinition.any()
-                .setValue(PART, CrystalPart.DOWN)
-        )
+        this.registerDefaultState(this.stateDefinition.any().setValue(PART, CrystalPart.DOWN))
     }
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
@@ -47,9 +44,7 @@ class CrystalBlock(properties: Properties) : Block(properties), Multipart<Crysta
     override fun setPlacedBy(level: Level, pos: BlockPos, state: BlockState, placer: LivingEntity?, stack: ItemStack) {
         val positions = this.getAllParts(pos, Direction.NORTH)
 
-        positions.forEachIndexed { i, p ->
-            level.setBlock(p, state.setValue(PART, if (i == 0) CrystalPart.DOWN else CrystalPart.UP), UPDATE_ALL)
-        }
+        positions.forEachIndexed { i, p -> level.setBlock(p, state.setValue(PART, if (i == 0) CrystalPart.DOWN else CrystalPart.UP), UPDATE_ALL) }
     }
 
     override fun isEnableForPart(level: Level, blockPos: BlockPos, state: BlockState): Boolean =
@@ -90,10 +85,7 @@ class CrystalBlock(properties: Properties) : Block(properties), Multipart<Crysta
 
     override fun getPreviewParts(pos: BlockPos, dir: Direction, state: BlockState): List<Pair<BlockPos, BlockState>> {
         val positions = this.getAllParts(pos, dir)
-        return listOf(
-            positions[0] to state.setValue(PART, CrystalPart.DOWN),
-            positions[1] to state.setValue(PART, CrystalPart.UP)
-        )
+        return listOf(positions[0] to state.setValue(PART, CrystalPart.DOWN), positions[1] to state.setValue(PART, CrystalPart.UP))
     }
 
     private val downShape by lazy {

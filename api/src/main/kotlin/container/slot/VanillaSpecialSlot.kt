@@ -16,7 +16,7 @@ class VanillaSpecialSlot(
     private val stackSizeWithItem: (VanillaSpecialSlot.(ItemStack) -> Int)? = null,
     private val isHighlightable: (VanillaSpecialSlot.() -> Boolean)? = null,
     private val active: (VanillaSpecialSlot.() -> Boolean)? = null
-) : Slot(container, index, x, y) {
+): Slot(container, index, x, y) {
     override fun getMaxStackSize(): Int = this.stackSize ?: super.getMaxStackSize()
 
     override fun getMaxStackSize(stack: ItemStack): Int = this.stackSizeWithItem?.let { it(stack) } ?: super.getMaxStackSize(stack)
@@ -28,5 +28,4 @@ class VanillaSpecialSlot(
     override fun isHighlightable(): Boolean = this.isHighlightable?.let { it() } ?: super.isHighlightable()
 
     override fun isActive(): Boolean = this.active?.let { it() } ?: super.isActive()
-
 }

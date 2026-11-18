@@ -12,7 +12,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 
-data class MenuBoundGemTooltipRequest(val containerId: Int, val slot: Int, val requestId: Int) : CustomPacketPayload {
+data class MenuBoundGemTooltipRequest(val containerId: Int, val slot: Int, val requestId: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -36,7 +36,7 @@ data class MenuBoundGemTooltipRequest(val containerId: Int, val slot: Int, val r
 
 data class MenuBoundGemTooltipResponse(
     val requestId: Int, val stack: ItemStack, val contextual: Boolean, val lines: List<Component>
-) : CustomPacketPayload {
+): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {

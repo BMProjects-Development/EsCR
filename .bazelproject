@@ -11,6 +11,7 @@ directories:
   -bazel-escr
 
 targets:
+  //:prepare_project
   //api:classes
   //runtime:classes
   //bootstrap-fabric:classes
@@ -27,7 +28,7 @@ targets:
 
 derive_targets_from_directories: false
 
-workspace_type: java
+workspace_type: kotlin
 
 additional_languages:
-  kotlin
+  java

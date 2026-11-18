@@ -33,6 +33,7 @@ import com.algorithmlx.ecr.init.ECRModIDs
 import com.algorithmlx.ecr.init.reload.ResearchReloadListener
 import com.algorithmlx.ecr.init.reload.SoulStoneDataReloadListener
 import com.algorithmlx.ecr.registry.CreativeTabRegistry
+import com.algorithmlx.ecr.registry.BlockRegistry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerPlayer
@@ -113,10 +114,7 @@ object ECEventHandlers {
         isCanceled = true
         if (level.isClientSide) return
 
-        entity.sendOverlayMessage(
-            Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked")
-                .append(": X: ${pos.x} Y: ${pos.y} Z: ${pos.z}")
-        )
+        entity.sendOverlayMessage(Component.translatable("tooltip.$ModId.${ECRModIDs.BOUND_GEM}.linked").append(": X: ${pos.x} Y: ${pos.y} Z: ${pos.z}"))
 
         if (itemStack.count > 1) {
             val copy = itemStack.copy().apply {
@@ -166,9 +164,7 @@ object ECEventHandlers {
     }
 
     private fun BuildCreativeModeTabContentsEvent.buildContents() {
-        BuiltInRegistries.ITEM.keySet().asSequence()
-            .filter { id -> id.namespace == ModId }
-            .mapNotNull { id -> BuiltInRegistries.ITEM.getOptional(id).orElse(null) }
+        BuiltInRegistries.ITEM.keySet().asSequence().filter { id -> id.namespace == ModId }.mapNotNull { id -> BuiltInRegistries.ITEM.getOptional(id).orElse(null) }
             .forEach { item ->
                 when {
                     tab == CreativeTabRegistry.blocks.get() &&
@@ -180,5 +176,6 @@ object ECEventHandlers {
                     else -> accept(item)
                 }
             }
+        if (tab == CreativeTabRegistry.blocks.get()) accept(BlockRegistry.naturalFurnace.get().stack(true))
     }
 }

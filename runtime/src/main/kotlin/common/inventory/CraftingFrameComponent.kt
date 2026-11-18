@@ -27,9 +27,7 @@ class CraftingFrameComponent(ingredients: List<ItemStack>, val substituteIngredi
     override fun equals(other: Any?): Boolean = other is CraftingFrameComponent &&
         substituteIngredients == other.substituteIngredients && grid.indices.all { ItemStack.matches(grid[it], other.grid[it]) }
 
-    override fun hashCode(): Int = 31 * grid.fold(1) { hash, stack ->
-        31 * hash + 31 * ItemStack.hashItemAndComponents(stack) + stack.count
-    } + substituteIngredients.hashCode()
+    override fun hashCode(): Int = 31 * grid.fold(1) { hash, stack -> 31 * hash + 31 * ItemStack.hashItemAndComponents(stack) + stack.count } + substituteIngredients.hashCode()
 
     companion object {
         const val GRID_SIZE = 9
@@ -44,8 +42,7 @@ class CraftingFrameComponent(ingredients: List<ItemStack>, val substituteIngredi
         val CODEC: Codec<CraftingFrameComponent> = RecordCodecBuilder.create { instance ->
             instance.group(
                 GRID_CODEC.fieldOf("ingredients").forGetter(CraftingFrameComponent::ingredients),
-                Codec.BOOL.optionalFieldOf("substitute_ingredients", false)
-                    .forGetter(CraftingFrameComponent::substituteIngredients)
+                Codec.BOOL.optionalFieldOf("substitute_ingredients", false).forGetter(CraftingFrameComponent::substituteIngredients)
             ).apply(instance, ::CraftingFrameComponent)
         }
 
@@ -56,10 +53,7 @@ class CraftingFrameComponent(ingredients: List<ItemStack>, val substituteIngredi
                 buffer.writeBoolean(component.substituteIngredients)
             },
             { buffer ->
-                CraftingFrameComponent(
-                    List(GRID_SIZE) { ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer) },
-                    buffer.readBoolean()
-                )
+                CraftingFrameComponent(List(GRID_SIZE) { ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer) }, buffer.readBoolean())
             }
         )
     }

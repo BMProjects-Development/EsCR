@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.widget.mim
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.client.MRULineAnimation
 import com.algorithmlx.ecr.api.client.drawMRUGradientLine
 import com.algorithmlx.ecr.api.mim.MIMCraftingState
@@ -31,7 +32,7 @@ import kotlin.math.roundToInt
 
 class MIMDependencyWindow(
     private val font: Font, private val onCraft: (Int, ItemStack, Int) -> Unit, onStop: () -> Unit
-) : AbstractContainerEventHandler(), MIMFloatingWindow {
+): AbstractContainerEventHandler(), MIMFloatingWindow {
     private val geometry = MIMWindowFrame(WIDTH, HEIGHT, Layout.TITLE_HEIGHT, ::layout)
     private val viewport = MIMDependencyViewport()
     val horizontalOffset: Double get() = viewport.horizontal
@@ -61,50 +62,37 @@ class MIMDependencyWindow(
     private var coreMRU = 0
     private var coreCapacity = 0
     private val close = MIMDependencyButton(
-        font, Component.translatable("screen.escr.mim.dependency.close"),
+        font, Component.translatable("screen.$ModId.mim.dependency.close"),
         Textures.CLOSE, Textures.CLOSE_PRESSED, Textures.CLOSE_HOVERED, false
     ) { close() }
-    private val smaller = MIMDependencyButton(
-        font, Component.literal("-"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED
-    ) { zoom(-Layout.ZOOM_STEP) }
-    private val larger = MIMDependencyButton(
-        font, Component.literal("+"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED
-    ) { zoom(Layout.ZOOM_STEP) }
-    private val decrease = MIMDependencyButton(
-        font, Component.literal("-"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED
-    ) { changeQuantity(-1) }
-    private val increase = MIMDependencyButton(
-        font, Component.literal("+"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED
-    ) { changeQuantity(1) }
-    private val craft = MIMDependencyButton(
-        font, Component.translatable("screen.escr.mim.craft"), Textures.CRAFT, Textures.CRAFT_PRESSED, Textures.CRAFT_HOVERED
-    ) {
+    private val smaller = MIMDependencyButton(font, Component.literal("-"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED) { zoom(-Layout.ZOOM_STEP) }
+    private val larger = MIMDependencyButton(font, Component.literal("+"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED) { zoom(Layout.ZOOM_STEP) }
+    private val decrease = MIMDependencyButton(font, Component.literal("-"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED) { changeQuantity(-1) }
+    private val increase = MIMDependencyButton(font, Component.literal("+"), Textures.BUTTON, Textures.BUTTON_PRESSED, Textures.BUTTON_HOVERED) { changeQuantity(1) }
+    private val craft = MIMDependencyButton(font, Component.translatable("screen.$ModId.mim.craft"), Textures.CRAFT, Textures.CRAFT_PRESSED, Textures.CRAFT_HOVERED) {
         selected?.let { selected -> selection?.let { onCraft(selected.slot, it.target, it.batches) } }
     }
-    private val stop = MIMDependencyButton(
-        font, Component.translatable("screen.escr.mim.stop"), Textures.STOP, Textures.STOP_PRESSED,
-        Textures.STOP_HOVERED, action = onStop
-    )
+    private val stop = MIMDependencyButton(font, Component.translatable("screen.$ModId.mim.stop"), Textures.STOP, Textures.STOP_PRESSED, Textures.STOP_HOVERED, action = onStop)
     private val scrollbar = MIMDependencyScrollBar(viewport::selectVertical)
     private val quantity = MIMQuantityBox(font) { result = null; refreshWidgets() }
     private val buttons = listOf(close, smaller, larger, decrease, increase, craft, stop)
     private val widgets: List<AbstractWidget> = buttons + scrollbar + quantity
     private val mruAnimation = MRULineAnimation()
-    private val power = object : MRUStorage {
+    private val power = object: MRUStorage {
         override val mru: Int get() = coreMRU
         override val mruCapacity: Int get() = coreCapacity
         override val mruType get() = MRUTypeRegistry.radiationUnit
     }
 
     init {
-        close.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.dependency.close")))
-        smaller.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.dependency.zoom_out")))
-        larger.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.dependency.zoom_in")))
-        craft.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.craft_recipe")))
-        stop.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.cancel_jobs")))
-        decrease.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.batches.decrease")))
-        increase.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.batches.increase")))
-        quantity.setTooltip(Tooltip.create(Component.translatable("screen.escr.mim.batches.tooltip")))
+        close.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.dependency.close")))
+        smaller.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.dependency.zoom_out")))
+        larger.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.dependency.zoom_in")))
+        craft.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.craft_recipe")))
+        stop.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.cancel_jobs")))
+        decrease.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.batches.decrease")))
+        increase.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.batches.increase")))
+        quantity.setTooltip(Tooltip.create(Component.translatable("screen.$ModId.mim.batches.tooltip")))
     }
 
     fun loading(slot: Int, target: ItemStack, batches: Int) {
@@ -203,17 +191,17 @@ class MIMDependencyWindow(
         graphics.nextStratum()
         local(graphics) {
             Textures.PANEL.draw(graphics, 0, 0)
-            graphics.text(font, font.plainSubstrByWidth(Component.translatable("screen.escr.mim.dependency.title").string, Layout.TITLE_WIDTH), Layout.TITLE_X, 11, MIMGuiTextures.TEXT, false)
+            graphics.text(font, font.plainSubstrByWidth(Component.translatable("screen.$ModId.mim.dependency.title").string, Layout.TITLE_WIDTH), Layout.TITLE_X, 11, MIMGuiTextures.TEXT, false)
             Textures.SLOT.draw(graphics, Layout.RESULT_X, Layout.RESULT_Y)
             val target = selected?.target
             if (target != null) graphics.fakeItem(target, Layout.RESULT_X + 2, Layout.RESULT_Y + 2)
-            val name = target?.hoverName?.string ?: Component.translatable("screen.escr.mim.recipe").string
+            val name = target?.hoverName?.string ?: Component.translatable("screen.$ModId.mim.recipe").string
             graphics.text(font, font.plainSubstrByWidth(name, 201), Layout.RESULT_TEXT_X, Layout.RESULT_Y + 1, MIMGuiTextures.TEXT, false)
-            val summary = result?.let { Component.translatable(if (it.complete) "screen.escr.mim.dependency.ready" else "screen.escr.mim.dependency.missing") }
-                ?: Component.translatable("screen.escr.mim.dependency.loading")
-            graphics.text(font, font.plainSubstrByWidth(Component.translatable("screen.escr.mim.dependency.summary", summary, selection?.batches ?: 0).string, 201),
+            val summary = result?.let { Component.translatable(if (it.complete) "screen.$ModId.mim.dependency.ready" else "screen.$ModId.mim.dependency.missing") }
+                ?: Component.translatable("screen.$ModId.mim.dependency.loading")
+            graphics.text(font, font.plainSubstrByWidth(Component.translatable("screen.$ModId.mim.dependency.summary", summary, selection?.batches ?: 0).string, 201),
                 Layout.RESULT_TEXT_X, Layout.RESULT_Y + 12, MIMGuiTextures.TEXT, false)
-            val text = Component.translatable("screen.escr.mim.dependency.footer", result?.totalMRU ?: 0, workStatus()).string
+            val text = Component.translatable("screen.$ModId.mim.dependency.footer", result?.totalMRU ?: 0, workStatus()).string
             graphics.text(font, font.plainSubstrByWidth(text, 234), 11, 237, MIMGuiTextures.TEXT, false)
             drawMRUGradientLine(graphics, power, 8, 224, 0, 0, 8, 124, animation = mruAnimation, deltaTicks = deltaTicks)
         }
@@ -230,8 +218,7 @@ class MIMDependencyWindow(
             y + ((Layout.CONTENT_Y + Layout.CONTENT_HEIGHT) * displayScale).roundToInt()
         )
         local(graphics) {
-            graphics.pose().translate((Layout.CONTENT_X + viewport.horizontalPadding - viewport.horizontal).toFloat(),
-                (Layout.CONTENT_Y - viewport.vertical).toFloat())
+            graphics.pose().translate((Layout.CONTENT_X + viewport.horizontalPadding - viewport.horizontal).toFloat(), (Layout.CONTENT_Y - viewport.vertical).toFloat())
             graphics.pose().scale(viewport.zoom, viewport.zoom)
             data.nodes.forEachIndexed { index, node -> drawConnection(graphics, node, index) }
             graphics.nextStratum()
@@ -275,13 +262,13 @@ class MIMDependencyWindow(
         val localX = (mouseX - x) / displayScale.toDouble()
         val localY = (mouseY - y) / displayScale.toDouble()
         val lines = when {
-            localX >= 8 && localX < 132 && localY >= 224 && localY < 232 -> listOf(Component.translatable("screen.escr.mim.dependency.core_mru", coreMRU, coreCapacity))
-            localY >= 233 -> listOf(Component.translatable("screen.escr.mim.dependency.plan_mru", result?.totalMRU ?: 0), workStatus())
+            localX >= 8 && localX < 132 && localY >= 224 && localY < 232 -> listOf(Component.translatable("screen.$ModId.mim.dependency.core_mru", coreMRU, coreCapacity))
+            localY >= 233 -> listOf(Component.translatable("screen.$ModId.mim.dependency.plan_mru", result?.totalMRU ?: 0), workStatus())
             localX >= Layout.RESULT_X && localX < Layout.RESULT_X + Textures.SLOT.width &&
                 localY >= Layout.RESULT_Y && localY < Layout.RESULT_Y + Textures.SLOT.height -> listOfNotNull(selected?.target?.hoverName)
             else -> viewport.nodeAt(localX, localY)?.let { index ->
                 val node = result!!.nodes[index]
-                listOf(node.stack.hoverName, Component.translatable("screen.escr.mim.dependency.amounts", node.amount, node.stored, node.crafts), status(node.status))
+                listOf(node.stack.hoverName, Component.translatable("screen.$ModId.mim.dependency.amounts", node.amount, node.stored, node.crafts), status(node.status))
             }.orEmpty()
         }
         if (lines.isEmpty()) return false
@@ -348,16 +335,16 @@ class MIMDependencyWindow(
         if (visible && isFocused) NarratableEntry.NarrationPriority.FOCUSED else NarratableEntry.NarrationPriority.NONE
     override fun getNarratables(): Collection<NarratableEntry> = widgets.filter { it.visible }
     override fun updateNarration(output: NarrationElementOutput) {
-        output.add(NarratedElementType.TITLE, Component.translatable("screen.escr.mim.dependency.title"))
+        output.add(NarratedElementType.TITLE, Component.translatable("screen.$ModId.mim.dependency.title"))
     }
 
     private fun workStatus(): Component = when (state) {
-        MIMCraftingState.POWER -> Component.translatable("screen.escr.mim.work.power")
-        MIMCraftingState.MATERIALS -> Component.translatable("screen.escr.mim.work.materials")
-        MIMCraftingState.SPACE -> Component.translatable("screen.escr.mim.work.space")
-        MIMCraftingState.WORKING -> Component.translatable("screen.escr.mim.work.crafting", completed, ticks)
-        MIMCraftingState.PLANNING -> Component.translatable("screen.escr.mim.work.planning")
-        else -> Component.translatable("screen.escr.mim.work.queued", queued)
+        MIMCraftingState.POWER -> Component.translatable("screen.$ModId.mim.work.power")
+        MIMCraftingState.MATERIALS -> Component.translatable("screen.$ModId.mim.work.materials")
+        MIMCraftingState.SPACE -> Component.translatable("screen.$ModId.mim.work.space")
+        MIMCraftingState.WORKING -> Component.translatable("screen.$ModId.mim.work.crafting", completed, ticks)
+        MIMCraftingState.PLANNING -> Component.translatable("screen.$ModId.mim.work.planning")
+        else -> Component.translatable("screen.$ModId.mim.work.queued", queued)
     }
 
     private class Selection(val slot: Int, val target: ItemStack)
@@ -371,11 +358,11 @@ class MIMDependencyWindow(
         private const val CONNECTION_COLOR = 0xFF777777.toInt()
 
         private fun status(value: MIMDependencyStatus): Component = when (value) {
-            MIMDependencyStatus.STORED -> Component.translatable("screen.escr.mim.dependency.status.stored")
-            MIMDependencyStatus.CRAFTABLE -> Component.translatable("screen.escr.mim.dependency.status.craftable")
-            MIMDependencyStatus.MISSING -> Component.translatable("screen.escr.mim.dependency.status.missing")
-            MIMDependencyStatus.CYCLE -> Component.translatable("screen.escr.mim.dependency.status.cycle")
-            MIMDependencyStatus.LIMIT -> Component.translatable("screen.escr.mim.dependency.status.limit")
+            MIMDependencyStatus.STORED -> Component.translatable("screen.$ModId.mim.dependency.status.stored")
+            MIMDependencyStatus.CRAFTABLE -> Component.translatable("screen.$ModId.mim.dependency.status.craftable")
+            MIMDependencyStatus.MISSING -> Component.translatable("screen.$ModId.mim.dependency.status.missing")
+            MIMDependencyStatus.CYCLE -> Component.translatable("screen.$ModId.mim.dependency.status.cycle")
+            MIMDependencyStatus.LIMIT -> Component.translatable("screen.$ModId.mim.dependency.status.limit")
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.algorithmlx.ecr.client.widget.mim
 
-internal class MIMDependencyGraph(parents: List<Int>) {
+class MIMDependencyGraph(parents: List<Int>) {
     val nodes: List<Node>
     val width: Int
     val height: Int

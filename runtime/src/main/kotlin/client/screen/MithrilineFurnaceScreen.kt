@@ -13,11 +13,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
 import java.awt.Color
 
-class MithrilineFurnaceScreen(
-    menu: MithrilineFurnaceMenu,
-    inv: Inventory,
-    title: Component
-): AbstractContainerScreen<MithrilineFurnaceMenu>(menu, inv, title) {
+class MithrilineFurnaceScreen(menu: MithrilineFurnaceMenu, inv: Inventory, title: Component): AbstractContainerScreen<MithrilineFurnaceMenu>(menu, inv, title) {
     private val mruAnimation = MRULineAnimation()
 
     override fun init() {
@@ -27,28 +23,12 @@ class MithrilineFurnaceScreen(
 
     override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.extractBackground(graphics, mouseX, mouseY, deltaTicks)
-        graphics.blit(
-            RenderPipelines.GUI_TEXTURED,
-            TEXTURE,
-            this.leftPos, this.topPos,
-            0F, 0F,
-            this.imageWidth, this.imageHeight,
-            256, 256
-        )
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256)
 
         val be = menu.blockEntity
         if (be is MithrilineFurnaceEntity) {
             val mru = be.mruStorage
-            drawMRULine(
-                graphics, mru,
-                8, 60,
-                leftPos, topPos,
-                16, 16,
-                mouseX, mouseY,
-                COLOR, COLOR,
-                animation = mruAnimation,
-                deltaTicks = deltaTicks
-            )
+            drawMRULine(graphics, mru, 8, 60, leftPos, topPos, 16, 16, mouseX, mouseY, COLOR, COLOR, animation = mruAnimation, deltaTicks = deltaTicks)
         }
     }
 

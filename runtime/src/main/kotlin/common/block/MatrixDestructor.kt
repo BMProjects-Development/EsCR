@@ -22,10 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
 class MatrixDestructor(properties: Properties): Block(properties), EntityBlock, FullBlockParticles {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = MatrixDestructorEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = MatrixDestructorEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,
@@ -43,8 +40,7 @@ class MatrixDestructor(properties: Properties): Block(properties), EntityBlock, 
         hitResult: BlockHitResult
     ): InteractionResult = checkAndOpenMenu<MatrixDestructorEntity>(player, level, pos)
 
-    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape =
-        shape
+    override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = shape
 
     private val shape by lazy {
         var shape = Shapes.empty()

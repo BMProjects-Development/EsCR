@@ -22,14 +22,9 @@ object RecipeCompiler {
 
         val scope = RecipesScope(namespace).apply(block)
         val incoming = scope.declarations
-        val existing = declarations.asSequence()
-            .map(RecipeSpec::id)
-            .toHashSet()
+        val existing = declarations.asSequence().map(RecipeSpec::id).toHashSet()
 
-        val duplicatesInsideBlock = incoming.groupingBy(RecipeSpec::id)
-            .eachCount()
-            .filterValues { it > 1 }
-            .keys
+        val duplicatesInsideBlock = incoming.groupingBy(RecipeSpec::id).eachCount().filterValues { it > 1 }.keys
 
         require(duplicatesInsideBlock.isEmpty()) {
             "Duplicate code recipe ids in one registration block: $duplicatesInsideBlock"
@@ -43,9 +38,7 @@ object RecipeCompiler {
     }
 
     @JvmStatic
-    fun baked(
-        registries: HolderLookup.Provider
-    ): List<RecipeHolder<*>> = declarations.map { it.bake(registries) }
+    fun baked(registries: HolderLookup.Provider): List<RecipeHolder<*>> = declarations.map { it.bake(registries) }
 
     @JvmStatic
     fun merge(vanilla: RecipeMap, registries: HolderLookup.Provider): RecipeMap {
@@ -55,17 +48,12 @@ object RecipeCompiler {
         vanilla.values().forEach { merged[it.id()] = it }
 
         val recipeRegistry = MappedRegistry(Registries.RECIPE, Lifecycle.stable())
-        merged.forEach { (key, holder) ->
-            recipeRegistry.register(key, holder.value(), RegistrationInfo.BUILT_IN)
-        }
+        merged.forEach { (key, holder) -> recipeRegistry.register(key, holder.value(), RegistrationInfo.BUILT_IN) }
         return RecipeMap.create(recipeRegistry.freeze())
     }
 
     @JvmStatic
-    fun ids(): Set<Identifier> = declarations.mapTo(
-        linkedSetOf(),
-        RecipeSpec::id
-    )
+    fun ids(): Set<Identifier> = declarations.mapTo(linkedSetOf(), RecipeSpec::id)
 }
 
 fun recipe(namespace: String, block: RecipesScope.() -> Unit) = RecipeCompiler.register(namespace, block)

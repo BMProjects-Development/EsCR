@@ -5,10 +5,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.resources.Identifier
 import java.util.Collections
 
-data class MultiblockJsonResources(
-    val multiblocks: Map<Identifier, String> = emptyMap(),
-    val assembledMultiblocks: Map<Identifier, String> = emptyMap()
-) {
+data class MultiblockJsonResources(val multiblocks: Map<Identifier, String> = emptyMap(), val assembledMultiblocks: Map<Identifier, String> = emptyMap()) {
     internal fun immutableCopy() = MultiblockJsonResources(
         Collections.unmodifiableMap(LinkedHashMap(multiblocks)),
         Collections.unmodifiableMap(LinkedHashMap(assembledMultiblocks))
@@ -28,10 +25,7 @@ data class MultiblockJsonResources(
                 buffer.writeJsonMap(value.assembledMultiblocks)
             },
             { buffer ->
-                MultiblockJsonResources(
-                    buffer.readJsonMap(),
-                    buffer.readJsonMap()
-                )
+                MultiblockJsonResources(buffer.readJsonMap(), buffer.readJsonMap())
             }
         )
 

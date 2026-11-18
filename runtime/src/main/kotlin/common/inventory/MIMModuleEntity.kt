@@ -12,7 +12,7 @@ import kotlin.jvm.optionals.getOrNull
 abstract class MIMModuleEntity(
     pos: BlockPos, state: BlockState, type: BlockEntityType<*>, size: Int,
     capacity: Int = 0, energySlot: Int = -1
-) : MIMDeviceEntity(pos, state, type, size, capacity, energySlot), MIMModule {
+): MIMDeviceEntity(pos, state, type, size, capacity, energySlot), MIMModule {
     override val blockEntity get() = this
     private var corePos: BlockPos? = null
 

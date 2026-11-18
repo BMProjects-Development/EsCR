@@ -26,10 +26,7 @@ fun interface AssembledStateFactory {
 sealed interface AssemblyResult {
     data class Success(val snapshot: AssembledMultiblockSnapshot): AssemblyResult
 
-    data class Failure(
-        val reason: AssemblyFailureReason,
-        val position: BlockPos? = null
-    ): AssemblyResult
+    data class Failure(val reason: AssemblyFailureReason, val position: BlockPos? = null): AssemblyResult
 }
 
 enum class AssemblyFailureReason {
@@ -46,7 +43,6 @@ enum class AssemblyFailureReason {
 object AssembledMultiblocks {
     private const val VALIDATION_INTERVAL = 20L
     private const val FORMATION_FLAGS = Block.UPDATE_ALL or Block.UPDATE_SUPPRESS_DROPS
-
     private val mutations = ThreadLocal.withInitial { hashSetOf<UUID>() }
 
     @JvmStatic
@@ -58,8 +54,7 @@ object AssembledMultiblocks {
         stateFactory: AssembledStateFactory
     ): AssemblyResult {
         val effectiveDefinition = MultiblockDefinitions.assembled(definition.id)
-        if (effectiveDefinition != null && effectiveDefinition !== definition)
-            return assemble(level, effectiveDefinition, controllerPos, facing, stateFactory)
+        if (effectiveDefinition != null && effectiveDefinition !== definition) return assemble(level, effectiveDefinition, controllerPos, facing, stateFactory)
         if (level.isClientSide) return AssemblyResult.Failure(AssemblyFailureReason.CLIENT_SIDE)
         if (!facing.axis.isHorizontal) return AssemblyResult.Failure(AssemblyFailureReason.INVALID_FACING)
 
@@ -72,13 +67,7 @@ object AssembledMultiblocks {
         val positions = definition.worldPositions(resolvedController, facing)
 
         val originals = positions.map { position -> OriginalBlockSnapshot.capture(level, position) }
-        val snapshot = AssembledMultiblockSnapshot(
-            UUID.randomUUID(),
-            definition.id,
-            resolvedController.immutable(),
-            facing,
-            originals
-        )
+        val snapshot = AssembledMultiblockSnapshot(UUID.randomUUID(), definition.id, resolvedController.immutable(), facing, originals)
         val backupPosition = positions.firstOrNull { position -> position != resolvedController }
 
         return mutate(snapshot.instanceId) {
@@ -92,19 +81,13 @@ object AssembledMultiblocks {
                     val stateChanged = level.setBlock(position, formedState, FORMATION_FLAGS)
                     if (!stateChanged && level.getBlockState(position) != formedState) {
                         rollback(level, originals)
-                        return@mutate AssemblyResult.Failure(
-                            AssemblyFailureReason.BLOCK_REPLACEMENT_FAILED,
-                            position
-                        )
+                        return@mutate AssemblyResult.Failure(AssemblyFailureReason.BLOCK_REPLACEMENT_FAILED, position)
                     }
 
                     val partEntity = level.getBlockEntity(position) as? AssembledMultiblockPartEntity
                     if (partEntity == null) {
                         rollback(level, originals)
-                        return@mutate AssemblyResult.Failure(
-                            AssemblyFailureReason.MISSING_PART_BLOCK_ENTITY,
-                            position
-                        )
+                        return@mutate AssemblyResult.Failure(AssemblyFailureReason.MISSING_PART_BLOCK_ENTITY, position)
                     }
 
                     val partData = AssembledMultiblockPartData(
@@ -118,20 +101,14 @@ object AssembledMultiblocks {
                     partEntity.setAssembledMultiblockData(partData)
                     if (partEntity.assembledMultiblockData != partData) {
                         rollback(level, originals)
-                        return@mutate AssemblyResult.Failure(
-                            AssemblyFailureReason.PART_DATA_REJECTED,
-                            position
-                        )
+                        return@mutate AssemblyResult.Failure(AssemblyFailureReason.PART_DATA_REJECTED, position)
                     }
                 }
 
                 AssemblyResult.Success(snapshot)
             } catch (_: Exception) {
                 rollback(level, originals)
-                AssemblyResult.Failure(
-                    AssemblyFailureReason.BLOCK_REPLACEMENT_FAILED,
-                    activePosition
-                )
+                AssemblyResult.Failure(AssemblyFailureReason.BLOCK_REPLACEMENT_FAILED, activePosition)
             }
         }
     }
@@ -144,18 +121,12 @@ object AssembledMultiblocks {
     ): ControllerResolution {
         if (!definition.allowAssemblyFromAnyPart) return validateController(level, definition, assemblyPos, facing)
         if (!level.isLoaded(assemblyPos))
-            return ControllerResolution.Failed(
-                AssemblyResult.Failure(AssemblyFailureReason.UNLOADED_PART, assemblyPos.immutable())
-            )
+            return ControllerResolution.Failed(AssemblyResult.Failure(AssemblyFailureReason.UNLOADED_PART, assemblyPos.immutable()))
 
         val state = level.getBlockState(assemblyPos)
-        val candidateParts = definition.parts
-            .filter { part -> part.matcher.matches(state) }
-            .sortedBy { part -> part.offset != BlockPos.ZERO }
+        val candidateParts = definition.parts.filter { part -> part.matcher.matches(state) }.sortedBy { part -> part.offset != BlockPos.ZERO }
         if (candidateParts.isEmpty())
-            return ControllerResolution.Failed(
-                AssemblyResult.Failure(AssemblyFailureReason.PATTERN_MISMATCH, assemblyPos.immutable())
-            )
+            return ControllerResolution.Failed(AssemblyResult.Failure(AssemblyFailureReason.PATTERN_MISMATCH, assemblyPos.immutable()))
 
         var firstUnloaded: BlockPos? = null
         var firstMismatch: BlockPos? = null
@@ -176,16 +147,9 @@ object AssembledMultiblocks {
         }
 
         return if (firstUnloaded != null)
-            ControllerResolution.Failed(
-                AssemblyResult.Failure(AssemblyFailureReason.UNLOADED_PART, firstUnloaded)
-            )
+            ControllerResolution.Failed(AssemblyResult.Failure(AssemblyFailureReason.UNLOADED_PART, firstUnloaded))
         else
-            ControllerResolution.Failed(
-                AssemblyResult.Failure(
-                    AssemblyFailureReason.PATTERN_MISMATCH,
-                    firstMismatch ?: assemblyPos.immutable()
-                )
-            )
+            ControllerResolution.Failed(AssemblyResult.Failure(AssemblyFailureReason.PATTERN_MISMATCH, firstMismatch ?: assemblyPos.immutable()))
     }
 
     private fun validateController(
@@ -194,24 +158,19 @@ object AssembledMultiblocks {
         controllerPos: BlockPos,
         facing: Direction
     ): ControllerResolution {
-        definition.worldPositions(controllerPos, facing)
-            .firstOrNull { position -> !level.isLoaded(position) }
+        definition.worldPositions(controllerPos, facing).firstOrNull { position -> !level.isLoaded(position) }
             ?.let { position ->
-                return ControllerResolution.Failed(
-                    AssemblyResult.Failure(AssemblyFailureReason.UNLOADED_PART, position)
-                )
+                return ControllerResolution.Failed(AssemblyResult.Failure(AssemblyFailureReason.UNLOADED_PART, position))
             }
         definition.firstMismatch(level, controllerPos, facing)?.let { position ->
-            return ControllerResolution.Failed(
-                AssemblyResult.Failure(AssemblyFailureReason.PATTERN_MISMATCH, position)
-            )
+            return ControllerResolution.Failed(AssemblyResult.Failure(AssemblyFailureReason.PATTERN_MISMATCH, position))
         }
         return ControllerResolution.Found(controllerPos.immutable())
     }
 
     private sealed interface ControllerResolution {
-        data class Found(val position: BlockPos) : ControllerResolution
-        data class Failed(val result: AssemblyResult.Failure) : ControllerResolution
+        data class Found(val position: BlockPos): ControllerResolution
+        data class Failed(val result: AssemblyResult.Failure): ControllerResolution
     }
 
     @JvmStatic
@@ -229,8 +188,7 @@ object AssembledMultiblocks {
                 if (!level.isLoaded(original.position)) return@forEach
 
                 val currentEntity = level.getBlockEntity(original.position) as? AssembledMultiblockPartEntity
-                val belongsToInstance =
-                    currentEntity?.assembledMultiblockData?.instanceId == source.instanceId
+                val belongsToInstance = currentEntity?.assembledMultiblockData?.instanceId == source.instanceId
                 val currentState = level.getBlockState(original.position)
 
                 if (belongsToInstance || currentState.isAir) {
@@ -299,11 +257,7 @@ object AssembledMultiblocks {
         }
         val definition = MultiblockDefinitions.assembled(data.definitionId)
         if (definition?.formedModel == null) {
-            LOGGER.error(
-                "Cannot play GEO animation '{}': assembled multiblock {} has no formed model",
-                animation,
-                data.definitionId
-            )
+            LOGGER.error("Cannot play GEO animation '{}': assembled multiblock {} has no formed model", animation, data.definitionId)
             return false
         }
 
@@ -322,8 +276,7 @@ object AssembledMultiblocks {
 
     @JvmStatic
     fun tick(level: Level, partPos: BlockPos) {
-        if (level.isClientSide || level.gameTime % VALIDATION_INTERVAL != partPos.asLong().mod(VALIDATION_INTERVAL))
-            return
+        if (level.isClientSide || level.gameTime % VALIDATION_INTERVAL != partPos.asLong().mod(VALIDATION_INTERVAL)) return
 
         val data = partData(level, partPos) ?: return
         if (isMutating(data.instanceId)) return
@@ -342,10 +295,7 @@ object AssembledMultiblocks {
             disassemble(level, partPos)
     }
 
-    private fun findFullSnapshot(
-        level: Level,
-        source: AssembledMultiblockPartData
-    ): AssembledMultiblockSnapshot? {
+    private fun findFullSnapshot(level: Level, source: AssembledMultiblockPartData): AssembledMultiblockSnapshot? {
         source.fullSnapshot?.let { return it }
 
         partData(level, source.controllerPos)?.let { controller ->
@@ -361,10 +311,7 @@ object AssembledMultiblocks {
         }
     }
 
-    private fun findLoadedOriginals(
-        level: Level,
-        source: AssembledMultiblockPartData
-    ): List<OriginalBlockSnapshot> {
+    private fun findLoadedOriginals(level: Level, source: AssembledMultiblockPartData): List<OriginalBlockSnapshot> {
         val definition = MultiblockDefinitions.assembled(source.definitionId)
             ?: return listOf(source.original)
         return definition.worldPositions(source.controllerPos, source.facing).mapNotNull { position ->

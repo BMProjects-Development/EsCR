@@ -15,7 +15,7 @@ import net.minecraft.core.Direction
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 
-object FabricItemStoragePlatform : ItemStoragePlatform {
+object FabricItemStoragePlatform: ItemStoragePlatform {
     override fun find(level: Level, pos: BlockPos, side: Direction?): PlatformItemContainer? {
         val storage = ItemStorage.SIDED.find(level, pos, side) ?: return null
         return FabricContainer(storage, level.getBlockEntity(pos) ?: storage)
@@ -24,12 +24,12 @@ object FabricItemStoragePlatform : ItemStoragePlatform {
     @Suppress("DEPRECATION")
     override fun openTransaction(): ItemStorageTransaction = FabricTransaction(Transaction.openNested(Transaction.getCurrentUnsafe()))
 
-    private class FabricTransaction(val transaction: Transaction) : ItemStorageTransaction {
+    private class FabricTransaction(val transaction: Transaction): ItemStorageTransaction {
         override fun commit() = transaction.commit()
         override fun close() = transaction.close()
     }
 
-    private class FabricContainer(private val storage: Storage<ItemVariant>, owner: Any) : PlatformItemContainer() {
+    private class FabricContainer(private val storage: Storage<ItemVariant>, owner: Any): PlatformItemContainer() {
         private val views = if (storage is SlottedStorage<ItemVariant>) storage.slots else storage.toList()
         override val storageIdentity = ItemStorageIdentity(owner)
         override fun getContainerSize(): Int = views.size

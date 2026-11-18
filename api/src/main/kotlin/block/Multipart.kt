@@ -11,9 +11,7 @@ interface Multipart<T> where T: StringRepresentable, T: Enum<T> {
     fun canPlaceAllParts(level: Level, pos: BlockPos, dir: Direction, bpCtx: BlockPlaceContext): Boolean {
         val poss = getAllParts(pos, dir)
 
-        poss.forEach {
-            if (!level.getBlockState(it).canBeReplaced(bpCtx)) return false
-        }
+        poss.forEach { if (!level.getBlockState(it).canBeReplaced(bpCtx)) return false }
 
         return true
     }
@@ -22,6 +20,5 @@ interface Multipart<T> where T: StringRepresentable, T: Enum<T> {
 
     fun getAllParts(pos: BlockPos, dir: Direction): Array<BlockPos>
 
-    fun getPreviewParts(pos: BlockPos, dir: Direction, state: BlockState): List<Pair<BlockPos, BlockState>> =
-        listOf(pos to state)
+    fun getPreviewParts(pos: BlockPos, dir: Direction, state: BlockState): List<Pair<BlockPos, BlockState>> = listOf(pos to state)
 }

@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.screen
 
+import com.algorithmlx.ecr.api.ModId
 import com.algorithmlx.ecr.api.network.sendToServer
 import com.algorithmlx.ecr.api.client.MRULineAnimation
 import com.algorithmlx.ecr.api.client.drawMRULine
@@ -41,7 +42,7 @@ import net.minecraft.world.inventory.Slot
 import net.minecraft.world.inventory.ContainerInput
 
 @Suppress("CAST_NEVER_SUCCEEDS")
-class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : AbstractContainerScreen<MIMMenu>(
+class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component): AbstractContainerScreen<MIMMenu>(
     menu, inventory, title, menu.screenWidth, menu.screenHeight
 ), MIMWindowHost {
     override val floatingWindowBounds: List<ScreenRectangle> get() = floatingWindows.filter { it.visible }.map { it.rectangle }
@@ -70,7 +71,7 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
     private val itemButtonClicks = mutableMapOf<Int, MIMItemButton>()
     private val windowClickButtons = mutableMapOf<Int, MIMFloatingWindow>()
     private val mruAnimation = MRULineAnimation()
-    private val mruView = object : MRUStorage {
+    private val mruView = object: MRUStorage {
         override val mru: Int get() = menu.mru
         override val mruCapacity: Int get() = menu.mruCapacity
         override val mruType get() = MRUTypeRegistry.radiationUnit
@@ -110,21 +111,15 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
         registerWindow(dependencyWindow!!)
         floatingWindows.forEach { registerWindow(it); it.releasePointer() }
         craftingButton = addWidget(
-            MIMItemButton(
-                ItemStack(ItemRegistry.hammer.get()),
-                Component.translatable("screen.escr.mim.tasks.open")
-            ) {
+            MIMItemButton(ItemStack(ItemRegistry.hammer.get()), Component.translatable("screen.$ModId.mim.tasks.open")) {
                 window.toggle()
                 if (window.visible) bringToFront(window)
             })
-        modeButton = addWidget(MIMItemButton(ItemStack(Items.CHEST), Component.translatable("screen.escr.mim.mode.storage")) {
+        modeButton = addWidget(MIMItemButton(ItemStack(Items.CHEST), Component.translatable("screen.$ModId.mim.mode.storage")) {
             minecraft.gameMode?.handleInventoryButtonClick(menu.containerId, MIMMenu.TOGGLE_MODE)
         })
         scrollBar = addRenderableWidget(
-            MIMScrollBar(
-                leftPos + MIMTerminalLayout.SCROLL_X, topPos + MIMTerminalLayout.GRID_Y,
-                MIMTerminalLayout.scrollHeight(menu.visibleRows), ::requestScroll
-            )
+            MIMScrollBar(leftPos + MIMTerminalLayout.SCROLL_X, topPos + MIMTerminalLayout.GRID_Y, MIMTerminalLayout.scrollHeight(menu.visibleRows), ::requestScroll)
         )
         updateLayout()
         MIMViewportPayload(menu.containerId, MIMTerminalLayout.rowsForHeight(height), menu.scrollRow).sendToServer()
@@ -181,9 +176,7 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
             return handled
         }
         if (menu.isTerminal) {
-            val slot = menu.slots.take(MIMMenu.PAGE_SIZE).firstOrNull { slot ->
-                slot.isActive && isHovering(slot.x, slot.y, 16, 16, event.x(), event.y())
-            }
+            val slot = menu.slots.take(MIMMenu.PAGE_SIZE).firstOrNull { slot -> slot.isActive && isHovering(slot.x, slot.y, 16, 16, event.x(), event.y()) }
             val button = when (event.button()) {
                 InputConstants.MOUSE_BUTTON_LEFT -> 0
                 InputConstants.MOUSE_BUTTON_RIGHT -> 1
@@ -289,7 +282,7 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
             button.visible = menu.isStorageAvailable && menu.hasRecipes
             button.active = button.visible
             button.update(if (menu.isCraftingMode) Items.CRAFTING_TABLE else Items.CHEST,
-                Component.translatable(if (menu.isCraftingMode) "screen.escr.mim.mode.crafting" else "screen.escr.mim.mode.storage"))
+                Component.translatable(if (menu.isCraftingMode) "screen.$ModId.mim.mode.crafting" else "screen.$ModId.mim.mode.storage"))
         }
         scrollBar?.let { bar ->
             bar.x = leftPos + MIMTerminalLayout.SCROLL_X
@@ -323,9 +316,7 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
 
     override fun extractFloatingWindows(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         val overWindow = isFloatingWindowAt(mouseX.toDouble(), mouseY.toDouble())
-        listOfNotNull(craftingButton, modeButton).forEach {
-            it.extractRenderState(graphics, if (overWindow) -1 else mouseX, if (overWindow) -1 else mouseY, deltaTicks)
-        }
+        listOfNotNull(craftingButton, modeButton).forEach { it.extractRenderState(graphics, if (overWindow) -1 else mouseX, if (overWindow) -1 else mouseY, deltaTicks) }
         floatingWindows.forEach { it.extractRenderState(graphics, mouseX, mouseY, deltaTicks) }
         floatingWindows.lastOrNull { it.isMouseOver(mouseX.toDouble(), mouseY.toDouble()) }
             ?.extractTooltip(graphics, mouseX, mouseY)
@@ -337,8 +328,8 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
 
     private fun extractStorageWarning(graphics: GuiGraphicsExtractor) {
         val warning = when {
-            !menu.isConnected -> Component.translatable("screen.escr.mim.no_core")
-            !menu.hasPower -> Component.translatable("screen.escr.mim.no_power")
+            !menu.isConnected -> Component.translatable("screen.$ModId.mim.no_core")
+            !menu.hasPower -> Component.translatable("screen.$ModId.mim.no_power")
             else -> null
         }
         if (warning == null) {
@@ -384,8 +375,8 @@ class MIMScreen(menu: MIMMenu, inventory: Inventory, title: Component) : Abstrac
         val tooltip = super.getTooltipFromContainerItem(stack).toMutableList()
         val index = hoveredSlot?.index ?: return tooltip
         if (menu.isTerminal && index in 0..<MIMMenu.PAGE_SIZE) {
-            tooltip += if (menu.isCraftingMode) Component.translatable("tooltip.escr.mim.open_recipe")
-            else Component.translatable("tooltip.escr.mim.transfer")
+            tooltip += if (menu.isCraftingMode) Component.translatable("tooltip.$ModId.mim.open_recipe")
+            else Component.translatable("tooltip.$ModId.mim.transfer")
         }
         return tooltip
     }

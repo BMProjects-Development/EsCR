@@ -29,9 +29,7 @@ data class BookElementPlacement(
     val textLineCount: Int = textLines?.size ?: 0
 )
 
-data class BookSpread(
-    val elements: List<BookElementPlacement>
-)
+data class BookSpread(val elements: List<BookElementPlacement>)
 
 object BookPageLayout {
     private const val FIRST_X = 16
@@ -65,11 +63,7 @@ object BookPageLayout {
         return spreads.map(::BookSpread).ifEmpty { listOf(BookSpread(emptyList())) }
     }
 
-    private fun placeElement(
-        spec: BookElementSpec,
-        cursor: PageCursor,
-        entry: BookEntry,
-    ) {
+    private fun placeElement(spec: BookElementSpec, cursor: PageCursor, entry: BookEntry,) {
         val serializer = ResearchSerializers.elementSerializer(spec.content.type)
 
         val width = (spec.width ?: autoWidth(spec, entry) ?: serializer?.defaultWidth ?: 16).coerceIn(0, PAGE_WIDTH)
@@ -80,11 +74,7 @@ object BookPageLayout {
         }
 
         val measuredHeight = autoHeight(spec, width, entry)
-        val height = elementHeight(
-            spec,
-            measuredHeight,
-            serializer?.defaultHeight ?: 16
-        ).coerceIn(0, PAGE_HEIGHT)
+        val height = elementHeight(spec, measuredHeight, serializer?.defaultHeight ?: 16).coerceIn(0, PAGE_HEIGHT)
 
         if (spec.content === SpaceBookElement) {
             cursor.advance(height)
@@ -107,37 +97,21 @@ object BookPageLayout {
         return BookElementSpec(TaskListBookElement(entry.id, level), PAGE_WIDTH, rows * TASK_CELL_SIZE + 4)
     }
 
-    private fun autoWidth(
-        spec: BookElementSpec,
-        entry: BookEntry
-    ): Int? = when (val element = spec.content) {
-        is TextBookElement -> BookLinkedTextLayout.singleLineWidth(
-            element.text,
-            Minecraft.getInstance().font,
-            entry.id
-        ).coerceIn(1, PAGE_WIDTH)
+    private fun autoWidth(spec: BookElementSpec, entry: BookEntry): Int? = when (val element = spec.content) {
+        is TextBookElement -> BookLinkedTextLayout.singleLineWidth(element.text, Minecraft.getInstance().font, entry.id).coerceIn(1, PAGE_WIDTH)
         is CraftingBookElement -> BookRecipeElementRenderer.preferredWidth(element)
         else -> null
     }
 
-    private fun autoHeight(
-        spec: BookElementSpec,
-        width: Int,
-        entry: BookEntry
-    ): Int? =
+    private fun autoHeight(spec: BookElementSpec, width: Int, entry: BookEntry): Int? =
         when (val element = spec.content) {
             is CraftingBookElement -> BookRecipeElementRenderer.preferredHeight(element, width, entry.id)
             is GroupBookElement -> BookGroupLayout.layout(element, width, entry.id).height
             else -> null
         }
 
-    private fun elementHeight(
-        spec: BookElementSpec,
-        measuredHeight: Int?,
-        defaultHeight: Int
-    ): Int {
-        if (spec.content is CraftingBookElement && measuredHeight != null)
-            return maxOf(spec.height ?: 0, measuredHeight)
+    private fun elementHeight(spec: BookElementSpec, measuredHeight: Int?, defaultHeight: Int): Int {
+        if (spec.content is CraftingBookElement && measuredHeight != null) return maxOf(spec.height ?: 0, measuredHeight)
         return spec.height ?: measuredHeight ?: defaultHeight
     }
 
@@ -160,15 +134,7 @@ object BookPageLayout {
             }
             val lineCount = minOf(availableLines, linkedLines.size - line)
             val height = lineCount * font.lineHeight
-            cursor.spreads.last() += BookElementPlacement(
-                spec,
-                cursor.alignedX(width, spec.align),
-                cursor.y,
-                width,
-                height,
-                textLineStart = line,
-                textLineCount = lineCount
-            )
+            cursor.spreads.last() += BookElementPlacement(spec, cursor.alignedX(width, spec.align), cursor.y, width, height, textLineStart = line, textLineCount = lineCount)
             line += lineCount
             cursor.y += height
             if (line < linkedLines.size) cursor.nextSide()
@@ -181,9 +147,7 @@ object BookPageLayout {
             add(BookTextVariant(element.text, element.requirement))
             addAll(element.variants)
         }
-        val selected = candidates.lastOrNull { variant ->
-            variant.requirement?.let { ClientResearchState.requirementMet(entry.id, it) } == true
-        }
+        val selected = candidates.lastOrNull { variant -> variant.requirement?.let { ClientResearchState.requirementMet(entry.id, it) } == true }
             ?: candidates.lastOrNull { it.requirement == null }
             ?: return null
         return copy(content = element.copy(text = selected.text, requirement = null, variants = emptyList()))

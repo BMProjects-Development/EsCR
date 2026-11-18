@@ -26,9 +26,7 @@ class CountIngredient(private val base: Ingredient, val count: Int): ICustomIngr
 
     override fun getType(): IngredientType<*> = IngredientRegistry.COUNT_TYPE
 
-    override fun display(): SlotDisplay = SlotDisplay.Composite(
-        this.items().map { SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate(it, count)) as SlotDisplay }.toList()
-    )
+    override fun display(): SlotDisplay = SlotDisplay.Composite(this.items().map { SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate(it, count)) as SlotDisplay }.toList())
 
     companion object {
         @JvmField
@@ -36,15 +34,11 @@ class CountIngredient(private val base: Ingredient, val count: Int): ICustomIngr
             it.group(
                 Ingredient.CODEC.fieldOf("base").forGetter(CountIngredient::base),
                 Codec.INT.fieldOf("count").forGetter(CountIngredient::count),
-                Codec.STRING.optionalFieldOf("fabric:type", "").forGetter { "" } // Ignore "fabric:type" key
+                Codec.STRING.optionalFieldOf("fabric:type", "").forGetter { "" }
             ).apply(it) { ingredient, count, _ -> CountIngredient(ingredient, count) }
         }
 
         @JvmField
-        val STREAM_CODEC = StreamCodec.composite(
-            Ingredient.CONTENTS_STREAM_CODEC, CountIngredient::base,
-            ByteBufCodecs.INT, CountIngredient::count,
-            ::CountIngredient
-        )
+        val STREAM_CODEC = StreamCodec.composite(Ingredient.CONTENTS_STREAM_CODEC, CountIngredient::base, ByteBufCodecs.INT, CountIngredient::count, ::CountIngredient)
     }
 }

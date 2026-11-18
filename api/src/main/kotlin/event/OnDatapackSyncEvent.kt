@@ -5,10 +5,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.server.players.PlayerList
 import net.minecraft.world.item.crafting.RecipeType
 
-class OnDatapackSyncEvent(
-    val playerList: PlayerList,
-    val player: ServerPlayer?
-) : Event() {
+class OnDatapackSyncEvent(val playerList: PlayerList, val player: ServerPlayer?): Event() {
     private val mutableRecipeTypes = linkedSetOf<RecipeType<*>>()
 
     val relevantPlayers: Sequence<ServerPlayer>

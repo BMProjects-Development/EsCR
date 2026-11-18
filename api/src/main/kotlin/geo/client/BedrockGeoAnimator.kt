@@ -15,10 +15,7 @@ import org.joml.Vector3f
 import kotlin.math.PI
 import kotlin.math.abs
 
-data class BedrockGeoPose(
-    val transforms: Array<Matrix4f>,
-    val normalTransforms: Array<Matrix3f>
-) {
+data class BedrockGeoPose(val transforms: Array<Matrix4f>, val normalTransforms: Array<Matrix3f>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -83,23 +80,17 @@ object BedrockGeoAnimator {
         model.bones.forEachIndexed { index, bone ->
             val state = states[index]
             val matrix = if (bone.parentIndex >= 0) Matrix4f(transforms[bone.parentIndex]) else Matrix4f()
-            matrix.translate(-state.position.x / MODEL_UNITS, state.position.y / MODEL_UNITS, state.position.z / MODEL_UNITS)
-                .translate(bone.pivotX, bone.pivotY, bone.pivotZ)
+            matrix.translate(-state.position.x / MODEL_UNITS, state.position.y / MODEL_UNITS, state.position.z / MODEL_UNITS).translate(bone.pivotX, bone.pivotY, bone.pivotZ)
                 .rotateZ(bone.rotationZ + radians(state.rotation.z))
                 .rotateY(bone.rotationY + radians(-state.rotation.y))
                 .rotateX(bone.rotationX + radians(-state.rotation.x))
                 .scale(state.scale)
                 .translate(-bone.pivotX, -bone.pivotY, -bone.pivotZ)
             transforms[index] = matrix
-            normals[index] = (if (bone.parentIndex >= 0) Matrix3f(normals[bone.parentIndex]) else Matrix3f())
-                .rotateZ(bone.rotationZ + radians(state.rotation.z))
+            normals[index] = (if (bone.parentIndex >= 0) Matrix3f(normals[bone.parentIndex]) else Matrix3f()).rotateZ(bone.rotationZ + radians(state.rotation.z))
                 .rotateY(bone.rotationY + radians(-state.rotation.y))
                 .rotateX(bone.rotationX + radians(-state.rotation.x))
-                .scale(
-                    safeNormalScale(state.scale.x),
-                    safeNormalScale(state.scale.y),
-                    safeNormalScale(state.scale.z)
-                )
+                .scale(safeNormalScale(state.scale.x), safeNormalScale(state.scale.y), safeNormalScale(state.scale.z))
         }
 
         return BedrockGeoPose(transforms, normals)
@@ -178,13 +169,8 @@ object BedrockGeoAnimator {
     private fun catmullRom(p0: Vector3f, p1: Vector3f, p2: Vector3f, p3: Vector3f, t: Float): Vector3f {
         val t2 = t * t
         val t3 = t2 * t
-        fun component(a: Float, b: Float, c: Float, d: Float): Float =
-            0.5F * ((2F * b) + (-a + c) * t + (2F * a - 5F * b + 4F * c - d) * t2 + (-a + 3F * b - 3F * c + d) * t3)
-        return Vector3f(
-            component(p0.x, p1.x, p2.x, p3.x),
-            component(p0.y, p1.y, p2.y, p3.y),
-            component(p0.z, p1.z, p2.z, p3.z)
-        )
+        fun component(a: Float, b: Float, c: Float, d: Float): Float = 0.5F * ((2F * b) + (-a + c) * t + (2F * a - 5F * b + 4F * c - d) * t2 + (-a + 3F * b - 3F * c + d) * t3)
+        return Vector3f(component(p0.x, p1.x, p2.x, p3.x), component(p0.y, p1.y, p2.y, p3.y), component(p0.z, p1.z, p2.z, p3.z))
     }
 
     private fun radians(degrees: Float): Float = degrees * (PI.toFloat() / 180F)
@@ -198,15 +184,10 @@ object BedrockGeoAnimator {
         if (blendMode == GeoBlendMode.OVERRIDE)
             current.lerp(sampled, weight)
         else
-            current.add(
-                (sampled.x - 1F) * weight,
-                (sampled.y - 1F) * weight,
-                (sampled.z - 1F) * weight
-            )
+            current.add((sampled.x - 1F) * weight, (sampled.y - 1F) * weight, (sampled.z - 1F) * weight)
     }
 
-    internal fun safeNormalScale(scale: Float): Float =
-        if (scale.isFinite() && abs(scale) > MIN_NORMAL_SCALE) 1F / scale else 1F
+    internal fun safeNormalScale(scale: Float): Float = if (scale.isFinite() && abs(scale) > MIN_NORMAL_SCALE) 1F / scale else 1F
 
     private class MutableBonePose {
         val position = Vector3f()

@@ -121,14 +121,7 @@ class Parser(private val tokens: List<Token>) {
         var expr = parseAddSub()
         while (true) {
             val op = peek()?.type
-            if (op != null && op in setOf(
-                    Token.Type.EQ,
-                    Token.Type.NEQ,
-                    Token.Type.LT,
-                    Token.Type.GT,
-                    Token.Type.LTE,
-                    Token.Type.GTE
-                )) {
+            if (op != null && op in setOf(Token.Type.EQ, Token.Type.NEQ, Token.Type.LT, Token.Type.GT, Token.Type.LTE, Token.Type.GTE)) {
                 advance()
                 val right = parseAddSub()
                 expr = Conditional(CompareOp(expr, op, right), NumberLiteral(1f), NumberLiteral(0f))

@@ -19,18 +19,14 @@ class ParticleEffect(
     val referencedEffects: MutableMap<String, ParticleEffect> = referencedEffects.toMutableMap()
     val renderPass = texture?.let { RenderPass(material, it) }
 
-    data class RenderPass(
-        val material: BedrockParticleFile.Material,
-        val texture: Identifier
-    ) {
+    data class RenderPass(val material: BedrockParticleFile.Material, val texture: Identifier) {
         val renderType by lazy { BedrockParticleRenderTypes.get(texture, material) }
     }
 
     companion object {
         fun fromFile(file: BedrockParticleFile): ParticleEffect {
             val description = file.particleEffect.description
-            val texture = description.basicRenderParameters.texture
-                .takeUnless { it.isBlank() }
+            val texture = description.basicRenderParameters.texture.takeUnless { it.isBlank() }
                 ?.let(Identifier::parse)
             return ParticleEffect(
                 file = description.identifier,

@@ -13,7 +13,4 @@ annotation class JsonComment(val comments: Array<String>, val multiline: Boolean
 @SerialInfo
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class JsonDefaults(
-    val recursive: Boolean = false,
-    val onlyIfChanged: Boolean = false
-)
+annotation class JsonDefaults(val recursive: Boolean = false, val onlyIfChanged: Boolean = false)

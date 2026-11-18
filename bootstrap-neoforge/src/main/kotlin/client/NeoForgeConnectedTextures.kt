@@ -78,23 +78,13 @@ private class NeoForgeConnectedTextureModel(
         val packedMask = texture.packedMask(level, pos, state)
         val connectedFlags = connectedFlags(packedMask)
         delegateParts.mapTo(parts) { part ->
-            NeoForgeConnectedTexturePart(
-                delegate = part,
-                texture = texture,
-                variants = variants,
-                packedMask = packedMask,
-                connectedFlags = connectedFlags
-            )
+            NeoForgeConnectedTexturePart(delegate = part, texture = texture, variants = variants, packedMask = packedMask, connectedFlags = connectedFlags)
         }
     }
 
     override fun materialFlags(): Int = delegateModel.materialFlags() or allVariantFlags
 
-    override fun materialFlags(
-        level: BlockAndTintGetter,
-        pos: BlockPos,
-        state: BlockState
-    ): Int = delegateModel.materialFlags(level, pos, state) or
+    override fun materialFlags(level: BlockAndTintGetter, pos: BlockPos, state: BlockState): Int = delegateModel.materialFlags(level, pos, state) or
         connectedFlags(texture.packedMask(level, pos, state))
 
     private fun connectedFlags(packedMask: Int): Int {
@@ -105,11 +95,7 @@ private class NeoForgeConnectedTextureModel(
         return flags
     }
 
-    private data class GeometryKey(
-        val texture: ConnectedTexture,
-        val delegate: Any,
-        val packedMask: Int
-    )
+    private data class GeometryKey(val texture: ConnectedTexture, val delegate: Any, val packedMask: Int)
 
     companion object {
         private fun materialFlags(variant: ResolvedVariant): Int {
@@ -117,8 +103,7 @@ private class NeoForgeConnectedTextureModel(
             var flags = 0
             val transparency = if (material.forceTranslucent()) Transparency.TRANSLUCENT
             else material.sprite().contents().transparency()
-            if (ChunkSectionLayer.byTransparency(transparency).translucent())
-                flags = flags or BakedQuad.FLAG_TRANSLUCENT
+            if (ChunkSectionLayer.byTransparency(transparency).translucent()) flags = flags or BakedQuad.FLAG_TRANSLUCENT
             if (material.sprite().isAnimated) flags = flags or BakedQuad.FLAG_ANIMATED
             return flags
         }
@@ -137,9 +122,7 @@ private class NeoForgeConnectedTexturePart(
 
     override fun getQuads(direction: Direction?): List<BakedQuad> {
         val index = direction?.get3DDataValue() ?: Direction.entries.size
-        return cachedQuads[index] ?: delegate.getQuads(direction).map(::transform).also {
-            cachedQuads[index] = it
-        }
+        return cachedQuads[index] ?: delegate.getQuads(direction).map(::transform).also { cachedQuads[index] = it }
     }
 
     override fun useAmbientOcclusion(): Boolean = delegate.useAmbientOcclusion()
@@ -172,11 +155,7 @@ private class NeoForgeConnectedTexturePart(
             val v = (mutable.v(vertex) - sourceSprite.v0) / sourceHeight
             val rotatedU = rotatedU(target.rotation, u, v)
             val rotatedV = rotatedV(target.rotation, u, v)
-            mutable.setUvFromSprite(
-                vertex,
-                target.region.u + rotatedU * target.region.width,
-                target.region.v + rotatedV * target.region.height
-            )
+            mutable.setUvFromSprite(vertex, target.region.u + rotatedU * target.region.width, target.region.v + rotatedV * target.region.height)
         }
         return mutable.toBakedQuad()
     }
@@ -198,11 +177,7 @@ private class NeoForgeConnectedTexturePart(
     }
 }
 
-private data class ResolvedVariant(
-    val material: Material.Baked,
-    val rotation: ConnectedTextureRotation,
-    val region: ResolvedRegion
-)
+private data class ResolvedVariant(val material: Material.Baked, val rotation: ConnectedTextureRotation, val region: ResolvedRegion)
 
 private data class ResolvedRegion(
     val u: Float,
@@ -215,10 +190,7 @@ private data class ResolvedRegion(
     }
 }
 
-private fun resolveRegion(
-    sprite: TextureAtlasSprite,
-    region: ConnectedTextureRegion?
-): ResolvedRegion? {
+private fun resolveRegion(sprite: TextureAtlasSprite, region: ConnectedTextureRegion?): ResolvedRegion? {
     if (region == null) return ResolvedRegion.FULL
 
     val spriteWidth = sprite.contents().width()

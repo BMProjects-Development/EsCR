@@ -6,7 +6,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerPlayer
 
-data class MIMViewportPayload(val containerId: Int, val maxRows: Int, val row: Int) : CustomPacketPayload {
+data class MIMViewportPayload(val containerId: Int, val maxRows: Int, val row: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {

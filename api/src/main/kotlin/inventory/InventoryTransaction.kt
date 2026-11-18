@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack
 import java.util.Collections
 import java.util.IdentityHashMap
 
-internal class InventoryTransaction : AutoCloseable {
+internal class InventoryTransaction: AutoCloseable {
     private class SlotState(val slot: InventorySlot) {
         val before: ItemStack = slot.container.getItem(slot.index).copy()
         var after: ItemStack = before.copy()
@@ -18,16 +18,14 @@ internal class InventoryTransaction : AutoCloseable {
     private var external: ItemStorageTransaction? = null
     private var failed = false
 
-    private fun externalTransaction(): ItemStorageTransaction = external ?: requireNotNull(ItemStoragePlatform.instance)
-        .openTransaction().also { external = it }
+    private fun externalTransaction(): ItemStorageTransaction = external ?: requireNotNull(ItemStoragePlatform.instance).openTransaction().also { external = it }
 
     private fun state(endpoint: InventoryEndpoint, slot: Int): SlotState {
         val physicalSlot = endpoint.physicalSlot(slot)
         return states.getOrPut(physicalSlot) { SlotState(physicalSlot) }
     }
 
-    fun get(endpoint: InventoryEndpoint, slot: Int): ItemStack =
-        if (endpoint.container is PlatformItemContainer) endpoint.container.getItem(slot) else state(endpoint, slot).after
+    fun get(endpoint: InventoryEndpoint, slot: Int): ItemStack = if (endpoint.container is PlatformItemContainer) endpoint.container.getItem(slot) else state(endpoint, slot).after
 
     fun set(endpoint: InventoryEndpoint, slot: Int, stack: ItemStack) {
         val storage = endpoint.container as? PlatformItemContainer

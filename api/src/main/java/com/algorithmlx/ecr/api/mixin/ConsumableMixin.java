@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ConsumableMixin {
     @Inject(method = "canConsume", at = @At("HEAD"), cancellable = true)
     private void canConsume(LivingEntity user, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.getItem() instanceof NoConsumeBreakItem) cir.setReturnValue(true); // always true for result invoke.
+        if (stack.getItem() instanceof NoConsumeBreakItem) cir.setReturnValue(true);
     }
 
     @Inject(method = "onConsume", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;consume(ILnet/minecraft/world/entity/LivingEntity;)V", shift = At.Shift.BEFORE), cancellable = true)

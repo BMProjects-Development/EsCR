@@ -12,10 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
 
 class ColdDistiller(properties: Properties): Block(properties), EntityBlock {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = ColdDistillerEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = ColdDistillerEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,

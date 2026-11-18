@@ -29,28 +29,18 @@ import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 import java.util.function.BiConsumer
 
-class AssembledMultiblockPartBlock(
-    properties: Properties
-) : Block(properties),
+class AssembledMultiblockPartBlock(properties: Properties): Block(properties),
     EntityBlock,
     FullBlockParticles {
     init {
-        registerDefaultState(
-            stateDefinition
-                .any()
-                .setValue(FACING, Direction.NORTH)
-                .setValue(CONTROLLER, false)
-        )
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(CONTROLLER, false))
     }
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block, BlockState>) {
         builder.add(FACING, CONTROLLER)
     }
 
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = AssembledMultiblockPartBlockEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = AssembledMultiblockPartBlockEntity(worldPosition, blockState)
 
     override fun getShape(
         state: BlockState,
@@ -66,11 +56,7 @@ class AssembledMultiblockPartBlock(
         context: CollisionContext
     ): VoxelShape = AssembledMultiblocks.formedPartShape(level, pos) ?: Shapes.block()
 
-    override fun <T : BlockEntity> getTicker(
-        level: Level,
-        blockState: BlockState,
-        type: BlockEntityType<T>
-    ): BlockEntityTicker<T> =
+    override fun <T : BlockEntity> getTicker(level: Level, blockState: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T> =
         BlockEntityTicker { tickerLevel, pos, _, _ ->
             AssembledMultiblocks.tick(tickerLevel, pos)
         }
@@ -92,11 +78,7 @@ class AssembledMultiblockPartBlock(
 
         val controllerHit =
             BlockHitResult(
-                hitResult.location.add(
-                    (data.controllerPos.x - pos.x).toDouble(),
-                    (data.controllerPos.y - pos.y).toDouble(),
-                    (data.controllerPos.z - pos.z).toDouble()
-                ),
+                hitResult.location.add((data.controllerPos.x - pos.x).toDouble(), (data.controllerPos.y - pos.y).toDouble(), (data.controllerPos.z - pos.z).toDouble()),
                 hitResult.direction,
                 data.controllerPos,
                 hitResult.isInside
@@ -132,14 +114,7 @@ class AssembledMultiblockPartBlock(
             return
         }
 
-        state.block.playerDestroy(
-            level,
-            player,
-            pos,
-            state,
-            data.original.createBlockEntity(level),
-            tool
-        )
+        state.block.playerDestroy(level, player, pos, state, data.original.createBlockEntity(level), tool)
     }
 
     override fun onExplosionHit(

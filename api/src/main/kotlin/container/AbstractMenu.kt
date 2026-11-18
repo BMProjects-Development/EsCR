@@ -6,11 +6,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess
 import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.inventory.Slot
 
-abstract class AbstractMenu(
-    menuType: MenuType<*>,
-    containerId: Int,
-    val access: ContainerLevelAccess
-): AbstractContainerMenu(menuType, containerId) {
+abstract class AbstractMenu(menuType: MenuType<*>, containerId: Int, val access: ContainerLevelAccess): AbstractContainerMenu(menuType, containerId) {
     protected fun addSlotRange(playerInventory: Container, index: Int, x: Int, y: Int, amount: Int, dx: Int): Int {
         var index0 = index
         var x0 = x

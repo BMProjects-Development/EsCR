@@ -12,7 +12,7 @@ import net.minecraft.world.inventory.ContainerInput
 
 data class MIMCoreClickPayload(
     val containerId: Int, val row: Int, val slot: Int, val button: Int, val input: ContainerInput
-) : CustomPacketPayload {
+): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {

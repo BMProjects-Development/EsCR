@@ -7,9 +7,8 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.resources.Identifier
 
-internal object MIMGuiTextures {
+object MIMGuiTextures {
     const val TEXT = 0xFF404040.toInt()
-
     private val MANAGER = ECRModIDs.guiLocation("mim/manager")
     private val EDITOR = Identifier.withDefaultNamespace("recipe_book/overlay_recipe")
     private val SLOT = Identifier.withDefaultNamespace("container/slot")
@@ -17,8 +16,7 @@ internal object MIMGuiTextures {
 
     class ScrollThumb(private val texture: Identifier, private val normalU: Int, private val disabledU: Int) {
         fun draw(graphics: GuiGraphicsExtractor, x: Int, y: Int, height: Int, active: Boolean) {
-            graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, (if (active) normalU else disabledU).toFloat(), 0f,
-                12, height, 12, 15, 256, 256)
+            graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, (if (active) normalU else disabledU).toFloat(), 0f, 12, height, 12, 15, 256, 256)
         }
     }
 
@@ -26,8 +24,7 @@ internal object MIMGuiTextures {
         ScrollThumb(ECRModIDs.guiLocation(layout.texture), bar.thumbU, bar.disabledThumbU)
 
     fun configuration(graphics: GuiGraphicsExtractor, x: Int, y: Int, layout: MIMConfigurationLayout) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, ECRModIDs.guiLocation(layout.texture), x, y, 0f, 0f,
-            layout.width, layout.height, 256, 256)
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ECRModIDs.guiLocation(layout.texture), x, y, 0f, 0f, layout.width, layout.height, 256, 256)
     }
 
     fun terminal(graphics: GuiGraphicsExtractor, x: Int, y: Int, rows: Int, available: Boolean) {
@@ -37,10 +34,8 @@ internal object MIMGuiTextures {
         val displayedHeight = MIMTerminalLayout.scrollHeight(rows)
 
         managerRegion(graphics, x, y, MIMTerminalLayout.WIDTH, interiorY, 0, 0)
-        managerRegion(graphics, x, y + interiorY, MIMTerminalLayout.WIDTH, displayedHeight,
-            0, interiorY, MIMTerminalLayout.WIDTH, interiorHeight)
-        managerRegion(graphics, x, y + interiorY + displayedHeight, MIMTerminalLayout.WIDTH,
-            MIMTerminalLayout.BASE_HEIGHT - bottomY, 0, bottomY)
+        managerRegion(graphics, x, y + interiorY, MIMTerminalLayout.WIDTH, displayedHeight, 0, interiorY, MIMTerminalLayout.WIDTH, interiorHeight)
+        managerRegion(graphics, x, y + interiorY + displayedHeight, MIMTerminalLayout.WIDTH, MIMTerminalLayout.BASE_HEIGHT - bottomY, 0, bottomY)
         if (!available)
             managerRegion(graphics, x + MIMTerminalLayout.STORAGE_X, y + interiorY - 1,
                 MIMTerminalLayout.STORAGE_WIDTH, displayedHeight + 2, 0, MIMTerminalLayout.BASE_HEIGHT,
@@ -63,7 +58,6 @@ internal object MIMGuiTextures {
         graphics: GuiGraphicsExtractor, x: Int, y: Int, width: Int, height: Int,
         u: Int, v: Int, sourceWidth: Int = width, sourceHeight: Int = height
     ) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, MANAGER, x, y, u.toFloat(), v.toFloat(),
-            width, height, sourceWidth, sourceHeight, 256, 256)
+        graphics.blit(RenderPipelines.GUI_TEXTURED, MANAGER, x, y, u.toFloat(), v.toFloat(), width, height, sourceWidth, sourceHeight, 256, 256)
     }
 }

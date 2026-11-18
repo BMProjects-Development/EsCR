@@ -14,7 +14,7 @@ import net.neoforged.neoforge.transfer.ResourceHandler
 import net.neoforged.neoforge.transfer.item.ItemResource
 import net.neoforged.neoforge.transfer.transaction.Transaction
 
-object NeoForgeItemStoragePlatform : ItemStoragePlatform {
+object NeoForgeItemStoragePlatform: ItemStoragePlatform {
     override fun find(level: Level, pos: BlockPos, side: Direction?): PlatformItemContainer? {
         val serverLevel = level as? ServerLevel ?: return null
         val storage = serverLevel.getCapability(Capabilities.Item.BLOCK, pos, side) ?: return null
@@ -24,12 +24,12 @@ object NeoForgeItemStoragePlatform : ItemStoragePlatform {
     @Suppress("DEPRECATION")
     override fun openTransaction(): ItemStorageTransaction = NeoForgeTransaction(Transaction.open(Transaction.getCurrentOpenedTransaction()))
 
-    private class NeoForgeTransaction(val transaction: Transaction) : ItemStorageTransaction {
+    private class NeoForgeTransaction(val transaction: Transaction): ItemStorageTransaction {
         override fun commit() = transaction.commit()
         override fun close() = transaction.close()
     }
 
-    private class NeoForgeContainer(private val storage: ResourceHandler<ItemResource>, owner: Any) : PlatformItemContainer() {
+    private class NeoForgeContainer(private val storage: ResourceHandler<ItemResource>, owner: Any): PlatformItemContainer() {
         override val storageIdentity = ItemStorageIdentity(owner)
         override fun getContainerSize(): Int = storage.size()
         override fun slotIdentity(slot: Int): Any = ItemStorageIdentity(storage, slot)

@@ -24,20 +24,20 @@ fun interface AssembledBlockMatcher {
 
     companion object {
         @JvmStatic
-        fun state(expected: BlockState): AssembledBlockMatcher = object : AssembledBlockMatcher {
+        fun state(expected: BlockState): AssembledBlockMatcher = object: AssembledBlockMatcher {
             override fun matches(state: BlockState): Boolean = state == expected
             override fun previewState(): BlockState = expected
         }
 
         @JvmStatic
-        fun block(expected: Block): AssembledBlockMatcher = object : AssembledBlockMatcher {
+        fun block(expected: Block): AssembledBlockMatcher = object: AssembledBlockMatcher {
             override fun matches(state: BlockState): Boolean = state.`is`(expected)
             override fun previewState(): BlockState = expected.defaultBlockState()
         }
 
         @JvmStatic
         fun tag(expected: TagKey<Block>, preview: BlockState? = null): AssembledBlockMatcher =
-            object : AssembledBlockMatcher {
+            object: AssembledBlockMatcher {
                 @Volatile
                 private var resolvedPreview: BlockState? = preview
 
@@ -45,8 +45,7 @@ fun interface AssembledBlockMatcher {
 
                 override fun previewState(): BlockState? {
                     resolvedPreview?.let { return it }
-                    val resolved = BuiltInRegistries.BLOCK
-                        .firstOrNull { block -> block.defaultBlockState().`is`(expected) }
+                    val resolved = BuiltInRegistries.BLOCK.firstOrNull { block -> block.defaultBlockState().`is`(expected) }
                         ?.defaultBlockState()
                     if (resolved != null) resolvedPreview = resolved
                     return resolved
@@ -55,11 +54,7 @@ fun interface AssembledBlockMatcher {
     }
 }
 
-data class AssembledMultiblockPart(
-    val offset: BlockPos,
-    val matcher: AssembledBlockMatcher,
-    val formedShape: VoxelShape = Shapes.block()
-)
+data class AssembledMultiblockPart(val offset: BlockPos, val matcher: AssembledBlockMatcher, val formedShape: VoxelShape = Shapes.block())
 
 class AssembledMultiblockDefinition(
     val id: Identifier,
@@ -71,9 +66,7 @@ class AssembledMultiblockDefinition(
     formedShapeOrigin: BlockPos = formedModelAnchor,
     val requiresJsonDefinition: Boolean = false
 ) {
-    val parts: List<AssembledMultiblockPart> = parts.map { part ->
-        part.copy(offset = part.offset.immutable())
-    }
+    val parts: List<AssembledMultiblockPart> = parts.map { part -> part.copy(offset = part.offset.immutable()) }
     val formedModelAnchor: BlockPos = formedModelAnchor.immutable()
     val formedShapeOrigin: BlockPos = formedShapeOrigin.immutable()
     val minOffset: BlockPos
@@ -94,16 +87,8 @@ class AssembledMultiblockDefinition(
             "Assembled multiblock $id model anchor $formedModelAnchor does not reference a structure part"
         }
 
-        minOffset = BlockPos(
-            this.parts.minOf { part -> part.offset.x },
-            this.parts.minOf { part -> part.offset.y },
-            this.parts.minOf { part -> part.offset.z }
-        )
-        maxOffset = BlockPos(
-            this.parts.maxOf { part -> part.offset.x },
-            this.parts.maxOf { part -> part.offset.y },
-            this.parts.maxOf { part -> part.offset.z }
-        )
+        minOffset = BlockPos(this.parts.minOf { part -> part.offset.x }, this.parts.minOf { part -> part.offset.y }, this.parts.minOf { part -> part.offset.z })
+        maxOffset = BlockPos(this.parts.maxOf { part -> part.offset.x }, this.parts.maxOf { part -> part.offset.y }, this.parts.maxOf { part -> part.offset.z })
         xSize = maxOffset.x - minOffset.x + 1
         ySize = maxOffset.y - minOffset.y + 1
         zSize = maxOffset.z - minOffset.z + 1
@@ -115,14 +100,9 @@ class AssembledMultiblockDefinition(
         part: AssembledMultiblockPart
     ): BlockPos? = rotate(part.offset, facing)?.let(controllerPos::offset)
 
-    fun worldPositions(controllerPos: BlockPos, facing: Direction): List<BlockPos> =
-        parts.mapNotNull { part -> worldPosition(controllerPos, facing, part) }
+    fun worldPositions(controllerPos: BlockPos, facing: Direction): List<BlockPos> = parts.mapNotNull { part -> worldPosition(controllerPos, facing, part) }
 
-    fun controllerPosition(
-        partPos: BlockPos,
-        facing: Direction,
-        part: AssembledMultiblockPart
-    ): BlockPos? = rotate(part.offset, facing)?.let(partPos::subtract)
+    fun controllerPosition(partPos: BlockPos, facing: Direction, part: AssembledMultiblockPart): BlockPos? = rotate(part.offset, facing)?.let(partPos::subtract)
 
     fun controllerCandidates(partPos: BlockPos, facing: Direction): List<BlockPos> {
         if (!facing.axis.isHorizontal) return emptyList()
@@ -133,8 +113,7 @@ class AssembledMultiblockDefinition(
     fun partAt(controllerPos: BlockPos, facing: Direction, worldPos: BlockPos): AssembledMultiblockPart? =
         parts.firstOrNull { part -> worldPosition(controllerPos, facing, part) == worldPos }
 
-    fun formedShapeAt(controllerPos: BlockPos, facing: Direction, worldPos: BlockPos): VoxelShape =
-        formedShapesAt(controllerPos, facing, worldPos)?.part ?: Shapes.block()
+    fun formedShapeAt(controllerPos: BlockPos, facing: Direction, worldPos: BlockPos): VoxelShape = formedShapesAt(controllerPos, facing, worldPos)?.part ?: Shapes.block()
 
     fun formedSelectionShapeAt(controllerPos: BlockPos, facing: Direction, worldPos: BlockPos): VoxelShape =
         formedShapesAt(controllerPos, facing, worldPos)?.selection ?: Shapes.block()
@@ -148,8 +127,7 @@ class AssembledMultiblockDefinition(
         }
     }
 
-    fun matches(level: Level, controllerPos: BlockPos, facing: Direction): Boolean =
-        facing.axis.isHorizontal && firstMismatch(level, controllerPos, facing) == null
+    fun matches(level: Level, controllerPos: BlockPos, facing: Direction): Boolean = facing.axis.isHorizontal && firstMismatch(level, controllerPos, facing) == null
 
     private fun formedShapesAt(
         controllerPos: BlockPos,
@@ -169,55 +147,24 @@ class AssembledMultiblockDefinition(
         }
         val structureShape = formedStructureShape?.let { shape ->
             val origin = requireNotNull(rotate(formedShapeOrigin, facing))
-            requireNotNull(rotateShape(shape, facing)).move(
-                origin.x.toDouble(),
-                origin.y.toDouble(),
-                origin.z.toDouble()
-            )
+            requireNotNull(rotateShape(shape, facing)).move(origin.x.toDouble(), origin.y.toDouble(), origin.z.toDouble())
         } ?: rotatedParts.entries.fold(Shapes.empty()) { result, (offset, shape) ->
-            Shapes.or(
-                result,
-                shape.move(offset.x.toDouble(), offset.y.toDouble(), offset.z.toDouble())
-            )
+            Shapes.or(result, shape.move(offset.x.toDouble(), offset.y.toDouble(), offset.z.toDouble()))
         }.optimize()
 
         return rotatedParts.mapValues { (offset, partShape) ->
-            FormedPartShapes(
-                part = partShape,
-                selection = structureShape.move(
-                    -offset.x.toDouble(),
-                    -offset.y.toDouble(),
-                    -offset.z.toDouble()
-                )
-            )
+            FormedPartShapes(part = partShape, selection = structureShape.move(-offset.x.toDouble(), -offset.y.toDouble(), -offset.z.toDouble()))
         }
     }
 
-    private data class FormedPartShapes(
-        val part: VoxelShape,
-        val selection: VoxelShape
-    )
+    private data class FormedPartShapes(val part: VoxelShape, val selection: VoxelShape)
 
     companion object {
-        private val HORIZONTAL_DIRECTIONS = listOf(
-            Direction.NORTH,
-            Direction.EAST,
-            Direction.SOUTH,
-            Direction.WEST
-        )
+        private val HORIZONTAL_DIRECTIONS = listOf(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST)
 
         @JvmStatic
         fun jsonOnly(id: Identifier): AssembledMultiblockDefinition =
-            AssembledMultiblockDefinition(
-                id,
-                listOf(
-                    AssembledMultiblockPart(
-                        BlockPos.ZERO,
-                        AssembledBlockMatcher.block(Blocks.AIR)
-                    )
-                ),
-                requiresJsonDefinition = true
-            )
+            AssembledMultiblockDefinition(id, listOf(AssembledMultiblockPart(BlockPos.ZERO, AssembledBlockMatcher.block(Blocks.AIR))), requiresJsonDefinition = true)
 
         @JvmStatic
         fun rotate(offset: BlockPos, facing: Direction): BlockPos? =
@@ -246,19 +193,12 @@ class AssembledMultiblockDefinition(
                 val rotatedMaxX = corners.maxOf(Pair<Double, Double>::first)
                 val rotatedMinZ = corners.minOf(Pair<Double, Double>::second)
                 val rotatedMaxZ = corners.maxOf(Pair<Double, Double>::second)
-                result = Shapes.or(
-                    result,
-                    Shapes.box(rotatedMinX, minY, rotatedMinZ, rotatedMaxX, maxY, rotatedMaxZ)
-                )
+                result = Shapes.or(result, Shapes.box(rotatedMinX, minY, rotatedMinZ, rotatedMaxX, maxY, rotatedMaxZ))
             }
             return result.optimize()
         }
 
-        private fun rotateHorizontal(
-            x: Double,
-            z: Double,
-            rotation: HorizontalRotation
-        ): Pair<Double, Double> = when (rotation) {
+        private fun rotateHorizontal(x: Double, z: Double, rotation: HorizontalRotation): Pair<Double, Double> = when (rotation) {
             HorizontalRotation.NONE -> x to z
             HorizontalRotation.CLOCKWISE_90 -> 1.0 - z to x
             HorizontalRotation.CLOCKWISE_180 -> 1.0 - x to 1.0 - z
@@ -303,11 +243,7 @@ class AssembledMultiblockBuilder internal constructor() {
         part(BlockPos(x, y, z), matcher, formedShape)
     }
 
-    fun part(
-        offset: BlockPos,
-        matcher: AssembledBlockMatcher,
-        formedShape: VoxelShape = Shapes.block()
-    ) {
+    fun part(offset: BlockPos, matcher: AssembledBlockMatcher, formedShape: VoxelShape = Shapes.block()) {
         parts += AssembledMultiblockPart(offset.immutable(), matcher, formedShape)
     }
 
@@ -344,16 +280,7 @@ class AssembledMultiblockBuilder internal constructor() {
         lightMode: GeoLightMode = GeoLightMode.WORLD,
         blockRotation: GeoBlockRotation = GeoBlockRotation.NONE
     ) {
-        formedModel(
-            GeoModel(
-                geometry,
-                texture,
-                renderType,
-                scale,
-                lightMode = lightMode,
-                blockRotation = blockRotation
-            )
-        )
+        formedModel(GeoModel(geometry, texture, renderType, scale, lightMode = lightMode, blockRotation = blockRotation))
     }
 
     fun formedModel(
@@ -364,16 +291,7 @@ class AssembledMultiblockBuilder internal constructor() {
         lightMode: GeoLightMode = GeoLightMode.WORLD,
         blockRotation: GeoBlockRotation = GeoBlockRotation.NONE
     ) {
-        formedModel(
-            GeoModel(
-                geometry,
-                texture,
-                renderType,
-                scale,
-                lightMode = lightMode,
-                blockRotation = blockRotation
-            )
-        )
+        formedModel(GeoModel(geometry, texture, renderType, scale, lightMode = lightMode, blockRotation = blockRotation))
     }
 
     internal fun build(id: Identifier, allowAssemblyFromAnyPart: Boolean): AssembledMultiblockDefinition {
@@ -384,15 +302,7 @@ class AssembledMultiblockBuilder internal constructor() {
             val origin = unifiedFormedShapeOrigin ?: formedModelAnchor
             parts.map { part -> part.copy(formedShape = sliceShape(shape, origin, part.offset)) }
         }
-        return AssembledMultiblockDefinition(
-            id,
-            builtParts,
-            formedModel,
-            allowAssemblyFromAnyPart,
-            formedModelAnchor,
-            shape,
-            unifiedFormedShapeOrigin ?: formedModelAnchor
-        )
+        return AssembledMultiblockDefinition(id, builtParts, formedModel, allowAssemblyFromAnyPart, formedModelAnchor, shape, unifiedFormedShapeOrigin ?: formedModelAnchor)
     }
 
     private fun setUnifiedFormedShape(shape: VoxelShape, origin: BlockPos?) {
@@ -403,23 +313,9 @@ class AssembledMultiblockBuilder internal constructor() {
 
     private fun sliceShape(shape: VoxelShape, origin: BlockPos, partOffset: BlockPos): VoxelShape {
         val relative = partOffset.subtract(origin)
-        val cell = Shapes.box(
-            relative.x.toDouble(),
-            relative.y.toDouble(),
-            relative.z.toDouble(),
-            relative.x + 1.0,
-            relative.y + 1.0,
-            relative.z + 1.0
-        )
-        return Shapes.join(shape, cell, BooleanOp.AND)
-            .move(-relative.x.toDouble(), -relative.y.toDouble(), -relative.z.toDouble())
-            .optimize()
+        val cell = Shapes.box(relative.x.toDouble(), relative.y.toDouble(), relative.z.toDouble(), relative.x + 1.0, relative.y + 1.0, relative.z + 1.0)
+        return Shapes.join(shape, cell, BooleanOp.AND).move(-relative.x.toDouble(), -relative.y.toDouble(), -relative.z.toDouble()).optimize()
     }
 }
 
-fun assembledMultiblock(
-    id: Identifier,
-    allowAssemblyFromAnyPart: Boolean = false,
-    init: AssembledMultiblockBuilder.() -> Unit
-): AssembledMultiblockDefinition =
-    AssembledMultiblockBuilder().apply(init).build(id, allowAssemblyFromAnyPart)
+fun assembledMultiblock(id: Identifier, allowAssemblyFromAnyPart: Boolean = false, init: AssembledMultiblockBuilder.() -> Unit): AssembledMultiblockDefinition = AssembledMultiblockBuilder().apply(init).build(id, allowAssemblyFromAnyPart)

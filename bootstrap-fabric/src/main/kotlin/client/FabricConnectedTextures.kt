@@ -45,12 +45,7 @@ object FabricConnectedTextures {
                     }
                 }
 
-                FabricConnectedTextureModel(
-                    delegate = model,
-                    texture = texture,
-                    variants = variants,
-                    spriteFinder = context.baker().materials().spriteFinder(QuadAtlas.BLOCK)
-                )
+                FabricConnectedTextureModel(delegate = model, texture = texture, variants = variants, spriteFinder = context.baker().materials().spriteFinder(QuadAtlas.BLOCK))
             }
         }
     }
@@ -137,18 +132,10 @@ private class FabricConnectedTextureModel(
         moveUvs(quad, sourceSprite, target)
     }
 
-    private data class GeometryKey(
-        val texture: ConnectedTexture,
-        val delegate: Any,
-        val packedMask: Int
-    )
+    private data class GeometryKey(val texture: ConnectedTexture, val delegate: Any, val packedMask: Int)
 
     companion object {
-        private fun moveUvs(
-            quad: MutableQuadView,
-            source: TextureAtlasSprite,
-            target: ResolvedVariant
-        ) {
+        private fun moveUvs(quad: MutableQuadView, source: TextureAtlasSprite, target: ResolvedVariant) {
             val sourceWidth = source.u1 - source.u0
             val sourceHeight = source.v1 - source.v0
             val targetSprite = target.material.sprite()
@@ -158,11 +145,7 @@ private class FabricConnectedTextureModel(
                 val v = (quad.v(vertex) - source.v0) / sourceHeight
                 val rotatedU = rotatedU(target.rotation, u, v)
                 val rotatedV = rotatedV(target.rotation, u, v)
-                quad.uv(
-                    vertex,
-                    targetSprite.getU(target.region.u + rotatedU * target.region.width),
-                    targetSprite.getV(target.region.v + rotatedV * target.region.height)
-                )
+                quad.uv(vertex, targetSprite.getU(target.region.u + rotatedU * target.region.width), targetSprite.getV(target.region.v + rotatedV * target.region.height))
             }
             quad.postMaterialBake(target.material)
         }
@@ -172,8 +155,7 @@ private class FabricConnectedTextureModel(
             var flags = 0
             val transparency = if (material.forceTranslucent()) Transparency.TRANSLUCENT
             else material.sprite().contents().transparency()
-            if (ChunkSectionLayer.byTransparency(transparency).translucent())
-                flags = flags or BakedQuad.FLAG_TRANSLUCENT
+            if (ChunkSectionLayer.byTransparency(transparency).translucent()) flags = flags or BakedQuad.FLAG_TRANSLUCENT
             if (material.sprite().isAnimated) flags = flags or BakedQuad.FLAG_ANIMATED
             return flags
         }
@@ -194,11 +176,7 @@ private class FabricConnectedTextureModel(
     }
 }
 
-private data class ResolvedVariant(
-    val material: Material.Baked,
-    val rotation: ConnectedTextureRotation,
-    val region: ResolvedRegion
-)
+private data class ResolvedVariant(val material: Material.Baked, val rotation: ConnectedTextureRotation, val region: ResolvedRegion)
 
 private data class ResolvedRegion(
     val u: Float,
@@ -211,10 +189,7 @@ private data class ResolvedRegion(
     }
 }
 
-private fun resolveRegion(
-    sprite: TextureAtlasSprite,
-    region: ConnectedTextureRegion?
-): ResolvedRegion? {
+private fun resolveRegion(sprite: TextureAtlasSprite, region: ConnectedTextureRegion?): ResolvedRegion? {
     if (region == null) return ResolvedRegion.FULL
 
     val spriteWidth = sprite.contents().width()

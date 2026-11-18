@@ -7,21 +7,13 @@ import net.minecraft.core.Registry
 import net.minecraft.resources.Identifier
 import java.util.function.Supplier
 
-object FabricRegistrationPlatform : RegistrationPlatform {
-    override fun <R : Any, T : R> register(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): Supplier<T> {
+object FabricRegistrationPlatform: RegistrationPlatform {
+    override fun <R : Any, T : R> register(id: Identifier, registry: Registry<R>, factory: Supplier<T>): Supplier<T> {
         val registered = Registry.register(registry, id, factory.get())
         return Supplier { registered }
     }
 
-    override fun <R : Any, T : R> registerHolder(
-        id: Identifier,
-        registry: Registry<R>,
-        factory: Supplier<T>
-    ): PlatformRegistryHolder<R, T> {
+    override fun <R : Any, T : R> registerHolder(id: Identifier, registry: Registry<R>, factory: Supplier<T>): PlatformRegistryHolder<R, T> {
         val registered = Registry.registerForHolder(registry, id, factory.get())
         @Suppress("UNCHECKED_CAST")
         val holder = registered as Holder<R>

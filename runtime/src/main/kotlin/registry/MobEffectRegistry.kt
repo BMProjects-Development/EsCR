@@ -5,6 +5,6 @@ import com.algorithmlx.ecr.api.registries.RegistrationHandler
 import com.algorithmlx.ecr.common.effects.MRUCorruption
 import com.algorithmlx.ecr.init.ECRModIDs
 
-object MobEffectRegistry : RegistrationHandler(ModId) {
+object MobEffectRegistry: RegistrationHandler(ModId) {
     val mruCorruption by registerMobEffect(ECRModIDs.MRU_CORRUPTION, ::MRUCorruption)
 }

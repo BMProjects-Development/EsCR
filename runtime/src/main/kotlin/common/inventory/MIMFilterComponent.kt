@@ -71,9 +71,7 @@ class MIMFilterComponent(
         templates.indices.all { ItemStack.matches(templates[it], other.templates[it]) }
 
     override fun hashCode(): Int {
-        val samplesHash = templates.fold(1) { hash, stack ->
-            31 * hash + if (stack.isEmpty) 0 else 31 * ItemStack.hashItemAndComponents(stack) + stack.count
-        }
+        val samplesHash = templates.fold(1) { hash, stack -> 31 * hash + if (stack.isEmpty) 0 else 31 * ItemStack.hashItemAndComponents(stack) + stack.count }
         return listOf(samplesHash, blacklist, ignoreComponents, ignoreDamage, commonTags).hashCode()
     }
 

@@ -9,26 +9,20 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType
 import net.minecraft.resources.Identifier
 
-object FabricAttachmentPlatform : AttachmentPlatform {
-    override fun <T : Any> register(
-        id: Identifier,
-        specification: AttachmentSpecification<T>
-    ): PlatformAttachment<T> {
+object FabricAttachmentPlatform: AttachmentPlatform {
+    override fun <T : Any> register(id: Identifier, specification: AttachmentSpecification<T>): PlatformAttachment<T> {
         val type = AttachmentRegistry.create(id) { builder ->
             builder.initializer(specification.initializer)
             specification.persistence?.let { builder.persistent(it.codec) }
             if (specification.copyOnDeath) builder.copyOnDeath()
             specification.synchronization?.let { synchronization ->
-                builder.syncWith(
-                    synchronization.codec,
-                    AttachmentSyncPredicate { holder, player -> synchronization.predicate.test(holder, player) }
-                )
+                builder.syncWith(synchronization.codec, AttachmentSyncPredicate { holder, player -> synchronization.predicate.test(holder, player) })
             }
         }
         return FabricAttachment(type)
     }
 
-    private class FabricAttachment<T : Any>(private val type: AttachmentType<T>) : PlatformAttachment<T> {
+    private class FabricAttachment<T : Any>(private val type: AttachmentType<T>): PlatformAttachment<T> {
         override fun get(holder: Any): T? = holder.target().getAttached(type)
 
         override fun getOrCreate(holder: Any): T = holder.target().getAttachedOrCreate(type)

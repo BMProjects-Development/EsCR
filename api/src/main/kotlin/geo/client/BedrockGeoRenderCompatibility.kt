@@ -18,10 +18,7 @@ object BedrockGeoRenderCompatibility {
         !shaderPackInUseDetector()
     } catch (error: Throwable) {
         if (loggedDetectorFailure.compareAndSet(false, true))
-            LOGGER.error(
-                "Unable to query shader-pack state; using the Bedrock GEO compatibility renderer",
-                error
-            )
+            LOGGER.error("Unable to query shader-pack state; using the Bedrock GEO compatibility renderer", error)
         false
     }
 }

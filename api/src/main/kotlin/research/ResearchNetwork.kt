@@ -27,7 +27,7 @@ data class ResearchSyncPayload(
     val bookLevel: Identifier?,
     val recipes: Map<Identifier, Recipe<*>>,
     val viewState: BookViewState
-) : CustomPacketPayload {
+): CustomPacketPayload {
     override fun type() = TYPE
 
     companion object {
@@ -72,9 +72,7 @@ data class ResearchSyncPayload(
             { buffer ->
                 val catalog = buffer.readUtf(MAX_CATALOG_SIZE)
                 val multiblockDefinitions = MultiblockJsonResources.STREAM_CODEC.decode(buffer)
-                val unlocked = LinkedHashSet<Identifier>().apply {
-                    repeat(buffer.readVarInt()) { add(buffer.readIdentifier()) }
-                }
+                val unlocked = LinkedHashSet<Identifier>().apply { repeat(buffer.readVarInt()) { add(buffer.readIdentifier()) } }
                 val bookmarks = List(buffer.readVarInt()) {
                     BookBookmark(buffer.readIdentifier(), buffer.readVarInt(), buffer.readInt())
                 }
@@ -84,32 +82,16 @@ data class ResearchSyncPayload(
                         put(id, List(buffer.readVarInt()) { ResearchTaskProgress(buffer.readVarInt(), buffer.readVarInt()) })
                     }
                 }
-                val completedTaskLevels = LinkedHashMap<Identifier, Int>().apply {
-                    repeat(buffer.readVarInt()) { put(buffer.readIdentifier(), buffer.readVarInt()) }
-                }
+                val completedTaskLevels = LinkedHashMap<Identifier, Int>().apply { repeat(buffer.readVarInt()) { put(buffer.readIdentifier(), buffer.readVarInt()) } }
                 val bookLevel = if (buffer.readBoolean()) buffer.readIdentifier() else null
-                val recipes = LinkedHashMap<Identifier, Recipe<*>>().apply {
-                    repeat(buffer.readVarInt()) { put(buffer.readIdentifier(), Recipe.STREAM_CODEC.decode(buffer)) }
-                }
-                ResearchSyncPayload(
-                    catalog,
-                    multiblockDefinitions,
-                    unlocked,
-                    bookmarks,
-                    progress,
-                    completedTaskLevels,
-                    bookLevel,
-                    recipes,
-                    buffer.readViewState()
-                )
+                val recipes = LinkedHashMap<Identifier, Recipe<*>>().apply { repeat(buffer.readVarInt()) { put(buffer.readIdentifier(), Recipe.STREAM_CODEC.decode(buffer)) } }
+                ResearchSyncPayload(catalog, multiblockDefinitions, unlocked, bookmarks, progress, completedTaskLevels, bookLevel, recipes, buffer.readViewState())
             }
         )
     }
 }
 
-data class ResearchProgressPayload(
-    val taskProgress: Map<Identifier, List<ResearchTaskProgress>>
-) : CustomPacketPayload {
+data class ResearchProgressPayload(val taskProgress: Map<Identifier, List<ResearchTaskProgress>>): CustomPacketPayload {
     override fun type() = TYPE
 
     companion object {
@@ -121,7 +103,7 @@ data class ResearchProgressPayload(
     }
 }
 
-data class UpdateBookViewPayload(val state: BookViewState) : CustomPacketPayload {
+data class UpdateBookViewPayload(val state: BookViewState): CustomPacketPayload {
     override fun type() = TYPE
 
     companion object {
@@ -133,7 +115,7 @@ data class UpdateBookViewPayload(val state: BookViewState) : CustomPacketPayload
     }
 }
 
-data class CompleteResearchPayload(val research: Identifier) : CustomPacketPayload {
+data class CompleteResearchPayload(val research: Identifier): CustomPacketPayload {
     override fun type() = TYPE
 
     companion object {
@@ -145,7 +127,7 @@ data class CompleteResearchPayload(val research: Identifier) : CustomPacketPaylo
     }
 }
 
-data class FavoriteResearchPayload(val research: Identifier, val spread: Int, val color: Int?) : CustomPacketPayload {
+data class FavoriteResearchPayload(val research: Identifier, val spread: Int, val color: Int?): CustomPacketPayload {
     override fun type() = TYPE
 
     companion object {
@@ -166,8 +148,7 @@ object ResearchNetwork {
     @JvmStatic fun sendToPlayer(player: ServerPlayer, payload: ResearchSyncPayload) = Network.sendTo(player, payload)
     @JvmStatic fun sendProgressToPlayer(player: ServerPlayer, payload: ResearchProgressPayload) = Network.sendTo(player, payload)
     @JvmStatic fun completeResearch(research: Identifier) = CompleteResearchPayload(research).sendToServer()
-    @JvmStatic fun updateFavorite(research: Identifier, spread: Int, color: Int?) =
-        FavoriteResearchPayload(research, spread, color).sendToServer()
+    @JvmStatic fun updateFavorite(research: Identifier, spread: Int, color: Int?) = FavoriteResearchPayload(research, spread, color).sendToServer()
     @JvmStatic fun updateView(state: BookViewState) = runCatching { UpdateBookViewPayload(state).sendToServer() }
     @JvmField var researchUnlocked: (Identifier) -> Unit = {}
     @JvmField var researchContentUpdated: (Identifier) -> Unit = {}
@@ -195,8 +176,7 @@ object ClientResearchState {
         val nextUnlocked = payload.unlocked.toSet()
         val added = if (catalogInitialized) nextUnlocked - previous else emptySet()
         val updated = if (catalogInitialized)
-            nextUnlocked.asSequence()
-                .filter(previous::contains)
+            nextUnlocked.asSequence().filter(previous::contains)
                 .filter { research ->
                     val before = previousEntries[research] ?: return@filter false
                     val after = nextEntries[research] ?: return@filter false
@@ -228,19 +208,13 @@ object ClientResearchState {
     @JvmStatic fun has(research: Identifier): Boolean = research in unlockedResearch
     @JvmStatic fun unlocked(): Set<Identifier> = unlockedResearch
     @JvmStatic fun bookmarks(): List<BookBookmark> = bookmarks
-    @JvmStatic fun bookmark(research: Identifier, spread: Int): BookBookmark? =
-        bookmarks.firstOrNull { it.research == research && it.spread == spread }
+    @JvmStatic fun bookmark(research: Identifier, spread: Int): BookBookmark? = bookmarks.firstOrNull { it.research == research && it.spread == spread }
     @JvmStatic fun taskProgress(research: Identifier): List<ResearchTaskProgress> = progress[research].orEmpty()
     @JvmStatic fun completedTaskLevels(research: Identifier): Int = completedTaskLevels[research] ?: 0
     @JvmStatic fun taskComplete(research: Identifier, taskId: String): Boolean {
         val entry = ResearchCatalog.snapshot().entries[research] ?: return false
-        if (has(research))
-            return entry.taskLevels.any { level ->
-                level.id == taskId || level.tasks.any { it.id == taskId }
-            }
-        entry.taskLevels.forEachIndexed { levelIndex, level ->
-            if (level.id == taskId) return levelIndex < completedTaskLevels(research)
-        }
+        if (has(research)) return entry.taskLevels.any { level -> level.id == taskId || level.tasks.any { it.id == taskId } }
+        entry.taskLevels.forEachIndexed { levelIndex, level -> if (level.id == taskId) return levelIndex < completedTaskLevels(research) }
         var flatIndex = 0
         entry.taskLevels.forEachIndexed { levelIndex, level ->
             level.tasks.forEach { definition ->
@@ -276,8 +250,7 @@ object ClientResearchState {
     @JvmStatic fun updateLocalView(state: BookViewState) {
         savedViewState = state
     }
-    @JvmStatic fun categoryAvailable(category: BookCategory): Boolean =
-        category.dependencies.all(::has) && ResearchProgress.meetsBookLevel(currentBookLevel, category.bookLevel)
+    @JvmStatic fun categoryAvailable(category: BookCategory): Boolean = category.dependencies.all(::has) && ResearchProgress.meetsBookLevel(currentBookLevel, category.bookLevel)
 
     @JvmStatic fun entryAvailable(entry: BookEntry): Boolean {
         val category = ResearchCatalog.snapshot().layout[entry.id]
@@ -288,10 +261,7 @@ object ClientResearchState {
             entry.requirements.all { requirementMet(entry.id, it) }
     }
 
-    private fun notifyCompletedTasks(
-        previous: Map<Identifier, List<ResearchTaskProgress>>,
-        next: Map<Identifier, List<ResearchTaskProgress>>
-    ) {
+    private fun notifyCompletedTasks(previous: Map<Identifier, List<ResearchTaskProgress>>, next: Map<Identifier, List<ResearchTaskProgress>>) {
         if (stateRevision == 0L && previous.isEmpty()) return
         ResearchCatalog.snapshot().entries.values.forEach { entry ->
             val before = previous[entry.id].orEmpty()

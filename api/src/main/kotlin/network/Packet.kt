@@ -21,11 +21,11 @@ sealed interface PacketContext {
     val direction: PacketDirection
 }
 
-data object ClientPacketContext : PacketContext {
+data object ClientPacketContext: PacketContext {
     override val direction = PacketDirection.CLIENTBOUND
 }
 
-data class ServerPacketContext(val player: ServerPlayer) : PacketContext {
+data class ServerPacketContext(val player: ServerPlayer): PacketContext {
     override val direction = PacketDirection.SERVERBOUND
 }
 
@@ -40,7 +40,7 @@ class ClientboundPacket<P : CustomPacketPayload> internal constructor(
     type: CustomPacketPayload.Type<P>,
     codec: StreamCodec<in RegistryFriendlyByteBuf, P>,
     maxPayloadSize: MaxPayloadSize?
-) : PacketType<P>(type, codec, PacketDirection.CLIENTBOUND, maxPayloadSize) {
+): PacketType<P>(type, codec, PacketDirection.CLIENTBOUND, maxPayloadSize) {
     var handler: (ClientPacketContext.(P) -> Unit)? = null
         private set
 
@@ -55,4 +55,4 @@ class ServerboundPacket<P : CustomPacketPayload> internal constructor(
     codec: StreamCodec<in RegistryFriendlyByteBuf, P>,
     val handler: ServerPacketContext.(P) -> Unit,
     maxPayloadSize: MaxPayloadSize?
-) : PacketType<P>(type, codec, PacketDirection.SERVERBOUND, maxPayloadSize)
+): PacketType<P>(type, codec, PacketDirection.SERVERBOUND, maxPayloadSize)

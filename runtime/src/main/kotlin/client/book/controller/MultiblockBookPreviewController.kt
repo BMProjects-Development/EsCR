@@ -47,7 +47,6 @@ object MultiblockBookPreviewController {
     private const val MAX_SCALE = 3.0f
     private const val MIN_VERTICAL_ROTATION = -89f
     private const val MAX_VERTICAL_ROTATION = 89f
-
     private val arrowLeft = "textures/gui/book/arrow_left.png".ecRL
     private val arrowLeftSelected = "textures/gui/book/arrow_left_selected.png".ecRL
     private val arrowRight = "textures/gui/book/arrow_right.png".ecRL
@@ -55,7 +54,6 @@ object MultiblockBookPreviewController {
     private val fullModeTexture = "textures/gui/book/multiblock.png".ecRL
     private val layeredModeTexture = "textures/gui/book/multiblock_layered.png".ecRL
     private val hammerTexture = "textures/item/hammer.png".ecRL
-
     private val states = linkedMapOf<String, PreviewState>()
     private var frame = 0L
     private var draggingKey: String? = null
@@ -71,44 +69,24 @@ object MultiblockBookPreviewController {
         draggingButton = null
     }
 
-    fun render(
-        context: BookElementRenderContext,
-        element: MultiblockBookElement,
-        multiblock: Multiblock
-    ) {
+    fun render(context: BookElementRenderContext, element: MultiblockBookElement, multiblock: Multiblock) {
         val key = context.interactionKey ?: return renderStatic(context, element, multiblock)
         val state = states.getOrPut(key) { PreviewState.from(element, multiblock) }
         state.hasAssemblyToggle = false
         state.canAssemble = false
         state.assembled = false
         state.worldMultiblock = multiblock
-        renderInteractive(
-            context,
-            key,
-            state,
-            MultiblockPreviewModel.Pattern(multiblock),
-            multiblock.ySize
-        )
+        renderInteractive(context, key, state, MultiblockPreviewModel.Pattern(multiblock), multiblock.ySize)
     }
 
-    fun render(
-        context: BookElementRenderContext,
-        element: AssembledMultiblockBookElement,
-        multiblock: AssembledMultiblockDefinition
-    ) {
+    fun render(context: BookElementRenderContext, element: AssembledMultiblockBookElement, multiblock: AssembledMultiblockDefinition) {
         val key = context.interactionKey ?: return renderStatic(context, element, multiblock)
         val state = states.getOrPut(key) { PreviewState.from(element, multiblock) }
         state.hasAssemblyToggle = true
         state.canAssemble = multiblock.formedModel != null
         state.worldMultiblock = null
         if (!state.canAssemble) state.assembled = false
-        renderInteractive(
-            context,
-            key,
-            state,
-            MultiblockPreviewModel.Assembled(multiblock, state.assembled),
-            multiblock.ySize
-        )
+        renderInteractive(context, key, state, MultiblockPreviewModel.Assembled(multiblock, state.assembled), multiblock.ySize)
     }
 
     private fun renderInteractive(
@@ -123,13 +101,7 @@ object MultiblockBookPreviewController {
         state.layer = state.layer.coerceIn(0, state.maxLayer)
 
         val scissor = currentScissor(context)
-        val elementBounds =
-            Rect(
-                context.screenX,
-                context.screenY,
-                context.screenWidth.coerceAtLeast(1),
-                context.screenHeight.coerceAtLeast(1)
-            )
+        val elementBounds = Rect(context.screenX, context.screenY, context.screenWidth.coerceAtLeast(1), context.screenHeight.coerceAtLeast(1))
         if (!elementBounds.isInside(scissor)) {
             state.previewBounds = Rect.EMPTY
             state.leftButton = Rect.EMPTY
@@ -141,18 +113,9 @@ object MultiblockBookPreviewController {
         }
 
         val previewLocalHeight = (context.height - CONTROL_RESERVED_HEIGHT).coerceAtLeast(1)
-        val previewScreenHeight =
-            (previewLocalHeight * context.scale)
-                .roundToInt()
-                .coerceIn(1, context.screenHeight.coerceAtLeast(1))
+        val previewScreenHeight = (previewLocalHeight * context.scale).roundToInt().coerceIn(1, context.screenHeight.coerceAtLeast(1))
 
-        val previewBounds =
-            Rect(
-                context.screenX,
-                context.screenY,
-                context.screenWidth.coerceAtLeast(1),
-                previewScreenHeight
-            )
+        val previewBounds = Rect(context.screenX, context.screenY, context.screenWidth.coerceAtLeast(1), previewScreenHeight)
         val previewFullyVisible = previewBounds.isInside(scissor)
         if (!previewFullyVisible) {
             state.previewBounds = Rect.EMPTY
@@ -189,30 +152,15 @@ object MultiblockBookPreviewController {
         renderControls(context, state, layerCount, controls)
     }
 
-    private fun renderStatic(
-        context: BookElementRenderContext,
-        element: MultiblockBookElement,
-        multiblock: Multiblock
-    ) {
-        val bounds =
-            Rect(
-                context.screenX,
-                context.screenY,
-                context.screenWidth.coerceAtLeast(1),
-                context.screenHeight.coerceAtLeast(1)
-            )
+    private fun renderStatic(context: BookElementRenderContext, element: MultiblockBookElement, multiblock: Multiblock) {
+        val bounds = Rect(context.screenX, context.screenY, context.screenWidth.coerceAtLeast(1), context.screenHeight.coerceAtLeast(1))
         val scissor = currentScissor(context)
         if (bounds.isInside(scissor))
             MultiblockPreviewGuiBridge.add(
                 context.graphics,
                 MultiblockPreviewRenderState(
                     multiblock,
-                    MultiblockPreviewTransform(
-                        scale = element.scale,
-                        rotationX = element.rotationX,
-                        rotationY = element.rotationY,
-                        layer = element.layer
-                    ),
+                    MultiblockPreviewTransform(scale = element.scale, rotationX = element.rotationX, rotationY = element.rotationY, layer = element.layer),
                     context.screenX,
                     context.screenY,
                     context.screenX + context.screenWidth,
@@ -223,18 +171,8 @@ object MultiblockBookPreviewController {
             )
     }
 
-    private fun renderStatic(
-        context: BookElementRenderContext,
-        element: AssembledMultiblockBookElement,
-        multiblock: AssembledMultiblockDefinition
-    ) {
-        val bounds =
-            Rect(
-                context.screenX,
-                context.screenY,
-                context.screenWidth.coerceAtLeast(1),
-                context.screenHeight.coerceAtLeast(1)
-            )
+    private fun renderStatic(context: BookElementRenderContext, element: AssembledMultiblockBookElement, multiblock: AssembledMultiblockDefinition) {
+        val bounds = Rect(context.screenX, context.screenY, context.screenWidth.coerceAtLeast(1), context.screenHeight.coerceAtLeast(1))
         val scissor = currentScissor(context)
         if (!bounds.isInside(scissor)) return
 
@@ -289,12 +227,7 @@ object MultiblockBookPreviewController {
         val canUseLayers = !state.assembled
         val canGoLeft = canUseLayers && state.layered && state.layer > 0
         val canGoRight = canUseLayers && state.layered && state.layer < state.maxLayer
-        renderArrowButton(
-            context,
-            controls.left,
-            if (leftHovered && canGoLeft) arrowLeftSelected else arrowLeft,
-            canGoLeft
-        )
+        renderArrowButton(context, controls.left, if (leftHovered && canGoLeft) arrowLeftSelected else arrowLeft, canGoLeft)
 
         val modeTexture = if (state.layered) layeredModeTexture else fullModeTexture
         val modeTextureSize = if (state.layered) LAYERED_MODE_TEXTURE_SIZE else FULL_MODE_TEXTURE_SIZE
@@ -313,15 +246,9 @@ object MultiblockBookPreviewController {
             modeTextureSize
         )
 
-        renderArrowButton(
-            context,
-            controls.right,
-            if (rightHovered && canGoRight) arrowRightSelected else arrowRight,
-            canGoRight
-        )
+        renderArrowButton(context, controls.right, if (rightHovered && canGoRight) arrowRightSelected else arrowRight, canGoRight)
 
-        if (state.worldMultiblock != null)
-            renderWorldPreviewButton(context, controls.world, worldHovered, canPlaceWorldPreview())
+        if (state.worldMultiblock != null) renderWorldPreviewButton(context, controls.world, worldHovered, canPlaceWorldPreview())
 
         if (state.hasAssemblyToggle) renderAssemblyButton(context, controls.assembly, state, assemblyHovered)
 
@@ -329,12 +256,7 @@ object MultiblockBookPreviewController {
             val minecraft = context.mc
             val mouseX = context.screenX + ((context.mouseX - context.x) * context.scale).roundToInt()
             val mouseY = context.screenY + ((context.mouseY - context.y) * context.scale).roundToInt()
-            context.graphics.setTooltipForNextFrame(
-                minecraft.font,
-                Component.translatable("screen.$ModId.research_book.multiblock.place"),
-                mouseX,
-                mouseY
-            )
+            context.graphics.setTooltipForNextFrame(minecraft.font, Component.translatable("screen.$ModId.research_book.multiblock.place"), mouseX, mouseY)
         }
 
         if (state.layered && canUseLayers) {
@@ -342,10 +264,7 @@ object MultiblockBookPreviewController {
             val font = Minecraft.getInstance().font
             val labelWidth = font.width(label) / 2f
             context.graphics.pose().pushMatrix()
-            context.graphics.pose().translate(
-                controls.mode.x + BUTTON_SIZE / 2f - labelWidth / 2f,
-                controls.mode.y - 5f
-            )
+            context.graphics.pose().translate(controls.mode.x + BUTTON_SIZE / 2f - labelWidth / 2f, controls.mode.y - 5f)
             context.graphics.pose().scale(0.5f, 0.5f)
             context.graphics.text(font, label, 0, 0, 0xFF404040.toInt(), false)
             context.graphics.pose().popMatrix()
@@ -385,14 +304,7 @@ object MultiblockBookPreviewController {
         hovered: Boolean,
         enabled: Boolean
     ) {
-        if (hovered)
-            context.graphics.fill(
-                bounds.x - 1,
-                bounds.y - 1,
-                bounds.x + bounds.width + 1,
-                bounds.y + bounds.height + 1,
-                HOVERED_BUTTON_COLOR
-            )
+        if (hovered) context.graphics.fill(bounds.x - 1, bounds.y - 1, bounds.x + bounds.width + 1, bounds.y + bounds.height + 1, HOVERED_BUTTON_COLOR)
         val color = if (enabled) 0xFFD5F6FF.toInt() else DISABLED_ARROW_TINT
         val centerX = bounds.x + bounds.width / 2
         val centerY = bounds.y + bounds.height / 2
@@ -491,14 +403,7 @@ object MultiblockBookPreviewController {
             else hit.blockPos.relative(hit.direction)
         val direction = player.direction.takeIf { it.axis.isHorizontal } ?: net.minecraft.core.Direction.NORTH
         if (!MultiblockWorldPreview.place(multiblock, center, direction)) return false
-        player.sendOverlayMessage(
-            Component.translatable(
-                "screen.$ModId.research_book.multiblock.placed",
-                center.x,
-                center.y,
-                center.z
-            )
-        )
+        player.sendOverlayMessage(Component.translatable("screen.$ModId.research_book.multiblock.placed", center.x, center.y, center.z))
         return true
     }
 
@@ -508,11 +413,7 @@ object MultiblockBookPreviewController {
             (minecraft.hitResult as? BlockHitResult)?.type == HitResult.Type.BLOCK
     }
 
-    fun mouseDragged(
-        dragX: Double,
-        dragY: Double,
-        shift: Boolean
-    ): Boolean {
+    fun mouseDragged(dragX: Double, dragY: Double, shift: Boolean): Boolean {
         val state = draggingKey?.let(states::get) ?: return false
         val mode = if (draggingButton == RIGHT_MOUSE_BUTTON || shift) DragMode.PAN else state.dragMode
         when (mode) {
@@ -524,8 +425,7 @@ object MultiblockBookPreviewController {
             DragMode.ROTATE -> {
                 state.rotationX += dragX.toFloat() * ROTATION_SPEED
                 state.rotationY =
-                    (state.rotationY - dragY.toFloat() * ROTATION_SPEED)
-                        .coerceIn(MIN_VERTICAL_ROTATION, MAX_VERTICAL_ROTATION)
+                    (state.rotationY - dragY.toFloat() * ROTATION_SPEED).coerceIn(MIN_VERTICAL_ROTATION, MAX_VERTICAL_ROTATION)
             }
         }
         return true
@@ -538,14 +438,9 @@ object MultiblockBookPreviewController {
         return true
     }
 
-    fun mouseScrolled(
-        mouseX: Int,
-        mouseY: Int,
-        scrollY: Double
-    ): Boolean {
+    fun mouseScrolled(mouseX: Int, mouseY: Int, scrollY: Double): Boolean {
         val state =
-            visibleStates()
-                .lastOrNull { (_, state) -> state.previewBounds.contains(mouseX, mouseY) }
+            visibleStates().lastOrNull { (_, state) -> state.previewBounds.contains(mouseX, mouseY) }
                 ?.value
                 ?: return false
         val multiplier = exp(scrollY.toFloat() * ZOOM_STEP)
@@ -553,15 +448,9 @@ object MultiblockBookPreviewController {
         return true
     }
 
-    private fun visibleStates(): List<Map.Entry<String, PreviewState>> =
-        states.entries
-            .filter { it.value.lastSeenFrame == frame }
+    private fun visibleStates(): List<Map.Entry<String, PreviewState>> = states.entries.filter { it.value.lastSeenFrame == frame }
 
-    private fun controlLayout(
-        context: BookElementRenderContext,
-        worldPreview: Boolean,
-        assemblyToggle: Boolean
-    ): Controls {
+    private fun controlLayout(context: BookElementRenderContext, worldPreview: Boolean, assemblyToggle: Boolean): Controls {
         val buttonCount = 3 + (if (worldPreview) 1 else 0) + (if (assemblyToggle) 1 else 0)
         val totalWidth = BUTTON_SIZE * buttonCount + BUTTON_GAP * (buttonCount - 1)
         val startX = context.x + (context.width - totalWidth) / 2
@@ -598,12 +487,7 @@ object MultiblockBookPreviewController {
     }
 
     private fun currentScissor(context: BookElementRenderContext): ScreenRectangle =
-        context.scissorArea ?: ScreenRectangle(
-            context.screenX,
-            context.screenY,
-            context.screenWidth.coerceAtLeast(1),
-            context.screenHeight.coerceAtLeast(1)
-        )
+        context.scissorArea ?: ScreenRectangle(context.screenX, context.screenY, context.screenWidth.coerceAtLeast(1), context.screenHeight.coerceAtLeast(1))
 
     private data class Controls(
         val left: Rect,
@@ -619,11 +503,7 @@ object MultiblockBookPreviewController {
         val width: Int,
         val height: Int
     ) {
-        fun contains(
-            mouseX: Int,
-            mouseY: Int,
-            padding: Int = 0
-        ): Boolean =
+        fun contains(mouseX: Int, mouseY: Int, padding: Int = 0): Boolean =
             mouseX >= x - padding && mouseX < x + width + padding &&
                 mouseY >= y - padding && mouseY < y + height + padding
 
@@ -676,10 +556,7 @@ object MultiblockBookPreviewController {
             )
 
         companion object {
-            fun from(
-                element: MultiblockBookElement,
-                multiblock: Multiblock
-            ): PreviewState {
+            fun from(element: MultiblockBookElement, multiblock: Multiblock): PreviewState {
                 val layered = element.layer != Int.MAX_VALUE
                 return PreviewState(
                     scale = element.scale.coerceIn(MIN_SCALE, MAX_SCALE),
@@ -692,10 +569,7 @@ object MultiblockBookPreviewController {
                 )
             }
 
-            fun from(
-                element: AssembledMultiblockBookElement,
-                multiblock: AssembledMultiblockDefinition
-            ): PreviewState {
+            fun from(element: AssembledMultiblockBookElement, multiblock: AssembledMultiblockDefinition): PreviewState {
                 val layered = element.layer != Int.MAX_VALUE
                 return PreviewState(
                     scale = element.scale.coerceIn(MIN_SCALE, MAX_SCALE),

@@ -19,10 +19,7 @@ object BoundGemHelper {
     fun setBoundPos(stack: ItemStack, pos: BlockPos?) {
         val data = stack.get(DataComponentRegistry.boundGem.get())
         if (pos != null)
-            stack.set(
-                DataComponentRegistry.boundGem.get(),
-                data?.copy(pos = pos, outsideBoundRadius = false) ?: BoundGemComponent(pos)
-            )
+            stack.set(DataComponentRegistry.boundGem.get(), data?.copy(pos = pos, outsideBoundRadius = false) ?: BoundGemComponent(pos))
         else
             stack.set(DataComponentRegistry.boundGem.get(), null)
     }
@@ -30,10 +27,7 @@ object BoundGemHelper {
     @JvmStatic
     fun setLevelKey(stack: ItemStack, world: ResourceKey<Level>?) {
         val data = stack.get(DataComponentRegistry.boundGem.get()) ?: return
-        stack.set(
-            DataComponentRegistry.boundGem.get(),
-            data.copy(dimension = Optional.ofNullable(world), outsideBoundRadius = false)
-        )
+        stack.set(DataComponentRegistry.boundGem.get(), data.copy(dimension = Optional.ofNullable(world), outsideBoundRadius = false))
     }
 
     @JvmStatic
@@ -42,8 +36,7 @@ object BoundGemHelper {
         ?.getOrNull()
 
     @JvmStatic
-    fun isOutsideBoundRadius(stack: ItemStack): Boolean =
-        stack.get(DataComponentRegistry.boundGem.get())?.outsideBoundRadius == true
+    fun isOutsideBoundRadius(stack: ItemStack): Boolean = stack.get(DataComponentRegistry.boundGem.get())?.outsideBoundRadius == true
 
     @JvmStatic
     fun setOutsideBoundRadius(stack: ItemStack, outside: Boolean): Boolean {

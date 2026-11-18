@@ -36,18 +36,10 @@ object MultiblockDefinitions {
             ?: ECRegistries.ASSEMBLED_MULTIBLOCK.getKey(definition)
 
     @JvmStatic
-    fun all(): Map<Identifier, Multiblock> = effectiveMap(
-        ECRegistries.MULTIBLOCK.keySet(),
-        jsonMultiblocks,
-        ::get
-    )
+    fun all(): Map<Identifier, Multiblock> = effectiveMap(ECRegistries.MULTIBLOCK.keySet(), jsonMultiblocks, ::get)
 
     @JvmStatic
-    fun allAssembled(): Map<Identifier, AssembledMultiblockDefinition> = effectiveMap(
-        ECRegistries.ASSEMBLED_MULTIBLOCK.keySet(),
-        jsonAssembledMultiblocks,
-        ::assembled
-    )
+    fun allAssembled(): Map<Identifier, AssembledMultiblockDefinition> = effectiveMap(ECRegistries.ASSEMBLED_MULTIBLOCK.keySet(), jsonAssembledMultiblocks, ::assembled)
 
     @JvmStatic
     fun hasJsonOverride(id: Identifier): Boolean = id in jsonMultiblocks
@@ -69,11 +61,7 @@ object MultiblockDefinitions {
         loadedJsonResources = resources.immutableCopy()
     }
 
-    private fun <T : Any> effectiveMap(
-        codeIds: Set<Identifier>,
-        json: Map<Identifier, T>,
-        resolver: (Identifier) -> T?
-    ): Map<Identifier, T> {
+    private fun <T : Any> effectiveMap(codeIds: Set<Identifier>, json: Map<Identifier, T>, resolver: (Identifier) -> T?): Map<Identifier, T> {
         val result = linkedMapOf<Identifier, T>()
         (codeIds + json.keys).forEach { id -> resolver(id)?.let { result[id] = it } }
         return Collections.unmodifiableMap(result)

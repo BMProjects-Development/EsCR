@@ -11,27 +11,20 @@ import net.minecraft.resources.Identifier
 object BookLinkedTextLayout {
     private const val LINK_COLOR = 0xFF2F67B1.toInt()
     private const val LINK_HOVER_COLOR = 0xFF1B4F91.toInt()
-
     private val TOKEN_REGEX = Regex("\n|\\S+|\\s+")
 
-    fun singleLineWidth(text: BookText, font: Font, owner: Identifier?): Int =
-        parse(text.resolvedText(), owner).sumOf { font.width(it.text) }
+    fun singleLineWidth(text: BookText, font: Font, owner: Identifier?): Int = parse(text.resolvedText(), owner).sumOf { font.width(it.text) }
 
-    fun lineCount(text: BookText, font: Font, width: Int, owner: Identifier?): Int =
-        layout(text, font, width, owner).size
+    fun lineCount(text: BookText, font: Font, width: Int, owner: Identifier?): Int = layout(text, font, width, owner).size
 
-    fun layout(text: BookText, font: Font, width: Int, owner: Identifier?): List<BookLinkedTextLine> =
-        layout(parse(text.resolvedText(), owner), font, width)
+    fun layout(text: BookText, font: Font, width: Int, owner: Identifier?): List<BookLinkedTextLine> = layout(parse(text.resolvedText(), owner), font, width)
 
     fun render(context: BookElementRenderContext, element: TextBookElement) {
         val font = context.mc.font
         val lines = layout(element.text, font, context.width.coerceAtLeast(1), context.research)
         val start = context.textLineStart.coerceAtLeast(0)
         val count = context.textLineCount.takeIf { it > 0 } ?: lines.size
-        val visibleLines = lines.asSequence()
-            .drop(start)
-            .take(count)
-            .take(context.height / font.lineHeight)
+        val visibleLines = lines.asSequence().drop(start).take(count).take(context.height / font.lineHeight)
 
         visibleLines.forEachIndexed { index, line ->
             var x = if (element.centered) context.x + (context.width - line.width) / 2 else context.x
@@ -160,16 +153,9 @@ object BookLinkedTextLayout {
         return segments
     }
 
-    private fun BookText.resolvedText(): String =
-        if (translated) Component.translatable(value).string else value
+    private fun BookText.resolvedText(): String = if (translated) Component.translatable(value).string else value
 }
 
-data class BookLinkedTextLine(
-    val segments: List<BookLinkedTextSegment>,
-    val width: Int
-)
+data class BookLinkedTextLine(val segments: List<BookLinkedTextSegment>, val width: Int)
 
-data class BookLinkedTextSegment(
-    val text: String,
-    val link: BookResearchLink?
-)
+data class BookLinkedTextSegment(val text: String, val link: BookResearchLink?)

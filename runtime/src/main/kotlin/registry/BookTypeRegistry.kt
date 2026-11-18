@@ -15,7 +15,6 @@ object BookTypeRegistry: RegistrationHandler(ModId) {
     private val engineerKey = key(ECRModIDs.ENGINEER)
     private val hoannaKey = key(ECRModIDs.HOANNA)
     private val shadeKey = key(ECRModIDs.SHADE)
-
     val basic = register(basicKey, 0)
     val mru = register(mruKey, 1, basicKey)
     val engineer = register(engineerKey, 2, basicKey, mruKey)

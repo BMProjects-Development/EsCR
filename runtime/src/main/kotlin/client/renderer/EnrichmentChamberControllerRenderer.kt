@@ -57,11 +57,7 @@ class EnrichmentChamberControllerRenderer(
         state.fullyCharged = capacity > 0 && amount >= capacity
         state.overflowing = amount > capacity
         state.animationTicks = (blockEntity.level?.gameTime ?: 0L) + partialTicks.toDouble()
-        state.innerBounds = blockEntity.innerBounds?.move(
-            -blockEntity.blockPos.x.toDouble(),
-            -blockEntity.blockPos.y.toDouble(),
-            -blockEntity.blockPos.z.toDouble()
-        )
+        state.innerBounds = blockEntity.innerBounds?.move(-blockEntity.blockPos.x.toDouble(), -blockEntity.blockPos.y.toDouble(), -blockEntity.blockPos.z.toDouble())
     }
 
     override fun submit(
@@ -75,12 +71,9 @@ class EnrichmentChamberControllerRenderer(
         val centerX = (bounds.minX + bounds.maxX) * 0.5
         val centerY = (bounds.minY + bounds.maxY) * 0.5
         val centerZ = (bounds.minZ + bounds.maxZ) * 0.5
-        val fullHalfX = ((bounds.maxX - bounds.minX - BOUNDS_INSET * 2.0) * 0.5)
-            .coerceAtLeast(0.0)
-        val fullHalfY = ((bounds.maxY - bounds.minY - BOUNDS_INSET * 2.0) * 0.5)
-            .coerceAtLeast(0.0)
-        val fullHalfZ = ((bounds.maxZ - bounds.minZ - BOUNDS_INSET * 2.0) * 0.5)
-            .coerceAtLeast(0.0)
+        val fullHalfX = ((bounds.maxX - bounds.minX - BOUNDS_INSET * 2.0) * 0.5).coerceAtLeast(0.0)
+        val fullHalfY = ((bounds.maxY - bounds.minY - BOUNDS_INSET * 2.0) * 0.5).coerceAtLeast(0.0)
+        val fullHalfZ = ((bounds.maxZ - bounds.minZ - BOUNDS_INSET * 2.0) * 0.5).coerceAtLeast(0.0)
         if (fullHalfX == 0.0 || fullHalfY == 0.0 || fullHalfZ == 0.0) return
 
         poseStack.pushPose()
@@ -93,18 +86,7 @@ class EnrichmentChamberControllerRenderer(
             val highColor = if (state.overflowing) OVERFLOW_HIGH_COLOR else NORMAL_HIGH_COLOR
 
             submitNodeCollector.submitCustomGeometry(poseStack, ENERGY_RENDER_TYPE) { pose, consumer ->
-                renderBox(
-                    pose,
-                    consumer,
-                    -halfX.toFloat(),
-                    -halfY.toFloat(),
-                    -halfZ.toFloat(),
-                    halfX.toFloat(),
-                    halfY.toFloat(),
-                    halfZ.toFloat(),
-                    lowColor,
-                    highColor
-                )
+                renderBox(pose, consumer, -halfX.toFloat(), -halfY.toFloat(), -halfZ.toFloat(), halfX.toFloat(), halfY.toFloat(), halfZ.toFloat(), lowColor, highColor)
                 renderBox(
                     pose,
                     consumer,
@@ -131,18 +113,7 @@ class EnrichmentChamberControllerRenderer(
                 )
             }
         }
-        submitLightning(
-            state,
-            poseStack,
-            submitNodeCollector,
-            camera,
-            centerX,
-            centerY,
-            centerZ,
-            fullHalfX.toFloat(),
-            fullHalfY.toFloat(),
-            fullHalfZ.toFloat()
-        )
+        submitLightning(state, poseStack, submitNodeCollector, camera, centerX, centerY, centerZ, fullHalfX.toFloat(), fullHalfY.toFloat(), fullHalfZ.toFloat())
         poseStack.popPose()
     }
 
@@ -168,19 +139,13 @@ class EnrichmentChamberControllerRenderer(
         lowColor: Int,
         highColor: Int
     ) {
-        quad(pose, consumer, lowColor, lowColor, lowColor, lowColor,
-            minX, minY, minZ, maxX, minY, minZ, maxX, minY, maxZ, minX, minY, maxZ)
-        quad(pose, consumer, highColor, highColor, highColor, highColor,
-            minX, maxY, maxZ, maxX, maxY, maxZ, maxX, maxY, minZ, minX, maxY, minZ)
+        quad(pose, consumer, lowColor, lowColor, lowColor, lowColor, minX, minY, minZ, maxX, minY, minZ, maxX, minY, maxZ, minX, minY, maxZ)
+        quad(pose, consumer, highColor, highColor, highColor, highColor, minX, maxY, maxZ, maxX, maxY, maxZ, maxX, maxY, minZ, minX, maxY, minZ)
 
-        quad(pose, consumer, lowColor, lowColor, highColor, highColor,
-            minX, minY, minZ, minX, minY, maxZ, minX, maxY, maxZ, minX, maxY, minZ)
-        quad(pose, consumer, lowColor, lowColor, highColor, highColor,
-            maxX, minY, maxZ, maxX, minY, minZ, maxX, maxY, minZ, maxX, maxY, maxZ)
-        quad(pose, consumer, lowColor, lowColor, highColor, highColor,
-            maxX, minY, minZ, minX, minY, minZ, minX, maxY, minZ, maxX, maxY, minZ)
-        quad(pose, consumer, lowColor, lowColor, highColor, highColor,
-            minX, minY, maxZ, maxX, minY, maxZ, maxX, maxY, maxZ, minX, maxY, maxZ)
+        quad(pose, consumer, lowColor, lowColor, highColor, highColor, minX, minY, minZ, minX, minY, maxZ, minX, maxY, maxZ, minX, maxY, minZ)
+        quad(pose, consumer, lowColor, lowColor, highColor, highColor, maxX, minY, maxZ, maxX, minY, minZ, maxX, maxY, minZ, maxX, maxY, maxZ)
+        quad(pose, consumer, lowColor, lowColor, highColor, highColor, maxX, minY, minZ, minX, minY, minZ, minX, maxY, minZ, maxX, maxY, minZ)
+        quad(pose, consumer, lowColor, lowColor, highColor, highColor, minX, minY, maxZ, maxX, minY, maxZ, maxX, maxY, maxZ, minX, maxY, maxZ)
     }
 
     private fun quad(
@@ -274,30 +239,10 @@ class EnrichmentChamberControllerRenderer(
                     MIN_THICKNESS_SCALE +
                         boltRandom.nextFloat() * (MAX_THICKNESS_SCALE - MIN_THICKNESS_SCALE)
                     )
-                val outerColor = scaleAlpha(
-                    if (state.overflowing) OVERFLOW_LIGHTNING_OUTER_COLOR else NORMAL_LIGHTNING_OUTER_COLOR,
-                    intensity
-                )
-                val coreColor = scaleAlpha(
-                    if (state.overflowing) OVERFLOW_LIGHTNING_CORE_COLOR else NORMAL_LIGHTNING_CORE_COLOR,
-                    intensity
-                )
+                val outerColor = scaleAlpha(if (state.overflowing) OVERFLOW_LIGHTNING_OUTER_COLOR else NORMAL_LIGHTNING_OUTER_COLOR, intensity)
+                val coreColor = scaleAlpha(if (state.overflowing) OVERFLOW_LIGHTNING_CORE_COLOR else NORMAL_LIGHTNING_CORE_COLOR, intensity)
                 val bolt = EnrichmentLightning.create(seed, halfX, halfY, halfZ, state.overflowing)
-                renderLightning(
-                    pose,
-                    consumer,
-                    bolt,
-                    cameraLocal,
-                    thickness,
-                    outerColor,
-                    coreColor,
-                    growth,
-                    state.animationTicks,
-                    halfX,
-                    halfY,
-                    halfZ,
-                    state.overflowing
-                )
+                renderLightning(pose, consumer, bolt, cameraLocal, thickness, outerColor, coreColor, growth, state.animationTicks, halfX, halfY, halfZ, state.overflowing)
             }
         }
     }
@@ -426,7 +371,6 @@ class EnrichmentChamberControllerRenderer(
         private const val MAX_THICKNESS_SCALE = 1.15F
         private const val BRANCH_ALPHA = 0.82
         private const val LIGHTNING_SEED_STEP = -7046029254386353131L
-
         private const val NORMAL_LOW_COLOR = 0x6050127A
         private const val NORMAL_HIGH_COLOR = 0x608B00FF
         private const val OVERFLOW_LOW_COLOR = 0x600A3696
@@ -438,19 +382,13 @@ class EnrichmentChamberControllerRenderer(
 
         private val ENERGY_RENDER_TYPE: RenderType by lazy {
             val pipeline = RenderPipelinesAccessor.register(
-                RenderPipeline.builder(RenderPipelinesAccessor.debugFilledSnippet())
-                    .withLocation("pipeline/enrichment_chamber_energy".ecRL)
+                RenderPipeline.builder(RenderPipelinesAccessor.debugFilledSnippet()).withLocation("pipeline/enrichment_chamber_energy".ecRL)
                     .withVertexShader("core/enrichment_chamber_energy".ecRL)
                     .withFragmentShader("core/enrichment_chamber_energy".ecRL)
                     .build()
             )
 
-            RenderTypeAccessor.create(
-                "${ModId}_enrichment_chamber_energy",
-                RenderSetup.builder(pipeline)
-                    .sortOnUpload()
-                    .createRenderSetup()
-            )
+            RenderTypeAccessor.create("${ModId}_enrichment_chamber_energy", RenderSetup.builder(pipeline).sortOnUpload().createRenderSetup())
         }
     }
 }

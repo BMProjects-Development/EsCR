@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack
 
 data class MIMDependencyRequest(
     val containerId: Int, val requestId: Int, val target: ItemStack, val batches: Int
-) : CustomPacketPayload {
+): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -41,7 +41,7 @@ data class MIMDependencyEntry(
 
 data class MIMDependencyResponse(
     val containerId: Int, val requestId: Int, val complete: Boolean, val totalMRU: Long, val nodes: List<MIMDependencyEntry>
-) : CustomPacketPayload {
+): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {

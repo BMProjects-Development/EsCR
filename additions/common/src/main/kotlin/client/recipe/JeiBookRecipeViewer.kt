@@ -7,7 +7,7 @@ import mezz.jei.api.runtime.IJeiRuntime
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.ItemStack
 
-object JeiBookRecipeViewer : BookRecipeViewer {
+object JeiBookRecipeViewer: BookRecipeViewer {
     @Volatile
     private var runtime: IJeiRuntime? = null
 

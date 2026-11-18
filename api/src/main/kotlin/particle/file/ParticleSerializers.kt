@@ -14,18 +14,16 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 
 typealias ListOrSingle<T> = @Serializable(with = ListOrSingleSerializer::class) List<T>
 
-class ListOrSingleSerializer<T>(elementSerializer: KSerializer<T>) :
+class ListOrSingleSerializer<T>(elementSerializer: KSerializer<T>):
     JsonTransformingSerializer<List<T>>(ListSerializer(elementSerializer)) {
-    override fun transformDeserialize(element: JsonElement): JsonElement =
-        if (element is JsonArray) element else JsonArray(listOf(element))
+    override fun transformDeserialize(element: JsonElement): JsonElement = if (element is JsonArray) element else JsonArray(listOf(element))
 
-    override fun transformSerialize(element: JsonElement): JsonElement =
-        (element as? JsonArray)?.singleOrNull() ?: element
+    override fun transformSerialize(element: JsonElement): JsonElement = (element as? JsonArray)?.singleOrNull() ?: element
 }
 
 typealias PairAsList<K, V> = @Serializable(with = PairAsListSerializer::class) Pair<K, V>
 
-class PairAsListSerializer<K, V>(keySerializer: KSerializer<K>, valueSerializer: KSerializer<V>) :
+class PairAsListSerializer<K, V>(keySerializer: KSerializer<K>, valueSerializer: KSerializer<V>):
     JsonTransformingSerializer<Pair<K, V>>(PairSerializer(keySerializer, valueSerializer)) {
     override fun transformDeserialize(element: JsonElement): JsonElement =
         if (element is JsonArray) JsonObject(mapOf("first" to element[0], "second" to element[1]))
@@ -36,7 +34,7 @@ class PairAsListSerializer<K, V>(keySerializer: KSerializer<K>, valueSerializer:
 class SortedMap<K : Comparable<K>, V> private constructor(
     private val sortedEntries: List<Map.Entry<K, V>>,
     private val backing: Map<K, V> = sortedEntries.associate { it.key to it.value }
-) : Map<K, V> by backing {
+): Map<K, V> by backing {
     constructor(map: Map<K, V>) : this(map.entries.sortedBy { it.key })
 
     fun floorEntry(key: K) = findEntry(key, below = true, inclusive = true)
@@ -60,15 +58,10 @@ class SortedMap<K : Comparable<K>, V> private constructor(
     }
 }
 
-class SortedMapSerializer<K : Comparable<K>, V>(
-    keySerializer: KSerializer<K>,
-    valueSerializer: KSerializer<V>
-) : KSerializer<SortedMap<K, V>> {
+class SortedMapSerializer<K : Comparable<K>, V>(keySerializer: KSerializer<K>, valueSerializer: KSerializer<V>): KSerializer<SortedMap<K, V>> {
     private val delegate = MapSerializer(keySerializer, valueSerializer)
     override val descriptor = delegate.descriptor
-    override fun serialize(encoder: Encoder, value: SortedMap<K, V>) =
-        encoder.encodeSerializableValue(delegate, value)
+    override fun serialize(encoder: Encoder, value: SortedMap<K, V>) = encoder.encodeSerializableValue(delegate, value)
 
-    override fun deserialize(decoder: Decoder) =
-        SortedMap(decoder.decodeSerializableValue(delegate))
+    override fun deserialize(decoder: Decoder) = SortedMap(decoder.decodeSerializableValue(delegate))
 }

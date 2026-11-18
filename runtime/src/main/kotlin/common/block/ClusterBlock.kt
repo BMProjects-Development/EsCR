@@ -9,16 +9,11 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
 
-open class ClusterBlock(
-    properties: Properties
-) : Block(properties) {
+open class ClusterBlock(properties: Properties): Block(properties) {
     override fun getShape(
         s: BlockState,
         l: BlockGetter,
         p: BlockPos,
         c: CollisionContext
-    ): VoxelShape =
-        Shapes
-            .rotateAll(boxZ(10.0, 16.0 - 7, 16.0))
-            .getValue(Direction.DOWN.opposite)
+    ): VoxelShape = Shapes.rotateAll(boxZ(10.0, 16.0 - 7, 16.0)).getValue(Direction.DOWN.opposite)
 }

@@ -10,11 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import java.util.UUID
 
-data class OriginalBlockSnapshot(
-    val position: BlockPos,
-    val state: BlockState,
-    val blockEntityData: CompoundTag?
-) {
+data class OriginalBlockSnapshot(val position: BlockPos, val state: BlockState, val blockEntityData: CompoundTag?) {
     fun createBlockEntity(level: Level): BlockEntity? =
         blockEntityData?.let { data ->
             BlockEntity.loadStatic(position, state, data.copy(), level.registryAccess())
@@ -59,8 +55,7 @@ data class AssembledMultiblockSnapshot(
         }
     }
 
-    fun originalAt(position: BlockPos): OriginalBlockSnapshot? =
-        parts.firstOrNull { part -> part.position == position }
+    fun originalAt(position: BlockPos): OriginalBlockSnapshot? = parts.firstOrNull { part -> part.position == position }
 }
 
 data class AssembledMultiblockPartData(

@@ -11,29 +11,19 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries
 import java.util.function.BiPredicate
 import java.util.function.Supplier
 
-object NeoForgeAttachmentPlatform : AttachmentPlatform {
-    override fun <T : Any> register(
-        id: Identifier,
-        specification: AttachmentSpecification<T>
-    ): PlatformAttachment<T> {
+object NeoForgeAttachmentPlatform: AttachmentPlatform {
+    override fun <T : Any> register(id: Identifier, specification: AttachmentSpecification<T>): PlatformAttachment<T> {
         val builder = AttachmentType.builder(specification.initializer)
         specification.persistence?.let { builder.serialize(it.mapCodec) }
         if (specification.copyOnDeath) builder.copyOnDeath()
         specification.synchronization?.let { synchronization ->
-            builder.sync(
-                BiPredicate { holder, player -> synchronization.predicate.test(holder, player) },
-                synchronization.codec
-            )
+            builder.sync(BiPredicate { holder, player -> synchronization.predicate.test(holder, player) }, synchronization.codec)
         }
-        val reference: Supplier<AttachmentType<T>> = RegistrationPlatform.instance.register(
-            id,
-            NeoForgeRegistries.ATTACHMENT_TYPES,
-            Supplier { builder.build() }
-        )
+        val reference: Supplier<AttachmentType<T>> = RegistrationPlatform.instance.register(id, NeoForgeRegistries.ATTACHMENT_TYPES, Supplier { builder.build() })
         return NeoForgeAttachment(reference)
     }
 
-    private class NeoForgeAttachment<T : Any>(private val type: Supplier<AttachmentType<T>>) : PlatformAttachment<T> {
+    private class NeoForgeAttachment<T : Any>(private val type: Supplier<AttachmentType<T>>): PlatformAttachment<T> {
         override fun get(holder: Any): T? = holder.target().getExistingDataOrNull(type)
 
         override fun getOrCreate(holder: Any): T = holder.target().getData(type)

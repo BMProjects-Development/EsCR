@@ -61,8 +61,7 @@ class InventoryNetwork(endpoints: List<InventoryEndpoint>) {
         return plan(inputs, prepared) { it.commit() } == true
     }
 
-    fun canTransact(inputs: List<ItemStack>, outputs: List<ItemStack>, isolatedOutputs: Set<Int> = emptySet()): Boolean =
-        plan(inputs, outputs, isolatedOutputs) { true } == true
+    fun canTransact(inputs: List<ItemStack>, outputs: List<ItemStack>, isolatedOutputs: Set<Int> = emptySet()): Boolean = plan(inputs, outputs, isolatedOutputs) { true } == true
 
     private fun <T> plan(
         inputs: List<ItemStack>, outputs: List<ItemStack>, isolatedOutputs: Set<Int> = emptySet(),
@@ -80,8 +79,7 @@ class InventoryNetwork(endpoints: List<InventoryEndpoint>) {
 
     private class ItemStackKey(stack: ItemStack) {
         val stack = stack.copyWithCount(1)
-        override fun equals(other: Any?): Boolean =
-            other is ItemStackKey && ItemStack.isSameItemSameComponents(stack, other.stack)
+        override fun equals(other: Any?): Boolean = other is ItemStackKey && ItemStack.isSameItemSameComponents(stack, other.stack)
         override fun hashCode(): Int = ItemStack.hashItemAndComponents(stack)
     }
 }

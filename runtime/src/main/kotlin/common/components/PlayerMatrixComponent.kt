@@ -14,7 +14,6 @@ class PlayerMatrixComponent(mru: Int): ModifiableMRUStorage {
     override val mru: Int get() = mutableMRU
     override val mruCapacity: Int = Int.MAX_VALUE
     override val mruType: MRUType = MRUTypeRegistry.ubmru
-
     override val isFilled: Boolean = this.mutableMRU == Int.MAX_VALUE
 
     fun copy(): PlayerMatrixComponent = PlayerMatrixComponent(this.mutableMRU)
@@ -47,9 +46,7 @@ class PlayerMatrixComponent(mru: Int): ModifiableMRUStorage {
     companion object {
         @JvmField
         val MAP_CODEC: MapCodec<PlayerMatrixComponent> = RecordCodecBuilder.mapCodec {
-            it.group(
-                Codec.INT.fieldOf("stored_mru").forGetter(PlayerMatrixComponent::mru)
-            ).apply(it, ::PlayerMatrixComponent)
+            it.group(Codec.INT.fieldOf("stored_mru").forGetter(PlayerMatrixComponent::mru)).apply(it, ::PlayerMatrixComponent)
         }
 
         @JvmField

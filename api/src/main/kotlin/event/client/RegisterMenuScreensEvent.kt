@@ -8,9 +8,7 @@ import net.minecraft.world.entity.player.Inventory
 import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.MenuType
 
-class RegisterMenuScreensEvent(
-    private val registrar: MenuScreenRegistrar
-): Event() {
+class RegisterMenuScreensEvent(private val registrar: MenuScreenRegistrar): Event() {
     fun <M, S> register(
         menuType: MenuType<out M>, screenConstructor: ScreenConstructor<M, S>
     ) where M : AbstractContainerMenu, S : Screen, S : MenuAccess<M> = registrar.register(menuType, screenConstructor)

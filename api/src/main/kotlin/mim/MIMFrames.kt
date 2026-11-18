@@ -60,6 +60,5 @@ object MIMFrames {
     else stack.item as? MIMFrameProvider ?: adapters.values.firstOrNull { it.accepts(stack) }?.provider
 
     @JvmStatic
-    fun patterns(level: ServerLevel, stack: ItemStack): List<MIMCraftingPattern> =
-        provider(stack)?.patterns(level, stack.copy()).orEmpty()
+    fun patterns(level: ServerLevel, stack: ItemStack): List<MIMCraftingPattern> = provider(stack)?.patterns(level, stack.copy()).orEmpty()
 }

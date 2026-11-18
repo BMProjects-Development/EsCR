@@ -27,26 +27,18 @@ import kotlin.math.*
 
 object MRULinkRenderer {
     private const val CROSS_DIMENSION_HEIGHT = 5.0
-
     private const val BALLS_PER_BLOCK = 3F
-
     private const val MIN_BALL_COUNT = 8
     private const val MAX_BALL_COUNT = 56
-
     private const val BALL_SIZE = 0.085F
-
     private const val RADIUS = 0.2F
-
     private const val TURNS = 0.35F
-
     private const val FLOW_SPEED_BLOCKS_PER_SECOND = 2.4
     private const val FADE_OUT_DURATION_SECONDS = 0.6
     private const val ALPHA_FADE_DISTANCE = 0.4F
     private const val RADIUS_FADE_DISTANCE = 0.7F
     private const val MIN_PATH_LENGTH = 0.01F
-
     private const val TAU = (PI * 2.0).toFloat()
-
     private var renderedLevel: ClientLevel? = null
     private var viewerWasActive = false
     private val activeConnections = mutableMapOf<ConnectionKey, ConnectionAnimation>()
@@ -55,19 +47,14 @@ object MRULinkRenderer {
 
     private val renderType: RenderType by lazy {
         val pipeline = RenderPipelinesAccessor.register(
-            RenderPipeline.builder(RenderPipelinesAccessor.debugFilledSnippet())
-                .withLocation("pipeline/helix".ecRL)
-                .withVertexShader("core/helix".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.debugFilledSnippet()).withLocation("pipeline/helix".ecRL).withVertexShader("core/helix".ecRL)
                 .withFragmentShader("core/helix".ecRL)
                 .withColorTargetState(ColorTargetState(BlendFunction.TRANSLUCENT))
                 .withCull(false)
                 .build()
         )
 
-        RenderTypeAccessor.create("${ModId}_helix", RenderSetup.builder(pipeline)
-            .sortOnUpload()
-            .createRenderSetup()
-        )
+        RenderTypeAccessor.create("${ModId}_helix", RenderSetup.builder(pipeline).sortOnUpload().createRenderSetup())
     }
 
     @JvmStatic
@@ -126,9 +113,7 @@ object MRULinkRenderer {
         val billboardRotation = Quaternionf(camera.orientation).mul(Quaternionf().rotationY(PI.toFloat()))
 
         collector.submitCustomGeometry(poseStack, renderType) { pose, consumer ->
-            batch.balls.forEach { ball ->
-                renderBall(pose, consumer, ball, billboardRotation, cameraPos, batch.opacity)
-            }
+            batch.balls.forEach { ball -> renderBall(pose, consumer, ball, billboardRotation, cameraPos, batch.opacity) }
         }
     }
 
@@ -170,14 +155,7 @@ object MRULinkRenderer {
 
             if (camera.pos.distanceToSqr(deviceCenter) > renderDistanceSquared) return@forEach
 
-            appendConnectionBalls(
-                balls,
-                start,
-                end,
-                (timeSeconds - animation.startedAt).coerceAtLeast(0.0),
-                camera,
-                renderDistanceSquared
-            )
+            appendConnectionBalls(balls, start, end, (timeSeconds - animation.startedAt).coerceAtLeast(0.0), camera, renderDistanceSquared)
         }
 
         activeConnections.keys.retainAll(seenConnections)
@@ -296,8 +274,7 @@ object MRULinkRenderer {
         fun vertex(x: Float, y: Float, u: Float, v: Float) {
             val point = Vector3f(x, y, 0F).rotate(rotation).add(cameraRelativePosition)
 
-            consumer.addVertex(pose, point.x, point.y, point.z)
-                .setColor(if (u > 0.5F) 255 else 0, if (v > 0.5F) 255 else 0, encodedPhase, encodedAlpha)
+            consumer.addVertex(pose, point.x, point.y, point.z).setColor(if (u > 0.5F) 255 else 0, if (v > 0.5F) 255 else 0, encodedPhase, encodedAlpha)
         }
 
         vertex(-BALL_SIZE, -BALL_SIZE, 0F, 1F)

@@ -20,13 +20,9 @@ import net.minecraft.world.item.Items
 object BookTaskRenderer {
     private const val TASK_CELL_SIZE = 20
     private const val TASKS_PER_ROW = 11
-
     private val checkmark = Identifier.withDefaultNamespace("icon/checkmark")
 
-    fun render(
-        context: BookElementRenderContext,
-        element: TaskListBookElement
-    ) {
+    fun render(context: BookElementRenderContext, element: TaskListBookElement) {
         val entry = ResearchCatalog.snapshot().entries[element.research] ?: return
         val level = entry.taskLevels.getOrNull(element.level) ?: return
         val offset = entry.taskLevels.take(element.level).sumOf { it.tasks.size }
@@ -70,24 +66,14 @@ object BookTaskRenderer {
         val size = (16 * context.scale).toInt().coerceAtLeast(1)
         if (mouseX in left until left + size && mouseY in top until top + size) {
             context.graphics.requestCursor(CursorTypes.POINTING_HAND)
-            context.graphics.setComponentTooltipForNextFrame(
-                Minecraft.getInstance().font,
-                tooltip(definition, stack, progress),
-                mouseX,
-                mouseY
-            )
+            context.graphics.setComponentTooltipForNextFrame(Minecraft.getInstance().font, tooltip(definition, stack, progress), mouseX, mouseY)
         }
     }
 
-    private fun taskStack(
-        task: ResearchTask,
-        customIcon: BookIcon?
-    ): ItemStack? =
+    private fun taskStack(task: ResearchTask, customIcon: BookIcon?): ItemStack? =
         when {
             task is ItemResearchTask -> {
-                Minecraft
-                    .getInstance()
-                    .level
+                Minecraft.getInstance().level
                     ?.registryAccess()
                     ?.let { task.createStack(it) }
             }
@@ -109,29 +95,20 @@ object BookTaskRenderer {
             }
         }
 
-    private fun tooltip(
-        definition: ResearchTaskDefinition,
-        stack: ItemStack?,
-        progress: ResearchTaskProgress
-    ): List<Component> =
+    private fun tooltip(definition: ResearchTaskDefinition, stack: ItemStack?, progress: ResearchTaskProgress): List<Component> =
         buildList {
             add(taskTitle(definition, stack))
             add(Component.literal("${progress.current}/${progress.required}"))
         }
 
-    private fun taskTitle(
-        definition: ResearchTaskDefinition,
-        stack: ItemStack?
-    ): Component =
+    private fun taskTitle(definition: ResearchTaskDefinition, stack: ItemStack?): Component =
         definition.title?.component() ?: when (val task = definition.task) {
             is CraftingResearchTask -> {
                 Component.literal(task.recipe.toString())
             }
 
             is ExperienceResearchTask -> {
-                Component.translatable(
-                    if (task.levels) "screen.$ModId.research_book.experience.levels" else "screen.$ModId.research_book.experience"
-                )
+                Component.translatable(if (task.levels) "screen.$ModId.research_book.experience.levels" else "screen.$ModId.research_book.experience")
             }
 
             else -> {

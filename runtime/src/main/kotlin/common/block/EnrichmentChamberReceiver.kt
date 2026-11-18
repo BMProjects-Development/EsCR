@@ -15,10 +15,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
 
 class EnrichmentChamberReceiver(properties: Properties): Block(properties), EntityBlock {
-    override fun newBlockEntity(
-        worldPosition: BlockPos,
-        blockState: BlockState
-    ): BlockEntity = EnrichmentChamberReceiverEntity(worldPosition, blockState)
+    override fun newBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity = EnrichmentChamberReceiverEntity(worldPosition, blockState)
 
     override fun <T : BlockEntity> getTicker(
         level: Level,

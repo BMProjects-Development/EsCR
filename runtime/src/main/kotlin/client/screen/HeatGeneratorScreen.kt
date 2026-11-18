@@ -19,7 +19,7 @@ import kotlin.math.ceil
 
 class HeatGeneratorScreen(menu: HeatGeneratorMenu, inventory: Inventory, title: Component): AbstractContainerScreen<HeatGeneratorMenu>(menu, inventory, title) {
     private val mruAnimation = MRULineAnimation()
-    private val displayedStorage = object : MRUStorage {
+    private val displayedStorage = object: MRUStorage {
         override val mru: Int get() = menu.mru
         override val mruCapacity: Int get() = menu.mruCapacity
         override val mruType: MRUType get() = MRUTypeRegistry.radiationUnit
@@ -46,33 +46,13 @@ class HeatGeneratorScreen(menu: HeatGeneratorMenu, inventory: Inventory, title: 
 
     override fun extractBackground(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         super.extractBackground(graphics, mouseX, mouseY, deltaTicks)
-        graphics.blit(
-            RenderPipelines.GUI_TEXTURED, TEXTURE,
-            this.leftPos, this.topPos,
-            0F, 0F,
-            this.imageWidth, this.imageHeight,
-            256, 256
-        )
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0F, 0F, this.imageWidth, this.imageHeight, 256, 256)
 
-        drawMRULine(
-            graphics, this.displayedStorage,
-            26, 28,
-            this.leftPos, this.topPos,
-            124, 8,
-            mouseX, mouseY,
-            animation = this.mruAnimation,
-            deltaTicks = deltaTicks
-        )
+        drawMRULine(graphics, this.displayedStorage, 26, 28, this.leftPos, this.topPos, 124, 8, mouseX, mouseY, animation = this.mruAnimation, deltaTicks = deltaTicks)
 
-        val mode = Component.translatable(
-            if (this.menu.isUpgraded) "screen.$ModId.heat_generator.mode.ultra"
-            else "screen.$ModId.heat_generator.mode.normal"
-        )
+        val mode = Component.translatable(if (this.menu.isUpgraded) "screen.$ModId.heat_generator.mode.ultra" else "screen.$ModId.heat_generator.mode.normal")
         val temperature = if (this.menu.isUpgraded)
-            Component.translatable(
-                "screen.$ModId.heat_generator.temperature",
-                this.menu.temperatureUnit.formatCelsius(this.menu.temperatureCelsius)
-            )
+            Component.translatable("screen.$ModId.heat_generator.temperature", this.menu.temperatureUnit.formatCelsius(this.menu.temperatureCelsius))
         else
             mode
 
@@ -80,9 +60,7 @@ class HeatGeneratorScreen(menu: HeatGeneratorMenu, inventory: Inventory, title: 
         val burnHeight = if (this.menu.maxBurnTime <= 0)
             0
         else
-            ceil(this.menu.burnTimeRemaining * FIRE_PROGRESS_HEIGHT.toDouble() / this.menu.maxBurnTime)
-                .toInt()
-                .coerceIn(0, FIRE_PROGRESS_HEIGHT)
+            ceil(this.menu.burnTimeRemaining * FIRE_PROGRESS_HEIGHT.toDouble() / this.menu.maxBurnTime).toInt().coerceIn(0, FIRE_PROGRESS_HEIGHT)
 
         graphics.text(this.font, temperature, this.leftPos + 8, this.topPos + 8, TEXT_COLOR, false)
         graphics.text(this.font, generation, this.leftPos + 8, this.topPos + 18, TEXT_COLOR, false)
@@ -108,7 +86,6 @@ class HeatGeneratorScreen(menu: HeatGeneratorMenu, inventory: Inventory, title: 
         private const val FIRE_SIZE = 14
         private const val FIRE_PROGRESS_HEIGHT = 13
         private const val TEXT_COLOR = 0xFF404040.toInt()
-
         private val TEXTURE = ECRModIDs.guiLocation(ECRModIDs.MAGICAL_TELEPORTER)
         private val FIRE_SPRITE = Identifier.withDefaultNamespace("container/furnace/lit_progress")
     }

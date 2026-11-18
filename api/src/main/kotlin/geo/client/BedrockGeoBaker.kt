@@ -99,10 +99,7 @@ object BedrockGeoBaker {
     }
 
     private fun topologicalBones(source: List<BedrockBone>): List<BedrockBone> {
-        val duplicates = source.groupingBy(BedrockBone::name)
-            .eachCount()
-            .filterValues { count -> count > 1 }
-            .keys
+        val duplicates = source.groupingBy(BedrockBone::name).eachCount().filterValues { count -> count > 1 }.keys
         require(duplicates.isEmpty()) {
             "Duplicate GEO bone name(s): ${duplicates.sorted().joinToString()}"
         }
@@ -154,11 +151,7 @@ object BedrockGeoBaker {
             Vector3f(maxX, minY, maxZ)
         )
         val pivot = Vector3f(-cube.pivot.x / MODEL_UNITS, cube.pivot.y / MODEL_UNITS, cube.pivot.z / MODEL_UNITS)
-        val transform = Matrix4f()
-            .translate(pivot)
-            .rotateZ(radians(cube.rotation.z))
-            .rotateY(radians(-cube.rotation.y))
-            .rotateX(radians(-cube.rotation.x))
+        val transform = Matrix4f().translate(pivot).rotateZ(radians(cube.rotation.z)).rotateY(radians(-cube.rotation.y)).rotateX(radians(-cube.rotation.x))
             .translate(-pivot.x, -pivot.y, -pivot.z)
         vertices.forEach { point ->
             val transformed = transform.transform(Vector4f(point, 1F))
@@ -171,10 +164,7 @@ object BedrockGeoBaker {
             val faceUv = faceUv(cube, direction) ?: return@mapNotNull null
             val vertexIndices = faceVertices(direction, mirror)
             val normal = normalTransform.transform(normal(direction, mirror)).normalize()
-            val uv = rotateUvs(
-                baseUvs(faceUv, textureWidth, textureHeight, mirror),
-                faceUv.rotation
-            )
+            val uv = rotateUvs(baseUvs(faceUv, textureWidth, textureHeight, mirror), faceUv.rotation)
 
             BakedGeoQuad(
                 FloatArray(12) { index ->

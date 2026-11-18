@@ -84,13 +84,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         val mesh = BedrockGeoGpuMeshCache.getOrCreate(first.data.model) ?: return null
         val paletteSlice = palettes.write(first.data.model, submits)
         val stride = BedrockGeoGpuPacking.paletteStrideTexels(first.data.model)
-        return PreparedBatch(
-            mesh,
-            first.renderType.prepare(),
-            paletteSlice,
-            info.write(GeoInfo(first.data.model.bones.size, stride)),
-            submits.size
-        )
+        return PreparedBatch(mesh, first.renderType.prepare(), paletteSlice, info.write(GeoInfo(first.data.model.bones.size, stride)), submits.size)
     }
 
     private fun draw(pass: RenderPass, stage: OitStage?, batch: PreparedBatch) {
@@ -111,9 +105,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         val pipeline = if (stage == null)
             prepared.pipeline()
         else
-            requireNotNull(prepared.oitPipelineSet()) {
-                "OIT pipeline set is missing for ${prepared.name()}"
-            }.getPipeline(stage)
+            requireNotNull(prepared.oitPipelineSet()) { "OIT pipeline set is missing for ${prepared.name()}" }.getPipeline(stage)
 
         pass.setPipeline(RenderSystem.getCompiledPipeline(pipeline))
         if (prepared.scissorState().enabled()) {
@@ -128,9 +120,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         pass.setUniform("GeoInfo", batch.info)
         pass.setUniform("GeoMatrices", batch.palette)
         pass.setVertexBuffer(0, batch.mesh.vertexBuffer.slice())
-        prepared.textures().forEach { texture ->
-            pass.setUniform(texture.name(), texture.textureView(), texture.sampler())
-        }
+        prepared.textures().forEach { texture -> pass.setUniform(texture.name(), texture.textureView(), texture.sampler()) }
         pass.setIndexBuffer(indexBuffer, indexType)
         pass.drawIndexed(batch.mesh.indexCount, batch.instanceCount, 0, 0, 0)
     }
@@ -153,7 +143,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         }
     }
 
-    private class InfoStorage : AutoCloseable {
+    private class InfoStorage: AutoCloseable {
         private val retired = arrayListOf<MappableRingBuffer>()
         private var buffer: MappableRingBuffer? = null
         private var writeOffset = 0
@@ -165,19 +155,13 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
             if (current == null || alignedOffset + GEO_INFO_BYTES > current.size()) {
                 current?.let(retired::add)
                 val capacity = Mth.smallestEncompassingPowerOfTwo(maxOf(INITIAL_INFO_BYTES, GEO_INFO_BYTES))
-                current = MappableRingBuffer(
-                    { "Bedrock GEO Info" },
-                    GpuBuffer.USAGE_MAP_WRITE or GpuBuffer.USAGE_UNIFORM,
-                    capacity
-                )
+                current = MappableRingBuffer({ "Bedrock GEO Info" }, GpuBuffer.USAGE_MAP_WRITE or GpuBuffer.USAGE_UNIFORM, capacity)
                 buffer = current
                 alignedOffset = 0
             }
 
             val slice = current.currentBuffer().slice(alignedOffset.toLong(), GEO_INFO_BYTES.toLong())
-            slice.map(false, true).use { view ->
-                info.write(view.data().order(ByteOrder.nativeOrder()))
-            }
+            slice.map(false, true).use { view -> info.write(view.data().order(ByteOrder.nativeOrder())) }
             writeOffset = alignedOffset + GEO_INFO_BYTES
             return slice
         }
@@ -197,7 +181,7 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
         }
     }
 
-    private class PaletteStorage : AutoCloseable {
+    private class PaletteStorage: AutoCloseable {
         private val retired = arrayListOf<MappableRingBuffer>()
         private var buffer: MappableRingBuffer? = null
         private var writeOffset = 0
@@ -214,19 +198,13 @@ class BedrockGeoGpuFeatureRenderer: FeatureRenderer<BedrockGeoGpuSubmit> {
             if (current == null || alignedOffset + size > current.size()) {
                 current?.let(retired::add)
                 val capacity = Mth.smallestEncompassingPowerOfTwo(maxOf(INITIAL_PALETTE_BYTES, size))
-                current = MappableRingBuffer(
-                    { "Bedrock GEO Matrices" },
-                    GpuBuffer.USAGE_MAP_WRITE or GpuBuffer.USAGE_UNIFORM_TEXEL_BUFFER,
-                    capacity
-                )
+                current = MappableRingBuffer({ "Bedrock GEO Matrices" }, GpuBuffer.USAGE_MAP_WRITE or GpuBuffer.USAGE_UNIFORM_TEXEL_BUFFER, capacity)
                 buffer = current
                 alignedOffset = 0
             }
 
             val slice = current.currentBuffer().slice(alignedOffset.toLong(), size.toLong())
-            slice.map(false, true).use { view ->
-                writePalette(model, submits, view.data().order(ByteOrder.nativeOrder()))
-            }
+            slice.map(false, true).use { view -> writePalette(model, submits, view.data().order(ByteOrder.nativeOrder())) }
             writeOffset = alignedOffset + size
             return slice
         }

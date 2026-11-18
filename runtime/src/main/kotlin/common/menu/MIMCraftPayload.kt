@@ -8,9 +8,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 
-data class MIMCraftPayload(
-    val containerId: Int, val expectedItemStack: ItemStack, val batches: Int
-) : CustomPacketPayload {
+data class MIMCraftPayload(val containerId: Int, val expectedItemStack: ItemStack, val batches: Int): CustomPacketPayload {
     override fun type(): CustomPacketPayload.Type<out CustomPacketPayload> = TYPE
 
     companion object {
@@ -24,8 +22,7 @@ data class MIMCraftPayload(
 
         fun handle(player: ServerPlayer, payload: MIMCraftPayload) {
             val menu = player.containerMenu as? MIMMenu ?: return
-            if (menu.containerId == payload.containerId)
-                menu.requestCraft(player, payload.expectedItemStack, payload.batches)
+            if (menu.containerId == payload.containerId) menu.requestCraft(player, payload.expectedItemStack, payload.batches)
         }
     }
 }

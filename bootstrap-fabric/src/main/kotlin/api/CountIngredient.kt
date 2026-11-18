@@ -20,10 +20,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplay
 import java.util.stream.Stream
 
 @Suppress("DEPRECATION")
-class CountIngredient(
-    private val base: Ingredient,
-    val count: Int
-): CustomIngredient {
+class CountIngredient(private val base: Ingredient, val count: Int): CustomIngredient {
     override fun test(stack: ItemStack): Boolean = count <= stack.count && base.test(stack)
 
     override fun items(): Stream<Holder<Item>> = base.items()
@@ -34,8 +31,7 @@ class CountIngredient(
 
     override fun display(): SlotDisplay = SlotDisplay.Composite(base.items().map(this::entryDisplay).toList())
 
-    private fun entryDisplay(holder: Holder<Item>): SlotDisplay =
-        SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate(holder.value(), this.count))
+    private fun entryDisplay(holder: Holder<Item>): SlotDisplay = SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate(holder.value(), this.count))
 
     class Serializer: CustomIngredientSerializer<CountIngredient> {
         override fun getIdentifier(): Identifier = ECRModIDs.COUNT.ecRL

@@ -24,9 +24,7 @@ class MatrixDestructorRenderState: BlockEntityRenderState() {
     var animationTicks = 0.0
 }
 
-class MatrixDestructorRenderer(
-    private val ctx: BlockEntityRendererProvider.Context
-): BlockEntityRenderer<MatrixDestructorEntity, MatrixDestructorRenderState> {
+class MatrixDestructorRenderer(private val ctx: BlockEntityRendererProvider.Context): BlockEntityRenderer<MatrixDestructorEntity, MatrixDestructorRenderState> {
     override fun createRenderState(): MatrixDestructorRenderState = MatrixDestructorRenderState()
 
     override fun extractRenderState(

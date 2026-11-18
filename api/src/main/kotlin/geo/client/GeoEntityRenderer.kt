@@ -15,9 +15,7 @@ open class GeoEntityRenderState: EntityRenderState() {
     var bodyYaw = 0F
 }
 
-open class GeoEntityRenderer<T>(
-    context: EntityRendererProvider.Context
-): EntityRenderer<T, GeoEntityRenderState>(context) where T : Entity, T : GeoAnimatable {
+open class GeoEntityRenderer<T>(context: EntityRendererProvider.Context): EntityRenderer<T, GeoEntityRenderState>(context) where T : Entity, T : GeoAnimatable {
     override fun createRenderState() = GeoEntityRenderState()
 
     override fun extractRenderState(entity: T, state: GeoEntityRenderState, partialTick: Float) {
@@ -25,12 +23,7 @@ open class GeoEntityRenderer<T>(
         val now = ClientGeoAnimations.clientTimeSeconds(partialTick)
         state.bodyYaw = entity.getYRot(partialTick)
         val molang = entity.geoMolangContext(partialTick)
-        state.geo = BedrockGeoRenderEngine.extract(
-            entity.geoModel,
-            ClientGeoAnimations.snapshot(entity.geoAnimationState, molang, now),
-            molang,
-            now
-        )
+        state.geo = BedrockGeoRenderEngine.extract(entity.geoModel, ClientGeoAnimations.snapshot(entity.geoAnimationState, molang, now), molang, now)
     }
 
     override fun submit(
@@ -48,6 +41,5 @@ open class GeoEntityRenderer<T>(
         super.submit(state, poseStack, collector, camera)
     }
 
-    override fun getShadowRadius(state: GeoEntityRenderState): Float =
-        state.geo?.shadowRadius ?: super.getShadowRadius(state)
+    override fun getShadowRadius(state: GeoEntityRenderState): Float = state.geo?.shadowRadius ?: super.getShadowRadius(state)
 }

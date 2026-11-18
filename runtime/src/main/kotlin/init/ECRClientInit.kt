@@ -15,7 +15,6 @@ import com.algorithmlx.ecr.api.particle.BedrockParticleRenderTypes
 import com.algorithmlx.ecr.api.particle.BedrockParticles
 import com.algorithmlx.ecr.api.particle.ClientParticleSystems
 import com.algorithmlx.ecr.api.research.ClientResearchState
-import com.algorithmlx.ecr.api.vfx.VfxClient
 import com.algorithmlx.ecr.api.utils.ecRL
 import com.algorithmlx.ecr.client.ECRConnectedTextures
 import com.algorithmlx.ecr.client.book.ResearchBookClient
@@ -54,7 +53,6 @@ object ECRClientInit {
 
         ECRConnectedTextures.init()
         BedrockParticleRenderTypes.init()
-        VfxClient.init()
         ECRClientPackets.init()
         registerReceivers()
         registerEventHandlers()
@@ -108,10 +106,7 @@ object ECRClientInit {
         registerBlockEntityRenderer(BlockEntityTypeRegistry.assembledMultiblockPart.get(), ::AssembledMultiblockRenderer)
         registerBlockEntityRenderer(BlockEntityTypeRegistry.rayTower.get(), ::AssembledMultiblockRenderer)
         registerBlockEntityRenderer(BlockEntityTypeRegistry.matrixDestructor.get(), ::MatrixDestructorRenderer)
-        registerBlockEntityRenderer(
-            BlockEntityTypeRegistry.enrichmentChamberController.get(),
-            ::EnrichmentChamberControllerRenderer
-        )
+        registerBlockEntityRenderer(BlockEntityTypeRegistry.enrichmentChamberController.get(), ::EnrichmentChamberControllerRenderer)
     }
 
     private fun EntityRenderersEvent.RegisterLayerDefinitions.registerLayerDefinitions() {

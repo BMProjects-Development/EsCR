@@ -21,7 +21,7 @@ class MatrixDestructorMenu(
     container: Container,
     val blockEntity: BlockEntity?,
     access: ContainerLevelAccess
-) : AbstractMenu(MenuTypeRegistry.matrixDestructor, containerId, access) {
+): AbstractMenu(MenuTypeRegistry.matrixDestructor, containerId, access) {
     constructor(containerId: Int, inv: Inventory, typeData: MenuTypeData) : this(
         containerId,
         inv,
@@ -47,10 +47,7 @@ class MatrixDestructorMenu(
         inv.make()
     }
 
-    override fun quickMoveStack(
-        player: Player,
-        index: Int
-    ): ItemStack {
+    override fun quickMoveStack(player: Player, index: Int): ItemStack {
         var qms = ItemStack.EMPTY
         val ms = this.slots[index]
 

@@ -23,22 +23,16 @@ object MagicShieldRenderer {
     private const val SHIELD_MARGIN = 0.08F
     private const val MIN_RADIUS = 0.15F
     private const val MIN_DIRECTION_LENGTH = 0.000001F
-
     private val waves = mutableListOf<MagicShieldWave>()
     private val magicShieldRenderType: RenderType by lazy {
         val pipeline = RenderPipelinesAccessor.register(
-            RenderPipeline.builder(RenderPipelinesAccessor.debugFilledSnippet())
-                .withLocation("pipeline/magic_shield".ecRL)
-                .withVertexShader("core/magic_shield".ecRL)
+            RenderPipeline.builder(RenderPipelinesAccessor.debugFilledSnippet()).withLocation("pipeline/magic_shield".ecRL).withVertexShader("core/magic_shield".ecRL)
                 .withFragmentShader("core/magic_shield".ecRL)
                 .withCull(false)
                 .build()
         )
 
-        RenderTypeAccessor.create(
-            "${ModId}_magic_shield",
-            RenderSetup.builder(pipeline).sortOnUpload().createRenderSetup()
-        )
+        RenderTypeAccessor.create("${ModId}_magic_shield", RenderSetup.builder(pipeline).sortOnUpload().createRenderSetup())
     }
 
     @JvmStatic
@@ -50,9 +44,7 @@ object MagicShieldRenderer {
         if (hitPosition.lengthSquared() < MIN_DIRECTION_LENGTH) hitPosition.set(0.0F, 0.0F, -1.0F)
         else hitPosition.div(maxAxis)
 
-        waves += MagicShieldWave(
-            payload.entityId, hitPosition, payload.blocked, level.gameTime.toDouble()
-        )
+        waves += MagicShieldWave(payload.entityId, hitPosition, payload.blocked, level.gameTime.toDouble())
     }
 
     @JvmStatic
@@ -93,11 +85,7 @@ object MagicShieldRenderer {
             val radiusY = (entity.bbHeight * 0.5F + SHIELD_MARGIN).coerceAtLeast(MIN_RADIUS)
 
             poseStack.pushPose()
-            poseStack.translate(
-                x - camera.x,
-                y + entity.bbHeight * 0.5F - camera.y,
-                z - camera.z
-            )
+            poseStack.translate(x - camera.x, y + entity.bbHeight * 0.5F - camera.y, z - camera.z)
 
             collector.submitCustomGeometry(poseStack, magicShieldRenderType) { pose, cons ->
                 renderShield(pose, cons, radiusX, radiusY, radiusX, wave.hitPosition, progress, wave.blocked)
@@ -155,8 +143,7 @@ object MagicShieldRenderer {
 
         val strength = if (blocked) 255 else 190
 
-        consumer.addVertex(pose, position.x, position.y, position.z)
-            .setColor(encodedDistance, encodedProgress, strength, 255)
+        consumer.addVertex(pose, position.x, position.y, position.z).setColor(encodedDistance, encodedProgress, strength, 255)
     }
 
     private fun position(face: Int, u: Float, v: Float, radiusX: Float, radiusY: Float, radiusZ: Float): Vector3f {

@@ -15,7 +15,6 @@ interface Query {
     val velocity_y: Float get() = 0f
     val velocity_x: Float get() = 0f
     val velocity_z: Float get() = 0f
-
     val vertical_speed: Float get() = 0f
     val health: Float get() = 0f
     val max_health: Float get() = 0f
@@ -38,8 +37,8 @@ interface Query {
     val modified_move_speed: Float get() = 0f
 
     companion object {
-        val EMPTY = object : Query {}
-        val GLFW_TIME = object : Query {
+        val EMPTY = object: Query {}
+        val GLFW_TIME = object: Query {
             override val anim_time: Float
                 get() = System.nanoTime() / 1000000000F
         }
@@ -54,7 +53,7 @@ class BlockEntityQuery(val blockEntity: BlockEntity): Query {
     override val life_time: Float get() = anim_time - startTime
 }
 
-class LivingEntityQuery(val entity: LivingEntity) : Query {
+class LivingEntityQuery(val entity: LivingEntity): Query {
     override val ground_speed: Float
         get() = entity.deltaMovement.let { sqrt(it.x * it.x + it.z * it.z).toFloat() * TICKS_PER_SECOND }
     override val is_moving: Boolean get() = abs(ground_speed) >= MOVEMENT_THRESHOLD

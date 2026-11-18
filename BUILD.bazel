@@ -1,6 +1,26 @@
 load("//tools/build:modules.bzl", "universal_mod")
+load("//tools/build:prepare.bzl", "prepare_project")
 
 package(default_visibility = ["//visibility:public"])
+
+prepare_project(
+    name = "prepare_project",
+    modules = [
+        "//api:classes",
+        "//runtime:classes",
+        "//bootstrap-fabric:classes",
+        "//bootstrap-neoforge:classes",
+        "//additions/common:classes",
+        "//additions/fabric:classes",
+        "//additions/neoforge:classes",
+    ],
+    libraries = [
+        "//tools/build:minecraft",
+        "//tools/build:fabric_minecraft",
+        "//tools/build:neoforge_minecraft",
+    ],
+    data = ["//tools/build:development_assets"],
+)
 
 universal_mod(
     name = "release",

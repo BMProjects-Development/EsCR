@@ -23,16 +23,9 @@ object ClientGeoAnimations {
 
     @JvmOverloads
     @JvmStatic
-    fun play(
-        animatable: GeoAnimatable,
-        animation: String,
-        type: AnimationType = AnimationType.PLAY_ONCE
-    ): Boolean {
+    fun play(animatable: GeoAnimatable, animation: String, type: AnimationType = AnimationType.PLAY_ONCE): Boolean {
         if (!BedrockGeoAssets.hasAnimation(animation)) {
-            LOGGER.error(
-                "Cannot play GEO animation '{}': animation id is not present in loaded .animation.json files",
-                animation
-            )
+            LOGGER.error("Cannot play GEO animation '{}': animation id is not present in loaded .animation.json files", animation)
             return false
         }
         val model = runCatching(animatable::geoModel).getOrElse { error ->
@@ -41,11 +34,7 @@ object ClientGeoAnimations {
         }
         if (BedrockGeoAssets[model] == null) {
             val geometry = model.geometryResource?.toString() ?: model.geometry
-            LOGGER.error(
-                "Cannot play GEO animation '{}': geometry '{}' is not loaded",
-                animation,
-                geometry
-            )
+            LOGGER.error("Cannot play GEO animation '{}': geometry '{}' is not loaded", animation, geometry)
             return false
         }
 
@@ -60,21 +49,14 @@ object ClientGeoAnimations {
 
     @JvmOverloads
     @JvmStatic
-    fun play(
-        stack: ItemStack,
-        animation: String,
-        type: AnimationType = AnimationType.PLAY_ONCE
-    ): Boolean {
+    fun play(stack: ItemStack, animation: String, type: AnimationType = AnimationType.PLAY_ONCE): Boolean {
         val provider = stack.item as? GeoItemProvider
         if (provider == null) {
             LOGGER.error("Cannot play GEO animation '{}': item {} is not a GEO item", animation, stack.item)
             return false
         }
         if (!BedrockGeoAssets.hasAnimation(animation)) {
-            LOGGER.error(
-                "Cannot play GEO animation '{}': animation id is not present in loaded .animation.json files",
-                animation
-            )
+            LOGGER.error("Cannot play GEO animation '{}': animation id is not present in loaded .animation.json files", animation)
             return false
         }
         val model = runCatching { provider.geoModel(stack) }.getOrElse { error ->
@@ -83,11 +65,7 @@ object ClientGeoAnimations {
         }
         if (BedrockGeoAssets[model] == null) {
             val geometry = model.geometryResource?.toString() ?: model.geometry
-            LOGGER.error(
-                "Cannot play GEO animation '{}': geometry '{}' is not loaded",
-                animation,
-                geometry
-            )
+            LOGGER.error("Cannot play GEO animation '{}': geometry '{}' is not loaded", animation, geometry)
             return false
         }
 
@@ -110,11 +88,7 @@ object ClientGeoAnimations {
         val level = Minecraft.getInstance().level ?: return false
         val animatable = level.getBlockEntity(payload.controllerPos) as? GeoAnimatable
         if (animatable == null) {
-            LOGGER.error(
-                "Cannot play GEO animation '{}': block entity at {} is not GEO-animatable",
-                payload.animation,
-                payload.controllerPos
-            )
+            LOGGER.error("Cannot play GEO animation '{}': block entity at {} is not GEO-animatable", payload.animation, payload.controllerPos)
             return false
         }
         return play(animatable, payload.animation, payload.animationType)
@@ -124,11 +98,7 @@ object ClientGeoAnimations {
     fun handle(payload: GeoEntityAnimationPayload): Boolean {
         val entity = Minecraft.getInstance().level?.getEntity(payload.entityId) as? GeoAnimatable
         if (entity == null) {
-            LOGGER.error(
-                "Cannot play GEO animation '{}': entity {} is not GEO-animatable",
-                payload.animation,
-                payload.entityId
-            )
+            LOGGER.error("Cannot play GEO animation '{}': entity {} is not GEO-animatable", payload.animation, payload.entityId)
             return false
         }
         return play(entity, payload.animation, payload.animationType)
@@ -141,12 +111,7 @@ object ClientGeoAnimations {
         val stack = if (entity != null && slot != null) entity.getItemBySlot(slot) else null
         val provider = stack?.item as? GeoItemProvider
         if (entity == null || slot == null || stack == null || provider == null) {
-            LOGGER.error(
-                "Cannot play GEO animation '{}': entity {} slot {} is not a GEO item",
-                payload.animation,
-                payload.entityId,
-                payload.equipmentSlot
-            )
+            LOGGER.error("Cannot play GEO animation '{}': entity {} slot {} is not a GEO item", payload.animation, payload.entityId, payload.equipmentSlot)
             return false
         }
         return play(stack, payload.animation, payload.animationType)
@@ -176,11 +141,7 @@ object ClientGeoAnimations {
         val slot = EquipmentSlot.entries.getOrNull(payload.equipmentSlot)
         val stack = if (entity != null && slot != null) entity.getItemBySlot(slot) else null
         if (stack == null) {
-            LOGGER.error(
-                "Cannot stop GEO animation: entity {} slot {} is not available",
-                payload.entityId,
-                payload.equipmentSlot
-            )
+            LOGGER.error("Cannot stop GEO animation: entity {} slot {} is not available", payload.entityId, payload.equipmentSlot)
             return false
         }
         return stop(stack)

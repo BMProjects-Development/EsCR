@@ -27,9 +27,7 @@ object MIMTerminalLayout {
     const val PATCH_HEIGHT = 54
     private const val WINDOW_MARGIN = 8
 
-    fun rowsForHeight(height: Int): Int =
-        (BASE_ROWS + (height.toLong() - BASE_HEIGHT - WINDOW_MARGIN).floorDiv(ROW_HEIGHT.toLong()))
-            .coerceIn(1L, MAX_ROWS.toLong()).toInt()
+    fun rowsForHeight(height: Int): Int = (BASE_ROWS + (height.toLong() - BASE_HEIGHT - WINDOW_MARGIN).floorDiv(ROW_HEIGHT.toLong())).coerceIn(1L, MAX_ROWS.toLong()).toInt()
 
     fun height(rows: Int): Int = BASE_HEIGHT + rowOffset(rows)
     fun playerY(rows: Int): Int = 108 + rowOffset(rows)

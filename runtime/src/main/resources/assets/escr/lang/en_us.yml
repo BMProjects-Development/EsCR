@@ -49,6 +49,7 @@ item.escr:
   mithriline_ingot: Mithriline Ingot
   magical_ingot: Magical Ingot
   magical_slag: Magical Slag
+  magical_alloy: Magical Alloy
   mithriline_dust: Mithriline Dust
   heating_rod: Heat Rod
   mithriline_crystal_gem: Mithriline Crystal
@@ -83,6 +84,19 @@ block.escr:
   cold_distiller: Cold Distiller
   heat_generator: Heat Generator
   ultra_heat_generator: Ultra Heat Generator
+  natural_furnace: Natural Furnace
+  ultra_natural_furnace: Ultra Natural Furnace
+  ender_generator: Ender Generator
+  magmatic_smeltery: Magmatic Smeltery
+  magmatic_furnace: Basic Magmatic Furnace
+  magical_magmatic_furnace: Magical Magmatic Furnace
+  pale_magmatic_furnace: Pale Magmatic Furnace
+  void_magmatic_furnace: Void Magmatic Furnace
+  magical_breeder: Magical Breeder
+  magical_shearing_station: Magical Shearing Station
+  monster_holding_device: Monster Holding Device
+  magical_chest: Magical Chest
+  magical_hopper: Magical Hopper
   enrichment_chamber_controller: Enrichment Chamber Controller
   enrichment_chamber_extractor: Enrichment Chamber Extractor
   enrichment_chamber_receiver: Enrichment Chamber Receiver

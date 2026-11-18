@@ -15,10 +15,7 @@ object RadiatingChamberRenderer: BookRecipeRenderer<RadiatingChamberRecipe> {
     private const val ELEMENT_GAP = 8
     private const val TEXT_GAP = ELEMENT_GAP / 2
 
-    override fun build(
-        recipe: RadiatingChamberRecipe,
-        builder: BookRecipeRenderBuilder
-    ) {
+    override fun build(recipe: RadiatingChamberRecipe, builder: BookRecipeRenderBuilder) {
         val display = recipe.display().filterIsInstance<RadiatingChamberRecipe.Display>().firstOrNull() ?: return
         val contentWidth = SLOT_SIZE * 2 + ITEM_SIZE + ELEMENT_GAP * 2
         val startX = (builder.width - contentWidth) / 2
@@ -51,10 +48,7 @@ object RadiatingChamberRenderer: BookRecipeRenderer<RadiatingChamberRecipe> {
         val max = recipe.balance.max
         val left = if (min.isPresent) "(" else "["
         val right = if (max.isPresent) ")" else "]"
-        return Component.translatable(
-            "tooltip.$ModId.radiating_chamber.balance",
-            "$left${min.orElse(0.0)}, ${max.orElse(2.0)}$right"
-        )
+        return Component.translatable("tooltip.$ModId.radiating_chamber.balance", "$left${min.orElse(0.0)}, ${max.orElse(2.0)}$right")
     }
 
     override fun width(recipe: RadiatingChamberRecipe): Int = 160

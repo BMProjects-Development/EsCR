@@ -1,5 +1,6 @@
 package com.algorithmlx.ecr.client.widget.mim
 
+import com.algorithmlx.ecr.api.ModId
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
@@ -10,12 +11,10 @@ import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import kotlin.math.roundToInt
 
-internal class MIMDependencyScrollBar(
+class MIMDependencyScrollBar(
     private val onScroll: (Double) -> Unit,
-    label: Component = Component.translatable("screen.escr.mim.dependency.scroll")
-) : AbstractWidget(
-    0, 0, MIMDependencyTextures.TRACK.width, MIMDependencyLayout.BODY_HEIGHT, label
-) {
+    label: Component = Component.translatable("screen.$ModId.mim.dependency.scroll")
+): AbstractWidget(0, 0, MIMDependencyTextures.TRACK.width, MIMDependencyLayout.BODY_HEIGHT, label) {
     private var value = 0.0
     private var maximum = 0.0
     private var page = 1.0

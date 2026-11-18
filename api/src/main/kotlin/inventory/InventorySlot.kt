@@ -8,8 +8,7 @@ import net.minecraft.world.Container
 
 internal class InventorySlot(val container: Container, val index: Int) {
     private val identity = (container as? PlatformItemContainer)?.slotIdentity(index) ?: ItemStorageIdentity(container, index)
-    override fun equals(other: Any?): Boolean =
-        other is InventorySlot && identity == other.identity
+    override fun equals(other: Any?): Boolean = other is InventorySlot && identity == other.identity
 
     override fun hashCode(): Int = identity.hashCode()
 

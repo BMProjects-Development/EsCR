@@ -21,14 +21,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.storage.ValueInput
 import net.minecraft.world.level.storage.ValueOutput
 
-class AssembledMultiblockPartBlockEntity(
-    worldPosition: BlockPos,
-    blockState: BlockState
-): BlockEntity(
-    BlockEntityTypeRegistry.assembledMultiblockPart.get(),
-    worldPosition,
-    blockState
-), AssembledMultiblockPartEntity, GeoAnimatable {
+class AssembledMultiblockPartBlockEntity(worldPosition: BlockPos, blockState: BlockState): BlockEntity(BlockEntityTypeRegistry.assembledMultiblockPart.get(), worldPosition, blockState), AssembledMultiblockPartEntity, GeoAnimatable {
     override var assembledMultiblockData: AssembledMultiblockPartData? = null
         private set
 
@@ -51,30 +44,19 @@ class AssembledMultiblockPartBlockEntity(
         }
         assembledMultiblockData = data
         setChanged()
-        level?.takeUnless { it.isClientSide }?.sendBlockUpdated(
-            blockPos,
-            blockState,
-            blockState,
-            Block.UPDATE_CLIENTS
-        )
+        level?.takeUnless { it.isClientSide }?.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_CLIENTS)
     }
 
     override fun clearAssembledMultiblockData() {
         if (assembledMultiblockData == null) return
         assembledMultiblockData = null
         setChanged()
-        level?.takeUnless { it.isClientSide }?.sendBlockUpdated(
-            blockPos,
-            blockState,
-            blockState,
-            Block.UPDATE_CLIENTS
-        )
+        level?.takeUnless { it.isClientSide }?.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_CLIENTS)
     }
 
     override fun getUpdatePacket(): Packet<ClientGamePacketListener> = ClientboundBlockEntityDataPacket.create(this)
 
-    override fun getUpdateTag(registries: net.minecraft.core.HolderLookup.Provider): CompoundTag =
-        saveWithoutMetadata(registries)
+    override fun getUpdateTag(registries: net.minecraft.core.HolderLookup.Provider): CompoundTag = saveWithoutMetadata(registries)
 
     override fun saveAdditional(output: ValueOutput) {
         AssembledMultiblockDataIO.write(output, assembledMultiblockData)

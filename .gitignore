@@ -1,11 +1,12 @@
 run/
 logs/
-.idea/
+.idea/*
+!.idea/inspectionProfiles/
 build/
 .kotlin/
 .tmp/
 !tools/build/
 !tools/build/**
-/bazel-*
-/.bazelbsp/
-/.bazelrc.local
+bazel-*
+.bazelbsp/
+.bazelrc.local

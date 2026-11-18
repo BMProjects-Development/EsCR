@@ -20,17 +20,10 @@ data class BookGroupPlacement(
     val height: Int
 )
 
-data class BookGroupLayoutResult(
-    val elements: List<BookGroupPlacement>,
-    val height: Int
-)
+data class BookGroupLayoutResult(val elements: List<BookGroupPlacement>, val height: Int)
 
 object BookGroupLayout {
-    fun layout(
-        group: GroupBookElement,
-        width: Int,
-        owner: Identifier?
-    ): BookGroupLayoutResult {
+    fun layout(group: GroupBookElement, width: Int, owner: Identifier?): BookGroupLayoutResult {
         val availableWidth = width.coerceAtLeast(0)
         val placements = mutableListOf<BookGroupPlacement>()
         var x = 0
@@ -63,19 +56,9 @@ object BookGroupLayout {
         return BookGroupLayoutResult(placements, y)
     }
 
-    private fun measure(
-        spec: BookElementSpec,
-        availableWidth: Int,
-        owner: Identifier?
-    ): ElementSize {
+    private fun measure(spec: BookElementSpec, availableWidth: Int, owner: Identifier?): ElementSize {
         val serializer = ResearchSerializers.elementSerializer(spec.content.type)
-        val width =
-            (
-                spec.width
-                    ?: autoWidth(spec, availableWidth, owner)
-                    ?: serializer?.defaultWidth
-                    ?: 16
-            ).coerceIn(0, availableWidth)
+        val width = (spec.width ?: autoWidth(spec, availableWidth, owner) ?: serializer?.defaultWidth ?: 16).coerceIn(0, availableWidth)
         val measuredHeight = autoHeight(spec, width, owner)
         val height = when {
             spec.content is CraftingBookElement && measuredHeight != null -> maxOf(spec.height ?: 0, measuredHeight)
@@ -84,25 +67,15 @@ object BookGroupLayout {
         return ElementSize(width, height)
     }
 
-    private fun autoWidth(
-        spec: BookElementSpec,
-        availableWidth: Int,
-        owner: Identifier?
-    ): Int? = when (val element = spec.content) {
+    private fun autoWidth(spec: BookElementSpec, availableWidth: Int, owner: Identifier?): Int? = when (val element = spec.content) {
         is TextBookElement ->
-            BookLinkedTextLayout
-                .singleLineWidth(element.text, Minecraft.getInstance().font, owner)
-                .coerceIn(1, availableWidth.coerceAtLeast(1))
+            BookLinkedTextLayout.singleLineWidth(element.text, Minecraft.getInstance().font, owner).coerceIn(1, availableWidth.coerceAtLeast(1))
         is CraftingBookElement -> BookRecipeElementRenderer.preferredWidth(element)
         is GroupBookElement -> availableWidth
         else -> null
     }
 
-    private fun autoHeight(
-        spec: BookElementSpec,
-        width: Int,
-        owner: Identifier?
-    ): Int? = when (val element = spec.content) {
+    private fun autoHeight(spec: BookElementSpec, width: Int, owner: Identifier?): Int? = when (val element = spec.content) {
         is TextBookElement ->
             BookLinkedTextLayout.lineCount(element.text, Minecraft.getInstance().font, width, owner) *
                 Minecraft.getInstance().font.lineHeight
@@ -118,16 +91,11 @@ object BookGroupLayout {
             addAll(element.variants)
         }
         val selected =
-            candidates.lastOrNull { variant ->
-                owner != null && variant.requirement?.let { ClientResearchState.requirementMet(owner, it) } == true
-            }
+            candidates.lastOrNull { variant -> owner != null && variant.requirement?.let { ClientResearchState.requirementMet(owner, it) } == true }
                 ?: candidates.lastOrNull { it.requirement == null }
                 ?: return null
         return copy(content = element.copy(text = selected.text, requirement = null, variants = emptyList()))
     }
 
-    private data class ElementSize(
-        val width: Int,
-        val height: Int
-    )
+    private data class ElementSize(val width: Int, val height: Int)
 }

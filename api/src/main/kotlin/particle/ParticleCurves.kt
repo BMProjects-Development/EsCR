@@ -5,10 +5,7 @@ import com.algorithmlx.ecr.api.molang.runtime.MolangContext
 import com.algorithmlx.ecr.api.molang.runtime.Variables
 import com.algorithmlx.ecr.api.particle.file.BedrockParticleFile
 
-class CurveVariables(
-    private val context: () -> MolangContext,
-    private val curves: Map<String, BedrockParticleFile.Curve>
-) : Variables {
+class CurveVariables(private val context: () -> MolangContext, private val curves: Map<String, BedrockParticleFile.Curve>): Variables {
     private var frame = 0
     private val variables = mutableMapOf<String, Variable?>()
 
@@ -16,14 +13,11 @@ class CurveVariables(
         frame++
     }
 
-    override fun getOrNull(name: String): Variables.Variable? = variables.getOrPut(name) {
-        curves["variable.$name"]?.let(::Variable)
-    }
+    override fun getOrNull(name: String): Variables.Variable? = variables.getOrPut(name) { curves["variable.$name"]?.let(::Variable) }
 
-    override fun getOrPut(name: String, initialValue: Float): Variables.Variable =
-        getOrNull(name) ?: throw UnsupportedOperationException("Unknown curve variable: $name")
+    override fun getOrPut(name: String, initialValue: Float): Variables.Variable = getOrNull(name) ?: throw UnsupportedOperationException("Unknown curve variable: $name")
 
-    private inner class Variable(private val curve: BedrockParticleFile.Curve) : Variables.Variable {
+    private inner class Variable(private val curve: BedrockParticleFile.Curve): Variables.Variable {
         private var cachedFrame = -1
         private var cachedValue = 0f
 
@@ -67,13 +61,7 @@ private fun BedrockParticleFile.Curve.eval(context: MolangContext): Float {
             when {
                 index < 1 -> nodes[1].eval(context)
                 index >= nodes.lastIndex - 1 -> nodes[nodes.lastIndex - 1].eval(context)
-                else -> catmullRom(
-                    position - index,
-                    nodes[index - 1].eval(context),
-                    nodes[index].eval(context),
-                    nodes[index + 1].eval(context),
-                    nodes[index + 2].eval(context)
-                )
+                else -> catmullRom(position - index, nodes[index - 1].eval(context), nodes[index].eval(context), nodes[index + 1].eval(context), nodes[index + 2].eval(context))
             }
         }
 
@@ -87,13 +75,7 @@ private fun BedrockParticleFile.Curve.eval(context: MolangContext): Float {
                 segmentIndex >= segmentCount -> nodes.last().eval(context)
                 else -> {
                     val i = segmentIndex * 3
-                    bezier(
-                        position - segmentIndex,
-                        nodes[i].eval(context),
-                        nodes[i + 1].eval(context),
-                        nodes[i + 2].eval(context),
-                        nodes[i + 3].eval(context)
-                    )
+                    bezier(position - segmentIndex, nodes[i].eval(context), nodes[i + 1].eval(context), nodes[i + 2].eval(context), nodes[i + 3].eval(context))
                 }
             }
         }

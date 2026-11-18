@@ -12,11 +12,7 @@ interface MIMWindowHost {
     fun releaseFloatingFocus()
     fun extractFloatingWindows(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, deltaTicks: Float)
 
-    fun isFloatingWindowAt(x: Double, y: Double): Boolean = floatingWindowBounds.any {
-        x >= it.left() && x < it.right() && y >= it.top() && y < it.bottom()
-    }
+    fun isFloatingWindowAt(x: Double, y: Double): Boolean = floatingWindowBounds.any { x >= it.left() && x < it.right() && y >= it.top() && y < it.bottom() }
 
-    fun isOverlayInputAt(x: Double, y: Double): Boolean = overlayExclusionBounds.any {
-        x >= it.left() && x < it.right() && y >= it.top() && y < it.bottom()
-    }
+    fun isOverlayInputAt(x: Double, y: Double): Boolean = overlayExclusionBounds.any { x >= it.left() && x < it.right() && y >= it.top() && y < it.bottom() }
 }

@@ -9,9 +9,7 @@ import net.minecraft.core.BlockPos
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
 
-class MIMScreenEntity(pos: BlockPos, state: BlockState) : MIMModuleEntity(
-    pos, state, BlockEntityTypeRegistry.mimScreen.get(), MIMMenuKind.SCREEN.slots
-), MIMTerminal {
+class MIMScreenEntity(pos: BlockPos, state: BlockState): MIMModuleEntity(pos, state, BlockEntityTypeRegistry.mimScreen.get(), MIMMenuKind.SCREEN.slots), MIMTerminal {
     override val menuKind get() = MIMMenuKind.SCREEN
     override val previousInventorySize: Int get() = 2
     override val deviceType get() = MRUDevice.DeviceType.UNCONNECTABLE

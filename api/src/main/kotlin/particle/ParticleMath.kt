@@ -39,8 +39,7 @@ internal fun lookAt(direction: Vector3fc, up: Vector3fc): Quaternionf {
     return Quaternionf().lookAlong(direction, up).normalize()
 }
 
-internal fun reflect(vector: Vector3fc, normal: Vector3fc) =
-    Vector3f(normal).mul(-2f * vector.dot(normal)).add(vector)
+internal fun reflect(vector: Vector3fc, normal: Vector3fc) = Vector3f(normal).mul(-2f * vector.dot(normal)).add(vector)
 
 internal fun packColor(color: ParticleColor): Int {
     fun channel(value: Float) = (value.coerceIn(0f, 1f) * 255f).toInt()
@@ -50,8 +49,7 @@ internal fun packColor(color: ParticleColor): Int {
         channel(color.b)
 }
 
-internal fun safeNormalize(vector: Vector3f): Vector3f =
-    if (vector.lengthSquared() > 1.0e-8f) vector.normalize() else vector.zero()
+internal fun safeNormalize(vector: Vector3f): Vector3f = if (vector.lengthSquared() > 1.0e-8f) vector.normalize() else vector.zero()
 
 internal fun speed(vector: Vector3fc) = sqrt(vector.lengthSquared())
 
